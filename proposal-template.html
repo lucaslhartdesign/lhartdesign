@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Lhart Design — Proposal for [Client Name]</title>
+<script src="./ds-base.js"></script>
+<style>
+:root { --leading: 28px; --half: 14px; --edge: clamp(20px, 5vw, 72px); }
+body { margin: 0; background:
+    radial-gradient(1200px 720px at 82% -160px, color-mix(in srgb, var(--color-accent-900) 75%, transparent), transparent 60%),
+    radial-gradient(1100px 800px at -10% 100%, color-mix(in srgb, black 30%, transparent), transparent 55%),
+    var(--color-bg); text-wrap: pretty; position: relative; }
+.bg-glow { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
+.bg-glow::before, .bg-glow::after { content: ""; position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.55; }
+.bg-glow::before { width: 55vw; height: 55vw; max-width: 760px; max-height: 760px; top: -18vw; right: -14vw;
+  background: radial-gradient(circle, var(--color-accent-700), transparent 70%);
+  animation: glowDrift1 22s ease-in-out infinite alternate; }
+.bg-glow::after { width: 46vw; height: 46vw; max-width: 640px; max-height: 640px; bottom: -16vw; left: -12vw;
+  background: radial-gradient(circle, var(--color-accent-2-700), transparent 70%);
+  animation: glowDrift2 26s ease-in-out infinite alternate; }
+@keyframes glowDrift1 { from { transform: translate(0, 0) scale(1); } to { transform: translate(-6vw, 4vw) scale(1.15); } }
+@keyframes glowDrift2 { from { transform: translate(0, 0) scale(1); } to { transform: translate(5vw, -5vw) scale(1.1); } }
+@media (prefers-reduced-motion: reduce) { .bg-glow::before, .bg-glow::after { animation: none; } }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s cubic-bezier(.2,.7,.3,1), transform 0.7s cubic-bezier(.2,.7,.3,1); }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+h1 { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(.2,.7,.2,1) 0.1s, transform 0.8s cubic-bezier(.2,.7,.2,1) 0.1s; }
+.for-client { opacity: 0; transform: translateY(16px); transition: opacity 0.8s cubic-bezier(.2,.7,.2,1) 0.28s, transform 0.8s cubic-bezier(.2,.7,.2,1) 0.28s; }
+.hero.is-in h1, .hero.is-in .for-client { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { h1, .for-client { opacity: 1; transform: none; transition: none; } }
+.tier { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.tier:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+@media (prefers-reduced-motion: reduce) { .tier { transition: none; } }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 var(--edge); }
+.nav { padding-inline: max(var(--edge), calc((100% - 1100px) / 2 + var(--edge))); display: flex; align-items: center; justify-content: space-between; padding-block: var(--space-4); border-bottom: 1px solid var(--color-divider); }
+.nav-brand-logo { height: 28px; }
+header.hero { padding: calc(3 * var(--leading)) 0 calc(1.5 * var(--leading)); text-align: left; }
+.kicker { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 var(--half); display: block; }
+h1 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(32px, 4vw, 48px); margin: 0; letter-spacing: -0.01em; }
+.for-client { font-size: 17px; color: color-mix(in srgb, var(--color-text) 78%, transparent); margin: var(--half) 0 0; }
+.intro { font-size: 16px; line-height: var(--leading); max-width: 62ch; color: color-mix(in srgb, var(--color-text) 78%, transparent); margin: var(--leading) 0 calc(2 * var(--leading)); }
+.tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 28px); padding-bottom: calc(2.5 * var(--leading)); align-items: stretch; }
+.tier { background: var(--color-neutral-800); border: 1px solid var(--color-neutral-700); border-radius: var(--radius-md); padding: var(--leading); display: flex; flex-direction: column; gap: var(--half); position: relative; box-shadow: var(--shadow-sm); }
+.tier.featured { border-color: var(--color-accent-500); box-shadow: 0 0 0 1px var(--color-accent-700), var(--shadow-md); }
+.tier-num { position: absolute; top: -14px; left: var(--leading); width: 28px; height: 28px; border-radius: 50%; background: var(--color-bg); border: 1px solid var(--color-neutral-600); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 13px; color: var(--color-text); }
+.tier h2 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; margin: var(--half) 0 0; text-box: trim-both cap alphabetic; }
+.tier ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.tier li { font-size: 14.5px; line-height: 1.4; color: color-mix(in srgb, var(--color-text) 82%, transparent); padding-left: 18px; position: relative; }
+.tier li::before { content: "—"; position: absolute; left: 0; color: var(--color-accent-300); }
+.tier-price { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 32px; color: var(--color-text); margin: var(--half) 0 0; border-top: 1px solid var(--color-neutral-700); padding-top: var(--half); text-box: trim-both cap alphabetic; }
+.tier-bonus { font-size: 13px; color: color-mix(in srgb, var(--color-text) 62%, transparent); margin: 0; }
+.tier-bonus strong { color: var(--color-text); font-weight: 500; }
+.tier .btn { margin-top: var(--half); }
+.note { font-size: 13.5px; color: color-mix(in srgb, var(--color-text) 55%, transparent); padding-bottom: calc(3 * var(--leading)); max-width: 62ch; }
+@media (max-width: 900px) { .tiers { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="bg-glow" aria-hidden="true"></div>
+<nav class="nav">
+  <img class="nav-brand-logo" src="assets/logo.png" alt="Lhart Design" />
+  <span class="tag tag-outline" style="white-space: nowrap;">Private proposal</span>
+</nav>
+<div class="wrap">
+  <header class="hero">
+    <span class="kicker">Partnership &amp; Investment</span>
+    <h1>A plan built for [Client Name].</h1>
+    <p class="for-client">Prepared for [Client Name] — [Restaurant / Yacht / Hotel], [City, Country]</p>
+  </header>
+  <p class="intro">We don't believe in one-size-fits-all. Below are the tailored execution tiers designed for your current stage and goals — choose the level of scale you're ready for. This link is private and shared only with you.</p>
+
+  <div class="tiers">
+    <div class="tier reveal">
+      <span class="tier-num">3</span>
+      <h2>Silver Package</h2>
+      <ul>
+        <li>Professional food &amp; venue photography</li>
+        <li>Complete Instagram setup &amp; visual identity</li>
+        <li>Basic paid traffic setup (targeted local ads)</li>
+        <li>Includes $100 USD ad budget for month 1</li>
+      </ul>
+      <p class="tier-price">$500</p>
+      <p class="tier-bonus"><strong>Bonus (free):</strong> custom highlight covers &amp; brand board.</p>
+      <button type="button" class="btn btn-ghost btn-block">Choose Silver</button>
+    </div>
+    <div class="tier featured reveal">
+      <span class="tier-num">2</span>
+      <h2>Gold Package</h2>
+      <ul>
+        <li>Professional food styling &amp; high-end photography</li>
+        <li>Cinematic vertical video production (Reels/TikTok)</li>
+        <li>Immersive aerial drone cinematography</li>
+        <li>Complete digital presence &amp; launch setup</li>
+        <li>Optimized paid traffic campaign &amp; strategy</li>
+        <li>Includes $100 USD ad budget for month 1</li>
+      </ul>
+      <p class="tier-price">$700</p>
+      <p class="tier-bonus"><strong>Bonus (free):</strong> Google Business Profile optimization.</p>
+      <button type="button" class="btn btn-primary btn-block">Choose Gold</button>
+    </div>
+    <div class="tier reveal">
+      <span class="tier-num">1</span>
+      <h2>Diamond Package</h2>
+      <ul>
+        <li>Everything in Gold, plus full premium content production</li>
+        <li>Advanced paid traffic setup &amp; targeted destination campaigns</li>
+        <li>Custom AI response automation (24/7 bookings)</li>
+        <li>Includes $150 USD ad budget for month 1</li>
+      </ul>
+      <p class="tier-price">$1,000</p>
+      <p class="tier-bonus"><strong>Bonus (free):</strong> full AI assistant integration for customer inquiries.</p>
+      <button type="button" class="btn btn-ghost btn-block">Choose Diamond</button>
+    </div>
+  </div>
+
+  <p class="note">This proposal is private and prepared specifically for [Client Name]. Prices and inclusions may vary by project. Questions? <a href="https://wa.me/5511954860576">Message us on WhatsApp</a>.</p>
+</div>
+<script src="image-slot.js"></script>
+<script>
+document.querySelector('.hero').classList.add('is-in');
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = Math.min(i * 90, 270) + 'ms';
+  el.classList.add('is-visible');
+});
+</script>
+</body>
+</html>
