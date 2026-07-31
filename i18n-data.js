@@ -51,6 +51,20 @@ en: {
     t8q: 'Planning destination weddings takes months, and brides need to trust what they see online. The reels Lucas and Diego produced brought us high-budget clients who booked after just one quick chat. So happy with the results.',
     t8n: 'Amanda Cole — Island Dream Weddings', t8l: 'Anguilla'
   },
+  plans: {
+    kicker: 'Plans', title: 'What we build for you, at every level.',
+    intro: 'However you\u2019re starting — pick the level that matches where your business is today. Every plan pulls from the same cinematic system; you just choose how much scale you want on day one.',
+    p1badge: 'Getting started', p1t: 'Silver',
+    p1l1: 'Professional food & venue photography', p1l2: 'Complete Instagram setup & visual identity', p1l3: 'Basic paid traffic (targeted local ads)',
+    p1bonus: 'Free bonus: custom highlight covers & brand board',
+    p2badge: 'Most popular', p2t: 'Gold',
+    p2l1: 'Everything in Silver, plus:', p2l2: 'Cinematic vertical video production', p2l3: 'Immersive aerial drone cinematography', p2l4: 'Full digital presence & optimized ad campaign',
+    p2bonus: 'Free bonus: Google Business Profile optimization',
+    p3badge: 'Full scale', p3t: 'Diamond',
+    p3l1: 'Everything in Gold, plus full premium production', p3l2: 'Advanced destination-targeted ad campaigns', p3l3: 'AI automation for 24/7 bookings',
+    p3bonus: 'Free bonus: full AI assistant integration for guest inquiries',
+    cta: 'Get your custom pricing'
+  },
   threed: {
     kicker: '3D / Archviz', title: 'Before it\u2019s built, see it real.', note: 'Realistic 3D previews for real estate and construction clients \u2014 a complementary line alongside our film work.',
     t3d2: 'High-End Interior 3D Rendering: Transforming Bathrooms into Luxury Private Spas.', t3d3: 'Day-to-Night Architectural 3D Simulation: Showcasing Properties in Every Light.', t3d4: 'Modular Architecture Visualization: Modern, Efficient, and High-End 3D Design.', t3d5: 'Interactive Modular 3D: Watch Lighting & Architecture Awaken from Day to Night.'
@@ -137,6 +151,20 @@ es: {
     t8q: 'Planear bodas de destino toma meses, y las novias necesitan confiar en lo que ven en línea. Los videos que produjeron Lucas y Diego nos trajeron clientes de alto presupuesto que reservaron tras una sola charla. Muy contentos con los resultados.',
     t8n: 'Amanda Cole — Island Dream Weddings', t8l: 'Anguila'
   },
+  plans: {
+    kicker: 'Planes', title: 'Lo que construimos para ti, en cada nivel.',
+    intro: 'Sea cual sea tu punto de partida, elige el nivel que corresponde a tu negocio hoy. Todos los planes parten del mismo sistema cinematográfico; solo eliges cuánta escala quieres desde el día uno.',
+    p1badge: 'Para empezar', p1t: 'Silver',
+    p1l1: 'Fotografía profesional de comida y del local', p1l2: 'Configuración completa de Instagram e identidad visual', p1l3: 'Tráfico pago básico (anuncios locales dirigidos)',
+    p1bonus: 'Bono gratis: portadas de historias personalizadas y guía de marca',
+    p2badge: 'Más popular', p2t: 'Gold',
+    p2l1: 'Todo lo de Silver, más:', p2l2: 'Producción de video vertical cinematográfico', p2l3: 'Cinematografía aérea inmersiva con dron', p2l4: 'Presencia digital completa y campaña de anuncios optimizada',
+    p2bonus: 'Bono gratis: optimización del Perfil de Negocio de Google',
+    p3badge: 'Escala total', p3t: 'Diamond',
+    p3l1: 'Todo lo de Gold, más producción premium completa', p3l2: 'Campañas de anuncios avanzadas dirigidas al destino', p3l3: 'Automatización con IA para reservas 24/7',
+    p3bonus: 'Bono gratis: integración completa de asistente de IA para consultas de huéspedes',
+    cta: 'Solicita tu precio personalizado'
+  },
   threed: {
     kicker: '3D / Archviz', title: 'Antes de construir, véalo real.', note: 'Vistas previas 3D realistas para clientes de bienes raíces y construcción \u2014 una línea complementaria junto a nuestro trabajo audiovisual.',
     t3d2: 'Renderizado 3D de interiores: transformando baños en spas privados de lujo.', t3d3: 'Simulación arquitectónica 3D día-noche: mostrando propiedades en cada luz.', t3d4: 'Visualización de arquitectura modular: diseño 3D moderno, eficiente y de alto nivel.', t3d5: 'Módulo 3D interactivo: mira la luz y la arquitectura despertar del día a la noche.'
@@ -222,6 +250,20 @@ pt: {
     t7n: 'Dave R. — FlyHigh Ventures', t7l: 'Nassau, Bahamas',
     t8q: 'Planejar casamentos em destino leva meses, e as noivas precisam confiar no que veem online. Os vídeos que o Lucas e o Diego produziram trouxeram clientes de alto orçamento que fecharam depois de uma única conversa. Muito feliz com o resultado.',
     t8n: 'Amanda Cole — Island Dream Weddings', t8l: 'Anguilla'
+  },
+  plans: {
+    kicker: 'Planos', title: 'O que construímos para você, em cada nível.',
+    intro: 'Não importa onde você está começando — escolha o nível que combina com o momento do seu negócio hoje. Todos os planos partem do mesmo sistema cinematográfico; você só escolhe quanta escala quer desde o primeiro dia.',
+    p1badge: 'Começando', p1t: 'Silver',
+    p1l1: 'Fotografia profissional de comida e do local', p1l2: 'Configuração completa do Instagram e identidade visual', p1l3: 'Tráfego pago básico (anúncios locais segmentados)',
+    p1bonus: 'Brinde grátis: capas de destaque personalizadas e guia de marca',
+    p2badge: 'Mais popular', p2t: 'Gold',
+    p2l1: 'Tudo do Silver, mais:', p2l2: 'Produção de vídeo vertical cinematográfico', p2l3: 'Cinematografia aérea imersiva com drone', p2l4: 'Presença digital completa e campanha de anúncios otimizada',
+    p2bonus: 'Brinde grátis: otimização do Perfil da Empresa no Google',
+    p3badge: 'Escala total', p3t: 'Diamond',
+    p3l1: 'Tudo do Gold, mais produção premium completa', p3l2: 'Campanhas de anúncios avançadas segmentadas por destino', p3l3: 'Automação com IA para reservas 24/7',
+    p3bonus: 'Brinde grátis: integração completa de assistente de IA para dúvidas de hóspedes',
+    cta: 'Peça seu preço personalizado'
   },
   threed: {
     kicker: '3D / Archviz', title: 'Antes de construir, veja de verdade.', note: 'Prévias 3D realistas para clientes de imóveis e construção \u2014 uma linha complementar ao nosso trabalho audiovisual.',
