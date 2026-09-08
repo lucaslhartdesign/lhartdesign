@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Lhart Design — Painel Admin</title>
+<style>
+  :root { --bg:#161826; --surface:#1d1f2c; --surface2:#232532; --text:#e9e9ed; --muted:#9397ab; --accent:#9184d9; --border:#3a3d4c; --danger:#e06666; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family: -apple-system, Inter, Segoe UI, system-ui, sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 24px 20px 80px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+  .input, textarea, select { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; }
+  textarea { resize: vertical; min-height: 70px; }
+  label { display:block; font-size: 12.5px; color: var(--muted); margin: 10px 0 4px; }
+  .btn { display: inline-flex; align-items:center; gap:6px; cursor:pointer; border:1px solid var(--accent); background: transparent;
+    color: var(--text); border-radius: 8px; padding: 9px 16px; font-size: 14px; font-family: inherit; }
+  .btn:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+  .btn-danger { border-color: var(--danger); color: var(--danger); }
+  .btn-danger:hover { background: color-mix(in srgb, var(--danger) 18%, transparent); }
+  .row { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .tabs { display:flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .tab-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); padding: 8px 14px; border-radius: 999px; cursor: pointer; font-size: 13.5px; }
+  .tab-btn.is-active { color: var(--text); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+  .tab-panel { display:none; }
+  .tab-panel.is-active { display:block; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; }
+  .stat-row { display:flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat { background: var(--surface2); border-radius: 10px; padding: 14px 18px; min-width: 140px; }
+  .stat b { display:block; font-size: 26px; }
+  .testi-item { border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+  .plan-col { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 800px) { .plan-col { grid-template-columns: 1fr; } }
+  .save-bar { position: sticky; bottom: 0; background: var(--bg); padding: 12px 0; border-top: 1px solid var(--border); margin-top: 8px; }
+  #login-view { max-width: 360px; margin: 15vh auto 0; }
+  .msg { font-size: 13px; margin-top: 8px; }
+  .msg.err { color: var(--danger); }
+  .msg.ok { color: #7fd68a; }
+  .scroll-x { overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<div id="login-view" class="card" hidden>
+  <h1>Painel Admin</h1>
+  <p class="muted">Lhart Design</p>
+  <label for="pw">Senha</label>
+  <input class="input" type="password" id="pw" autocomplete="current-password" />
+  <div class="row" style="margin-top:14px;">
+    <button class="btn" id="login-btn">Entrar</button>
+  </div>
+  <p class="msg err" id="login-msg" hidden></p>
+</div>
+
+<div id="dashboard-view" class="wrap" hidden>
+  <div class="row" style="justify-content: space-between; margin-bottom: 18px;">
+    <div>
+      <h1>Painel Admin</h1>
+      <p class="muted">Lhart Design</p>
+    </div>
+    <button class="btn" id="logout-btn">Sair</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn is-active" data-tab="visits">Visitas</button>
+    <button class="tab-btn" data-tab="whatsapp">WhatsApp</button>
+    <button class="tab-btn" data-tab="testimonials">Depoimentos</button>
+    <button class="tab-btn" data-tab="plans">Planos</button>
+    <button class="tab-btn" data-tab="videos">Vídeos</button>
+  </div>
+
+  <div class="tab-panel is-active" id="tab-visits">
+    <div class="card">
+      <div class="stat-row">
+        <div class="stat"><b id="visits-total">0</b><span class="muted">visitas registradas</span></div>
+      </div>
+      <p class="muted">Mostrando as últimas 200. País/cidade vêm da localização de IP detectada pela Vercel.</p>
+      <div class="scroll-x"><table id="visits-table"><thead><tr><th>Quando</th><th>De onde</th><th>Página</th><th>Veio de</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-whatsapp">
+    <div class="card">
+      <div class="stat-row">
+        <div class="stat"><b id="wa-total">0</b><span class="muted">cliques no WhatsApp</span></div>
+      </div>
+      <p class="muted">Mostrando os últimos 200.</p>
+      <div class="scroll-x"><table id="wa-table"><thead><tr><th>Quando</th><th>De onde</th><th>Botão</th><th>Página</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-testimonials">
+    <div class="card">
+      <h2>Depoimentos</h2>
+      <p class="muted">Enquanto você não salvar nada aqui, o site continua mostrando os 8 depoimentos originais (traduzidos em EN/ES/PT). Ao salvar, esta lista passa a valer no lugar deles, no idioma em que você escrever.</p>
+      <div id="testi-list"></div>
+      <button class="btn" id="testi-add">+ Adicionar depoimento</button>
+      <div class="save-bar"><button class="btn" id="testi-save">Salvar depoimentos</button> <span class="msg" id="testi-msg"></span></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-plans">
+    <div class="card">
+      <h2>Planos</h2>
+      <p class="muted">Ao salvar, este texto substitui os planos em todos os idiomas do site (não traduz automaticamente).</p>
+      <label>Título da seção</label>
+      <input class="input" id="plans-title" />
+      <label>Texto de apoio</label>
+      <textarea id="plans-intro"></textarea>
+      <div class="plan-col" id="plans-tiers"></div>
+      <label>Texto do botão final</label>
+      <input class="input" id="plans-cta" />
+      <div class="save-bar"><button class="btn" id="plans-save">Salvar planos</button> <span class="msg" id="plans-msg"></span></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-videos">
+    <div class="card">
+      <h2>Vídeos de fundo</h2>
+      <p class="muted">Cole só o número do ID do vídeo no Vimeo (ex: em vimeo.com/1214395786, o ID é 1214395786).</p>
+      <div id="videos-form"></div>
+      <div class="save-bar"><button class="btn" id="videos-save">Salvar vídeos</button> <span class="msg" id="videos-msg"></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_TESTIMONIALS = [
+  { stars: 5, quote: 'Man, Lucas and Diego crushed it. We used to lose half our margin paying hotel concierges for leads. After they dropped the new boat videos and ads, my WhatsApp hasn’t stopped buzzing. Booked out for the season!', name: 'Capt. Marc Thibault — SXM Charters', location: 'St. Martin' },
+  { stars: 5, quote: 'Honestly thought targeted ads wouldn’t work for high-end charters. I was wrong. The reels look insane and people are literally sending screenshots of the videos asking to book that exact boat.', name: 'Robert Evans — AquaBlue Yachts', location: 'Miami, USA' },
+  { stars: 5, quote: 'Tuesdays were always quiet here, but those sunset drone shots brought in a solid crowd. They don’t just send pretty clips, they actually put people in the seats.', name: 'Tiago Silva — Puro Beach Lounge', location: 'Algarve, Portugal' },
+  { stars: 5, quote: 'Man, finally an agency that doesn’t just deliver cute Instagram photos. Lucas and Diego got our vibe immediately. We saw the results in the register within the first week of ads.', name: 'Matheus Albuquerque — Grupo SeaClub', location: 'Florianópolis, Brazil' },
+  { stars: 5, quote: 'Static photos just weren’t moving the needle for our top-tier villas anymore. The walkthrough videos made guests feel like they were already there. Direct bookings jumped almost 50%.', name: 'Marcus Sterling — Sterling Villas', location: 'Gold Coast, Australia' },
+  { stars: 5, quote: 'Super easy to deal with on set and fast on delivery. Diego nailed the architecture angles and Lucas turned it into ad creative that actually hits high-budget buyers. Will use them again 100%.', name: 'Chloe Dupont — Broker', location: 'St. Barths' },
+  { stars: 5, quote: 'Our old content looked like cheap GoPro clips. The 4K drone stuff Lhart Design shot made our tours look 10x more high-end. Inquiries exploded right after launching.', name: 'Dave R. — FlyHigh Ventures', location: 'Nassau, Bahamas' },
+  { stars: 5, quote: 'Planning destination weddings takes months, and brides need to trust what they see online. The reels Lucas and Diego produced brought us high-budget clients who booked after just one quick chat. So happy with the results.', name: 'Amanda Cole — Island Dream Weddings', location: 'Anguilla' },
+];
+const DEFAULT_PLANS = {
+  title: 'What we build for you, at every level.',
+  intro: 'However you’re starting — pick the level that matches where your business is today. Every plan pulls from the same cinematic system; you just choose how much scale you want on day one.',
+  cta: 'Get your custom pricing',
+  p1: { badge: 'Getting started', title: 'Silver', lines: ['Professional food & venue photography', 'Complete Instagram setup & visual identity', 'Basic paid traffic (targeted local ads)'], bonus: 'Free bonus: custom highlight covers & brand board' },
+  p2: { badge: 'Most popular', title: 'Gold', lines: ['Everything in Silver, plus:', 'Cinematic vertical video production', 'Immersive aerial drone cinematography', 'Full digital presence & optimized ad campaign'], bonus: 'Free bonus: Google Business Profile optimization' },
+  p3: { badge: 'Full scale', title: 'Diamond', lines: ['Everything in Gold, plus full premium production', 'Advanced destination-targeted ad campaigns', 'AI automation for 24/7 bookings'], bonus: 'Free bonus: full AI assistant integration for guest inquiries' },
+};
+const DEFAULT_VIDEOS = {
+  hero: '1214395786',
+  drone1: '1214395762', drone2: '1214395763', drone3: '1214395764', drone4: '1214395901',
+  threedInterior: '1214445457', threedFacade: '1214443977',
+};
+const VIDEO_LABELS = {
+  hero: 'Vídeo do topo (hero)', drone1: 'Drone 1 — barcos', drone2: 'Drone 2 — coqueiros / costa', drone3: 'Drone 3 — mar', drone4: 'Drone 4 — comida',
+  threedInterior: '3D — interior (banheiro)', threedFacade: '3D — fachada',
+};
+
+let CURRENT = { testimonials: null, plans: null, videos: null };
+
+function fmtDate(ts) {
+  try { return new Date(ts).toLocaleString('pt-BR'); } catch { return String(ts); }
+}
+
+async function api(path, opts) {
+  const res = await fetch(path, Object.assign({ credentials: 'same-origin', headers: { 'Content-Type': 'application/json' } }, opts || {}));
+  return res;
+}
+
+function showLogin(err) {
+  document.getElementById('dashboard-view').hidden = true;
+  document.getElementById('login-view').hidden = false;
+  const msg = document.getElementById('login-msg');
+  if (err) { msg.textContent = err; msg.hidden = false; } else { msg.hidden = true; }
+}
+
+function showDashboard(data) {
+  document.getElementById('login-view').hidden = true;
+  document.getElementById('dashboard-view').hidden = false;
+  CURRENT.testimonials = data.testimonials || DEFAULT_TESTIMONIALS.slice();
+  CURRENT.plans = data.plans || JSON.parse(JSON.stringify(DEFAULT_PLANS));
+  CURRENT.videos = data.videos || Object.assign({}, DEFAULT_VIDEOS);
+  renderVisits(data.visits || [], data.visitsTotal || 0);
+  renderWhatsapp(data.whatsapp || [], data.whatsappTotal || 0);
+  renderTestimonials();
+  renderPlans();
+  renderVideos();
+}
+
+function renderVisits(visits, total) {
+  document.getElementById('visits-total').textContent = total;
+  const tbody = document.querySelector('#visits-table tbody');
+  tbody.innerHTML = visits.map(v => `<tr><td>${fmtDate(v.ts)}</td><td>${[v.city, v.region, v.country].filter(Boolean).join(', ') || '—'}</td><td>${v.path || '—'}</td><td>${v.ref || 'direto'}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sem visitas registradas ainda.</td></tr>';
+}
+function renderWhatsapp(list, total) {
+  document.getElementById('wa-total').textContent = total;
+  const tbody = document.querySelector('#wa-table tbody');
+  tbody.innerHTML = list.map(v => `<tr><td>${fmtDate(v.ts)}</td><td>${[v.city, v.country].filter(Boolean).join(', ') || '—'}</td><td>${v.source || '—'}</td><td>${v.path || '—'}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sem cliques registrados ainda.</td></tr>';
+}
+
+function renderTestimonials() {
+  const wrap = document.getElementById('testi-list');
+  wrap.innerHTML = CURRENT.testimonials.map((t, i) => `
+    <div class="testi-item" data-i="${i}">
+      <label>Estrelas</label>
+      <select class="t-stars">${[5,4,3,2,1].map(n => `<option value="${n}" ${n === (t.stars||5) ? 'selected' : ''}>${n}</option>`).join('')}</select>
+      <label>Depoimento</label>
+      <textarea class="t-quote">${(t.quote||'').replace(/</g,'&lt;')}</textarea>
+      <label>Nome — Empresa</label>
+      <input class="input t-name" value="${(t.name||'').replace(/"/g,'&quot;')}" />
+      <label>Local</label>
+      <input class="input t-loc" value="${(t.location||'').replace(/"/g,'&quot;')}" />
+      <div class="row" style="margin-top:10px;"><button class="btn btn-danger t-remove">Remover</button></div>
+    </div>`).join('');
+  wrap.querySelectorAll('.t-remove').forEach(btn => btn.addEventListener('click', (e) => {
+    const i = Number(e.target.closest('.testi-item').dataset.i);
+    CURRENT.testimonials.splice(i, 1);
+    renderTestimonials();
+  }));
+}
+
+function renderPlans() {
+  const p = CURRENT.plans;
+  document.getElementById('plans-title').value = p.title || '';
+  document.getElementById('plans-intro').value = p.intro || '';
+  document.getElementById('plans-cta').value = p.cta || '';
+  const tiersEl = document.getElementById('plans-tiers');
+  const tiers = [['p1','Silver'],['p2','Gold'],['p3','Diamond']];
+  tiersEl.innerHTML = tiers.map(([key,label]) => {
+    const t = p[key] || { badge:'', title:'', lines:[], bonus:'' };
+    return `<div data-tier="${key}">
+      <label>${label} — badge</label><input class="input pt-badge" value="${(t.badge||'').replace(/"/g,'&quot;')}" />
+      <label>${label} — nome do plano</label><input class="input pt-title" value="${(t.title||'').replace(/"/g,'&quot;')}" />
+      <label>${label} — itens (um por linha)</label><textarea class="pt-lines" rows="5">${(t.lines||[]).join('\n')}</textarea>
+      <label>${label} — bônus</label><textarea class="pt-bonus">${(t.bonus||'').replace(/</g,'&lt;')}</textarea>
+    </div>`;
+  }).join('');
+}
+
+function renderVideos() {
+  const wrap = document.getElementById('videos-form');
+  wrap.innerHTML = Object.keys(VIDEO_LABELS).map(key => `
+    <label>${VIDEO_LABELS[key]}</label>
+    <input class="input v-field" data-key="${key}" value="${(CURRENT.videos[key]||'').replace(/"/g,'&quot;')}" />`).join('');
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('is-active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('is-active'));
+  btn.classList.add('is-active');
+  document.getElementById('tab-' + btn.dataset.tab).classList.add('is-active');
+}));
+
+document.getElementById('login-btn').addEventListener('click', async () => {
+  const pw = document.getElementById('pw').value;
+  const res = await api('/api/admin/login', { method: 'POST', body: JSON.stringify({ password: pw }) });
+  if (res.ok) { load(); } else {
+    const j = await res.json().catch(() => ({}));
+    showLogin(j.error === 'invalid password' ? 'Senha incorreta.' : 'Erro ao entrar.');
+  }
+});
+document.getElementById('pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('login-btn').click(); });
+
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await api('/api/admin/logout', { method: 'POST' });
+  showLogin();
+});
+
+document.getElementById('testi-add').addEventListener('click', () => {
+  CURRENT.testimonials.push({ stars: 5, quote: '', name: '', location: '' });
+  renderTestimonials();
+});
+document.getElementById('testi-save').addEventListener('click', async () => {
+  const items = [...document.querySelectorAll('.testi-item')].map(el => ({
+    stars: Number(el.querySelector('.t-stars').value),
+    quote: el.querySelector('.t-quote').value,
+    name: el.querySelector('.t-name').value,
+    location: el.querySelector('.t-loc').value,
+  }));
+  const res = await api('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'testimonials', data: items }) });
+  const msg = document.getElementById('testi-msg');
+  msg.className = 'msg ' + (res.ok ? 'ok' : 'err');
+  msg.textContent = res.ok ? 'Salvo!' : 'Erro ao salvar.';
+  setTimeout(() => msg.textContent = '', 3000);
+});
+
+document.getElementById('plans-save').addEventListener('click', async () => {
+  const data = {
+    title: document.getElementById('plans-title').value,
+    intro: document.getElementById('plans-intro').value,
+    cta: document.getElementById('plans-cta').value,
+  };
+  document.querySelectorAll('#plans-tiers [data-tier]').forEach(el => {
+    data[el.dataset.tier] = {
+      badge: el.querySelector('.pt-badge').value,
+      title: el.querySelector('.pt-title').value,
+      lines: el.querySelector('.pt-lines').value.split('\n').map(s => s.trim()).filter(Boolean),
+      bonus: el.querySelector('.pt-bonus').value,
+    };
+  });
+  const res = await api('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'plans', data }) });
+  const msg = document.getElementById('plans-msg');
+  msg.className = 'msg ' + (res.ok ? 'ok' : 'err');
+  msg.textContent = res.ok ? 'Salvo!' : 'Erro ao salvar.';
+  setTimeout(() => msg.textContent = '', 3000);
+});
+
+document.getElementById('videos-save').addEventListener('click', async () => {
+  const data = {};
+  document.querySelectorAll('.v-field').forEach(inp => { data[inp.dataset.key] = inp.value.trim(); });
+  const res = await api('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'videos', data }) });
+  const msg = document.getElementById('videos-msg');
+  msg.className = 'msg ' + (res.ok ? 'ok' : 'err');
+  msg.textContent = res.ok ? 'Salvo! Pode levar alguns segundos para refletir no site.' : 'Erro ao salvar.';
+  setTimeout(() => msg.textContent = '', 4000);
+});
+
+async function load() {
+  const res = await api('/api/admin/data');
+  if (res.status === 401) { showLogin(); return; }
+  const data = await res.json();
+  showDashboard(data);
+}
+load();
+</script>
+</body>
+</html>

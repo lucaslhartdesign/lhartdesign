@@ -9,6 +9,14 @@
 <meta property="og:description" content="Cinematic production + paid traffic that fills your agenda with tourists already heading your way." />
 <meta property="og:type" content="website" />
 <script src="./ds-base.js"></script>
+<script>
+  // Kick off the admin-content lookup as early as possible; the page falls back to its
+  // built-in defaults if the API is slow, unreachable, or nothing has been customized yet.
+  window.__lhartContentPromise = Promise.race([
+    fetch('/api/content').then((r) => (r.ok ? r.json() : null)).catch(() => null),
+    new Promise((resolve) => setTimeout(() => resolve(null), 1500)),
+  ]);
+</script>
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 <style>
 #site-preloader { position: fixed; inset: 0; z-index: 999; background: #161826; display: flex; flex-direction: column;
@@ -830,7 +838,16 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
 <script src="image-slot.js"></script>
 <script src="i18n-data.js"></script>
 <script>
-(() => {
+(async () => {
+  const OV = (await (window.__lhartContentPromise || Promise.resolve(null))) || {};
+  const OVV = OV.videos || {};
+  const vimeoId = (key, fallback) => (OVV[key] && /^\d+$/.test(String(OVV[key])) ? String(OVV[key]) : fallback);
+
+  const heroVideoEl = document.getElementById('hero-video');
+  if (heroVideoEl) {
+    heroVideoEl.dataset.src = `https://player.vimeo.com/video/${vimeoId('hero', '1214395786')}?autoplay=1&loop=1&muted=1&background=1&app_id=122963`;
+  }
+
   const CASES = [
     { titleKey: 'c1', client: 'Premium Yacht Charters', metaKey: 'c1m', provider: 'vimeo', ids: { en: '1214396017', es: '1214396018', pt: '1214396017' }, poster: 'assets/poster-yacht.jpg' },
     { titleKey: 'c2', client: 'Restaurant paid traffic', metaKey: 'c2m', provider: 'vimeo', ids: { en: '1214396110', es: '1214396110', pt: '1214396110' }, poster: 'assets/poster-restaurant.jpg' },
@@ -886,9 +903,9 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeVideoLightbox(); });
 
   const THREED = [
-    { titleKey: 't3d2', type: 'vimeo', aspect: '', vimeoId: '1214445457' },
+    { titleKey: 't3d2', type: 'vimeo', aspect: '', vimeoId: vimeoId('threedInterior', '1214445457') },
     { titleKey: 't3d3', type: 'crossfade', aspect: 'landscape', images: ['assets/facade-day.jpg', 'assets/facade-dusk.jpg', 'assets/facade-night.jpg'] },
-    { titleKey: 't3d4', type: 'vimeo', aspect: 'landscape', vimeoId: '1214443977' },
+    { titleKey: 't3d4', type: 'vimeo', aspect: 'landscape', vimeoId: vimeoId('threedFacade', '1214443977') },
     { titleKey: 't3d5', type: 'crossfade', aspect: 'square', images: ['assets/planta-day.jpg', 'assets/planta-night.jpg'] },
   ];
   const tdGrid = document.getElementById('threed-grid');
@@ -919,10 +936,10 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   });
 
   const AERIAL = [
-    { vimeoId: '1214395762', titleKey: 'a1t', labelKey: 'a1' },
-    { vimeoId: '1214395763', titleKey: 'a2t', labelKey: 'a2' },
-    { vimeoId: '1214395764', titleKey: 'a3t', labelKey: 'a3' },
-    { vimeoId: '1214395901', titleKey: 'a4t', labelKey: 'a4' },
+    { vimeoId: vimeoId('drone1', '1214395762'), titleKey: 'a1t', labelKey: 'a1' },
+    { vimeoId: vimeoId('drone2', '1214395763'), titleKey: 'a2t', labelKey: 'a2' },
+    { vimeoId: vimeoId('drone3', '1214395764'), titleKey: 'a3t', labelKey: 'a3' },
+    { vimeoId: vimeoId('drone4', '1214395901'), titleKey: 'a4t', labelKey: 'a4' },
   ];
   const aerialGrid = document.getElementById('aerial-grid');
   AERIAL.forEach((a, i) => {
@@ -937,26 +954,61 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     aerialGrid.appendChild(el);
   });
 
-  const TESTIMONIALS = [
-    { qKey: 't1q', nKey: 't1n', locKey: 't1l' },
-    { qKey: 't2q', nKey: 't2n', locKey: 't2l' },
-    { qKey: 't3q', nKey: 't3n', locKey: 't3l' },
-    { qKey: 't4q', nKey: 't4n', locKey: 't4l' },
-    { qKey: 't5q', nKey: 't5n', locKey: 't5l' },
-    { qKey: 't6q', nKey: 't6n', locKey: 't6l' },
-    { qKey: 't7q', nKey: 't7n', locKey: 't7l' },
-    { qKey: 't8q', nKey: 't8n', locKey: 't8l' },
-  ];
   const tgrid = document.getElementById('testi-grid');
-  TESTIMONIALS.forEach(t => {
-    const el = document.createElement('div');
-    el.className = 'testi';
-    el.innerHTML = `<span class="testi-stars" aria-hidden="true">★★★★★</span>
-      <q data-i18n="testi.${t.qKey}"></q>
-      <p class="testi-name" data-i18n="testi.${t.nKey}"></p>
-      <p class="testi-loc" data-i18n="testi.${t.locKey}"></p>`;
-    tgrid.appendChild(el);
-  });
+  if (Array.isArray(OV.testimonials) && OV.testimonials.length) {
+    OV.testimonials.forEach((t) => {
+      const el = document.createElement('div');
+      el.className = 'testi';
+      el.innerHTML = `<span class="testi-stars" aria-hidden="true">${'★'.repeat(Number(t.stars) || 5)}</span>
+        <q></q>
+        <p class="testi-name"></p>
+        <p class="testi-loc"></p>`;
+      el.querySelector('q').textContent = t.quote || '';
+      el.querySelector('.testi-name').textContent = t.name || '';
+      el.querySelector('.testi-loc').textContent = t.location || '';
+      tgrid.appendChild(el);
+    });
+  } else {
+    const TESTIMONIALS = [
+      { qKey: 't1q', nKey: 't1n', locKey: 't1l' },
+      { qKey: 't2q', nKey: 't2n', locKey: 't2l' },
+      { qKey: 't3q', nKey: 't3n', locKey: 't3l' },
+      { qKey: 't4q', nKey: 't4n', locKey: 't4l' },
+      { qKey: 't5q', nKey: 't5n', locKey: 't5l' },
+      { qKey: 't6q', nKey: 't6n', locKey: 't6l' },
+      { qKey: 't7q', nKey: 't7n', locKey: 't7l' },
+      { qKey: 't8q', nKey: 't8n', locKey: 't8l' },
+    ];
+    TESTIMONIALS.forEach(t => {
+      const el = document.createElement('div');
+      el.className = 'testi';
+      el.innerHTML = `<span class="testi-stars" aria-hidden="true">★★★★★</span>
+        <q data-i18n="testi.${t.qKey}"></q>
+        <p class="testi-name" data-i18n="testi.${t.nKey}"></p>
+        <p class="testi-loc" data-i18n="testi.${t.locKey}"></p>`;
+      tgrid.appendChild(el);
+    });
+  }
+
+  function applyPlansOverride(p) {
+    if (!p) return;
+    const setText = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.textContent = val; };
+    setText('[data-i18n="plans.title"]', p.title);
+    setText('[data-i18n="plans.intro"]', p.intro);
+    setText('[data-i18n="plans.cta"]', p.cta);
+    ['p1', 'p2', 'p3'].forEach((key) => {
+      const tier = p[key];
+      if (!tier) return;
+      setText(`[data-i18n="plans.${key}badge"]`, tier.badge);
+      setText(`[data-i18n="plans.${key}t"]`, tier.title);
+      setText(`[data-i18n="plans.${key}bonus"]`, tier.bonus);
+      if (Array.isArray(tier.lines) && tier.lines.length) {
+        const titleEl = document.querySelector(`[data-i18n="plans.${key}t"]`);
+        const ul = titleEl && titleEl.closest('.plan-card') && titleEl.closest('.plan-card').querySelector('ul');
+        if (ul) ul.innerHTML = tier.lines.map((l) => `<li>${l}</li>`).join('');
+      }
+    });
+  }
 
   let lang = localStorage.getItem('lhart-lang') || 'en';
   function get(dict, path) { return path.split('.').reduce((o, k) => (o && o[k] !== undefined) ? o[k] : null, dict); }
@@ -978,13 +1030,31 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     });
     document.querySelectorAll('.langsw button').forEach(b => b.setAttribute('aria-current', String(b.dataset.lang === l)));
     renderCaseVideos(l);
+    applyPlansOverride(OV.plans);
   }
   document.querySelectorAll('.langsw button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
   applyLang(lang);
 
+  function sendBeacon(url, data) {
+    try {
+      const body = JSON.stringify(data);
+      if (navigator.sendBeacon) { navigator.sendBeacon(url, new Blob([body], { type: 'application/json' })); }
+      else { fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {}); }
+    } catch (e) {}
+  }
+  function trackVisit() {
+    sendBeacon('/api/track-visit', { path: location.pathname + location.hash, ref: document.referrer, lang });
+  }
+  function trackWhatsapp(source) {
+    sendBeacon('/api/track-whatsapp', { source, path: location.pathname + location.hash, lang });
+  }
+  trackVisit();
+  document.querySelectorAll('a[href^="https://wa.me/"]').forEach(a => a.addEventListener('click', () => trackWhatsapp(a.id || a.className || 'link')));
+
   function waLink(msg) { return 'https://wa.me/5511989304239?text=' + encodeURIComponent(msg); }
   document.querySelectorAll('[data-cta="whatsapp"]').forEach(b => b.addEventListener('click', () => {
     const dict = window.LHART_I18N[lang] || window.LHART_I18N.en;
+    trackWhatsapp('cta-' + (b.dataset.i18n || 'whatsapp'));
     window.open(waLink(dict.whatsapp.genericMsg), '_blank');
   }));
   document.getElementById('diag-form').addEventListener('submit', (e) => {
@@ -992,6 +1062,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     const f = new FormData(e.target);
     const dict = window.LHART_I18N[lang] || window.LHART_I18N.en;
     const msg = `${dict.whatsapp.formIntro}\n${dict.close.name}: ${f.get('name')}\n${dict.close.contact}: ${f.get('contact')}\n${dict.close.type}: ${f.get('type') || '-'}\n${dict.close.location}: ${f.get('location') || '-'}`;
+    trackWhatsapp('get-started-form');
     window.open(waLink(msg), '_blank');
   });
 
@@ -1177,7 +1248,6 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     impactIo.observe(afterBarCol);
   }
 })();
-</script>
 </script>
 </body>
 </html>
