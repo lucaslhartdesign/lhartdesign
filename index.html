@@ -60,7 +60,22 @@ body {
 .nav-links { display: flex; align-items: center; justify-content: center; gap: var(--space-4); }
 .nav-brand-logo { height: 35px; display: block; }
 .nav a { white-space: nowrap; }
-@media (max-width: 900px) { .nav-links a.nav-textlink { display: none; } }
+.nav-toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+  width: 36px; height: 36px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.nav-toggle span { display: block; width: 20px; height: 2px; border-radius: 2px; background: var(--color-text); transition: transform 0.25s ease, opacity 0.25s ease; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 900px) {
+  .nav-toggle { display: flex; }
+  .nav-links { position: absolute; top: 100%; left: 0; right: 0; z-index: 39; flex-direction: column; align-items: stretch;
+    gap: 0; background: color-mix(in srgb, var(--color-bg) 96%, transparent); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-divider); max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease; }
+  .nav-links.is-open { max-height: 360px; opacity: 1; }
+  .nav-links a.nav-textlink { display: block; padding: 14px var(--edge); text-align: center; border-top: 1px solid var(--color-divider); }
+  .nav-links a.nav-textlink:first-child { border-top: 0; }
+}
 .langsw { display: flex; gap: 2px; border: 1px solid var(--color-neutral-700); border-radius: var(--radius-sm); padding: 2px; }
 .langsw button { all: unset; cursor: pointer; font-size: 12px; letter-spacing: 0.04em; padding: 4px 8px; border-radius: calc(var(--radius-sm) - 2px); color: color-mix(in srgb, var(--color-text) 60%, transparent); }
 .langsw button[aria-current="true"] { background: var(--color-accent-800); color: var(--color-text); }
@@ -252,12 +267,12 @@ body {
 #services .section-head > div { display: flex; flex-direction: column; }
 #services .kicker, #services .section-title { text-align: left; margin-left: 0; }
 #services .section-note { text-align: right; margin: 0; }
-#aerial .section-head, #cases .section-head, #testi-head {
+#cases .section-head, #testi-head {
   flex-direction: row; align-items: flex-end; justify-content: space-between; text-align: left; margin: 0 0 var(--leading); }
-#aerial .section-head > div, #cases .section-head > div, #testi-head > div { display: flex; flex-direction: column; }
-#aerial .kicker, #aerial .section-title, #cases .kicker, #cases .section-title, #testi-head .kicker, #testi-head .section-title { text-align: left; margin-left: 0; }
-#aerial .section-note, #cases .section-note, #testi-head .section-note { text-align: right; margin: 0; max-width: 40ch; }
-#aerial .section-head::before, #cases .section-head::before, #testi-head::before { display: none; }
+#cases .section-head > div, #testi-head > div { display: flex; flex-direction: column; }
+#cases .kicker, #cases .section-title, #testi-head .kicker, #testi-head .section-title { text-align: left; margin-left: 0; }
+#cases .section-note, #testi-head .section-note { text-align: right; margin: 0; max-width: 40ch; }
+#cases .section-head::before, #testi-head::before { display: none; }
 #threed .section-head { flex-direction: row; align-items: center; justify-content: space-between; text-align: left; margin: 0 0 var(--leading); gap: clamp(20px, 4vw, 48px); }
 #threed .section-head > div { display: flex; flex-direction: column; }
 #threed .kicker, #threed .section-title { text-align: left; margin-left: 0; }
@@ -366,8 +381,6 @@ html { -webkit-text-size-adjust: 100%; }
 img, video { max-width: 100%; height: auto; }
 @media (max-width: 600px) {
   .langsw button { padding: 8px 10px; font-size: 13px; }
-  .nav { display: flex; flex-wrap: wrap; row-gap: var(--half); padding-block: var(--space-3); }
-  .nav-links { flex-basis: 100%; order: 3; justify-content: center; }
   .nav-right { flex-wrap: nowrap; justify-content: flex-end; row-gap: var(--half); }
   .dash-stats { grid-template-columns: repeat(2, 1fr); }
   .dash-stat:last-child { grid-column: 1 / -1; }
@@ -455,7 +468,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
 <div class="bg-glow" aria-hidden="true"></div>
 <nav class="nav">
   <img class="nav-brand-logo" src="assets/logo.png" alt="Lhart Design" />
-  <div class="nav-links">
+  <div class="nav-links" id="nav-links">
     <a class="nav-textlink" href="#method" data-i18n="nav.method">Method</a>
     <a class="nav-textlink" href="#cases" data-i18n="nav.cases">Cases</a>
     <a class="nav-textlink" href="#services" data-i18n="nav.services">Services</a>
@@ -469,6 +482,9 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
       <button type="button" data-lang="pt">PT</button>
     </div>
     <button type="button" class="btn btn-primary" id="nav-cta" data-i18n="nav.cta">Request diagnosis</button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
@@ -983,6 +999,15 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   const toggleNavShrink = () => navEl.classList.toggle('is-shrunk', window.scrollY > 40);
   window.addEventListener('scroll', toggleNavShrink, { passive: true });
   toggleNavShrink();
+
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  const setNavOpen = (open) => {
+    navLinks.classList.toggle('is-open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+  };
+  navToggle.addEventListener('click', () => setNavOpen(!navLinks.classList.contains('is-open')));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
 
   function lazyObserve() {
     const targets = document.querySelectorAll('video[data-src]:not(.is-loaded), iframe[data-src]:not(.is-loaded):not(.no-lazy)');
