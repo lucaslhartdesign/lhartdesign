@@ -1,6 +1,6 @@
 window.LHART_I18N = {
 en: {
-  nav: { method: 'How it works', cases: 'Our work', services: 'What we do', client: 'Client area', threed: '3D', cta: 'Get your plan' },
+  nav: { method: 'How it works', cases: 'Our work', services: 'What we do', client: 'Client area', threed: '3D', plans: 'Plans', cta: 'Get your plan' },
   hero: {
     line1: 'We Don\u2019t Just Create Content.', line2: 'We Build Revenue Engines.',
     leftTag: 'The Most Complete Media & Growth Platform.', rightTag: 'Our focus is to position your brand as a premier destination, driving direct bookings and attracting high-value travelers through cinematic media and targeted ads.',
@@ -100,7 +100,7 @@ en: {
   whatsapp: { genericMsg: 'Hi! I\u2019d like to talk about a plan for my business.', formIntro: 'New request:' }
 },
 es: {
-  nav: { method: 'Cómo funciona', cases: 'Nuestro trabajo', services: 'Qué hacemos', client: 'Área de clientes', threed: '3D', cta: 'Ver mi plan' },
+  nav: { method: 'Cómo funciona', cases: 'Nuestro trabajo', services: 'Qué hacemos', client: 'Área de clientes', threed: '3D', plans: 'Planes', cta: 'Ver mi plan' },
   hero: {
     line1: 'No Solo Creamos Contenido.', line2: 'Construimos Motores de Ingresos.',
     leftTag: 'La Plataforma Más Completa de Medios y Crecimiento.', rightTag: 'Nuestro enfoque es posicionar tu marca como un destino de primer nivel, generando reservas directas y atrayendo viajeros de alto valor mediante medios cinematográficos y anuncios segmentados.',
@@ -200,7 +200,7 @@ es: {
   whatsapp: { genericMsg: '¡Hola! Quisiera hablar sobre un plan para mi negocio.', formIntro: 'Nueva solicitud:' }
 },
 pt: {
-  nav: { method: 'Como funciona', cases: 'Nosso trabalho', services: 'O que fazemos', client: 'Área do cliente', threed: '3D', cta: 'Ver meu plano' },
+  nav: { method: 'Como funciona', cases: 'Nosso trabalho', services: 'O que fazemos', client: 'Área do cliente', threed: '3D', plans: 'Planos', cta: 'Ver meu plano' },
   hero: {
     line1: 'Não Criamos Apenas Conteúdo.', line2: 'Construímos Motores de Receita.',
     leftTag: 'A Plataforma Mais Completa de Mídia e Crescimento.', rightTag: 'Nosso foco é posicionar sua marca como um destino premium, gerando reservas diretas e atraindo viajantes de alto valor com mídia cinematográfica e anúncios segmentados.',

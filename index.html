@@ -487,6 +487,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     <a class="nav-textlink" href="#services" data-i18n="nav.services">Services</a>
     <a class="nav-textlink" href="#client-area" data-i18n="nav.client">Client area</a>
     <a class="nav-textlink" href="#threed" data-i18n="nav.threed">3D</a>
+    <a class="nav-textlink" href="#plans" data-i18n="nav.plans">Plans</a>
   </div>
   <div class="nav-right">
     <div class="langsw" role="group" aria-label="Language">
@@ -494,7 +495,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
       <button type="button" data-lang="es">ES</button>
       <button type="button" data-lang="pt">PT</button>
     </div>
-    <button type="button" class="btn btn-primary" id="nav-cta" data-i18n="nav.cta">Request diagnosis</button>
+    <a class="btn btn-primary" href="#plans" id="nav-cta" data-i18n="nav.cta">Get your plan</a>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
       <span></span><span></span><span></span>
     </button>
@@ -531,8 +532,8 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
       </h1>
       <p class="sub" data-i18n="hero.sub">High-end cinematic production, data-driven traffic, and AI-powered automation to scale your hospitality business.</p>
       <div class="row">
-        <button type="button" class="btn btn-primary" data-scroll="#plans" data-i18n="hero.ctaPrimary">Get your plan</button>
-        <button type="button" class="btn btn-ghost" data-scroll="#cases" data-i18n="hero.ctaGhost">See our work</button>
+        <a class="btn btn-primary" href="#plans" data-i18n="hero.ctaPrimary">Get your plan</a>
+        <a class="btn btn-ghost" href="#cases" data-i18n="hero.ctaGhost">See our work</a>
       </div>
     </div>
   </div>
@@ -986,10 +987,6 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     const dict = window.LHART_I18N[lang] || window.LHART_I18N.en;
     window.open(waLink(dict.whatsapp.genericMsg), '_blank');
   }));
-  document.querySelectorAll('[data-scroll]').forEach(b => b.addEventListener('click', () => {
-    document.querySelector(b.dataset.scroll)?.scrollIntoView({ behavior: 'smooth' });
-  }));
-
   document.getElementById('diag-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
@@ -1035,6 +1032,23 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   };
   navToggle.addEventListener('click', () => setNavOpen(!navLinks.classList.contains('is-open')));
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+
+  // Direct links like /#plans can land at the wrong spot: the browser jumps to the
+  // hash before the JS-rendered sections (cases, testimonials, drones, 3D) add their
+  // height above it. Redo the jump once everything has settled.
+  window.addEventListener('load', () => {
+    const hash = location.hash;
+    if (!hash) return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    setTimeout(() => {
+      target.scrollIntoView();
+      html.style.scrollBehavior = prevBehavior;
+    }, 400);
+  });
 
   function lazyObserve() {
     const targets = document.querySelectorAll('video[data-src]:not(.is-loaded), iframe[data-src]:not(.is-loaded):not(.no-lazy)');
