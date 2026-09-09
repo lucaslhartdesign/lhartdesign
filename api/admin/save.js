@@ -35,8 +35,24 @@ module.exports = async (req, res) => {
   }
   if (key === 'videos') {
     if (!data || typeof data !== 'object') { res.status(400).json({ error: 'invalid videos payload' }); return; }
-    await redis.set('content:videos', JSON.stringify(data));
-    res.status(200).json({ ok: true });
+    const vid = (v) => (/^\d+$/.test(String(v || '')) ? String(v) : '');
+    const clean = {
+      hero: vid(data.hero),
+      threedInterior: vid(data.threedInterior),
+      threedFacade: vid(data.threedFacade),
+      items: Array.isArray(data.items)
+        ? data.items
+          .map((it) => ({
+            vimeoId: vid(it && it.vimeoId),
+            title: String((it && it.title) || '').slice(0, 80),
+            description: String((it && it.description) || '').slice(0, 200),
+          }))
+          .filter((it) => it.vimeoId)
+          .slice(0, 12)
+        : [],
+    };
+    await redis.set('content:videos', JSON.stringify(clean));
+    res.status(200).json({ ok: true, data: clean });
     return;
   }
   res.status(400).json({ error: 'unknown key: ' + key });

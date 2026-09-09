@@ -153,13 +153,29 @@ const DEFAULT_PLANS = {
 };
 const DEFAULT_VIDEOS = {
   hero: '1214395786',
-  drone1: '1214395762', drone2: '1214395763', drone3: '1214395764', drone4: '1214395901',
   threedInterior: '1214445457', threedFacade: '1214443977',
+  items: [
+    { vimeoId: '1214395762', title: 'Luxury Charters & Yachts', description: 'Elevate Your Journey: Cinematic Aerial Views of Luxury On the Water.' },
+    { vimeoId: '1214395763', title: 'Tropical Destinations', description: 'Immersive Tropical Cinematography that Turns Locations into Destinations.' },
+    { vimeoId: '1214395764', title: 'Ocean & Coastal Real Estate', description: 'Beyond the Horizon: Visual Assets Designed to Convert.' },
+    { vimeoId: '1214395901', title: 'Beachfront Dining', description: 'From Above the Palms: Aerial Storytelling for Restaurants by the Sea.' },
+  ],
 };
-const VIDEO_LABELS = {
-  hero: 'Vídeo do topo (hero)', drone1: 'Drone 1 — barcos', drone2: 'Drone 2 — coqueiros / costa', drone3: 'Drone 3 — mar', drone4: 'Drone 4 — comida',
-  threedInterior: '3D — interior (banheiro)', threedFacade: '3D — fachada',
-};
+// Older saves used flat drone1..drone4 keys with no titles/descriptions — fold those into the new list shape.
+function normalizeVideos(v) {
+  if (!v) return JSON.parse(JSON.stringify(DEFAULT_VIDEOS));
+  if (Array.isArray(v.items)) return v;
+  const legacyKeys = ['drone1', 'drone2', 'drone3', 'drone4'];
+  const items = legacyKeys
+    .map((k, i) => (v[k] ? { vimeoId: v[k], title: DEFAULT_VIDEOS.items[i].title, description: DEFAULT_VIDEOS.items[i].description } : null))
+    .filter(Boolean);
+  return {
+    hero: v.hero || DEFAULT_VIDEOS.hero,
+    threedInterior: v.threedInterior || DEFAULT_VIDEOS.threedInterior,
+    threedFacade: v.threedFacade || DEFAULT_VIDEOS.threedFacade,
+    items: items.length ? items : JSON.parse(JSON.stringify(DEFAULT_VIDEOS.items)),
+  };
+}
 
 let CURRENT = { testimonials: null, plans: null, videos: null };
 
@@ -184,7 +200,7 @@ function showDashboard(data) {
   document.getElementById('dashboard-view').hidden = false;
   CURRENT.testimonials = data.testimonials || DEFAULT_TESTIMONIALS.slice();
   CURRENT.plans = data.plans || JSON.parse(JSON.stringify(DEFAULT_PLANS));
-  CURRENT.videos = data.videos || Object.assign({}, DEFAULT_VIDEOS);
+  CURRENT.videos = normalizeVideos(data.videos);
   renderVisits(data.visits || [], data.visitsTotal || 0);
   renderWhatsapp(data.whatsapp || [], data.whatsappTotal || 0);
   renderTestimonials();
@@ -242,11 +258,86 @@ function renderPlans() {
   }).join('');
 }
 
+function escAttr(s) { return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+function vimeoPreviewHtml(id) {
+  if (!id || !/^\d+$/.test(String(id))) return '<div class="v-preview-empty muted">Sem prévia</div>';
+  return `<iframe src="https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0" width="160" height="90" frameborder="0" allow="autoplay; fullscreen" style="border-radius:8px;flex:none;"></iframe>`;
+}
+
 function renderVideos() {
+  const v = CURRENT.videos;
   const wrap = document.getElementById('videos-form');
-  wrap.innerHTML = Object.keys(VIDEO_LABELS).map(key => `
-    <label>${VIDEO_LABELS[key]}</label>
-    <input class="input v-field" data-key="${key}" value="${(CURRENT.videos[key]||'').replace(/"/g,'&quot;')}" />`).join('');
+  wrap.innerHTML = `
+    <h3 style="margin:0 0 10px;">Vídeo do topo (hero)</h3>
+    <div class="row" style="align-items:flex-start; gap:16px;">
+      <div style="flex:1; min-width:200px;">
+        <label>ID do Vimeo</label>
+        <input class="input" id="v-hero" value="${escAttr(v.hero)}" />
+      </div>
+      <div id="preview-hero">${vimeoPreviewHtml(v.hero)}</div>
+    </div>
+
+    <h3 style="margin:26px 0 4px;">Vídeos do 3D / Archviz</h3>
+    <p class="muted">Fixos em 2 — essa seção intercala vídeo com fotos, então adicionar mais aqui exigiria redesenhar o layout. Peça se quiser expandir essa parte.</p>
+    <div class="row" style="align-items:flex-start; gap:16px; margin-bottom:14px;">
+      <div style="flex:1; min-width:200px;">
+        <label>3D — interior (banheiro)</label>
+        <input class="input" id="v-threedInterior" value="${escAttr(v.threedInterior)}" />
+      </div>
+      <div id="preview-threedInterior">${vimeoPreviewHtml(v.threedInterior)}</div>
+    </div>
+    <div class="row" style="align-items:flex-start; gap:16px;">
+      <div style="flex:1; min-width:200px;">
+        <label>3D — fachada</label>
+        <input class="input" id="v-threedFacade" value="${escAttr(v.threedFacade)}" />
+      </div>
+      <div id="preview-threedFacade">${vimeoPreviewHtml(v.threedFacade)}</div>
+    </div>
+
+    <h3 style="margin:26px 0 4px;">Vídeos de drone — seção "Behind the lens"</h3>
+    <p class="muted">Aparecem juntos, lado a lado. Adicione, remova ou reordene à vontade — o layout se ajusta sozinho à quantidade.</p>
+    <div id="drone-items"></div>
+    <button class="btn" type="button" id="drone-add">+ Adicionar vídeo</button>
+  `;
+  ['hero', 'threedInterior', 'threedFacade'].forEach((key) => {
+    document.getElementById('v-' + key).addEventListener('change', (e) => {
+      document.getElementById('preview-' + key).innerHTML = vimeoPreviewHtml(e.target.value.trim());
+    });
+  });
+  document.getElementById('drone-add').addEventListener('click', () => {
+    CURRENT.videos.items.push({ vimeoId: '', title: '', description: '' });
+    renderDroneItems();
+  });
+  renderDroneItems();
+}
+
+function renderDroneItems() {
+  const wrap = document.getElementById('drone-items');
+  wrap.innerHTML = CURRENT.videos.items.map((it, i) => `
+    <div class="testi-item" data-i="${i}">
+      <div class="row" style="align-items:flex-start; gap:16px;">
+        <div style="flex:1; min-width:200px;">
+          <label>Nome / título</label>
+          <input class="input d-title" value="${escAttr(it.title)}" />
+          <label>Descrição (linha de apoio)</label>
+          <input class="input d-desc" value="${escAttr(it.description)}" />
+          <label>ID do Vimeo</label>
+          <input class="input d-id" value="${escAttr(it.vimeoId)}" />
+        </div>
+        <div class="d-preview">${vimeoPreviewHtml(it.vimeoId)}</div>
+      </div>
+      <div class="row" style="margin-top:10px;"><button class="btn btn-danger d-remove" type="button">Remover</button></div>
+    </div>`).join('') || '<p class="muted">Nenhum vídeo de drone configurado ainda.</p>';
+  wrap.querySelectorAll('.testi-item').forEach((row) => {
+    row.querySelector('.d-id').addEventListener('change', (e) => {
+      row.querySelector('.d-preview').innerHTML = vimeoPreviewHtml(e.target.value.trim());
+    });
+    row.querySelector('.d-remove').addEventListener('click', () => {
+      const i = Number(row.dataset.i);
+      CURRENT.videos.items.splice(i, 1);
+      renderDroneItems();
+    });
+  });
 }
 
 document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
@@ -311,8 +402,16 @@ document.getElementById('plans-save').addEventListener('click', async () => {
 });
 
 document.getElementById('videos-save').addEventListener('click', async () => {
-  const data = {};
-  document.querySelectorAll('.v-field').forEach(inp => { data[inp.dataset.key] = inp.value.trim(); });
+  const data = {
+    hero: document.getElementById('v-hero').value.trim(),
+    threedInterior: document.getElementById('v-threedInterior').value.trim(),
+    threedFacade: document.getElementById('v-threedFacade').value.trim(),
+    items: [...document.querySelectorAll('#drone-items .testi-item')].map((row) => ({
+      vimeoId: row.querySelector('.d-id').value.trim(),
+      title: row.querySelector('.d-title').value.trim(),
+      description: row.querySelector('.d-desc').value.trim(),
+    })),
+  };
   const res = await api('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'videos', data }) });
   const msg = document.getElementById('videos-msg');
   msg.className = 'msg ' + (res.ok ? 'ok' : 'err');

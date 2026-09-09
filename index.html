@@ -935,22 +935,30 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     }
   });
 
-  const AERIAL = [
-    { vimeoId: vimeoId('drone1', '1214395762'), titleKey: 'a1t', labelKey: 'a1' },
-    { vimeoId: vimeoId('drone2', '1214395763'), titleKey: 'a2t', labelKey: 'a2' },
-    { vimeoId: vimeoId('drone3', '1214395764'), titleKey: 'a3t', labelKey: 'a3' },
-    { vimeoId: vimeoId('drone4', '1214395901'), titleKey: 'a4t', labelKey: 'a4' },
-  ];
+  const escHtml = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const customDrones = Array.isArray(OVV.items)
+    ? OVV.items.filter((it) => it && /^\d+$/.test(String(it.vimeoId)))
+    : null;
+  const AERIAL = customDrones && customDrones.length
+    ? customDrones.map((it) => ({ vimeoId: String(it.vimeoId), title: it.title || '', desc: it.description || '' }))
+    : [
+      { vimeoId: vimeoId('drone1', '1214395762'), titleKey: 'a1t', labelKey: 'a1' },
+      { vimeoId: vimeoId('drone2', '1214395763'), titleKey: 'a2t', labelKey: 'a2' },
+      { vimeoId: vimeoId('drone3', '1214395764'), titleKey: 'a3t', labelKey: 'a3' },
+      { vimeoId: vimeoId('drone4', '1214395901'), titleKey: 'a4t', labelKey: 'a4' },
+    ];
   const aerialGrid = document.getElementById('aerial-grid');
-  AERIAL.forEach((a, i) => {
+  AERIAL.forEach((a) => {
     const el = document.createElement('div');
     el.className = 'aerial-card';
+    const textHtml = a.titleKey
+      ? `<h3 class="aerial-title" data-i18n="aerial.${a.titleKey}"></h3><p class="aerial-label" data-i18n="aerial.${a.labelKey}"></p>`
+      : `<h3 class="aerial-title">${escHtml(a.title)}</h3><p class="aerial-label">${escHtml(a.desc)}</p>`;
     el.innerHTML = `
       <div class="aerial-media">
         <iframe class="vimeo-bg-frame" data-src="https://player.vimeo.com/video/${a.vimeoId}?autoplay=1&loop=1&muted=1&background=1&app_id=122963" frameborder="0" allow="autoplay; fullscreen" allowfullscreen title="Drone footage"></iframe>
       </div>
-      <h3 class="aerial-title" data-i18n="aerial.${a.titleKey}"></h3>
-      <p class="aerial-label" data-i18n="aerial.${a.labelKey}"></p>`;
+      ${textHtml}`;
     aerialGrid.appendChild(el);
   });
 
