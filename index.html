@@ -103,9 +103,9 @@ body {
 .kicker::before { display: none; }
 
 /* — logo intro / hero panel — */
-.hero { position: relative; width: 100%; min-height: 760px;
+.hero { position: relative; width: 100%; min-height: clamp(560px, 88vh, 760px);
   overflow: hidden; display: flex; flex-direction: column; background: transparent; }
-@media (max-width: 640px) { .hero { min-height: 560px; } }
+@media (max-width: 640px) { .hero { min-height: 0; } }
 .hero-lightfx { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .degrade-radial { position: absolute; top: 50%; left: 50%; width: 640px; height: 640px; max-width: 78vw; max-height: 78vw; border-radius: 50%;
   background: radial-gradient(circle, rgba(230, 190, 50, 0.55) 0%, rgba(0,0,0,0) 70%); filter: blur(60px);
@@ -116,13 +116,15 @@ body {
 @media (prefers-reduced-motion: reduce) { .degrade-radial { animation: none; opacity: 0.7; transform: translate(-50%, -50%) scale(1); } }
 .hero-scanlines { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.5;
   background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.025), rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px); }
-.hero-logo-wrap { position: relative; z-index: 2; flex: 1; display: grid; grid-template-columns: 1fr 400px 1fr; align-items: center; gap: clamp(16px, 3vw, 48px); padding: 0 clamp(20px, 5vw, 56px); }
-.hero-col { font-size: 15px; line-height: var(--leading); color: color-mix(in srgb, var(--color-text) 82%, transparent); }
-.hero-col.esq { text-align: right; font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(16px, 1.6vw, 20px); letter-spacing: -0.01em; color: var(--color-text); }
-.hero-col.dir { text-align: left; max-width: 30ch; }
-@media (max-width: 900px) { .hero-logo-wrap { grid-template-columns: 1fr; text-align: center; padding: 0 24px; gap: 14px; } .hero-col.esq, .hero-col.dir { text-align: center; max-width: 34ch; margin: 0 auto; order: 2; } .hero-logo-mark { order: 1; } }
-@media (max-width: 480px) { .hero-logo-mark { width: min(260px, 62vw); } }
-.hero-logo-mark { position: relative; z-index: 2; width: min(400px, 60vw); mix-blend-mode: color-dodge; opacity: 0.85; filter: grayscale(1) brightness(1.15) drop-shadow(0 0 24px rgba(230, 190, 50, 0.35)); }
+/* first screen: logo + headline + promise + CTAs, all visible without scrolling */
+.hero-logo-wrap { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  padding: calc(1.6 * var(--leading)) clamp(20px, 5vw, 56px) calc(3.4 * var(--leading)); }
+.hero-kicker { margin: var(--leading) 0 var(--half); font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-300); }
+.hero .hero-logo-wrap .display { font-size: clamp(28px, 4.4vw, 54px); max-width: 30ch; margin: 0 auto; }
+.hero .hero-logo-wrap .sub { max-width: 56ch; margin: calc(1.3 * var(--leading)) auto 0; text-align: center; color: color-mix(in srgb, var(--color-text) 86%, transparent); }
+.hero .hero-logo-wrap .row { justify-content: center; margin-top: calc(1.6 * var(--leading)); }
+.hero-logo-mark { position: relative; z-index: 2; width: min(170px, 40vw); mix-blend-mode: color-dodge; opacity: 0.85; filter: grayscale(1) brightness(1.15) drop-shadow(0 0 24px rgba(230, 190, 50, 0.35)); }
+@media (max-width: 480px) { .hero-logo-mark { width: min(120px, 34vw); } .hero .hero-logo-wrap .display { font-size: clamp(26px, 7.6vw, 32px); } }
 .hero-led-bar { position: absolute; left: 50%; bottom: 0; z-index: 2; width: 100%; max-width: none; height: 92%; pointer-events: none; transform: translateX(-50%); animation: ledHue 10s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .hero-led-bar { animation: none; } }
 .hero-led-bar .glow { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 85%; margin: 0 auto;
@@ -495,6 +497,22 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .video-lightbox-close:hover { background: var(--color-accent-800); }
 .wa-float svg { width: 26px; height: 26px; }
+.wa-menu { position: fixed; right: clamp(16px, 3vw, 32px); bottom: calc(clamp(16px, 3vw, 32px) + 68px); z-index: 51; width: min(310px, calc(100vw - 32px));
+  background: var(--color-neutral-800); border: 1px solid var(--color-neutral-600); border-radius: 14px; box-shadow: var(--shadow-lg); padding: 10px; display: none; }
+.wa-menu.is-open { display: block; }
+.wa-menu-title { margin: 4px 8px 8px; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: color-mix(in srgb, var(--color-text) 60%, transparent); }
+.wa-menu-item { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 10px; color: var(--color-text); text-decoration: none; }
+.wa-menu-item:hover, .wa-menu-item:focus-visible { background: color-mix(in srgb, var(--color-accent) 16%, transparent); outline: none; }
+.wa-menu-item b { font-size: 14.5px; font-weight: 600; }
+.wa-menu-item span { font-size: 13px; color: color-mix(in srgb, var(--color-text) 65%, transparent); }
+.direct { margin-top: calc(2 * var(--leading)); text-align: center; }
+.direct-title { margin: 0 0 var(--half); font-size: 14px; color: color-mix(in srgb, var(--color-text) 70%, transparent); }
+.direct-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.direct-chip { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 16px; border: 1px solid var(--color-neutral-700); border-radius: var(--radius-md);
+  background: var(--color-neutral-800); color: var(--color-text); text-decoration: none; text-align: left; }
+.direct-chip:hover, .direct-chip.is-primary { border-color: var(--color-accent-500); }
+.direct-chip b { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.direct-chip span { font-size: 13px; color: color-mix(in srgb, var(--color-text) 65%, transparent); }
 
 /* — scroll progress — */
 .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 60;
@@ -581,8 +599,8 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     <a class="nav-textlink" href="#method" data-i18n="nav.method">Method</a>
     <a class="nav-textlink" href="#cases" data-i18n="nav.cases">Cases</a>
     <a class="nav-textlink" href="#services" data-i18n="nav.services">Services</a>
-    <a class="nav-textlink" href="#client-area" data-i18n="nav.client">Client area</a>
     <a class="nav-textlink" href="#threed" data-i18n="nav.threed">3D</a>
+    <a class="nav-textlink" href="#client-area" data-i18n="nav.client">Client area</a>
     <a class="nav-textlink" href="#plans" data-i18n="nav.plans">Plans</a>
   </div>
   <div class="nav-right">
@@ -606,9 +624,17 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   </div>
   <div class="hero-scanlines" aria-hidden="true"></div>
   <div class="hero-logo-wrap">
-    <div class="hero-col esq" data-i18n="hero.leftTag">The Most Complete Media &amp; Growth Platform.</div>
     <img class="hero-logo-mark" src="assets/logo.png" alt="Lhart Design" />
-    <p class="hero-col dir" data-i18n="hero.rightTag">Our focus is to position your brand as a premier destination, driving direct bookings and attracting high-value travelers through cinematic media and targeted ads.</p>
+    <p class="hero-kicker" data-i18n="hero.leftTag">The Most Complete Media &amp; Growth Platform.</p>
+    <h1 class="display">
+      <span class="line" data-i18n="hero.line1">We Don't Just Create Content.</span>
+      <span class="line" data-i18n="hero.line2">We Build Revenue Engines.</span>
+    </h1>
+    <p class="sub" data-i18n="hero.sub">High-end cinematic production, data-driven traffic, and AI-powered automation to scale your business.</p>
+    <div class="row">
+      <a class="btn btn-primary" href="#plans" data-i18n="hero.ctaPrimary">Get your plan</a>
+      <a class="btn btn-ghost" href="#cases" data-i18n="hero.ctaGhost">See our work</a>
+    </div>
   </div>
   <div class="hero-led-bar" aria-hidden="true">
     <div class="glow"></div>
@@ -622,15 +648,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   <div class="video-hero-media">
     <iframe class="vimeo-bg-frame" id="hero-video" data-src="https://player.vimeo.com/video/1214395786?autoplay=1&loop=1&muted=1&background=1&app_id=122963" frameborder="0" allow="autoplay; fullscreen" allowfullscreen title="Lhart Design background reel"></iframe>
     <div class="wrap video-hero-content">
-      <h1 class="display">
-        <span class="line" data-i18n="hero.line1">We Don't Just Create Content.</span>
-        <span class="line" data-i18n="hero.line2">We Build Revenue Engines.</span>
-      </h1>
-      <p class="sub" data-i18n="hero.sub">High-end cinematic production, data-driven traffic, and AI-powered automation to scale your hospitality business.</p>
-      <div class="row">
-        <a class="btn btn-primary" href="#plans" data-i18n="hero.ctaPrimary">Get your plan</a>
-        <a class="btn btn-ghost" href="#cases" data-i18n="hero.ctaGhost">See our work</a>
-      </div>
+      <p class="sub" data-i18n="hero.rightTag">Our focus is to make your brand the first choice in your market — bringing in more customers, sales and bookings through cinematic media, targeted ads and our own AI system.</p>
     </div>
   </div>
 </section>
@@ -716,7 +734,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
         <ul>
           <li data-i18n="aud.a5l1">Professional photos and video of athletes and academies</li>
           <li data-i18n="aud.a5l2">Audience growth and paid traffic to get discovered</li>
-          <li data-i18n="aud.a5l3">Proven: a football academy that grew its audience 10x and saw players recruited by European clubs</li>
+          <li data-i18n="aud.a5l3">Content that puts athletes in front of clubs and scouts</li>
         </ul>
       </div>
       <div class="aud-card">
@@ -731,6 +749,33 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     </div>
   </section>
 
+  <section class="section" id="results">
+    <div class="section-head">
+      <div>
+        <span class="kicker" data-i18n="results.kicker">Real results</span>
+        <h2 class="section-title" data-i18n="results.title">This isn't a hypothesis. It already happened.</h2>
+      </div>
+      <p class="section-note" data-i18n="results.note">Numbers shared by the clients themselves, from real businesses we've worked with.</p>
+    </div>
+    <div class="rcase-grid" id="rcase-grid"></div>
+  </section>
+
+  <section class="section" id="cases">
+    <div class="section-head">
+      <div>
+        <span class="kicker" data-i18n="cases.kicker">Real cases</span>
+        <h2 class="section-title" data-i18n="cases.title">Work shot on real locations.</h2>
+      </div>
+      <p class="section-note" data-i18n="cases.note">A sample of the production and campaigns we run for hospitality and tourism clients.</p>
+    </div>
+    <div class="cases-grid" id="cases-grid"></div>
+    <div class="cases-foot">
+      <a class="btn btn-secondary" href="https://www.behance.net/lucashenrique24" target="_blank" rel="noopener" data-i18n="cases.more">View full portfolio on Behance</a>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
   <section class="section" id="aerial">
     <div class="section-head">
       <div>
@@ -740,6 +785,91 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
       <p class="section-note" data-i18n="aerial.note">Every project starts in the air — drone footage of the coastline, the marina, the property itself.</p>
     </div>
     <div class="aerial-grid" id="aerial-grid"></div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="section-head">
+      <div>
+        <span class="kicker" data-i18n="services.kicker">Services</span>
+        <h2 class="section-title" data-i18n="services.title">One growth process, five moving parts.</h2>
+      </div>
+      <p class="section-note" data-i18n="services.note">Not a menu of à la carte services — a single system that builds and fills your agenda.</p>
+    </div>
+    <div class="feature">
+      <p class="f-num">01</p>
+      <h3 class="f-title" data-i18n="services.s1t">Audiovisual production</h3>
+      <p class="f-copy" data-i18n="services.s1c">On-site cinematic photo and video: drone, interiors, food, guests, staff — the raw material for everything else.</p>
+    </div>
+    <div class="feature">
+      <p class="f-num">02</p>
+      <h3 class="f-title" data-i18n="services.s2t">Paid traffic</h3>
+      <p class="f-copy" data-i18n="services.s2c">Google Ads and Meta Ads campaigns aimed at tourists planning or already at the destination.</p>
+    </div>
+    <div class="feature">
+      <p class="f-num">03</p>
+      <h3 class="f-title" data-i18n="services.s3t">Social media management</h3>
+      <p class="f-copy" data-i18n="services.s3c">Feed, stories and content calendar built from the same cinematic material, published on schedule.</p>
+    </div>
+    <div class="feature">
+      <p class="f-num">04</p>
+      <h3 class="f-title" data-i18n="services.s4t">Automation &amp; reporting</h3>
+      <p class="f-copy" data-i18n="services.s4c">Leads routed automatically, performance tracked in a report you can read in under a minute.</p>
+    </div>
+    <div class="feature">
+      <p class="f-num">05</p>
+      <h3 class="f-title" data-i18n="services.s5t">3D / Archviz</h3>
+      <p class="f-copy" data-i18n="services.s5c">Architectural visualization for facades, houses and developments — a complementary line for real estate clients.</p>
+    </div>
+  </section>
+
+  <section class="section" id="threed">
+    <div class="section-head">
+      <div>
+        <span class="kicker" data-i18n="threed.kicker">3D / Archviz</span>
+        <h2 class="section-title" data-i18n="threed.title">Before it's built, see it real.</h2>
+      </div>
+      <p class="section-note" data-i18n="threed.note">Realistic 3D previews for real estate and construction clients — a complementary line alongside our film work.</p>
+    </div>
+    <div class="threed-grid" id="threed-grid"></div>
+  </section>
+
+  <section class="section" id="ai">
+    <div class="ai-band">
+      <span class="kicker" data-i18n="ai.kicker">Plus: our own AI</span>
+      <h2 class="section-title" data-i18n="ai.title" style="max-width: 28ch;">Our own AI system that captures customers for you — worldwide.</h2>
+      <p class="ai-body" data-i18n="ai.body">On top of video and paid traffic, we run a proprietary AI system built to find and capture potential customers for your business, from anywhere in the world.</p>
+      <div class="ai-points">
+        <div class="ai-point">
+          <span class="aud-icon"><i class="ph ph-globe-hemisphere-west"></i></span>
+          <h3 data-i18n="ai.p1t">Customers from anywhere</h3>
+          <p data-i18n="ai.p1c">Reach people in the markets that matter to your business, not just your city.</p>
+        </div>
+        <div class="ai-point">
+          <span class="aud-icon"><i class="ph ph-clock"></i></span>
+          <h3 data-i18n="ai.p2t">Always on</h3>
+          <p data-i18n="ai.p2c">It works around the clock, so no opportunity waits until Monday.</p>
+        </div>
+        <div class="ai-point">
+          <span class="aud-icon"><i class="ph ph-stack"></i></span>
+          <h3 data-i18n="ai.p3t">Built on top of our service</h3>
+          <p data-i18n="ai.p3c">An extra layer added to the video and paid-traffic work we already do for you.</p>
+        </div>
+      </div>
+      <div class="ai-cta"><a class="btn btn-primary" href="#start" data-i18n="ai.cta">Ask us how it works</a></div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="section">
+    <div class="section-head" id="testi-head">
+      <div>
+        <span class="kicker" data-i18n="testi.kicker">Results</span>
+        <h2 class="section-title" data-i18n="testi.title">What clients say.</h2>
+      </div>
+      <p class="section-note"></p>
+    </div>
+    <div class="testi-grid" id="testi-grid"></div>
   </section>
 
   <section class="section" id="impact">
@@ -784,103 +914,43 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     </div>
   </section>
 
-  <section class="section" id="results">
+  <section class="section" id="client-area">
     <div class="section-head">
       <div>
-        <span class="kicker" data-i18n="results.kicker">Real results</span>
-        <h2 class="section-title" data-i18n="results.title">This isn't a hypothesis. It already happened.</h2>
+        <span class="kicker" data-i18n="client.kicker">Client area</span>
+        <h2 class="section-title" data-i18n-html="client.title">Client Dashboard — Everything about your growth, <span class="hl">in real time.</span></h2>
       </div>
-      <p class="section-note" data-i18n="results.note">Numbers shared by the clients themselves, from real businesses we've worked with.</p>
+      <p class="section-note" data-i18n="client.note">Track your content library, ad metrics, and booking rate 24/7 with zero guesswork.</p>
     </div>
-    <div class="rcase-grid" id="rcase-grid"></div>
-  </section>
-
-  <section class="section" id="cases">
-    <div class="section-head">
-      <div>
-        <span class="kicker" data-i18n="cases.kicker">Real cases</span>
-        <h2 class="section-title" data-i18n="cases.title">Work shot on real locations.</h2>
-      </div>
-      <p class="section-note" data-i18n="cases.note">A sample of the production and campaigns we run for hospitality and tourism clients.</p>
-    </div>
-    <div class="cases-grid" id="cases-grid"></div>
-    <div class="cases-foot">
-      <a class="btn btn-secondary" href="https://www.behance.net/lucashenrique24" target="_blank" rel="noopener" data-i18n="cases.more">View full portfolio on Behance</a>
-    </div>
-  </section>
-
-  <hr class="rule" />
-
-  <section class="section" id="services">
-    <div class="section-head">
-      <div>
-        <span class="kicker" data-i18n="services.kicker">Services</span>
-        <h2 class="section-title" data-i18n="services.title">One growth process, five moving parts.</h2>
-      </div>
-      <p class="section-note" data-i18n="services.note">Not a menu of à la carte services — a single system that builds and fills your agenda.</p>
-    </div>
-    <div class="feature">
-      <p class="f-num">01</p>
-      <h3 class="f-title" data-i18n="services.s1t">Audiovisual production</h3>
-      <p class="f-copy" data-i18n="services.s1c">On-site cinematic photo and video: drone, interiors, food, guests, staff — the raw material for everything else.</p>
-    </div>
-    <div class="feature">
-      <p class="f-num">02</p>
-      <h3 class="f-title" data-i18n="services.s2t">Paid traffic</h3>
-      <p class="f-copy" data-i18n="services.s2c">Google Ads and Meta Ads campaigns aimed at tourists planning or already at the destination.</p>
-    </div>
-    <div class="feature">
-      <p class="f-num">03</p>
-      <h3 class="f-title" data-i18n="services.s3t">Social media management</h3>
-      <p class="f-copy" data-i18n="services.s3c">Feed, stories and content calendar built from the same cinematic material, published on schedule.</p>
-    </div>
-    <div class="feature">
-      <p class="f-num">04</p>
-      <h3 class="f-title" data-i18n="services.s4t">Automation &amp; reporting</h3>
-      <p class="f-copy" data-i18n="services.s4c">Leads routed automatically, performance tracked in a report you can read in under a minute.</p>
-    </div>
-    <div class="feature">
-      <p class="f-num">05</p>
-      <h3 class="f-title" data-i18n="services.s5t">3D / Archviz</h3>
-      <p class="f-copy" data-i18n="services.s5c">Architectural visualization for facades, houses and developments — a complementary line for real estate clients.</p>
-    </div>
-  </section>
-
-  <section class="section" id="ai">
-    <div class="ai-band">
-      <span class="kicker" data-i18n="ai.kicker">Plus: our own AI</span>
-      <h2 class="section-title" data-i18n="ai.title" style="max-width: 28ch;">Our own AI system that captures customers for you — worldwide.</h2>
-      <p class="ai-body" data-i18n="ai.body">On top of video and paid traffic, we run a proprietary AI system built to find and capture potential customers for your business, from anywhere in the world.</p>
-      <div class="ai-points">
-        <div class="ai-point">
-          <span class="aud-icon"><i class="ph ph-globe-hemisphere-west"></i></span>
-          <h3 data-i18n="ai.p1t">Customers from anywhere</h3>
-          <p data-i18n="ai.p1c">Reach people in the markets that matter to your business, not just your city.</p>
+    <div class="client-area">
+      <form class="login-card" id="login-form">
+        <h3 data-i18n="client.loginTitle">Sign in</h3>
+        <p data-i18n="client.loginNote">Demo preview — full client login ships with your onboarding.</p>
+        <div class="field"><label data-i18n="client.email">Email</label><input class="input" type="email" placeholder="you@business.com" required /></div>
+        <div class="field"><label data-i18n="client.password">Password</label><input class="input" type="password" placeholder="••••••••" required /></div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="client.loginCta">Sign in</button>
+        <span class="live-badge"><span class="live-dot"></span><span data-i18n="client.liveBadge">LIVE DASHBOARD PREVIEW</span></span>
+      </form>
+      <div class="dash-card reveal" id="dash-card">
+        <div class="dash-head">
+          <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:19px;margin:0;" data-i18n="client.dashTitle">This month, at a glance</h3>
+          <span class="live-badge"><span class="live-dot"></span><span data-i18n="client.systemOnline">SYSTEM ONLINE</span></span>
         </div>
-        <div class="ai-point">
-          <span class="aud-icon"><i class="ph ph-clock"></i></span>
-          <h3 data-i18n="ai.p2t">Always on</h3>
-          <p data-i18n="ai.p2c">It works around the clock, so no opportunity waits until Monday.</p>
+        <div class="dash-stats">
+          <div class="dash-stat"><p class="n" data-count-to="312" data-suffix="+">0</p><p class="l" data-i18n="client.leads">New Leads</p></div>
+          <div class="dash-stat"><p class="n" data-count-to="4.8" data-decimals="1" data-suffix="x">0x</p><p class="l" data-i18n="client.roas">Ad ROAS <span class="up">+24%</span></p></div>
+          <div class="dash-stat"><p class="n" data-count-to="98" data-suffix="%">0%</p><p class="l" data-i18n="client.booked">Calendar Booked</p></div>
         </div>
-        <div class="ai-point">
-          <span class="aud-icon"><i class="ph ph-stack"></i></span>
-          <h3 data-i18n="ai.p3t">Built on top of our service</h3>
-          <p data-i18n="ai.p3c">An extra layer added to the video and paid-traffic work we already do for you.</p>
+        <div class="dash-bars" aria-hidden="true">
+          <span style="height:40%"></span><span style="height:65%"></span><span style="height:52%"></span>
+          <span style="height:80%"></span><span style="height:70%"></span><span style="height:95%"></span><span style="height:60%"></span>
+        </div>
+        <div class="dash-mini-cal-wrap">
+          <p class="dash-mini-cal-label" data-i18n="client.calLabel">Booked days this month</p>
+          <div class="mini-cal-grid dash-mini-cal" id="cal-dash"></div>
         </div>
       </div>
-      <div class="ai-cta"><a class="btn btn-primary" href="#start" data-i18n="ai.cta">Ask us how it works</a></div>
     </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head" id="testi-head">
-      <div>
-        <span class="kicker" data-i18n="testi.kicker">Results</span>
-        <h2 class="section-title" data-i18n="testi.title">What clients say.</h2>
-      </div>
-      <p class="section-note"></p>
-    </div>
-    <div class="testi-grid" id="testi-grid"></div>
   </section>
 
   <hr class="rule" />
@@ -937,58 +1007,6 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     </div>
   </section>
 
-  <section class="section" id="threed">
-    <div class="section-head">
-      <div>
-        <span class="kicker" data-i18n="threed.kicker">3D / Archviz</span>
-        <h2 class="section-title" data-i18n="threed.title">Before it's built, see it real.</h2>
-      </div>
-      <p class="section-note" data-i18n="threed.note">Realistic 3D previews for real estate and construction clients — a complementary line alongside our film work.</p>
-    </div>
-    <div class="threed-grid" id="threed-grid"></div>
-  </section>
-
-  <hr class="rule" />
-
-  <section class="section" id="client-area">
-    <div class="section-head">
-      <div>
-        <span class="kicker" data-i18n="client.kicker">Client area</span>
-        <h2 class="section-title" data-i18n-html="client.title">Client Dashboard — Everything about your growth, <span class="hl">in real time.</span></h2>
-      </div>
-      <p class="section-note" data-i18n="client.note">Track your content library, ad metrics, and booking rate 24/7 with zero guesswork.</p>
-    </div>
-    <div class="client-area">
-      <form class="login-card" id="login-form">
-        <h3 data-i18n="client.loginTitle">Sign in</h3>
-        <p data-i18n="client.loginNote">Demo preview — full client login ships with your onboarding.</p>
-        <div class="field"><label data-i18n="client.email">Email</label><input class="input" type="email" placeholder="you@business.com" required /></div>
-        <div class="field"><label data-i18n="client.password">Password</label><input class="input" type="password" placeholder="••••••••" required /></div>
-        <button type="submit" class="btn btn-primary btn-block" data-i18n="client.loginCta">Sign in</button>
-        <span class="live-badge"><span class="live-dot"></span><span data-i18n="client.liveBadge">LIVE DASHBOARD PREVIEW</span></span>
-      </form>
-      <div class="dash-card reveal" id="dash-card">
-        <div class="dash-head">
-          <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:19px;margin:0;" data-i18n="client.dashTitle">This month, at a glance</h3>
-          <span class="live-badge"><span class="live-dot"></span><span data-i18n="client.systemOnline">SYSTEM ONLINE</span></span>
-        </div>
-        <div class="dash-stats">
-          <div class="dash-stat"><p class="n" data-count-to="312" data-suffix="+">0</p><p class="l" data-i18n="client.leads">New Leads</p></div>
-          <div class="dash-stat"><p class="n" data-count-to="4.8" data-decimals="1" data-suffix="x">0x</p><p class="l" data-i18n="client.roas">Ad ROAS <span class="up">+24%</span></p></div>
-          <div class="dash-stat"><p class="n" data-count-to="98" data-suffix="%">0%</p><p class="l" data-i18n="client.booked">Calendar Booked</p></div>
-        </div>
-        <div class="dash-bars" aria-hidden="true">
-          <span style="height:40%"></span><span style="height:65%"></span><span style="height:52%"></span>
-          <span style="height:80%"></span><span style="height:70%"></span><span style="height:95%"></span><span style="height:60%"></span>
-        </div>
-        <div class="dash-mini-cal-wrap">
-          <p class="dash-mini-cal-label" data-i18n="client.calLabel">Booked days this month</p>
-          <div class="mini-cal-grid dash-mini-cal" id="cal-dash"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <hr class="rule" />
 
   <section class="close" id="start">
@@ -1006,20 +1024,27 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
       <div class="field"><label data-i18n="close.location">Location</label><input class="input" name="location" type="text" data-i18n-ph="close.locationPh" placeholder="City, country" /></div>
       <button type="submit" class="btn btn-primary" data-i18n="close.cta">Send via WhatsApp</button>
     </form>
+    <div class="direct">
+      <p class="direct-title" data-i18n="contact.direct">Prefer to talk right now?</p>
+      <div class="direct-row" id="direct-row"></div>
+    </div>
   </section>
 
   <footer>
     <span data-i18n="footer.line">© 2026 Lhart Design — Brazil · Portugal · Miami</span>
     <span class="contacts">
       <a href="mailto:Lhartdesign@outlook.com"><i class="ph ph-envelope-simple"></i>Lhartdesign@outlook.com</a>
-      <a href="https://wa.me/5511989304239" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Lucas +55 11 98930-4239</a>
-      <a href="https://wa.me/590690096000" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i>Diego +590 690 09-6000</a>
+      <span id="footer-wa" style="display: contents;"></span>
       <a href="https://www.instagram.com/lhartdesign" target="_blank" rel="noopener"><i class="ph ph-instagram-logo"></i>Instagram</a>
     </span>
   </footer>
 </div>
 
-<a class="wa-float" id="wa-float" href="https://wa.me/5511989304239" target="_blank" rel="noopener" aria-label="WhatsApp">
+<div class="wa-menu" id="wa-menu" role="menu">
+  <p class="wa-menu-title" data-i18n="contact.title">Chat on WhatsApp</p>
+  <div id="wa-menu-list"></div>
+</div>
+<a class="wa-float" id="wa-float" href="#start" aria-label="WhatsApp" aria-haspopup="true">
   <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.02 3C9.4 3 4 8.4 4 15.02c0 2.36.66 4.56 1.8 6.44L4 29l7.72-1.76a12 12 0 0 0 4.3.8h.01c6.62 0 12.02-5.4 12.02-12.02C28.05 8.4 22.65 3 16.02 3zm0 21.86h-.01a9.9 9.9 0 0 1-3.98-.85l-.29-.13-4.6 1.05 1.08-4.53-.19-.3a9.86 9.86 0 0 1-1.51-5.28c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.13 1.03 6.99 2.9a9.83 9.83 0 0 1 2.9 6.99c0 5.45-4.44 9.94-9.9 9.94zm5.42-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.73-1.63-2.03-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.09 3.19 5.06 4.47.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35z"/></svg>
 </a>
 <div class="video-lightbox" id="video-lightbox" role="dialog" aria-modal="true" aria-label="Video player">
@@ -1269,6 +1294,23 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   const gate = window.__langGate || { chosen: null, suggested: 'en', promise: Promise.resolve(null) };
   let lang = gate.chosen || gate.suggested || 'en';
   function get(dict, path) { return path.split('.').reduce((o, k) => (o && o[k] !== undefined) ? o[k] : null, dict); }
+
+  // Single place to edit contact names / numbers. `wa` is the number with country code and no symbols.
+  const CONTACTS = [
+    { id: 'miami', name: 'Geovane', region: 'miami', phone: '+1 (908) 425-1383', wa: '19084251383' },
+    { id: 'brazil', name: 'Lucas', region: 'brazil', phone: '+55 11 98930-4239', wa: '5511989304239' },
+    { id: 'caribbean', name: 'Diego', region: 'caribbean', phone: '+590 690 09-6000', wa: '590690096000' },
+  ];
+  function renderContacts() {
+    const dict = window.LHART_I18N[lang] || window.LHART_I18N.en;
+    const list = lang === 'pt' ? [CONTACTS[1], CONTACTS[0], CONTACTS[2]] : CONTACTS;
+    const label = (c) => `${c.name} · ${(dict.contact && dict.contact[c.region]) || c.region}`;
+    const icon = '<i class="ph ph-whatsapp-logo"></i>';
+    const link = (c, extra) => `href="https://wa.me/${c.wa}" target="_blank" rel="noopener" ${extra}`;
+    document.getElementById('footer-wa').innerHTML = list.map((c) => `<a ${link(c, `id="footer-${c.id}"`)}>${icon}${escHtml(label(c))} ${escHtml(c.phone)}</a>`).join('');
+    document.getElementById('direct-row').innerHTML = list.map((c, i) => `<a ${link(c, `id="direct-${c.id}" class="direct-chip${i === 0 ? ' is-primary' : ''}"`)}><b>${icon}${escHtml(label(c))}</b><span>${escHtml(c.phone)}</span></a>`).join('');
+    document.getElementById('wa-menu-list').innerHTML = list.map((c) => `<a ${link(c, `id="menu-${c.id}" class="wa-menu-item" role="menuitem"`)}><b>${escHtml(label(c))}</b><span>${escHtml(c.phone)}</span></a>`).join('');
+  }
   function applyLang(l, explicit) {
     lang = l;
     try { localStorage.setItem('lhart-lang', l); if (explicit) localStorage.setItem('lhart-lang-chosen', '1'); } catch (e) {}
@@ -1289,6 +1331,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     document.querySelectorAll('.langsw button').forEach(b => b.setAttribute('aria-current', String(b.dataset.lang === l)));
     renderCaseVideos(l);
     applyPlansOverride(OV.plans);
+    renderContacts();
   }
   document.querySelectorAll('.langsw button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang, true)));
   applyLang(lang);
@@ -1308,7 +1351,19 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     sendBeacon('/api/track-whatsapp', { source, path: location.pathname + location.hash, lang });
   }
   trackVisit();
-  document.querySelectorAll('a[href^="https://wa.me/"]').forEach(a => a.addEventListener('click', () => trackWhatsapp(a.id || a.className || 'link')));
+  // delegated, because the contact links are re-rendered when the language changes
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest && e.target.closest('a[href^="https://wa.me/"]');
+    if (a) trackWhatsapp(a.id || a.className || 'link');
+  });
+
+  const waFloatBtn = document.getElementById('wa-float');
+  const waMenu = document.getElementById('wa-menu');
+  waFloatBtn.addEventListener('click', (e) => { e.preventDefault(); waMenu.classList.toggle('is-open'); });
+  document.addEventListener('click', (e) => {
+    if (waMenu.classList.contains('is-open') && !waMenu.contains(e.target) && !waFloatBtn.contains(e.target)) waMenu.classList.remove('is-open');
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') waMenu.classList.remove('is-open'); });
 
   function waLink(msg) { return 'https://wa.me/5511989304239?text=' + encodeURIComponent(msg); }
   document.querySelectorAll('[data-cta="whatsapp"]').forEach(b => b.addEventListener('click', () => {
@@ -1468,7 +1523,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     dashIo.observe(dashCard);
   }
 
-  const afterBarCol = document.querySelector('.bar-col.after');
+  const afterBarCol = document.querySelector('#impact .bar-col.after');
   if (afterBarCol) {
     const bar = afterBarCol.querySelector('.bar');
     const valueEl = afterBarCol.querySelector('.bar-value');

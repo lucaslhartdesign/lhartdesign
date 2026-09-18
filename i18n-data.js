@@ -20,7 +20,7 @@ en: {
     a2t: 'Hotels, Tourism & Yachts', a2l1: 'Cinematic video and aerial drone that sells the experience', a2l2: 'Ads that reach travelers while they plan their trip', a2l3: 'More direct bookings, fewer commissions',
     a3t: 'Real Estate & Construction', a3l1: 'Photo, video and drone for listings and developments', a3l2: 'Realistic 3D previews before it’s built', a3l3: 'Ads that reach qualified buyers and investors',
     a4t: 'Automotive', a4l1: 'Professional vehicle photo editing and retouching', a4l2: 'Ad banners and creatives for dealers and marketplaces', a4l3: 'Cinematic video that makes every car stand out',
-    a5t: 'Sports & Talent', a5l1: 'Professional photos and video of athletes and academies', a5l2: 'Audience growth and paid traffic to get discovered', a5l3: 'Proven: a football academy that grew its audience 10x and saw players recruited by European clubs',
+    a5t: 'Sports & Talent', a5l1: 'Professional photos and video of athletes and academies', a5l2: 'Audience growth and paid traffic to get discovered', a5l3: 'Content that puts athletes in front of clubs and scouts',
     a6t: 'Local Businesses & Brands', a6l1: 'Brand identity, content and social media management', a6l2: 'Paid traffic on Meta and Google, with monthly reports', a6l3: 'A steady flow of new customers, month after month'
   },
   ai: {
@@ -115,6 +115,7 @@ en: {
     location: 'Location', locationPh: 'City, country', cta: 'Send via WhatsApp'
   },
   footer: { line: '© 2026 Lhart Design — Brazil · Portugal · Miami · Caribbean' },
+  contact: { title: 'Chat on WhatsApp', direct: 'Prefer to talk right now?', miami: 'Miami', brazil: 'Brazil', caribbean: 'Caribbean' },
   whatsapp: { genericMsg: 'Hi! I\u2019d like to talk about a plan for my business.', formIntro: 'New request:' }
 },
 es: {
@@ -138,7 +139,7 @@ es: {
     a2t: 'Hoteles, Turismo y Yates', a2l1: 'Video cinematográfico y dron que venden la experiencia', a2l2: 'Anuncios que llegan a viajeros mientras planean su viaje', a2l3: 'Más reservas directas, menos comisiones',
     a3t: 'Bienes Raíces y Construcción', a3l1: 'Foto, video y dron para propiedades y desarrollos', a3l2: 'Vistas previas 3D realistas antes de construir', a3l3: 'Anuncios que llegan a compradores e inversionistas calificados',
     a4t: 'Automotriz', a4l1: 'Edición y retoque profesional de fotos de vehículos', a4l2: 'Banners y creativos publicitarios para concesionarios y marketplaces', a4l3: 'Video cinematográfico que hace destacar cada auto',
-    a5t: 'Deportes y Talento', a5l1: 'Fotos y video profesionales de atletas y academias', a5l2: 'Crecimiento de audiencia y tráfico pago para ser descubierto', a5l3: 'Comprobado: una academia de fútbol que multiplicó su audiencia por 10 y vio a sus jugadores reclutados por clubes europeos',
+    a5t: 'Deportes y Talento', a5l1: 'Fotos y video profesionales de atletas y academias', a5l2: 'Crecimiento de audiencia y tráfico pago para ser descubierto', a5l3: 'Contenido que pone a los atletas frente a clubes y ojeadores',
     a6t: 'Negocios Locales y Marcas', a6l1: 'Identidad de marca, contenido y gestión de redes sociales', a6l2: 'Tráfico pago en Meta y Google, con reportes mensuales', a6l3: 'Un flujo constante de clientes nuevos, mes tras mes'
   },
   ai: {
@@ -233,6 +234,7 @@ es: {
     location: 'Ubicación', locationPh: 'Ciudad, país', cta: 'Enviar por WhatsApp'
   },
   footer: { line: '© 2026 Lhart Design — Brasil · Portugal · Miami · Caribe' },
+  contact: { title: 'Chatea por WhatsApp', direct: '¿Prefieres hablar ahora mismo?', miami: 'Miami', brazil: 'Brasil', caribbean: 'Caribe' },
   whatsapp: { genericMsg: '¡Hola! Quisiera hablar sobre un plan para mi negocio.', formIntro: 'Nueva solicitud:' }
 },
 pt: {
@@ -256,7 +258,7 @@ pt: {
     a2t: 'Hotéis, Turismo e Iates', a2l1: 'Vídeo cinematográfico e drone que vendem a experiência', a2l2: 'Anúncios que chegam nos viajantes enquanto planejam a viagem', a2l3: 'Mais reservas diretas, menos comissões',
     a3t: 'Imóveis e Construção', a3l1: 'Foto, vídeo e drone para imóveis e empreendimentos', a3l2: 'Prévias 3D realistas antes de construir', a3l3: 'Anúncios que chegam em compradores e investidores qualificados',
     a4t: 'Automotivo', a4l1: 'Edição e tratamento profissional de fotos de veículos', a4l2: 'Banners e criativos de anúncio para concessionárias e marketplaces', a4l3: 'Vídeo cinematográfico que faz cada carro se destacar',
-    a5t: 'Esportes e Talentos', a5l1: 'Fotos e vídeos profissionais de atletas e escolinhas', a5l2: 'Crescimento de audiência e tráfego pago para ser descoberto', a5l3: 'Comprovado: uma escolinha de futebol que multiplicou sua audiência por 10 e teve jogadores recrutados por times europeus',
+    a5t: 'Esportes e Talentos', a5l1: 'Fotos e vídeos profissionais de atletas e escolinhas', a5l2: 'Crescimento de audiência e tráfego pago para ser descoberto', a5l3: 'Conteúdo que coloca atletas na frente de clubes e olheiros',
     a6t: 'Negócios Locais e Marcas', a6l1: 'Identidade de marca, conteúdo e gestão de redes sociais', a6l2: 'Tráfego pago no Meta e Google, com relatórios mensais', a6l3: 'Um fluxo constante de clientes novos, mês após mês'
   },
   ai: {
@@ -351,6 +353,7 @@ pt: {
     location: 'Localização', locationPh: 'Cidade, país', cta: 'Enviar pelo WhatsApp'
   },
   footer: { line: '© 2026 Lhart Design — Brasil · Portugal · Miami · Caribe' },
+  contact: { title: 'Fale pelo WhatsApp', direct: 'Prefere falar agora?', miami: 'Miami', brazil: 'Brasil', caribbean: 'Caribe' },
   whatsapp: { genericMsg: 'Olá! Gostaria de falar sobre um plano para o meu negócio.', formIntro: 'Nova solicitação:' }
 }
 };
