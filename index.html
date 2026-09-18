@@ -254,6 +254,12 @@ body {
 .mini-cal-grid.filled span.on { background: var(--color-accent-400); transition: background 0.4s ease; }
 .mini-cal-grid:not(.filled) span.on { background: var(--color-neutral-500); }
 @media (max-width: 700px) { .impact-grid { grid-template-columns: 1fr; } }
+.rcase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(16px, 2.4vw, 28px); }
+@media (max-width: 700px) { .rcase-grid { grid-template-columns: 1fr; } }
+.rcase-card { background: var(--color-neutral-800); border: 1px solid var(--color-neutral-700); border-radius: var(--radius-md); padding: var(--leading); display: flex; flex-direction: column; gap: var(--half); }
+.rcase-tag { align-self: flex-start; font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-accent-300); background: color-mix(in srgb, var(--color-accent) 16%, transparent); padding: 4px 10px; border-radius: 999px; }
+.rcase-card h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 17px; line-height: var(--leading); margin: 4px 0 0; text-box: trim-both cap alphabetic; }
+.rcase-note { font-size: 13px; line-height: 1.5; color: color-mix(in srgb, var(--color-text) 75%, transparent); margin: var(--half) 0 0; }
 
 .aerial-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(16px, 2.4vw, 32px); padding-bottom: calc(2.5 * var(--leading)); }
 .aerial-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--half); }
@@ -630,6 +636,17 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     </div>
   </section>
 
+  <section class="section" id="results">
+    <div class="section-head">
+      <div>
+        <span class="kicker" data-i18n="results.kicker">Real results</span>
+        <h2 class="section-title" data-i18n="results.title">This isn't a hypothesis. It already happened.</h2>
+      </div>
+      <p class="section-note" data-i18n="results.note">Numbers shared by the clients themselves, from real businesses we've worked with.</p>
+    </div>
+    <div class="rcase-grid" id="rcase-grid"></div>
+  </section>
+
   <section class="section" id="cases">
     <div class="section-head">
       <div>
@@ -962,6 +979,63 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
     aerialGrid.appendChild(el);
   });
 
+  const fmtK = (n) => {
+    n = Number(n) || 0;
+    if (n >= 1000) { const v = n / 1000; return (Number.isInteger(v) ? v : v.toFixed(1)) + 'k'; }
+    return String(n);
+  };
+  const DEFAULT_RESULTS = [
+    { tag: 'Restaurant & Bar', title: 'From nearly invisible to the go-to spot in the area', metric: 'Instagram followers', before: 2000, after: 52000, note: 'After investing in video, professional photos and paid traffic, the business opened 4 more locations.' },
+    { tag: 'Sports — Eurogol', title: 'From local talent to a bridge into Europe', metric: 'Instagram followers', before: 1000, after: 10000, note: 'Professional video and photos of young athletes, plus paid traffic, helped get players recruited by European clubs.' },
+  ];
+  const RESULTS = Array.isArray(OV.results) && OV.results.length ? OV.results : DEFAULT_RESULTS;
+  const rgrid = document.getElementById('rcase-grid');
+  RESULTS.forEach((r) => {
+    const before = Number(r.before) || 0;
+    const after = Number(r.after) || 0;
+    const max = Math.max(before, after, 1);
+    const beforeH = Math.max(12, Math.round((before / max) * 100));
+    const afterH = Math.max(12, Math.round((after / max) * 100));
+    const el = document.createElement('div');
+    el.className = 'rcase-card';
+    el.innerHTML = `
+      <span class="rcase-tag">${escHtml(r.tag || '')}</span>
+      <h3>${escHtml(r.title || '')}</h3>
+      <div class="bars-compare">
+        <div class="bar-col before"><p class="bar-value">${fmtK(before)}</p><div class="bar" style="height:${beforeH}%"></div><span class="bar-label" data-i18n="impact.before">Before</span></div>
+        <div class="bar-col after rcase-after" data-start="${before}" data-end="${after}" data-start-h="${beforeH}" data-end-h="${afterH}"><p class="bar-value">${fmtK(before)}</p><div class="bar" style="height:${beforeH}%"></div><span class="bar-label" data-i18n="impact.after">With us</span></div>
+      </div>
+      <p class="rcase-note">${escHtml(r.metric ? r.metric + ' — ' : '')}${escHtml(r.note || '')}</p>`;
+    rgrid.appendChild(el);
+  });
+  document.querySelectorAll('.rcase-after').forEach((col) => {
+    const bar = col.querySelector('.bar');
+    const valueEl = col.querySelector('.bar-value');
+    const start = parseFloat(col.dataset.start);
+    const end = parseFloat(col.dataset.end);
+    const startH = col.dataset.startH + '%';
+    const endH = col.dataset.endH + '%';
+    let raf = null;
+    function animate(from, to, duration) {
+      if (raf) cancelAnimationFrame(raf);
+      const t0 = performance.now();
+      function step(now) {
+        const t = Math.min((now - t0) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        valueEl.textContent = fmtK(from + (to - from) * eased);
+        if (t < 1) raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    }
+    const rIo = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { bar.style.height = endH; animate(start, end, 1400); }
+        else { bar.style.height = startH; animate(end, start, 900); }
+      });
+    }, { threshold: 0.4 });
+    rIo.observe(col);
+  });
+
   const tgrid = document.getElementById('testi-grid');
   if (Array.isArray(OV.testimonials) && OV.testimonials.length) {
     OV.testimonials.forEach((t) => {
@@ -1081,10 +1155,10 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   });
 
   // scroll reveal: section heads, method steps, case cards, service rows, testimonials, logos, client-area cards
-  const revealSelectors = ['.section-head', '.method-step', '.case-card', '.feature', '.testi', '.logo-item', '.login-card', '.dash-card', '.close .kicker', '.close h3', '.close .sub', '.diagform', '.aerial-card'];
-  const groups = ['.method-grid', '.cases-grid', '.feature', '.testi-grid', '.logos-grid', '.aerial-grid'];
+  const revealSelectors = ['.section-head', '.method-step', '.case-card', '.feature', '.testi', '.logo-item', '.login-card', '.dash-card', '.close .kicker', '.close h3', '.close .sub', '.diagform', '.aerial-card', '.rcase-card'];
+  const groups = ['.method-grid', '.cases-grid', '.feature', '.testi-grid', '.logos-grid', '.aerial-grid', '.rcase-grid'];
   revealSelectors.forEach(sel => document.querySelectorAll(sel).forEach(el => el.classList.add('reveal')));
-  ['.method-grid > .reveal', '.cases-grid > .reveal', '.testi-grid > .reveal', '.logos-grid > .reveal'].forEach(sel => {
+  ['.method-grid > .reveal', '.cases-grid > .reveal', '.testi-grid > .reveal', '.logos-grid > .reveal', '.rcase-grid > .reveal'].forEach(sel => {
     document.querySelectorAll(sel).forEach((el, i) => { el.style.transitionDelay = Math.min(i * 80, 320) + 'ms'; });
   });
   const io = new IntersectionObserver((entries) => {

@@ -73,6 +73,7 @@
     <button class="tab-btn is-active" data-tab="visits">Visitas</button>
     <button class="tab-btn" data-tab="whatsapp">WhatsApp</button>
     <button class="tab-btn" data-tab="testimonials">Depoimentos</button>
+    <button class="tab-btn" data-tab="results">Resultados</button>
     <button class="tab-btn" data-tab="plans">Planos</button>
     <button class="tab-btn" data-tab="videos">Vídeos</button>
   </div>
@@ -104,6 +105,16 @@
       <div id="testi-list"></div>
       <button class="btn" id="testi-add">+ Adicionar depoimento</button>
       <div class="save-bar"><button class="btn" id="testi-save">Salvar depoimentos</button> <span class="msg" id="testi-msg"></span></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-results">
+    <div class="card">
+      <h2>Resultados reais</h2>
+      <p class="muted">Cases com número de antes/depois — aparecem no site como um gráfico animado (barra + contador). Fica logo depois da seção "The impact". Enquanto você não salvar nada aqui, o site mostra os 2 cases de exemplo (rede de restaurante/bar e Eurogol).</p>
+      <div id="results-list"></div>
+      <button class="btn" id="results-add">+ Adicionar case</button>
+      <div class="save-bar"><button class="btn" id="results-save">Salvar resultados</button> <span class="msg" id="results-msg"></span></div>
     </div>
   </div>
 
@@ -143,6 +154,10 @@ const DEFAULT_TESTIMONIALS = [
   { stars: 5, quote: 'Our old content looked like cheap GoPro clips. The 4K drone stuff Lhart Design shot made our tours look 10x more high-end. Inquiries exploded right after launching.', name: 'Dave R. — FlyHigh Ventures', location: 'Nassau, Bahamas' },
   { stars: 5, quote: 'Planning destination weddings takes months, and brides need to trust what they see online. The reels Lucas and Diego produced brought us high-budget clients who booked after just one quick chat. So happy with the results.', name: 'Amanda Cole — Island Dream Weddings', location: 'Anguilla' },
 ];
+const DEFAULT_RESULTS = [
+  { tag: 'Restaurant & Bar', title: 'From nearly invisible to the go-to spot in the area', metric: 'Instagram followers', before: 2000, after: 52000, note: 'After investing in video, professional photos and paid traffic, the business opened 4 more locations.' },
+  { tag: 'Sports — Eurogol', title: 'From local talent to a bridge into Europe', metric: 'Instagram followers', before: 1000, after: 10000, note: 'Professional video and photos of young athletes, plus paid traffic, helped get players recruited by European clubs.' },
+];
 const DEFAULT_PLANS = {
   title: 'What we build for you, at every level.',
   intro: 'However you’re starting — pick the level that matches where your business is today. Every plan pulls from the same cinematic system; you just choose how much scale you want on day one.',
@@ -177,7 +192,7 @@ function normalizeVideos(v) {
   };
 }
 
-let CURRENT = { testimonials: null, plans: null, videos: null };
+let CURRENT = { testimonials: null, plans: null, videos: null, results: null };
 
 function fmtDate(ts) {
   try { return new Date(ts).toLocaleString('pt-BR'); } catch { return String(ts); }
@@ -201,9 +216,11 @@ function showDashboard(data) {
   CURRENT.testimonials = data.testimonials || DEFAULT_TESTIMONIALS.slice();
   CURRENT.plans = data.plans || JSON.parse(JSON.stringify(DEFAULT_PLANS));
   CURRENT.videos = normalizeVideos(data.videos);
+  CURRENT.results = (Array.isArray(data.results) && data.results.length) ? data.results : JSON.parse(JSON.stringify(DEFAULT_RESULTS));
   renderVisits(data.visits || [], data.visitsTotal || 0);
   renderWhatsapp(data.whatsapp || [], data.whatsappTotal || 0);
   renderTestimonials();
+  renderResults();
   renderPlans();
   renderVideos();
 }
@@ -237,6 +254,37 @@ function renderTestimonials() {
     const i = Number(e.target.closest('.testi-item').dataset.i);
     CURRENT.testimonials.splice(i, 1);
     renderTestimonials();
+  }));
+}
+
+function renderResults() {
+  const wrap = document.getElementById('results-list');
+  wrap.innerHTML = CURRENT.results.map((r, i) => `
+    <div class="testi-item" data-i="${i}">
+      <label>Setor / tag</label>
+      <input class="input r-tag" value="${escAttr(r.tag)}" placeholder="Ex: Restaurante &amp; Bar" />
+      <label>Título curto</label>
+      <input class="input r-title" value="${escAttr(r.title)}" placeholder="Ex: De quase invisível a referência na região" />
+      <label>Métrica</label>
+      <input class="input r-metric" value="${escAttr(r.metric)}" placeholder="Ex: Seguidores no Instagram" />
+      <div class="row">
+        <div style="flex:1;">
+          <label>Antes</label>
+          <input class="input r-before" type="number" min="0" value="${Number(r.before) || 0}" />
+        </div>
+        <div style="flex:1;">
+          <label>Depois</label>
+          <input class="input r-after" type="number" min="0" value="${Number(r.after) || 0}" />
+        </div>
+      </div>
+      <label>Observação (linha de apoio)</label>
+      <textarea class="r-note">${(r.note || '').replace(/</g, '&lt;')}</textarea>
+      <div class="row" style="margin-top:10px;"><button class="btn btn-danger r-remove">Remover</button></div>
+    </div>`).join('') || '<p class="muted">Nenhum case cadastrado ainda.</p>';
+  wrap.querySelectorAll('.r-remove').forEach((btn) => btn.addEventListener('click', (e) => {
+    const i = Number(e.target.closest('.testi-item').dataset.i);
+    CURRENT.results.splice(i, 1);
+    renderResults();
   }));
 }
 
@@ -367,7 +415,7 @@ document.getElementById('testi-add').addEventListener('click', () => {
   renderTestimonials();
 });
 document.getElementById('testi-save').addEventListener('click', async () => {
-  const items = [...document.querySelectorAll('.testi-item')].map(el => ({
+  const items = [...document.querySelectorAll('#testi-list .testi-item')].map(el => ({
     stars: Number(el.querySelector('.t-stars').value),
     quote: el.querySelector('.t-quote').value,
     name: el.querySelector('.t-name').value,
@@ -375,6 +423,26 @@ document.getElementById('testi-save').addEventListener('click', async () => {
   }));
   const res = await api('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'testimonials', data: items }) });
   const msg = document.getElementById('testi-msg');
+  msg.className = 'msg ' + (res.ok ? 'ok' : 'err');
+  msg.textContent = res.ok ? 'Salvo!' : 'Erro ao salvar.';
+  setTimeout(() => msg.textContent = '', 3000);
+});
+
+document.getElementById('results-add').addEventListener('click', () => {
+  CURRENT.results.push({ tag: '', title: '', metric: '', before: 0, after: 0, note: '' });
+  renderResults();
+});
+document.getElementById('results-save').addEventListener('click', async () => {
+  const items = [...document.querySelectorAll('#results-list .testi-item')].map((el) => ({
+    tag: el.querySelector('.r-tag').value,
+    title: el.querySelector('.r-title').value,
+    metric: el.querySelector('.r-metric').value,
+    before: Number(el.querySelector('.r-before').value) || 0,
+    after: Number(el.querySelector('.r-after').value) || 0,
+    note: el.querySelector('.r-note').value,
+  }));
+  const res = await api('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'results', data: items }) });
+  const msg = document.getElementById('results-msg');
   msg.className = 'msg ' + (res.ok ? 'ok' : 'err');
   msg.textContent = res.ok ? 'Salvo!' : 'Erro ao salvar.';
   setTimeout(() => msg.textContent = '', 3000);

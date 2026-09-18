@@ -76,6 +76,7 @@ en: {
     kicker: 'The impact', title: 'What changes when we take over.', note: 'Illustrative example \u2014 your real numbers will differ, this shows the kind of shift we aim for.',
     exampleTag: 'Illustrative example', viewsTitle: 'Page & profile views', calTitle: 'A fuller calendar', before: 'Before', after: 'With us'
   },
+  results: { kicker: 'Real results', title: 'This isn\u2019t a hypothesis. It already happened.', note: 'Numbers shared by the clients themselves, from real businesses we\u2019ve worked with.' },
   aerial: { kicker: 'Behind the lens', title: 'The destination, from above.', note: 'Every project starts in the air \u2014 drone footage of the coastline, the marina, the property itself.',
     a1t: 'Luxury Charters & Yachts', a1: 'Elevate Your Journey: Cinematic Aerial Views of Luxury On the Water.',
     a2t: 'Tropical Destinations', a2: 'Immersive Tropical Cinematography that Turns Locations into Destinations.',
@@ -176,6 +177,7 @@ es: {
     kicker: 'El impacto', title: 'Lo que cambia cuando nos encargamos.', note: 'Ejemplo ilustrativo \u2014 tus números reales serán distintos, esto muestra el tipo de cambio que buscamos.',
     exampleTag: 'Ejemplo ilustrativo', viewsTitle: 'Vistas de página y perfil', calTitle: 'Una agenda más llena', before: 'Antes', after: 'Con nosotros'
   },
+  results: { kicker: 'Resultados reales', title: 'No es una hipótesis. Ya sucedió.', note: 'Números compartidos por los propios clientes, de negocios reales con los que hemos trabajado.' },
   aerial: { kicker: 'Detrás de las cámaras', title: 'El destino, desde arriba.', note: 'Cada proyecto empieza en el aire \u2014 video de dron de la costa, la marina, la propiedad misma.',
     a1t: 'Charters de Lujo y Yates', a1: 'Eleva tu Experiencia: Vistas Aéreas Cinematográficas del Lujo en el Agua.',
     a2t: 'Destinos Tropicales', a2: 'Cinematografía Tropical Inmersiva que Convierte Lugares en Destinos.',
@@ -276,6 +278,7 @@ pt: {
     kicker: 'O impacto', title: 'O que muda quando assumimos.', note: 'Exemplo ilustrativo \u2014 seus números reais vão variar, isso mostra o tipo de mudança que buscamos.',
     exampleTag: 'Exemplo ilustrativo', viewsTitle: 'Visualizações de página e perfil', calTitle: 'Uma agenda mais cheia', before: 'Antes', after: 'Com a gente'
   },
+  results: { kicker: 'Resultados reais', title: 'Não é hipótese. Já aconteceu.', note: 'Números informados pelos próprios clientes, de negócios reais que já trabalhamos.' },
   aerial: { kicker: 'Por trás das câmeras', title: 'O destino, visto de cima.', note: 'Todo projeto começa no ar \u2014 imagens de drone do litoral, da marina, do próprio imóvel.',
     a1t: 'Charters de Luxo e Iates', a1: 'Eleve a Experiência: Vistas Aéreas Cinematográficas do Luxo na Água.',
     a2t: 'Destinos Tropicais', a2: 'Cinematografia Tropical Imersiva que Transforma Locais em Destinos.',

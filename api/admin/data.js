@@ -10,10 +10,11 @@ module.exports = async (req, res) => {
   if (!(await requireAuth(req, res))) return;
   try {
     const redis = getRedis();
-    const [testimonials, plans, videos, visitsRaw, waRaw, visitsTotal, waTotal] = await Promise.all([
+    const [testimonials, plans, videos, results, visitsRaw, waRaw, visitsTotal, waTotal] = await Promise.all([
       redis.get('content:testimonials'),
       redis.get('content:plans'),
       redis.get('content:videos'),
+      redis.get('content:results'),
       redis.lrange('visits', 0, 199),
       redis.lrange('whatsapp', 0, 199),
       redis.llen('visits'),
@@ -24,6 +25,7 @@ module.exports = async (req, res) => {
       testimonials: parse(testimonials),
       plans: parse(plans),
       videos: parse(videos),
+      results: parse(results),
       visits: (visitsRaw || []).map(parse).filter(Boolean),
       visitsTotal: visitsTotal || 0,
       whatsapp: (waRaw || []).map(parse).filter(Boolean),

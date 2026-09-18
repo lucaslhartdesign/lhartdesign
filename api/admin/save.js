@@ -11,6 +11,18 @@ function cleanTestimonials(list) {
   }));
 }
 
+function cleanResults(list) {
+  if (!Array.isArray(list)) return [];
+  return list.slice(0, 20).map((r) => ({
+    tag: String((r && r.tag) || '').slice(0, 60),
+    title: String((r && r.title) || '').slice(0, 100),
+    metric: String((r && r.metric) || '').slice(0, 60),
+    before: Math.max(0, Number(r && r.before) || 0),
+    after: Math.max(0, Number(r && r.after) || 0),
+    note: String((r && r.note) || '').slice(0, 300),
+  }));
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') { res.status(405).json({ error: 'method not allowed' }); return; }
   if (!(await requireAuth(req, res))) return;
@@ -52,6 +64,12 @@ module.exports = async (req, res) => {
         : [],
     };
     await redis.set('content:videos', JSON.stringify(clean));
+    res.status(200).json({ ok: true, data: clean });
+    return;
+  }
+  if (key === 'results') {
+    const clean = cleanResults(data);
+    await redis.set('content:results', JSON.stringify(clean));
     res.status(200).json({ ok: true, data: clean });
     return;
   }
