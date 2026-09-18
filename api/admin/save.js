@@ -30,8 +30,16 @@ module.exports = async (req, res) => {
   if (!body || typeof body === 'string') {
     try { body = JSON.parse(body || '{}'); } catch { body = {}; }
   }
-  const { key, data } = body || {};
+  const { key, data, reset } = body || {};
   const redis = getRedis();
+
+  // "Restore site default": drop the saved override so the site goes back to its built-in (translated) content.
+  if (reset === true) {
+    if (!['testimonials', 'plans', 'videos', 'results'].includes(key)) { res.status(400).json({ error: 'unknown key: ' + key }); return; }
+    await redis.del('content:' + key);
+    res.status(200).json({ ok: true, reset: true });
+    return;
+  }
 
   if (key === 'testimonials') {
     const clean = cleanTestimonials(data);

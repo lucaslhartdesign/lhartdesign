@@ -104,7 +104,7 @@
       <p class="muted">Enquanto você não salvar nada aqui, o site continua mostrando os 8 depoimentos originais (traduzidos em EN/ES/PT). Ao salvar, esta lista passa a valer no lugar deles, no idioma em que você escrever.</p>
       <div id="testi-list"></div>
       <button class="btn" id="testi-add">+ Adicionar depoimento</button>
-      <div class="save-bar"><button class="btn" id="testi-save">Salvar depoimentos</button> <span class="msg" id="testi-msg"></span></div>
+      <div class="save-bar"><button class="btn" id="testi-save">Salvar depoimentos</button> <button class="btn btn-danger btn-reset" data-reset="testimonials">Restaurar padrão do site</button> <span class="msg" id="testi-msg"></span></div>
     </div>
   </div>
 
@@ -114,7 +114,7 @@
       <p class="muted">Cases com número de antes/depois — aparecem no site como um gráfico animado (barra + contador). Fica logo depois da seção "The impact". Enquanto você não salvar nada aqui, o site mostra os 2 cases de exemplo (rede de restaurante/bar e Eurogol).</p>
       <div id="results-list"></div>
       <button class="btn" id="results-add">+ Adicionar case</button>
-      <div class="save-bar"><button class="btn" id="results-save">Salvar resultados</button> <span class="msg" id="results-msg"></span></div>
+      <div class="save-bar"><button class="btn" id="results-save">Salvar resultados</button> <button class="btn btn-danger btn-reset" data-reset="results">Restaurar padrão do site</button> <span class="msg" id="results-msg"></span></div>
     </div>
   </div>
 
@@ -129,7 +129,7 @@
       <div class="plan-col" id="plans-tiers"></div>
       <label>Texto do botão final</label>
       <input class="input" id="plans-cta" />
-      <div class="save-bar"><button class="btn" id="plans-save">Salvar planos</button> <span class="msg" id="plans-msg"></span></div>
+      <div class="save-bar"><button class="btn" id="plans-save">Salvar planos</button> <button class="btn btn-danger btn-reset" data-reset="plans">Restaurar padrão do site</button> <span class="msg" id="plans-msg"></span></div>
     </div>
   </div>
 
@@ -138,7 +138,7 @@
       <h2>Vídeos de fundo</h2>
       <p class="muted">Cole só o número do ID do vídeo no Vimeo (ex: em vimeo.com/1214395786, o ID é 1214395786).</p>
       <div id="videos-form"></div>
-      <div class="save-bar"><button class="btn" id="videos-save">Salvar vídeos</button> <span class="msg" id="videos-msg"></span></div>
+      <div class="save-bar"><button class="btn" id="videos-save">Salvar vídeos</button> <button class="btn btn-danger btn-reset" data-reset="videos">Restaurar padrão do site</button> <span class="msg" id="videos-msg"></span></div>
     </div>
   </div>
 </div>
@@ -162,9 +162,9 @@ const DEFAULT_PLANS = {
   title: 'What we build for you, at every level.',
   intro: 'However you’re starting — pick the level that matches where your business is today. Every plan pulls from the same cinematic system; you just choose how much scale you want on day one.',
   cta: 'Get your custom pricing',
-  p1: { badge: 'Getting started', title: 'Silver', lines: ['Professional food & venue photography', 'Complete Instagram setup & visual identity', 'Basic paid traffic (targeted local ads)'], bonus: 'Free bonus: custom highlight covers & brand board' },
+  p1: { badge: 'Getting started', title: 'Silver', lines: ['Professional photography of your products, venue or property', 'Complete Instagram setup & visual identity', 'Basic paid traffic (targeted local ads)'], bonus: 'Free bonus: custom highlight covers & brand board' },
   p2: { badge: 'Most popular', title: 'Gold', lines: ['Everything in Silver, plus:', 'Cinematic vertical video production', 'Immersive aerial drone cinematography', 'Full digital presence & optimized ad campaign'], bonus: 'Free bonus: Google Business Profile optimization' },
-  p3: { badge: 'Full scale', title: 'Diamond', lines: ['Everything in Gold, plus full premium production', 'Advanced destination-targeted ad campaigns', 'AI automation for 24/7 bookings'], bonus: 'Free bonus: full AI assistant integration for guest inquiries' },
+  p3: { badge: 'Full scale', title: 'Diamond', lines: ['Everything in Gold, plus full premium production', 'Advanced audience-targeted ad campaigns', 'AI automation for 24/7 lead capture & bookings'], bonus: 'Free bonus: full AI assistant integration for customer inquiries' },
 };
 const DEFAULT_VIDEOS = {
   hero: '1214395786',
@@ -486,6 +486,13 @@ document.getElementById('videos-save').addEventListener('click', async () => {
   msg.textContent = res.ok ? 'Salvo! Pode levar alguns segundos para refletir no site.' : 'Erro ao salvar.';
   setTimeout(() => msg.textContent = '', 4000);
 });
+
+document.querySelectorAll('.btn-reset').forEach((btn) => btn.addEventListener('click', async () => {
+  const key = btn.dataset.reset;
+  if (!confirm('Restaurar o padrão do site para esta seção? O que você salvou aqui será apagado e o site volta ao texto original (traduzido em EN/ES/PT).')) return;
+  const res = await api('/api/admin/save', { method: 'POST', body: JSON.stringify({ key, reset: true }) });
+  if (res.ok) { await load(); alert('Restaurado! O site já está usando o padrão.'); } else { alert('Erro ao restaurar.'); }
+}));
 
 async function load() {
   const res = await api('/api/admin/data');
