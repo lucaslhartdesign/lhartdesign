@@ -438,6 +438,8 @@ footer { padding: calc(2 * var(--leading)) 0; font-size: 13px; line-height: var(
   display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--half); }
 footer a { color: color-mix(in srgb, var(--color-text) 70%, transparent); display: inline-flex; align-items: center; gap: 6px; }
 footer .ph { font-size: 15px; color: var(--color-accent-300); }
+footer .admin-dot { display: inline-block; padding: 6px 10px; margin-left: 2px; opacity: 0.1; cursor: default; transition: opacity 0.2s; }
+footer .admin-dot:hover, footer .admin-dot:focus-visible { opacity: 0.6; }
 footer .contacts { display: flex; align-items: center; justify-content: center; gap: var(--leading); flex-wrap: wrap; }
 
 /* — plans (no price) — */
@@ -1031,7 +1033,7 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
   </section>
 
   <footer>
-    <span data-i18n="footer.line">© 2026 Lhart Design — Brazil · Portugal · Miami</span>
+    <span><span data-i18n="footer.line">© 2026 Lhart Design — Brazil · Portugal · Miami</span><a class="admin-dot" href="/admin.html" rel="nofollow" aria-label="·">·</a></span>
     <span class="contacts">
       <a href="mailto:Lhartdesign@outlook.com"><i class="ph ph-envelope-simple"></i>Lhartdesign@outlook.com</a>
       <span id="footer-wa" style="display: contents;"></span>
