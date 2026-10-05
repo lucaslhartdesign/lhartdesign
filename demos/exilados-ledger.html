@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exilados do Cinza — Ledger da guilda</title>
+<link href="https://fonts.googleapis.com/css2?family=Fontin+Sans&family=IBM+Plex+Mono:wght@400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0b0a;--p:#16130f;--p2:#1f1a14;--ln:#3a3226;--ink:#d8cfbf;--mu:#8a7e6c;--nm:#c8c8c8;--mg:#8888ff;--rr:#ffff77;--un:#af6025;--cur:#d9b86a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(#0c0b0a,#14100c);color:var(--ink);font:400 16px/1.5 "IBM Plex Mono",monospace}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.fe{font-family:"IM Fell English",serif}.wrap{max-width:1200px;margin:auto;padding:0 20px}
+.hd{border-bottom:1px solid var(--ln);background:#0a0908}.hd .wrap{display:flex;align-items:center;gap:26px;height:56px}
+.logo{font:italic 400 24px "IM Fell English";color:var(--un);letter-spacing:.04em}
+nav{display:flex;gap:2px;margin-right:auto}nav button{background:none;border:0;color:var(--mu);padding:17px 14px;font-size:14px;border-bottom:2px solid transparent}nav button:hover{color:var(--ink)}nav button.on{color:var(--cur);border-color:var(--un)}
+.bot{font-size:12px;color:#6ee07a}.bot::before{content:"● ";animation:bl 1.6s infinite}@keyframes bl{50%{opacity:.3}}
+.hero{padding:48px 0 22px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end}
+h1{font:italic 400 clamp(36px,6vw,68px)/1 "IM Fell English";margin:0;color:var(--cur)}h1 span{color:var(--un)}
+.hero p{margin:10px 0 0;color:var(--mu);max-width:56ch;font-size:15px}
+.lg{display:flex;gap:6px;font-size:12px}.lg i{padding:4px 10px;border:1px solid;font-style:normal}
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--ln);border:1px solid var(--ln);margin:20px 0 26px}
+.kp div{background:var(--p);padding:16px 18px}.kp span{font-size:12px;color:var(--mu);text-transform:uppercase;letter-spacing:.1em}.kp b{display:block;font:500 28px "IBM Plex Mono";color:var(--cur)}.kp em{font-style:normal;font-size:12px;color:#6ee07a}
+.gd{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
+.pn{background:var(--p);border:1px solid var(--ln)}.pn h2{margin:0;padding:12px 16px;font:italic 400 20px "IM Fell English";border-bottom:1px solid var(--ln);color:var(--cur);display:flex;justify-content:space-between;align-items:center}.pn h2 small{font:12px "IBM Plex Mono";color:var(--mu)}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--mu);font-weight:400;font-size:12px;padding:9px 14px;border-bottom:1px solid var(--ln);text-transform:uppercase;letter-spacing:.08em;cursor:pointer}th:hover{color:var(--ink)}
+td{padding:9px 14px;border-bottom:1px solid #ffffff08}tr:hover td{background:var(--p2)}
+.r{text-align:right}.nm{font-weight:500}
+.sp{display:inline-block;width:80px;height:22px;vertical-align:middle}.sp polyline{fill:none;stroke-width:1.6}
+.up{color:#6ee07a}.dn{color:#e86a5a}
+.item{margin:16px;border:2px solid var(--un);background:#1a0f08;box-shadow:0 0 24px #af602533;text-align:center;font-family:"Fontin Sans","IM Fell English",serif}
+.item .h{background:linear-gradient(#3a1f0c,#241208);padding:10px;border-bottom:1px solid var(--un);color:var(--un);font:italic 22px "IM Fell English"}.item .h small{display:block;font-size:14px;color:#d8a070}
+.item .b{padding:14px;font-size:14px;line-height:1.7;color:#8888ff}.item .b span{display:block}.item .b .w{color:var(--ink)}.item .b hr{border:0;border-top:1px solid var(--un);margin:8px 30px;opacity:.5}
+.bd{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid var(--ln);font-size:13px;color:var(--mu)}.bd button{background:var(--un);color:#1a0d04;border:0;padding:9px 18px;font-weight:500}.bd button:hover{filter:brightness(1.2)}
+.cm{margin:20px 0 50px;background:#0a0908;border:1px solid var(--ln);padding:18px 20px;font-size:14px;line-height:1.9}.cm b{color:var(--cur)}.cm .o{color:#6ee07a}
+footer{border-top:1px solid var(--ln);padding:22px 0;text-align:center;color:var(--mu);font-size:13px}
+@media(max-width:900px){.gd{grid-template-columns:1fr}.kp{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.pn{overflow-x:auto}nav{overflow-x:auto}}
+</style></head><body>
+<div class="hd"><div class="wrap"><span class="logo">Exilados do Cinza</span><nav id="nv"><button class="on" data-s="pts">Ladder</button><button data-s="pr">Eventos</button><button data-s="lei">Leilão</button></nav><span class="bot">bot online</span></div></div>
+<div class="wrap"><div class="hero"><div><h1>O <span>Ledger</span> dos Exilados</h1><p>Cada ponto é um lançamento com motivo, autor e data. Ladder, leilão e chamada de eventos feitos pelo bot do Discord, direto da sala de voz.</p></div><div class="lg"><i style="color:var(--nm);border-color:var(--nm)">Normal</i><i style="color:var(--mg);border-color:var(--mg)">Mágico</i><i style="color:var(--rr);border-color:var(--rr)">Raro</i><i style="color:var(--un);border-color:var(--un)">Único</i></div></div>
+<div class="kp"><div><span>Exilados ativos</span><b>96</b><em>▲ 6 na semana</em></div><div><span>Chamadas</span><b>212</b></div><div><span>Pontos pagos</span><b id="kp">1.204.331</b><em>▲ 4,2%</em></div><div><span>Presença média</span><b>83%</b></div></div>
+<div class="gd"><div class="pn"><h2>Ladder da guilda <small>clique no cabeçalho para ordenar</small></h2><table><thead><tr><th>#</th><th data-k="0">Exilado</th><th data-k="1">Ascendência</th><th data-k="2" class="r">Pontos</th><th>7 dias</th></tr></thead><tbody id="lb"></tbody></table></div>
+<div class="pn"><h2>Leilão aberto <small>termina em 2h 10m</small></h2><div class="item"><div class="h">Coroa do Cinza Eterno<small>Elmo Tecido</small></div><div class="b"><span class="w">Escudo de Energia: 218</span><hr><span>+84 à Vida Máxima</span><span>+42% Resistência ao Caos</span><span>8% de Vida Roubada</span><hr><span style="color:var(--un)">Item único da guilda</span></div></div><div class="bd"><span>Lance atual: <b style="color:var(--cur)">420 pts</b></span><button id="bid">Dar lance</button></div></div></div>
+<div class="cm"><b>/chamada</b> evento:<span class="o">Chefe de Mapa</span> → 47 presentes · +30 pts · 9 faltas descontadas<br><b>/saldo</b> → extrato linha a linha, com motivo, autor e data<br><b>/leilao</b> item:"Coroa do Cinza Eterno" → aberto no Discord e no site</div></div>
+<footer>Exilados do Cinza · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</footer>
+<script>
+const D=[['Wraekor','Berserker',10321,[5,6,4,7,8,7,9]],['Isolde','Necromante',10307,[4,5,5,6,5,7,8]],['Brannoch','Juggernaut',10056,[8,7,6,6,5,4,4]],['Veyra','Invocadora',9876,[3,4,5,5,6,6,7]],['Orlin','Caçador',9519,[6,5,6,5,6,5,5]]];
+let k=2,asc=false;function d(){const r=[...D].sort((a,b)=>(a[k]>b[k]?1:-1)*(asc?1:-1));lb.innerHTML=r.map((x,i)=>{const t=x[3][6]>=x[3][0];return `<tr><td>${i+1}</td><td class="nm">${x[0]}</td><td>${x[1]}</td><td class="r">${x[2].toLocaleString('pt-BR')}</td><td><svg class="sp" viewBox="0 0 80 22"><polyline stroke="${t?'#6ee07a':'#e86a5a'}" points="${x[3].map((v,j)=>`${j*13},${22-v*2}`).join(' ')}"/></svg></td></tr>`}).join('')}
+document.querySelector('thead').onclick=e=>{const h=e.target.closest('th[data-k]');if(h){const n=+h.dataset.k;if(n==k)asc=!asc;else{k=n;asc=n!=2}d()}};d();
+nv.onclick=e=>{const b=e.target.closest('button');if(b)nv.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b))};
+bid.onclick=()=>{bid.textContent='Lance enviado ✓'};
+</script></body></html>

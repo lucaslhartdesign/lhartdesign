@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apex Boost Hub — Boost, itens e moedas</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0820;--p:#15103a;--p2:#1e1750;--ln:#2d2570;--ac:#7c5cff;--ac2:#b9a8ff;--cy:#34e0ff;--gd:#ffcf4a;--ink:#f1eeff;--mu:#9f98d4;--ok:#35e0a0;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(900px 500px at 50% -10%,#3a2a9a66,transparent 70%),var(--bg);color:var(--ink);font:400 16px/1.55 "Plus Jakarta Sans",sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.wrap{max-width:1220px;margin:auto;padding:0 20px}
+.hd{display:flex;align-items:center;gap:16px;padding:14px 0}.logo{font-weight:800;font-size:22px;display:flex;gap:8px;align-items:center}.logo i{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--ac),var(--cy));display:grid;place-items:center;font-style:normal}
+.menu{width:40px;height:40px;border-radius:10px;background:var(--ac);border:0;color:#fff;font-size:18px}
+.sr{flex:1;background:var(--p);border:1px solid var(--ln);border-radius:12px;padding:11px 16px;color:var(--mu);display:flex;gap:10px}.sr input{flex:1;background:none;border:0;color:var(--ink);font:inherit;outline:0;min-width:0}
+.ic{color:var(--mu);font-size:13px;text-align:center;display:flex;gap:18px}
+.hero{text-align:center;padding:54px 0 28px}
+h1{font-size:clamp(34px,5.4vw,64px);line-height:1.04;letter-spacing:-.035em;margin:0 0 16px;font-weight:800}h1 span{background:linear-gradient(90deg,var(--ac2),var(--cy));-webkit-background-clip:text;color:transparent}
+.rt{display:inline-flex;gap:10px;align-items:center;color:var(--mu);font-size:14px}.rt b{color:var(--ink)}.rt .s{display:flex;gap:2px}.rt .s i{width:20px;height:20px;background:var(--ok);display:grid;place-items:center;font-style:normal;color:#fff;font-size:12px}
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:26px 0 22px}.tb{border:1px solid var(--ln);background:var(--p);color:var(--mu);padding:10px 20px;border-radius:12px;font-weight:700;font-size:14px;transition:.15s}.tb:hover{color:#fff;border-color:var(--ac)}.tb.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.pg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pt{position:relative;aspect-ratio:3/4;border-radius:18px;overflow:hidden;background:var(--g);cursor:pointer;transition:.25s;border:1px solid var(--ln);animation:in .4s backwards}
+@keyframes in{from{opacity:0;transform:scale(.96)}}
+.pt:hover{transform:translateY(-6px) scale(1.02);border-color:var(--cy);box-shadow:0 18px 40px #7c5cff55}
+.pt .e{position:absolute;inset:0;display:grid;place-items:center;font-size:88px;opacity:.9;transition:.4s}.pt:hover .e{transform:scale(1.15) rotate(-4deg)}
+.pt::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,#0b0820f2)}
+.pt .n{position:absolute;left:16px;right:16px;bottom:14px;z-index:2}.pt b{display:block;font-size:19px}.pt small{color:var(--ac2)}
+.pt .tg{position:absolute;top:12px;left:12px;z-index:2;background:var(--gd);color:#201700;font-weight:800;font-size:11px;padding:3px 9px;border-radius:7px}
+h2{font-size:30px;letter-spacing:-.03em;margin:56px 0 6px}.sb{color:var(--mu);margin:0 0 22px}
+.dl{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.d{background:linear-gradient(160deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:6px}
+.d .tt{font-size:12px;color:var(--cy);font-weight:800;letter-spacing:.1em;text-transform:uppercase}.d h3{margin:0;font-size:20px}.d ul{list-style:none;margin:6px 0;padding:0;color:var(--mu);font-size:14px;display:grid;gap:3px}.d li::before{content:"✓ ";color:var(--ok)}
+.cdn{background:#0003;border-radius:10px;padding:8px 12px;font-size:13px;color:var(--mu);display:flex;justify-content:space-between}.cdn b{color:var(--gd);font-variant-numeric:tabular-nums}
+.d .pr{margin-top:auto;display:flex;align-items:baseline;gap:8px;padding-top:8px}.d .pr small{color:var(--mu)}.d .pr b{font-size:28px}.d .pr s{color:var(--mu);font-size:14px}
+.d button{border:0;background:var(--ac);color:#fff;font-weight:800;padding:12px;border-radius:12px}.d button:hover{background:var(--ac2);color:#1a1050}
+.rv{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.r{background:var(--p);border:1px solid var(--ln);border-radius:16px;padding:20px}.r .s{color:var(--ok);letter-spacing:2px;font-size:14px}.r b{display:block;margin:6px 0 4px}.r p{margin:0;color:var(--mu);font-size:14.5px}
+.bt{margin:50px 0;border-radius:22px;background:linear-gradient(120deg,#2c2a6e,#5865f2);padding:34px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.bt h3{margin:0 0 6px;font-size:26px}.bt p{margin:0;color:#e0e3ff;max-width:52ch}.bt a{background:#fff;color:#3a40b0;font-weight:800;padding:13px 24px;border-radius:12px}
+footer{border-top:1px solid var(--ln);padding:26px 0;text-align:center;color:var(--mu);font-size:14px}
+@media(max-width:980px){.pg,.dl{grid-template-columns:repeat(2,1fr)}.rv{grid-template-columns:1fr}.ic{display:none}}
+</style></head><body>
+<div class="wrap"><div class="hd"><button class="menu">☰</button><a class="logo" href="#"><i>▲</i>Apex Boost</a><div class="sr">🔍 <input placeholder="Buscar jogo, item ou serviço"></div><div class="ic"><span>♡<br>Favoritos</span><span>🛒<br>Carrinho</span></div></div>
+<div class="hero"><h1>Ganhe tempo com <span>itens, moedas e boost</span></h1><div class="rt"><b>Excelente</b><div class="s"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></div><span>+31.000 avaliações</span></div>
+<div class="tabs" id="tabs"></div></div>
+<div class="pg" id="pg"></div>
+<h2>Ofertas do dia</h2><p class="sb">Serviços com prazo, preço fixo e contagem regressiva.</p>
+<div class="dl"><div class="d"><span class="tt">Moedas</span><h3>Gold Arcano</h3><ul><li>Entrega em até 15 min</li><li>Vendedores verificados</li><li>Suporte 24h</li></ul><div class="pr"><small>a partir de</small><b>R$ 2,90</b></div><button>Comprar</button></div>
+<div class="d"><span class="tt">Raid</span><h3>Raid Heroica Completa</h3><div class="cdn">Próxima raid em <b id="c1">00:08:42</b></div><ul><li>8/8 em 3 horas</li><li>Loot garantido</li></ul><div class="pr"><small>a partir de</small><b>R$ 219</b></div><button>Reservar vaga</button></div>
+<div class="d"><span class="tt">Promo -20%</span><h3>Pacote Dungeons +10</h3><ul><li>3+1, 6+2, 9+3 corridas</li><li>Chave no prazo</li></ul><div class="pr"><small>de</small><b>R$ 134</b><s>R$ 168</s></div><button>Comprar</button></div>
+<div class="d"><span class="tt">Hot</span><h3>Power Leveling</h3><ul><li>Você joga AFK</li><li>Nível 90 em 7 horas</li></ul><div class="pr"><small>a partir de</small><b>R$ 119</b></div><button>Comprar</button></div></div>
+<h2>Quem comprou fala</h2><p class="sb">Avaliações verificadas.</p>
+<div class="rv"><div class="r"><div class="s">★★★★★</div><b>Kaique_m</b><p>Item na mão em uma hora. Vendedor educado e rápido, voltarei.</p></div><div class="r"><div class="s">★★★★★</div><b>Lari.dps</b><p>Peguei o pacote de dungeons e subiu tudo. Atendimento no Discord muito bom.</p></div><div class="r"><div class="s">★★★★★</div><b>Thorin88</b><p>Preço justo e entrega no prazo. Compro sempre aqui.</p></div></div>
+<div class="bt"><div><h3>Acompanhe pelo Discord</h3><p>O bot avisa cada etapa do pedido, chama o vendedor e abre ticket quando você precisa.</p></div><a href="#">Entrar no servidor</a></div></div>
+<footer>Apex Boost Hub · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</footer>
+<script>
+const J=[['Todos',''],['MMORPG','Aether Online|🐉|#3a2a9a,#7c5cff|Gold, raids, boost|HOT'],['ARPG','Diablo-like Abyss|🗡️|#5a1020,#e0384a|Itens e runas|'],['Shooter','Zero Hour|🎯|#0f3a4a,#34e0ff|Rank e skins|NOVO'],['Outros','Rift Arena|⚡|#3a1a5a,#c04cff|Boost de elo|'],['MMORPG','Elder Realms|🏰|#1a3a2a,#35e0a0|Gold e contas|'],['ARPG','Last Ember|🔥|#5a3010,#ff9a3c|Itens raros|-20%'],['Shooter','Tactical Ops|💣|#202a3a,#6a8ab0|Boost e coaching|'],['Outros','Sky Pirates|🏴‍☠️|#0f2a5a,#3c8aff|Moedas|']];
+const cats=['Todos','MMORPG','ARPG','Shooter','Outros'];let c='Todos';
+function d(){tabs.innerHTML=cats.map(x=>`<button class="tb ${x==c?'on':''}" data-c="${x}">${x}</button>`).join('');
+pg.innerHTML=J.slice(1).filter(j=>c=='Todos'||j[0]==c).map((j,i)=>{const [n,e,g,s,t]=j[1].split('|');const [a,b]=g.split(',');return `<div class="pt" style="--g:linear-gradient(150deg,${a},${b});animation-delay:${i*.05}s">${t?`<span class="tg">${t}</span>`:''}<div class="e">${e}</div><div class="n"><b>${n}</b><small>${s}</small></div></div>`}).join('')}
+tabs.onclick=e=>{const b=e.target.closest('.tb');if(b){c=b.dataset.c;d()}};d();
+let s=522;setInterval(()=>{s=s>0?s-1:522;c1.textContent='00:'+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},1000);
+</script></body></html>

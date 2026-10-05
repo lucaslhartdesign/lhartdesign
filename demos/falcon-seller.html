@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Falcon Seller — Itens, moedas e contas</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070d18;--p:#0f1a2e;--p2:#14233d;--ln:#1f3556;--tl:#19d3c5;--gd:#f5b942;--ink:#e8f1ff;--mu:#7f95b8;--ok:#35e08a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 Sora,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.hd{background:#050a14;border-bottom:1px solid var(--ln);position:sticky;top:0;z-index:20}.hd .in{max-width:1320px;margin:auto;display:flex;align-items:center;gap:20px;padding:12px 20px}
+.logo{font-weight:800;font-size:21px;display:flex;gap:8px;align-items:center}.logo i{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--tl),#2a7bff);display:grid;place-items:center;font-style:normal}
+.sr{flex:1;max-width:560px;background:var(--p);border:1px solid var(--ln);border-radius:12px;padding:10px 16px;display:flex;gap:10px;color:var(--mu)}.sr input{flex:1;background:none;border:0;color:var(--ink);font:inherit;outline:0;min-width:0}
+.gl{display:flex;gap:4px;margin-left:auto}.gl button{background:none;border:0;color:var(--mu);padding:8px 14px;border-radius:10px;font-weight:600}.gl button:hover,.gl button.on{background:var(--p2);color:#fff}
+.cr{background:var(--p);border:1px solid var(--ln);border-radius:12px;padding:9px 14px;font-weight:700}
+.bn{position:relative;height:210px;overflow:hidden;border-bottom:1px solid var(--ln);background:linear-gradient(90deg,#070d18 30%,transparent),radial-gradient(500px 300px at 82% 40%,#19d3c566,transparent 70%),linear-gradient(135deg,#0a1a38,#0d3a4a)}
+.bn .in{max-width:1320px;margin:auto;padding:0 20px;height:100%;display:flex;align-items:center;gap:24px}
+.bn .lg{width:96px;height:96px;border-radius:24px;background:linear-gradient(135deg,#19d3c5,#2a7bff);display:grid;place-items:center;font-size:48px;box-shadow:0 14px 40px #19d3c566;flex:none}
+.bn h1{margin:0;font-size:clamp(26px,4vw,44px);letter-spacing:-.03em;line-height:1.05}.bn p{margin:4px 0 0;color:var(--mu)}
+.bn .art{position:absolute;right:8%;top:50%;translate:0 -50%;font-size:150px;opacity:.28;filter:blur(1px)}
+.ly{max-width:1320px;margin:auto;padding:22px 20px 60px;display:grid;grid-template-columns:250px 1fr 340px;gap:20px;align-items:start}
+.pn{background:var(--p);border:1px solid var(--ln);border-radius:16px}
+.fl{padding:18px;position:sticky;top:80px}.fl h3{margin:0 0 10px;font-size:13px;color:var(--mu);letter-spacing:.14em;text-transform:uppercase}
+.fl label{display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:8px;cursor:pointer;color:#c4d4ee}.fl label:hover{background:var(--p2)}.fl input{accent-color:var(--tl);width:17px;height:17px}.fl .c{margin-left:auto;color:var(--mu);font-size:12px}.fl hr{border:0;border-top:1px solid var(--ln);margin:14px 0}
+.tp{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}.tp h2{margin:0;font-size:22px}.tp h2 small{color:var(--mu);font-weight:400;font-size:14px;margin-left:8px}
+.tp select{background:var(--p);border:1px solid var(--ln);color:var(--ink);border-radius:10px;padding:10px 14px;font:inherit}
+.gr{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.c{background:var(--p);border:1px solid var(--ln);border-radius:16px;overflow:hidden;transition:.2s;cursor:pointer;display:flex;flex-direction:column}.c:hover{transform:translateY(-4px);border-color:var(--tl);box-shadow:0 14px 34px #19d3c522}
+.c .a{height:110px;display:grid;place-items:center;font-size:48px;background:linear-gradient(135deg,#14233d,#0f3a4a);position:relative}.c .a em{position:absolute;top:10px;left:10px;font-style:normal;font-size:11px;font-weight:800;background:var(--ok);color:#042;padding:3px 8px;border-radius:7px}
+.c .i{padding:14px;display:flex;flex-direction:column;gap:3px;flex:1}.c small{color:var(--mu);font-size:12px}.c b{font-size:16px}.c .pr{margin-top:auto;padding-top:8px;display:flex;justify-content:space-between;align-items:center}.c .pr strong{font-size:20px;color:var(--gd)}.c .pr span{font-size:12px;color:var(--mu)}
+.c button{background:var(--tl);color:#032;border:0;font-weight:800;padding:10px;border-radius:10px;margin-top:8px}.c button:hover{filter:brightness(1.12)}
+.ch{position:sticky;top:80px;display:flex;flex-direction:column;height:calc(100vh - 110px);max-height:620px}
+.ch h3{margin:0;padding:14px 16px;font-size:15px;border-bottom:1px solid var(--ln);display:flex;justify-content:space-between;align-items:center}.ch h3 span{font-size:12px;color:var(--ok)}
+.ms{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}.m{max-width:88%;padding:10px 13px;border-radius:14px;font-size:14px;animation:in .3s backwards}@keyframes in{from{opacity:0;transform:translateY(6px)}}
+.m.v{background:var(--p2);align-self:flex-start;border-bottom-left-radius:4px}.m.c2{background:var(--tl);color:#032;align-self:flex-end;border-bottom-right-radius:4px}.m small{display:block;opacity:.6;font-size:11px;margin-top:3px}
+.tm{align-self:center;font-size:12px;color:var(--mu);background:var(--bg);padding:3px 10px;border-radius:99px}.sy{align-self:center;background:#35e08a1a;color:var(--ok);border:1px solid #35e08a55;border-radius:10px;padding:8px 12px;font-size:13px}
+.ip{display:flex;gap:8px;padding:12px;border-top:1px solid var(--ln)}.ip input{flex:1;background:var(--bg);border:1px solid var(--ln);color:var(--ink);border-radius:10px;padding:10px 12px;font:inherit;outline:0;min-width:0}.ip button{background:var(--tl);border:0;border-radius:10px;padding:0 16px;font-weight:800}
+@media(max-width:1100px){.ly{grid-template-columns:1fr}.fl,.ch{position:static}.ch{height:420px}.gr{grid-template-columns:repeat(2,1fr)}.gl{display:none}}
+@media(max-width:560px){.gr{grid-template-columns:1fr}}
+</style></head><body>
+<div class="hd"><div class="in"><a class="logo" href="#"><i>🦅</i>Falcon Seller</a><div class="sr">🔍<input id="q" placeholder="Buscar produto…"></div><div class="gl"><button class="on">Jogos</button><button>Guias</button><button>Suporte</button></div><div class="cr">🛒 <span id="n">0</span></div></div></div>
+<div class="bn"><div class="art">🦅</div><div class="in"><div class="lg">⚔️</div><div><h1>Aether Online</h1><p>Moedas, itens, contas e boost · entrega acompanhada por chat</p></div></div></div>
+<div class="ly"><aside class="pn fl"><h3>Categoria</h3><label><input type="checkbox" class="f" value="Moedas" checked> Moedas <span class="c">3</span></label><label><input type="checkbox" class="f" value="Itens" checked> Itens <span class="c">3</span></label><label><input type="checkbox" class="f" value="Contas" checked> Contas <span class="c">2</span></label><label><input type="checkbox" class="f" value="Boost" checked> Boost <span class="c">1</span></label><hr><h3>Entrega</h3><label><input type="checkbox"> Automática</label><label><input type="checkbox"> Até 15 min</label></aside>
+<main><div class="tp"><h2>Produtos <small id="ct"></small></h2><select id="so"><option value="0">Mais vendidos</option><option value="1">Menor preço</option><option value="2">Maior preço</option></select></div><div class="gr" id="gr"></div></main>
+<aside class="pn ch"><h3>Pedido #0042 · Chat <span>● online</span></h3><div class="ms" id="ms"></div><div class="ip"><input id="in" placeholder="Escreva para o vendedor…"><button id="sd">➤</button></div></aside></div>
+<script>
+const P=[['Moedas','🪙','Gold 100M','Entrega automática',39.9,'AUTO'],['Moedas','🪙','Gold 500M','Entrega em 15 min',179,''],['Moedas','💎','Gemas 6.500','Entrega automática',54.9,'AUTO'],['Itens','🗡️','Espada Glacial +12','Entrega em 10 min',89,''],['Itens','🛡️','Égide do Guardião','Entrega em 20 min',159,''],['Itens','🧪','Kit de Poções Raras','Entrega automática',24.5,'AUTO'],['Contas','👑','Conta Nível 80','Troca de e-mail',249,''],['Contas','🏰','Conta Reino Full','Troca de e-mail',199,''],['Boost','🚀','Boost Ouro → Platina','Prazo 2 dias',120,'']];
+const f=v=>'R$ '+v.toFixed(2).replace('.',',');
+function d(){const cs=[...document.querySelectorAll('.f:checked')].map(x=>x.value),t=q.value.toLowerCase();let r=P.filter(p=>cs.includes(p[0])&&p[2].toLowerCase().includes(t));if(so.value==1)r.sort((a,b)=>a[4]-b[4]);if(so.value==2)r.sort((a,b)=>b[4]-a[4]);ct.textContent=r.length+' itens';
+gr.innerHTML=r.map(p=>`<div class="c"><div class="a">${p[5]?`<em>${p[5]}</em>`:''}${p[1]}</div><div class="i"><small>${p[0]}</small><b>${p[2]}</b><div class="pr"><strong>${f(p[4])}</strong><span>${p[3]}</span></div><button>Comprar</button></div></div>`).join('')}
+document.querySelectorAll('.f').forEach(x=>x.onchange=d);q.oninput=d;so.onchange=d;d();let c=0;gr.onclick=e=>{if(e.target.tagName=='BUTTON')n.textContent=++c};
+const M=[['t','Hoje 14:02'],['y','✅ Pagamento Pix confirmado'],['v','Olá! Aqui é o Rafa, vou separar seu Gold agora.','Vendedor Rafa'],['c2','Beleza! Meu personagem é o Thalgrim','Você'],['v','Pode ir para a cidade principal, chego em 5 min.','Vendedor Rafa']];
+ms.innerHTML=M.map(m=>m[0]=='t'?`<div class="tm">${m[1]}</div>`:m[0]=='y'?`<div class="sy">${m[1]}</div>`:`<div class="m ${m[0]}">${m[1]}<small>${m[2]}</small></div>`).join('');
+function send(){const v=in_.value.trim();if(!v)return;ms.insertAdjacentHTML('beforeend',`<div class="m c2">${v.replace(/</g,'&lt;')}<small>Você · agora</small></div>`);in_.value='';ms.scrollTop=ms.scrollHeight;setTimeout(()=>{ms.insertAdjacentHTML('beforeend','<div class="m v">Recebi! Já te respondo por aqui e no Discord.<small>Vendedor Rafa · agora</small></div>');ms.scrollTop=ms.scrollHeight},900)}
+const in_=document.getElementById('in');sd.onclick=send;in_.onkeydown=e=>{if(e.key=='Enter')send()};
+</script></body></html>

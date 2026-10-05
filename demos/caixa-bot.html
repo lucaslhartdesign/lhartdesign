@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Caixa Bot — Loja que vende dentro do Discord</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1e1f22;--sd:#2b2d31;--ch:#313338;--ln:#1e1f22;--tx:#dbdee1;--mu:#949ba4;--bl:#5865f2;--gr:#3ba55d;--rd:#ed4245;--ye:#faa61a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#0f1013;color:var(--tx);font:400 15px/1.45 Inter,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.top{max-width:1180px;margin:auto;padding:30px 20px 18px;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end}
+h1{font-size:clamp(28px,4vw,46px);line-height:1.05;letter-spacing:-.035em;margin:10px 0 10px;font-weight:800;color:#fff}h1 span{color:#8e98ff}
+.top p{margin:0;color:var(--mu);font-size:17px;max-width:46ch}.k{display:inline-block;background:#5865f222;color:#a5aeff;font-weight:700;font-size:12px;padding:4px 12px;border-radius:99px;letter-spacing:.1em;text-transform:uppercase}
+.st{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.st button{background:var(--sd);border:1px solid #3a3d44;color:var(--mu);padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px}.st button.on{background:var(--bl);color:#fff;border-color:var(--bl)}
+.app{max-width:1180px;margin:0 auto 40px;padding:0 20px}
+.dc{display:grid;grid-template-columns:72px 230px 1fr;height:640px;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px #000a;border:1px solid #2a2c31}
+.sv{background:#1e1f22;padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:10px}.sv i{width:48px;height:48px;border-radius:50%;background:var(--sd);display:grid;place-items:center;font-style:normal;font-size:22px;transition:.2s}.sv i.on{background:var(--bl);border-radius:16px}
+.ch{background:var(--sd);padding:14px 10px}.ch h4{margin:4px 8px 12px;color:#fff;font-size:15px}.ch .g{color:var(--mu);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:12px 8px 4px}.ch a{display:block;padding:7px 10px;border-radius:6px;color:var(--mu);font-weight:500}.ch a.on,.ch a:hover{background:#3a3c43;color:#fff}.ch a::before{content:"# ";opacity:.6}
+.ms{background:var(--ch);display:flex;flex-direction:column;min-width:0}.mh{padding:13px 18px;border-bottom:1px solid var(--ln);font-weight:700;color:#fff;box-shadow:0 1px 0 #0003}.mh span{color:var(--mu);font-weight:400;margin-left:10px;font-size:13px}
+.fd{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
+.m{display:grid;grid-template-columns:42px 1fr;gap:12px;animation:in .35s backwards}@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:20px;background:#3a3d44}.av.b{background:var(--bl)}
+.m b{color:#fff;font-weight:600}.m b i{font-style:normal;background:var(--bl);color:#fff;font-size:10px;padding:2px 5px;border-radius:4px;margin-left:6px;vertical-align:1px}.m time{color:var(--mu);font-size:12px;margin-left:8px}
+.em{margin-top:6px;background:var(--sd);border-left:4px solid var(--c,var(--bl));border-radius:4px;padding:12px 16px;max-width:460px}.em h5{margin:0 0 6px;font-size:16px;color:#fff}.em p{margin:0;color:#c4c9ce;font-size:14px}.em .f{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;font-size:13px}.em .f b{display:block;color:#fff;font-size:12px}
+.bs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.bs button{border:0;color:#fff;font-weight:600;padding:8px 18px;border-radius:4px;font-size:14px;background:#4e5058}.bs button.p{background:var(--bl)}.bs button.g{background:var(--gr)}.bs button.x{background:var(--rd)}.bs button:hover{filter:brightness(1.15)}.bs button:disabled{opacity:.5;cursor:default}
+.qr{width:120px;height:120px;background:repeating-conic-gradient(#fff 0 25%,#111 0 50%) 0 0/20px 20px;border:8px solid #fff;border-radius:4px;margin-top:10px;display:block}
+.ip{margin:0 16px 16px;background:#383a40;border-radius:8px;padding:11px 14px;color:var(--mu)}.ip b{color:var(--tx);font-weight:500}
+.note{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--mu);font-size:13px;text-align:center}
+@media(max-width:900px){.top{grid-template-columns:1fr}.st{justify-content:flex-start}.dc{grid-template-columns:1fr;height:620px}.sv,.ch{display:none}}
+</style></head><body>
+<div class="top"><div><span class="k">Loja dentro do Discord</span><h1>A venda inteira <span>acontece no chat</span></h1><p>Cliente escolhe, paga no Pix e recebe a entrega sem sair do Discord. Clique nos botões e veja o fluxo.</p></div><div class="st" id="st"><button class="on" data-f="0">1 · Vitrine e compra</button><button data-f="1">2 · Ticket de suporte</button><button data-f="2">3 · Aviso para a staff</button></div></div>
+<div class="app"><div class="dc"><div class="sv"><i class="on">🛒</i><i>🎮</i><i>⚔️</i></div><div class="ch"><h4>Caixa Games ▾</h4><div class="g">Loja</div><a class="on">vitrine</a><a>pedidos</a><a>avaliações</a><div class="g">Suporte</div><a>abrir-ticket</a><a>regras</a></div>
+<div class="ms"><div class="mh" id="hd"># vitrine<span>Compre sem sair do Discord</span></div><div class="fd" id="fd"></div><div class="ip"><b>/</b>comprar item:</div></div></div></div>
+<div class="note">Caixa Bot · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</div>
+<script>
+const now=()=>'Hoje às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+let T=[];function msg(who,html,bot){const e=document.createElement('div');e.className='m';e.innerHTML=`<div class="av ${bot?'b':''}">${bot?'🤖':who[1]}</div><div><b>${who[0]}${bot?'<i>BOT</i>':''}</b><time>${now()}</time>${html}</div>`;fd.appendChild(e);fd.scrollTop=fd.scrollHeight;return e}
+function clear(){T.forEach(clearTimeout);T=[];fd.innerHTML=''}
+const later=(f,t)=>T.push(setTimeout(f,t));
+const U=['Marcos','🧙'],B=['Caixa Bot'];
+function f0(){clear();hd.innerHTML='# vitrine<span>Compre sem sair do Discord</span>';
+msg(B,`<div class="em" style="--c:#faa61a"><h5>🪙 Gold 100M — Aether Online</h5><p>Entrega automática em até 5 minutos.</p><div class="f"><div><b>Preço</b>R$ 39,90</div><div><b>Estoque</b>12 unidades</div></div></div><div class="bs"><button class="g" id="by">Comprar com Pix</button><button>Ver detalhes</button></div>`,1);
+document.getElementById('by').onclick=function(){this.disabled=true;msg(U,'Quero comprar!');
+later(()=>{msg(B,`<div class="em" style="--c:#3ba55d"><h5>Pague com Pix</h5><p>Pedido #4821 · R$ 39,90 · expira em 15 min</p><span class="qr"></span></div><div class="bs"><button class="p" id="pg">Já paguei</button></div>`,1);
+document.getElementById('pg').onclick=function(){this.disabled=true;later(()=>{msg(B,`<div class="em" style="--c:#3ba55d"><h5>✅ Pagamento confirmado</h5><p>Entregando 100M de Gold no personagem <b>Thalgrim</b>…</p></div>`,1)},700);
+later(()=>{msg(B,`<div class="em" style="--c:#3ba55d"><h5>📦 Entregue em 2 min 14 s</h5><p>Avalie a sua compra com 1 toque.</p></div><div class="bs"><button class="p">★★★★★</button></div>`,1)},2200)}},900)}}
+function f1(){clear();hd.innerHTML='# ticket-0042<span>Atendimento privado</span>';
+msg(U,'Meu item ainda não chegou, pedido #4821');
+later(()=>msg(B,`<div class="em"><h5>🎫 Ticket aberto</h5><p>Canal privado criado. Um atendente já foi chamado e a conversa também aparece no site, dentro do pedido.</p></div><div class="bs"><button class="x">Fechar ticket</button></div>`,1),700);
+later(()=>msg(['Rafa (staff)','🦅'],'Oi Marcos! Já estou olhando seu pedido, um minuto.'),2000);
+later(()=>msg(['Rafa (staff)','🦅'],'Entregue! Confere aí no personagem.'),3600)}
+function f2(){clear();hd.innerHTML='# vendas-staff<span>Só a equipe vê</span>';
+msg(B,`<div class="em" style="--c:#3ba55d"><h5>💰 Venda #4821 paga</h5><p>Gold 100M · R$ 39,90 · cliente Marcos<br>Entrega automática concluída.</p></div>`,1);
+later(()=>msg(B,`<div class="em" style="--c:#faa61a"><h5>⚠️ Estoque baixo</h5><p>Gold 100M restam <b>3</b> unidades. Repor?</p></div><div class="bs"><button class="p">Ver estoque</button></div>`,1),1200);
+later(()=>msg(B,`<div class="em" style="--c:#ed4245"><h5>🎫 Novo ticket sem resposta há 10 min</h5><p>Pedido #4818 · cliente Lari</p></div><div class="bs"><button class="g">Assumir</button></div>`,1),2400)}
+const F=[f0,f1,f2];st.onclick=e=>{const b=e.target.closest('button');if(!b)return;st.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b));F[+b.dataset.f]()};f0();
+</script></body></html>

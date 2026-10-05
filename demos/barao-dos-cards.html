@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Barão dos Cards — Gift cards e moedas</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--nv:#14204a;--nv2:#0c1534;--rd:#e2283e;--gd:#ffc93c;--bg:#f2f4fa;--ink:#101830;--mu:#667090;--ln:#dfe3f0;color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Outfit,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.wrap{max-width:1200px;margin:auto;padding:0 18px}
+.hd{background:#fff;border-bottom:1px solid var(--ln)}.hd .wrap{display:flex;align-items:center;gap:22px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;color:var(--nv);line-height:1}.logo i{width:46px;height:50px;background:var(--nv);clip-path:polygon(0 0,100% 0,100% 70%,50% 100%,0 70%);display:grid;place-items:center;font-style:normal;color:var(--gd);font-size:22px}
+.logo small{display:block;font-size:10px;letter-spacing:.3em;color:var(--rd)}
+.sr{flex:1;display:flex;max-width:560px;border:2px solid var(--nv);border-radius:12px;overflow:hidden}.sr input{flex:1;border:0;padding:12px 16px;font:inherit;outline:0;min-width:0}.sr button{border:0;background:var(--nv);color:#fff;padding:0 22px;font-weight:700}
+.ac{display:flex;gap:20px;font-size:12px;color:var(--mu);text-align:center;margin-left:auto}.ac b{display:block;font-size:20px;color:var(--nv)}
+.strip{background:var(--nv);color:#fff;font-size:14px;font-weight:500}.strip .wrap{display:flex;gap:10px 34px;justify-content:center;flex-wrap:wrap;padding-block:10px}.strip span::before{content:"✦ ";color:var(--gd)}
+.bn{margin:20px auto;position:relative;border-radius:22px;overflow:hidden;min-height:300px;background:linear-gradient(110deg,var(--nv2),var(--nv) 55%,#2a3f95);color:#fff;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;padding:40px 48px}
+.bn::before{content:"";position:absolute;right:-60px;top:-60px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,#ffc93c55,transparent 65%)}
+.bn h1{font-size:clamp(30px,4.6vw,56px);line-height:1;margin:0 0 14px;letter-spacing:-.03em}.bn h1 em{font-style:normal;color:var(--gd)}.bn p{margin:0 0 22px;color:#c6d0f5;font-size:18px;max-width:40ch}
+.btn{display:inline-block;background:var(--rd);color:#fff;font-weight:800;padding:14px 28px;border-radius:12px;box-shadow:0 5px 0 #a81a2d;transition:.1s}.btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #a81a2d}
+.stack{position:relative;height:230px}.stack i{position:absolute;width:140px;height:190px;border-radius:16px;display:grid;place-items:center;font-size:56px;font-style:normal;box-shadow:0 14px 30px #0006;border:3px solid #fff3;animation:fl 5s ease-in-out infinite}
+.stack i:nth-child(1){left:6%;top:30px;background:linear-gradient(#1a8cff,#0b3d91);transform:rotate(-10deg)}.stack i:nth-child(2){left:34%;top:0;background:linear-gradient(#2dd36f,#0b6a35);z-index:2;animation-delay:-1.5s}.stack i:nth-child(3){left:62%;top:34px;background:linear-gradient(#ff4d6d,#8e1230);transform:rotate(10deg);animation-delay:-3s}
+@keyframes fl{50%{translate:0 -12px}}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:-6px}.dots i{width:9px;height:9px;border-radius:50%;background:#c4cae0}.dots i:first-child{background:var(--nv);width:24px;border-radius:5px}
+h2{font-size:26px;letter-spacing:-.02em;margin:34px 0 16px;display:flex;align-items:center;gap:10px}h2::before{content:"";width:6px;height:26px;background:var(--rd);border-radius:3px}
+.gr{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.c{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--ln);transition:.2s;text-align:center;cursor:pointer}.c:hover{transform:translateY(-6px);box-shadow:0 16px 34px #14204a22}
+.c .t{height:10px;background:var(--cl)}.c .a{height:130px;display:grid;place-items:center;font-size:58px;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--cl) 22%,#fff),#fff 70%)}
+.c b{display:block;font-size:17px}.c small{color:var(--mu)}.c .p{padding:8px 10px 16px}.c .f{display:inline-block;margin-top:8px;background:var(--bg);color:var(--nv);font-weight:700;font-size:13px;padding:5px 12px;border-radius:99px}
+.bot{margin:40px 0;background:#2b2d31;color:#dbdee1;border-radius:20px;display:grid;grid-template-columns:1fr 1.1fr;gap:30px;padding:34px;align-items:center}
+.bot h3{color:#fff;font-size:28px;margin:0 0 8px;letter-spacing:-.02em}.bot p{margin:0 0 18px;color:#b5bac1}
+.dsc{background:#5865f2;color:#fff;padding:11px 22px;border-radius:10px;font-weight:700;display:inline-block}
+.msg{background:#232428;border-radius:12px;padding:16px;font-size:14.5px}.msg b{color:#fff}.msg i{font-style:normal;background:#5865f2;color:#fff;font-size:10px;padding:2px 5px;border-radius:4px;margin-left:5px}
+.em{margin-top:8px;border-left:4px solid #3ba55d;background:#2b2d31;padding:10px 14px;border-radius:4px}
+.fs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}.fs div{background:#fff;border:1px solid var(--ln);border-radius:16px;padding:20px;text-align:center}.fs i{font-size:32px;font-style:normal}.fs b{display:block;margin-top:6px}.fs span{color:var(--mu);font-size:14px}
+footer{background:var(--nv2);color:#9aa6d6;padding:28px 0;font-size:14px;text-align:center}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,40px);background:var(--nv);color:#fff;padding:12px 22px;border-radius:12px;opacity:0;transition:.3s}.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:900px){.gr{grid-template-columns:repeat(2,1fr)}.bn,.bot{grid-template-columns:1fr;padding:28px}.stack{display:none}.fs{grid-template-columns:1fr 1fr}.ac{display:none}}
+</style></head><body>
+<div class="hd"><div class="wrap"><a class="logo" href="#"><i>♛</i><span>Barão<small>DOS CARDS</small></span></a><div class="sr"><input placeholder="O que você está procurando?"><button>Buscar</button></div><div class="ac"><div><b>👤</b>Minha conta</div><div><b>📄</b>Pedidos</div><div><b>🛒</b>Carrinho</div></div></div></div>
+<div class="strip"><div class="wrap"><span>Entrega média de 1 a 5 minutos</span><span>Pix com confirmação automática</span><span>Atendimento humano 7 dias</span><span>Entrega acompanhada no Discord</span></div></div>
+<div class="wrap"><div class="bn"><div><h1>Todo gift card e moeda <em>num só lugar</em></h1><p>Escolha a plataforma, pague no Pix e receba o código na tela e no seu Discord.</p><a class="btn" href="#cat">Ver catálogo</a></div><div class="stack"><i>🎮</i><i>🟩</i><i>🎁</i></div></div><div class="dots"><i></i><i></i><i></i><i></i></div>
+<h2 id="cat">Plataformas e jogos</h2><div class="gr" id="gr"></div>
+<div class="bot"><div><h3>Seu pedido também chega no Discord</h3><p>O bot confirma o pagamento, entrega o código na DM e abre um canal de suporte se algo der errado. Zero espera por atendente.</p><span class="dsc">Entrar no servidor</span></div>
+<div class="msg"><b>Barão Bot</b><i>BOT</i> <span style="color:#80848e;font-size:12px">hoje</span><div class="em"><b>✅ Pedido #4821 pago</b><br>Gift Card Xbox R$ 100 · Código enviado na sua DM.<br><span style="color:#80848e">Entregue em 2 min 14 s</span></div></div></div>
+<div class="fs"><div><i>⚡</i><b>Entrega rápida</b><span>Média de 1 a 5 min</span></div><div><i>🔒</i><b>Compra segura</b><span>Pix e cartão</span></div><div><i>💬</i><b>Suporte real</b><span>Site e Discord</span></div><div><i>⭐</i><b>Nota 4,9</b><span>+12 mil avaliações</span></div></div></div>
+<footer>Barão dos Cards · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</footer><div class="toast" id="t"></div>
+<script>
+const L=[['Playstation','🎮','#1a6cff'],['Xbox','🟩','#2dd36f'],['Google Play','▶️','#f5a623'],['Nintendo','🔴','#e2283e'],['Apple','🍎','#444'],['Steam','💨','#1b3a63'],['Roblox','🧱','#e23b3b'],['Free Fire','🔥','#ff7a1a'],['Valorant','🎯','#ff4655'],['Minecraft','⛏️','#5da12c']];
+gr.innerHTML=L.map(l=>`<div class="c" style="--cl:${l[2]}"><div class="t"></div><div class="a">${l[1]}</div><div class="p"><b>${l[0]}</b><small>Gift cards e moedas</small><br><span class="f">a partir de R$ 10</span></div></div>`).join('');
+gr.onclick=e=>{if(e.target.closest('.c')){t.textContent='Item adicionado ao carrinho';t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1500)}};
+</script></body></html>

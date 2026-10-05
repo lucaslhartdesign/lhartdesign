@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gamepass Galaxy — Entrega na hora</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0612;--p:#140c24;--ln:#2c1c4a;--pu:#8b3dff;--pk:#ff3df0;--gr:#2dff9a;--ink:#f6f0ff;--mu:#a79bc9;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 17px/1.5 Barlow,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.ab{font-family:"Archivo Black",sans-serif;text-transform:uppercase}
+.wrap{max-width:1200px;margin:auto;padding:0 20px}
+.hd{border-bottom:1px solid var(--ln);background:#0a0612e8;backdrop-filter:blur(8px);position:sticky;top:0;z-index:9}.hd .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font:20px "Archivo Black";letter-spacing:.04em}.logo span{color:var(--pk)}
+nav{display:flex;gap:26px;font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mu)}nav a:hover{color:#fff}
+.ch{display:flex;gap:8px;font-size:13px}.ch span{border:1px solid var(--ln);border-radius:8px;padding:7px 12px;background:var(--p)}
+.hero{position:relative;overflow:hidden;padding:70px 0 90px}
+.hero::before{content:"";position:absolute;left:-10%;right:-10%;top:0;bottom:0;background:repeating-linear-gradient(-62deg,transparent 0 60px,#8b3dff14 60px 120px);}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+.tg{display:inline-block;background:var(--pu);padding:6px 16px 6px 12px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+h1{font:clamp(40px,7vw,86px)/.92 "Archivo Black";text-transform:uppercase;margin:18px 0}h1 span{color:var(--pk);text-shadow:0 0 30px #ff3df066}
+.hero p{max-width:44ch;color:#cfc2ee;font-size:19px}.hero p b{color:var(--gr)}
+.bt{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.b1{background:var(--pu);color:#fff;font:15px "Archivo Black";text-transform:uppercase;letter-spacing:.05em;padding:17px 30px;transform:skewX(-8deg);display:inline-block;transition:.15s}.b1>*{display:inline-block;transform:skewX(8deg)}.b1:hover{background:var(--pk)}
+.b2{background:transparent;box-shadow:inset 0 0 0 2px var(--ln);color:#fff}.b2:hover{box-shadow:inset 0 0 0 2px var(--pu);background:transparent}
+.tilt{position:relative;height:380px}
+.tl{position:absolute;width:190px;height:230px;border-radius:14px;border:3px solid #fff2;box-shadow:0 20px 40px #000a;display:grid;place-items:center;font-size:80px;overflow:hidden;animation:fl 6s ease-in-out infinite}
+.tl::after{content:attr(data-p);position:absolute;right:8px;bottom:8px;background:#0009;border-radius:7px;font:13px "Archivo Black";padding:3px 8px}
+.tl:nth-child(1){left:6%;top:30px;background:linear-gradient(140deg,#ff3df0,#5a0f7a);transform:rotate(-8deg)}.tl:nth-child(2){left:40%;top:0;background:linear-gradient(140deg,#2dff9a,#0b5a3a);transform:rotate(5deg);animation-delay:-2s}.tl:nth-child(3){left:12%;top:170px;background:linear-gradient(140deg,#ffcf3a,#8a4a00);transform:rotate(6deg);animation-delay:-4s}.tl:nth-child(4){left:50%;top:190px;background:linear-gradient(140deg,#3ab0ff,#0a2a8a);transform:rotate(-5deg);animation-delay:-1s}
+@keyframes fl{50%{translate:0 -10px}}
+.live{background:var(--p);border:1px solid var(--ln);margin-top:-40px;position:relative;z-index:3;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
+.live h3{margin:0;padding:14px 20px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;display:flex;justify-content:space-between;border-bottom:1px solid var(--ln)}.live h3::before{content:"●";color:var(--gr);margin-right:8px;animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
+.live h3 span{color:var(--mu);margin-left:auto}
+.lr{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:12px 20px;border-bottom:1px solid #ffffff08;animation:sl .5s backwards}@keyframes sl{from{opacity:0;transform:translateX(-20px)}}
+.lr i{width:44px;height:44px;background:#0006;border-radius:10px;display:grid;place-items:center;font-style:normal;font-size:22px}.lr b{display:block;font-size:16px}.lr small{color:var(--mu)}.lr em{font-style:normal;color:var(--gr);font-weight:700;font-size:13px;white-space:nowrap}
+h2{font:clamp(28px,4.4vw,48px)/1 "Archivo Black";text-transform:uppercase;margin:60px 0 24px}h2 span{color:var(--pu)}
+.gm{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.g{background:var(--p);border:1px solid var(--ln);border-radius:14px;overflow:hidden;transition:.2s;cursor:pointer}.g:hover{transform:translateY(-5px) rotate(-.6deg);border-color:var(--pk)}
+.g .a{height:130px;display:grid;place-items:center;font-size:56px;background:var(--bg2)}.g .i{padding:12px 14px}.g b{display:block}.g small{color:var(--mu)}.g .p{color:var(--gr);font:15px "Archivo Black"}
+.mq{margin:50px -20px 0;overflow:hidden;border-block:1px solid var(--ln);padding:16px 0}.mq div{display:flex;gap:16px;width:max-content;animation:m 40s linear infinite}@keyframes m{to{transform:translateX(-50%)}}
+.rv{width:300px;flex:none;background:var(--p);border:1px solid var(--ln);border-radius:14px;padding:14px 16px}.rv b{font-size:15px}.rv small{color:var(--gr);display:block;font-size:12px}.rv p{margin:6px 0 0;color:var(--mu);font-size:14.5px}
+.bt2{margin:60px 0;padding:36px;background:linear-gradient(120deg,var(--pu),var(--pk));display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap;clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,28px 100%,0 calc(100% - 28px))}
+.bt2 h3{font:clamp(22px,3.4vw,34px) "Archivo Black";text-transform:uppercase;margin:0}.bt2 p{margin:6px 0 0;max-width:46ch}.bt2 a{background:#fff;color:#4a0f9a;font:15px "Archivo Black";text-transform:uppercase;padding:15px 26px}
+footer{padding:26px 0;text-align:center;color:var(--mu);font-size:14px;border-top:1px solid var(--ln)}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.tilt{height:300px}.tl{width:130px;height:160px;font-size:54px}.gm{grid-template-columns:repeat(2,1fr)}nav,.ch{display:none}}
+</style></head><body>
+<div class="hd"><div class="wrap"><a class="logo" href="#">GAMEPASS<span>GALAXY</span></a><nav><a href="#j">Jogos</a><a href="#e">Entregas</a><a href="#a">Afiliados</a></nav><div class="ch"><span>R$ 0,00</span><span>🛒 0</span></div></div></div>
+<div class="hero"><div class="wrap"><div><span class="tg">Pix · entrega em minutos</span><h1>Escolha os itens,<br><span>receba na hora</span></h1><p>Você escolhe, paga no Pix e recebe na sua conta em poucos minutos. Para entregar, <b>só pedimos o seu @</b>. Nunca a sua senha.</p><div class="bt"><a class="b1" href="#j"><span>Ver os 24 jogos</span></a><a class="b1 b2" href="#e"><span>Ver entregas</span></a></div></div>
+<div class="tilt"><div class="tl" data-p="R$ 1,13">⚔️</div><div class="tl" data-p="R$ 2,41">👗</div><div class="tl" data-p="R$ 2,21">🌀</div><div class="tl" data-p="R$ 1,13">👑</div></div></div></div>
+<div class="wrap"><div class="live" id="e"><h3>Últimas entregas<span>entrega automática</span></h3><div id="lv"></div></div>
+<h2 id="j">Escolha o <span>jogo</span></h2><div class="gm" id="gm"></div>
+<div class="mq"><div id="mq"></div></div>
+<div class="bt2"><div><h3>Seu pedido tem bot no Discord</h3><p>Aviso de pagamento, de entrega e canal de suporte aberto na hora. Sem fila de atendimento.</p></div><a href="#">Entrar no Discord</a></div></div>
+<footer>Gamepass Galaxy · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</footer>
+<script>
+const F=[['3.990 Gems','Anime Arena','@brb•••','47 min','💎'],['Passe Acesso Remoto','Anime Arena','@jvg•••','48 min','🔑'],['Acesso Remoto +1','Anime Arena','@jok•••','48 min','🔑'],['Espada Lendária','Fruit Quest','@lua•••','52 min','⚔️']];
+lv.innerHTML=F.map((f,i)=>`<div class="lr" style="animation-delay:${i*.15}s"><i>${f[4]}</i><div><b>${f[0]}</b><small>${f[1]} · ${f[2]}</small></div><em>há ${f[3]}</em></div>`).join('');
+const G=[['Fruit Quest','⚔️','R$ 1,13','#3a1a5a'],['Dress Up Star','👗','R$ 5,81','#5a1a4a'],['Legacy Kings','👑','R$ 1,13','#5a3a0a'],['Anime Arena','🌀','R$ 2,21','#0a2a5a'],['Garden Grow','🌱','R$ 1,90','#0a4a2a'],['Brainrot Run','🧠','R$ 3,40','#4a1a1a'],['Tower Siege','🏰','R$ 2,75','#1a2a4a'],['Pet Sim X','🐾','R$ 1,60','#3a2a5a']];
+gm.innerHTML=G.map(g=>`<div class="g" style="--bg2:${g[3]}"><div class="a">${g[1]}</div><div class="i"><b>${g[0]}</b><small>a partir de</small> <span class="p">${g[2]}</span></div></div>`).join('');
+const R=[['EuhGuiii','Entrega certinho'],['Tigor1278','Rápido e prático'],['knrevenger','Entrega muito rápida, ótimo atendimento'],['c1arl0s','Confiável, recomendo'],['Aleczinh0','Ótimo, rápido e prático'],['heroi_gu','Entrega rápida, ótima loja']];
+const h=R.map(r=>`<div class="rv"><b>${r[0]}</b><small>★★★★★ Comprador verificado</small><p>${r[1]}</p></div>`).join('');mq.innerHTML=h+h;
+</script></body></html>

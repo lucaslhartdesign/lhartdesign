@@ -2,125 +2,190 @@
 <html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sites para Games — Lhart Design</title>
-<meta name="description" content="Prévias de sites para venda de itens e moedas de jogos (RMT), bots de Discord, ShotCaller e automações. Escolha um estilo e a Lhart Design monta o seu.">
+<meta name="description" content="Lojas de itens e moedas (RMT), bots de Discord para guildas e lojas, ShotCaller e automações. Veja 20+ estilos ao vivo e escolha o seu.">
 <meta property="og:title" content="Sites para Games — Lhart Design"><meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a14;--p:#12121f;--p2:#1a1a2c;--ln:#2a2a45;--ac:#9184d9;--ac2:#c7b8ff;--gd:#f0c35a;--gr:#3ddc97;--ink:#ecebf5;--mu:#9a9ab8;color-scheme:dark}
+:root{--bg:#07070f;--p:#101022;--p2:#181834;--ln:#2a2a4d;--ac:#8f7bff;--ac2:#c9bcff;--pk:#ff4fd8;--cy:#35e6ff;--gd:#ffcf4a;--gr:#3df0a0;--ink:#efeefc;--mu:#9d9cc4;color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Manrope,sans-serif;overflow-x:hidden}
 a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
-.d{font-family:"Chakra Petch",sans-serif}.wrap{max-width:1240px;margin:auto;padding:0 20px}
-.nav{position:sticky;top:0;z-index:20;background:rgba(10,10,20,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}
+.d{font-family:"Chakra Petch",sans-serif}.wrap{max-width:1280px;margin:auto;padding:0 20px}
+.nav{position:sticky;top:0;z-index:30;background:rgba(7,7,15,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
-.nav img{height:34px;width:auto}.nav .l{display:flex;gap:22px;color:var(--mu);font-size:15px;font-weight:500;align-items:center}.nav .l a:hover,.nav .l a.on{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ac);color:#0c0a1c;font-weight:800;border:0;border-radius:12px;padding:14px 24px;transition:.15s}.btn:hover{background:var(--ac2);transform:translateY(-2px)}
-.btn.g{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ln)}.btn.g:hover{box-shadow:inset 0 0 0 1.5px var(--ac);background:transparent}
-.hero{position:relative;padding:84px 0 56px;overflow:hidden;text-align:center}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 20% 20%,#9184d933,transparent 70%),radial-gradient(600px 300px at 85% 40%,#f0c35a1f,transparent 70%)}
-.hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff07 1px,transparent 1px),linear-gradient(90deg,#ffffff07 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
-.hero .wrap{position:relative;z-index:1}
-.kick{display:inline-flex;gap:8px;align-items:center;font:600 13px "Chakra Petch";letter-spacing:.2em;text-transform:uppercase;color:var(--gd);border:1px solid #f0c35a55;padding:6px 14px;border-radius:99px}
-h1{font:700 clamp(36px,6.4vw,76px)/1.02 "Chakra Petch";letter-spacing:-.01em;margin:20px auto 18px;max-width:18ch}
-h1 span{background:linear-gradient(90deg,var(--ac2),var(--gd));-webkit-background-clip:text;color:transparent}
-.hero p.l{max-width:58ch;margin:0 auto 30px;color:#c3c2dc;font-size:20px}
-.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:50px;text-align:left}
-.pl{background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:22px;transition:.2s}.pl:hover{border-color:var(--ac);transform:translateY(-3px)}
-.pl i{font-style:normal;font-size:28px}.pl h3{margin:6px 0 4px;font:700 20px "Chakra Petch"}.pl p{margin:0;color:var(--mu);font-size:15px}
-.bar{position:sticky;top:64px;z-index:15;background:rgba(10,10,20,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln);padding:12px 0}
+.nav img{height:34px;width:auto}.nav .l{display:flex;gap:22px;color:var(--mu);font-size:15px;font-weight:600;align-items:center}.nav .l a:hover,.nav .l a.on{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--pk));color:#fff;font-weight:800;border:0;border-radius:14px;padding:15px 28px;transition:.2s;box-shadow:0 10px 30px #8f7bff55}
+.btn:hover{transform:translateY(-3px);box-shadow:0 16px 40px #ff4fd855}
+.btn.g{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ln);color:var(--ink)}.btn.g:hover{box-shadow:inset 0 0 0 1.5px var(--cy);color:var(--cy)}
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:70px 0 40px;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-20% -10% 0;z-index:-2;background:radial-gradient(600px 400px at 15% 20%,#8f7bff44,transparent 70%),radial-gradient(500px 400px at 85% 30%,#ff4fd833,transparent 70%),radial-gradient(500px 300px at 50% 100%,#35e6ff22,transparent 70%)}
+.hero::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-40px;height:340px;z-index:-1;background:repeating-linear-gradient(90deg,#8f7bff38 0 1px,transparent 1px 64px),repeating-linear-gradient(0deg,#35e6ff2a 0 1px,transparent 1px 44px);transform:perspective(420px) rotateX(64deg);transform-origin:bottom;mask-image:linear-gradient(transparent,#000 70%);animation:gr 3s linear infinite}
+@keyframes gr{to{background-position:0 0,0 44px}}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.05fr;gap:30px;align-items:center}
+.kick{display:inline-flex;gap:8px;align-items:center;font:700 13px "Chakra Petch";letter-spacing:.2em;text-transform:uppercase;color:var(--gd);border:1px solid #ffcf4a55;padding:7px 16px;border-radius:99px;background:#ffcf4a12}
+.kick i{width:8px;height:8px;border-radius:50%;background:var(--gr);box-shadow:0 0 10px var(--gr);animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
+h1{font:700 clamp(40px,6.4vw,84px)/.96 "Chakra Petch";letter-spacing:-.02em;margin:22px 0 18px}
+h1 .g1{background:linear-gradient(90deg,var(--ac2),var(--pk),var(--gd));background-size:200%;-webkit-background-clip:text;color:transparent;animation:sh 6s linear infinite}@keyframes sh{to{background-position:200%}}
+.hero .l{color:#c8c7e6;font-size:20px;max-width:46ch;margin:0 0 28px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.stats{display:flex;gap:34px;margin-top:38px;flex-wrap:wrap}.stats b{display:block;font:700 40px "Chakra Petch";color:#fff;line-height:1}.stats span{color:var(--mu);font-size:14px}
+.stage{position:relative;height:470px;perspective:1400px}
+.dev{position:absolute;border-radius:16px;overflow:hidden;border:1px solid #ffffff30;box-shadow:0 40px 80px #000c,0 0 60px #8f7bff33;background:#000;transition:transform .15s ease-out}
+.dev::before{content:"";position:absolute;left:0;right:0;top:0;height:22px;z-index:3;background:#0c0c18;border-bottom:1px solid #ffffff18}
+.dev::after{content:"● ● ●";position:absolute;top:2px;left:10px;font-size:9px;letter-spacing:2px;color:#6a6a90;z-index:4}
+.dev iframe{position:absolute;left:0;top:22px;width:1280px;height:800px;border:0;transform-origin:0 0;pointer-events:none}
+.dev.a{width:520px;height:340px;left:0;top:70px;z-index:2;animation:fa 7s ease-in-out infinite}
+.dev.b{width:460px;height:310px;right:0;top:0;z-index:1;animation:fa 8s ease-in-out infinite -2s}
+.dev.c{width:420px;height:290px;right:40px;bottom:0;z-index:3;animation:fa 9s ease-in-out infinite -4s}
+@keyframes fa{50%{translate:0 -16px}}
+/* MARQUEE */
+.mq{border-block:1px solid var(--ln);background:var(--p);overflow:hidden;margin-top:30px}.mq div{display:flex;width:max-content;animation:m 36s linear infinite}.mq span{padding:15px 26px;font:700 15px "Chakra Petch";letter-spacing:.14em;text-transform:uppercase;color:var(--mu);display:flex;gap:26px;align-items:center;white-space:nowrap}.mq span::after{content:"◆";color:var(--ac)}
+@keyframes m{to{transform:translateX(-50%)}}
+/* PILLARS */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:60px 0 20px}
+.pl{position:relative;background:linear-gradient(160deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:22px;padding:28px;overflow:hidden;transition:.25s}.pl:hover{transform:translateY(-6px);border-color:var(--c)}
+.pl::before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:var(--c);opacity:.18;filter:blur(30px)}
+.pl i{font-style:normal;font-size:38px}.pl h3{margin:8px 0 6px;font:700 24px "Chakra Petch"}.pl p{margin:0;color:var(--mu);font-size:15.5px}
+/* BOTS */
+.sec{padding:70px 0}.sec h2{font:700 clamp(30px,4.6vw,56px)/1 "Chakra Petch";margin:0 0 12px;letter-spacing:-.02em}.sec h2 span{background:linear-gradient(90deg,var(--ac2),var(--cy));-webkit-background-clip:text;color:transparent}.sec .s{color:var(--mu);max-width:62ch;margin:0 0 34px;font-size:18px}
+.bots{background:linear-gradient(#0a0a1a,#0d0d24);border-block:1px solid var(--ln)}
+.bg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.dm{background:#2b2d31;border-radius:16px;padding:16px;font-size:14px;color:#dbdee1;box-shadow:0 20px 50px #0008;border:1px solid #ffffff10;transition:.25s;animation:up .6s backwards}.dm:hover{transform:translateY(-6px) rotate(-.5deg)}
+@keyframes up{from{opacity:0;transform:translateY(20px)}}
+.dm .h{display:flex;gap:10px;align-items:center;margin-bottom:10px}.dm .av{width:36px;height:36px;border-radius:50%;background:#5865f2;display:grid;place-items:center}.dm .h b{color:#fff}.dm .h i{font-style:normal;background:#5865f2;color:#fff;font-size:10px;padding:2px 5px;border-radius:4px;margin-left:5px}
+.dm .e{border-left:4px solid var(--c);background:#232428;border-radius:4px;padding:10px 12px}.dm .e b{display:block;color:#fff;margin-bottom:3px}.dm .e span{color:#b5bac1}
+.dm .bt{display:flex;gap:6px;margin-top:10px}.dm .bt span{background:#4e5058;padding:5px 12px;border-radius:4px;font-size:12.5px;font-weight:600}.dm .bt span.p{background:#5865f2}
+.bl{display:flex;gap:30px;margin-top:40px;flex-wrap:wrap}.bl div{display:flex;gap:10px;align-items:center;color:#c8c7e6}.bl div::before{content:"✓";color:var(--gr);font-weight:900}
+/* FILTERS */
+.bar{position:sticky;top:64px;z-index:20;background:rgba(7,7,15,.94);backdrop-filter:blur(12px);border-block:1px solid var(--ln);padding:12px 0}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
-.chip{flex:none;border:0;background:var(--p);color:var(--mu);padding:9px 18px;border-radius:99px;font-weight:700;font-size:14px;box-shadow:inset 0 0 0 1px var(--ln);transition:.15s}.chip:hover{color:var(--ink)}.chip.on{background:var(--ac);color:#0c0a1c;box-shadow:none}
-.chip small{opacity:.7;margin-left:4px}
-.gal{padding:36px 0 70px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.card{background:var(--p);border:1px solid var(--ln);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:.25s;animation:in .5s backwards}
-@keyframes in{from{opacity:0;transform:translateY(16px)}}
-.card:hover{transform:translateY(-6px);border-color:var(--c,var(--ac));box-shadow:0 20px 50px #0008,0 0 0 1px var(--c,var(--ac))}
+.chip{flex:none;border:0;background:var(--p);color:var(--mu);padding:11px 20px;border-radius:99px;font-weight:700;font-size:14.5px;box-shadow:inset 0 0 0 1px var(--ln);transition:.15s}.chip:hover{color:#fff;box-shadow:inset 0 0 0 1px var(--ac)}.chip.on{background:linear-gradient(135deg,var(--ac),var(--pk));color:#fff;box-shadow:none}.chip small{opacity:.75;margin-left:6px}
+/* GALLERY */
+.gal{padding:36px 0 40px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.card{background:var(--p);border:1px solid var(--ln);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,border-color .25s,box-shadow .25s;animation:up .5s backwards;position:relative}
+.card:hover{transform:translateY(-8px);border-color:var(--c);box-shadow:0 26px 60px #000a,0 0 0 1px var(--c),0 0 50px color-mix(in srgb,var(--c) 30%,transparent)}
 .pv{position:relative;aspect-ratio:16/10;overflow:hidden;background:#000;cursor:pointer;border-bottom:1px solid var(--ln)}
 .pv iframe{position:absolute;left:0;top:0;width:1280px;height:800px;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
-.pv::after{content:"▶ Abrir prévia";position:absolute;inset:0;display:grid;place-items:center;font:700 16px "Chakra Petch";letter-spacing:.1em;background:#0009;opacity:0;transition:.2s;text-transform:uppercase}
-.pv:hover::after{opacity:1}
-.num{position:absolute;top:10px;left:10px;z-index:2;background:#0a0a14e6;border:1px solid var(--ln);border-radius:8px;padding:2px 9px;font:700 13px "Chakra Petch";color:var(--gd)}
-.cb{padding:18px 20px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
-.cat{font:700 11px "Chakra Petch";letter-spacing:.18em;text-transform:uppercase;color:var(--c,var(--ac2))}
-.card h3{margin:0;font:700 24px "Chakra Petch"}.card p{margin:0;color:var(--mu);font-size:15px}
-.sw{display:flex;gap:6px;margin:6px 0 4px}.sw i{width:22px;height:22px;border-radius:7px;border:1px solid #fff2}
-.acts{display:flex;gap:8px;margin-top:auto;padding-top:12px}.acts .btn{flex:1;justify-content:center;padding:11px 10px;font-size:14px}
-.how{background:var(--p);border-block:1px solid var(--ln);padding:70px 0}
-.how h2,.sec h2{font:700 clamp(28px,4vw,44px)/1.05 "Chakra Petch";margin:0 0 10px}.how .s{color:var(--mu);margin:0 0 34px;max-width:60ch}
-.st{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.st div{background:var(--bg);border:1px solid var(--ln);border-radius:18px;padding:22px}.st b{font:700 44px "Chakra Petch";color:transparent;-webkit-text-stroke:1.5px var(--ac)}.st h4{margin:4px 0;font:700 19px "Chakra Petch"}.st p{margin:0;color:var(--mu);font-size:15px}
-.sec{padding:70px 0}.inc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}.inc div{padding:16px 18px;background:var(--p);border:1px solid var(--ln);border-radius:14px;font-size:15px}.inc div::before{content:"✓ ";color:var(--gr);font-weight:800}
-.cta{margin:10px 0 80px;border-radius:28px;padding:54px 30px;text-align:center;background:linear-gradient(135deg,#2b2360,#4a3a9c 60%,#7a5ad0);position:relative;overflow:hidden}
-.cta h2{font:700 clamp(28px,4.4vw,48px)/1.05 "Chakra Petch";margin:0 0 10px}.cta p{margin:0 auto 26px;max-width:50ch;color:#e4dcff}.cta .btn{background:#fff;color:#1c1450}
+.pv::after{content:"Abrir ao vivo →";position:absolute;left:50%;bottom:16px;translate:-50% 20px;opacity:0;transition:.25s;background:#000c;border:1px solid #ffffff44;padding:9px 20px;border-radius:99px;font:700 13px "Chakra Petch";letter-spacing:.1em;text-transform:uppercase;z-index:3}
+.card:hover .pv::after{opacity:1;translate:-50% 0}
+.num{position:absolute;top:12px;left:12px;z-index:4;background:#07070fe6;border:1px solid var(--ln);border-radius:9px;padding:3px 10px;font:700 13px "Chakra Petch";color:var(--gd)}
+.tag{position:absolute;top:12px;right:12px;z-index:4;background:linear-gradient(135deg,var(--pk),var(--ac));border-radius:9px;padding:3px 10px;font:700 11px "Chakra Petch";letter-spacing:.1em;text-transform:uppercase}
+.cb{padding:20px 22px 22px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cat{font:700 11px "Chakra Petch";letter-spacing:.18em;text-transform:uppercase;color:var(--c)}
+.card h3{margin:0;font:700 26px "Chakra Petch"}.card p{margin:0;color:var(--mu);font-size:15px}
+.ins{font-size:13px;color:var(--ac2);background:#8f7bff1a;border-radius:8px;padding:4px 10px;align-self:flex-start;margin-top:2px}
+.sw{display:flex;gap:6px;margin:6px 0 2px}.sw i{width:22px;height:22px;border-radius:7px;border:1px solid #fff2}
+.acts{display:flex;gap:8px;margin-top:auto;padding-top:14px}.acts .btn{flex:1;padding:12px 10px;font-size:14px;box-shadow:none}.acts .btn.g{box-shadow:inset 0 0 0 1.5px var(--ln)}
+/* HOW */
+.st{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.st div{background:var(--p);border:1px solid var(--ln);border-radius:20px;padding:24px;transition:.2s}.st div:hover{border-color:var(--ac);transform:translateY(-4px)}.st b{font:700 56px "Chakra Petch";color:transparent;-webkit-text-stroke:1.5px var(--ac);line-height:1}.st h4{margin:8px 0 4px;font:700 20px "Chakra Petch"}.st p{margin:0;color:var(--mu);font-size:15px}
+.inc{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.inc div{padding:16px 18px;background:var(--p);border:1px solid var(--ln);border-radius:14px;font-size:15px}.inc div::before{content:"✓ ";color:var(--gr);font-weight:800}
+.cta{margin:20px 0 80px;border-radius:32px;padding:70px 30px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#2b2360,#5a3ac0 55%,#c03ab0)}
+.cta::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-60deg,transparent 0 40px,#ffffff08 40px 80px)}
+.cta>*{position:relative}.cta h2{font:700 clamp(30px,5vw,60px)/1 "Chakra Petch";margin:0 0 12px}.cta p{margin:0 auto 28px;max-width:52ch;color:#ebe4ff;font-size:19px}.cta .btn{background:#fff;color:#2b1470;box-shadow:0 12px 40px #0006}
 footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:14px}footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-/* modal */
-.md{position:fixed;inset:0;z-index:50;background:#05050ce6;backdrop-filter:blur(8px);display:none;flex-direction:column}.md.on{display:flex}
-.mh{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--ln);background:var(--p);flex-wrap:wrap}
-.mh b{font:700 18px "Chakra Petch"}.mh .sp{flex:1}
-.dv{display:flex;background:var(--bg);border-radius:10px;padding:3px;border:1px solid var(--ln)}.dv button{border:0;background:none;color:var(--mu);padding:6px 14px;border-radius:8px;font-weight:700;font-size:13px}.dv button.on{background:var(--ac);color:#0c0a1c}
+.wf{position:fixed;right:18px;bottom:18px;z-index:40;background:#25d366;color:#04200f;font-weight:800;padding:14px 22px;border-radius:99px;box-shadow:0 10px 30px #25d36655;display:flex;gap:8px;align-items:center;animation:pu 2.4s infinite}@keyframes pu{50%{transform:scale(1.06)}}
+/* MODAL */
+.md{position:fixed;inset:0;z-index:60;background:#03030bf0;backdrop-filter:blur(10px);display:none;flex-direction:column}.md.on{display:flex}
+.mh{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--ln);background:var(--p);flex-wrap:wrap}.mh b{font:700 18px "Chakra Petch"}.mh .sp{flex:1}
+.dv{display:flex;background:var(--bg);border-radius:10px;padding:3px;border:1px solid var(--ln)}.dv button{border:0;background:none;color:var(--mu);padding:6px 14px;border-radius:8px;font-weight:700;font-size:13px}.dv button.on{background:var(--ac);color:#fff}
 .mh .x{border:0;background:var(--p2);color:var(--ink);width:38px;height:38px;border-radius:10px;font-size:18px}
-.mb{flex:1;display:grid;place-items:center;padding:18px;overflow:auto;min-height:0}
-.fr{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px #000a;width:100%;height:100%;transition:width .3s;max-width:100%}.fr.m{width:390px}
-.fr iframe{width:100%;height:100%;border:0;display:block}
-@media(max-width:1020px){.gal{grid-template-columns:repeat(2,1fr)}.st{grid-template-columns:1fr 1fr}}
-@media(max-width:680px){.gal,.pillars,.inc,.st{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:56px 0 40px}.dv{display:none}}
+.mh .btn{padding:9px 16px;font-size:14px;box-shadow:none}
+.mb{flex:1;display:grid;place-items:center;padding:18px;overflow:auto;min-height:0}.fr{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px #000a;width:100%;height:100%;transition:width .3s;max-width:100%}.fr.m{width:390px}.fr iframe{width:100%;height:100%;border:0;display:block}
+@media(max-width:1100px){.hero .wrap{grid-template-columns:1fr}.stage{display:none}.gal{grid-template-columns:repeat(2,1fr)}.bg{grid-template-columns:repeat(2,1fr)}.st{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.gal,.pillars,.inc,.st,.bg{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:44px 0 20px}.dv{display:none}.stats{gap:22px}.wf span{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
 <div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
-<div class="l"><a href="index.html">Início</a><a class="on" href="vitrine.html">Sites para Games</a><a href="#galeria">Estilos</a><a href="#como">Como funciona</a><a class="btn" id="navwa" href="#" style="padding:10px 18px;font-size:14px">Pedir o meu</a></div></div></div>
+<div class="l"><a href="index.html">Início</a><a class="on" href="vitrine.html">Sites para Games</a><a href="#bots">Bots</a><a href="#galeria">Estilos</a><a class="btn" id="navwa" href="#" style="padding:10px 18px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
 
-<div class="hero"><div class="wrap"><span class="kick">⚔ Sites para Games</span>
-<h1>Sua loja de jogos com cara de <span>jogo</span></h1>
-<p class="l">Sites para venda de itens e moedas (RMT), bots de Discord, ShotCaller e automações. Escolha um dos <b id="tot">12</b> estilos, veja ao vivo e a gente monta o seu com a sua marca.</p>
-<div class="row"><a class="btn" href="#galeria">Ver os estilos ↓</a><a class="btn g" href="#como">Como funciona</a></div>
-<div class="pillars"><div class="pl"><i>🛒</i><h3>Lojas de itens e moedas</h3><p>Catálogo por jogo, Pix automático, entrega com chat e painel da equipe.</p></div><div class="pl"><i>🤖</i><h3>Bots e automações de Discord</h3><p>Chamada por voz, tickets, leilão, avisos em dois idiomas e backup.</p></div><div class="pl"><i>🎙</i><h3>ShotCaller</h3><p>O caller fala uma vez e as 12 PTs ouvem. Painel pelo site.</p></div></div></div></div>
+<div class="hero"><div class="wrap"><div><span class="kick"><i></i> Sites · Bots · ShotCaller</span>
+<h1>Sua loja de jogos com cara de <span class="g1">jogo</span></h1>
+<p class="l">Lojas de itens e moedas, bots de Discord para guilda e loja, ShotCaller e automações. Veja <b id="tot">22</b> estilos funcionando ao vivo e a gente monta o seu com a sua marca.</p>
+<div class="row"><a class="btn" href="#galeria">Ver os estilos ↓</a><a class="btn g" href="#bots">Ver os bots em ação</a></div>
+<div class="stats"><div><b data-n="22">0</b><span>estilos prontos</span></div><div><b data-n="170">0</b><span>jogadores em produção</span></div><div><b data-n="3">0</b><span>idiomas: PT, ES, EN</span></div></div></div>
+<div class="stage" id="stage"><div class="dev a" data-p="neon-arena"><iframe data-src="demos/neon-arena.html" tabindex="-1"></iframe></div><div class="dev b" data-p="caixa-bot"><iframe data-src="demos/caixa-bot.html" tabindex="-1"></iframe></div><div class="dev c" data-p="santuario-carmesim"><iframe data-src="demos/santuario-carmesim.html" tabindex="-1"></iframe></div></div></div>
+<div class="mq"><div><span>Itens</span><span>Moedas</span><span>Contas</span><span>Boost</span><span>Gift cards</span><span>Pix automático</span><span>Bot de Discord</span><span>ShotCaller</span><span>Chat de entrega</span><span>Painel da equipe</span><span>Leilão</span><span>Chamada por voz</span><span>Itens</span><span>Moedas</span><span>Contas</span><span>Boost</span><span>Gift cards</span><span>Pix automático</span><span>Bot de Discord</span><span>ShotCaller</span><span>Chat de entrega</span><span>Painel da equipe</span><span>Leilão</span><span>Chamada por voz</span></div></div></div>
+
+<div class="wrap"><div class="pillars"><div class="pl" style="--c:#ffcf4a"><i>🛒</i><h3>Lojas de itens e moedas</h3><p>Catálogo por jogo, Pix com confirmação automática, entrega com chat e painel da equipe.</p></div><div class="pl" style="--c:#5865f2"><i>🤖</i><h3>Bots de Discord</h3><p>Vendem, atendem, fazem chamada por voz, leilão e avisos. Tudo editável por painel.</p></div><div class="pl" style="--c:#35e6ff"><i>🎙</i><h3>ShotCaller</h3><p>O caller fala uma vez e as 12 PTs ouvem. Painel de controle pelo site.</p></div></div></div>
+
+<div class="bots sec" id="bots"><div class="wrap"><h2>Bots em <span>ação</span></h2><p class="s">Exemplos do que o bot faz no seu Discord. É o mesmo tipo de bot que roda hoje numa guilda com 170 jogadores.</p>
+<div class="bg">
+<div class="dm" style="--c:#3ba55d"><div class="h"><div class="av">🤖</div><b>Loja Bot<i>BOT</i></b></div><div class="e"><b>💰 Venda #4821 paga</b><span>Gold 100M · R$ 39,90<br>Entrega automática concluída.</span></div></div>
+<div class="dm" style="--c:#5865f2;animation-delay:.1s"><div class="h"><div class="av">🎫</div><b>Atendimento<i>BOT</i></b></div><div class="e"><b>Ticket aberto</b><span>Canal privado criado e espelhado com o site.</span></div><div class="bt"><span class="p">Assumir</span><span>Fechar</span></div></div>
+<div class="dm" style="--c:#faa61a;animation-delay:.2s"><div class="h"><div class="av">🎙</div><b>Chamada<i>BOT</i></b></div><div class="e"><b>Chamada paga</b><span>Presentes 62 · Avisaram 4 · Faltaram 9<br>+30 pontos pela sala de voz.</span></div></div>
+<div class="dm" style="--c:#ed4245;animation-delay:.3s"><div class="h"><div class="av">🔨</div><b>Leilão<i>BOT</i></b></div><div class="e"><b>Lance: 420 pts</b><span>Égide do Guardião · termina em 2h<br>Lance limitado ao saldo.</span></div><div class="bt"><span class="p">Dar lance</span></div></div>
+</div><div class="bl"><div>Pontos que ninguém apaga</div><div>Mensagens em PT e ES</div><div>Backup diário</div><div>Valores editáveis pelo painel</div><div>Presença pela sala de voz</div></div></div></div>
 
 <div class="bar" id="galeria"><div class="wrap"><div class="chips" id="chips"></div></div></div>
 <div class="wrap"><div class="gal" id="gal"></div></div>
 
-<div class="how" id="como"><div class="wrap"><h2>Do estilo ao ar em 4 passos</h2><p class="s">Os layouts são ponto de partida: nome, cores, logo e jogos são trocados para a sua marca.</p>
-<div class="st"><div><b>01</b><h4>Você escolhe</h4><p>O estilo que combina com seu público e seus jogos.</p></div><div><b>02</b><h4>Montamos</h4><p>Nome, logo, cores e catálogo trocados para o seu negócio.</p></div><div><b>03</b><h4>Ligamos tudo</h4><p>Pix, entrega, painel da equipe e bot do Discord.</p></div><div><b>04</b><h4>Você opera</h4><p>Treinamento da equipe e acompanhamento nos primeiros dias.</p></div></div></div></div>
+<div class="wrap sec" id="como" style="padding-top:30px"><h2>Do estilo ao ar em <span>4 passos</span></h2><p class="s">Os layouts são ponto de partida: nome, cores, logo e jogos são trocados para a sua marca.</p>
+<div class="st"><div><b>01</b><h4>Você escolhe</h4><p>O estilo que combina com seu público e seus jogos.</p></div><div><b>02</b><h4>Montamos</h4><p>Nome, logo, cores e catálogo trocados para o seu negócio.</p></div><div><b>03</b><h4>Ligamos tudo</h4><p>Pix, entrega, painel da equipe e bot do Discord.</p></div><div><b>04</b><h4>Você opera</h4><p>Treinamento da equipe e acompanhamento nos primeiros dias.</p></div></div></div>
 
-<div class="sec"><div class="wrap"><h2>O que vem em qualquer estilo</h2><div class="inc">
-<div>Visual 100% adaptado ao celular</div><div>Painel para a equipe, com níveis de acesso</div><div>Pix com confirmação automática (lojas)</div><div>Chat de entrega dentro do pedido (lojas)</div><div>Bot do Discord ligado ao mesmo banco</div><div>SEO e prévia de link para WhatsApp e Instagram</div><div>Instalação em servidor próprio ou hospedagem</div><div>Treinamento da equipe e suporte inicial</div><div>Os dados ficam com você, com backup diário</div></div>
-<div class="cta" style="margin-top:50px"><h2>Qual estilo é a cara do seu projeto?</h2><p>Mande o número do estilo e o jogo que você vende. A gente responde com prazo e valor.</p><a class="btn" id="ctawa" href="#">Chamar no WhatsApp</a></div></div></div>
+<div class="wrap" style="padding-bottom:10px"><h2 style="font:700 clamp(26px,4vw,42px) 'Chakra Petch';margin:0 0 20px">Vem em qualquer estilo</h2><div class="inc">
+<div>Visual 100% adaptado ao celular</div><div>Painel para a equipe, com níveis de acesso</div><div>Pix com confirmação automática</div><div>Chat de entrega dentro do pedido</div><div>Bot do Discord ligado ao mesmo banco</div><div>SEO e prévia de link para WhatsApp</div><div>Instalação em servidor próprio ou hospedagem</div><div>Treinamento da equipe e suporte inicial</div><div>Os dados ficam com você, com backup diário</div></div>
+<div class="cta" style="margin-top:60px"><h2>Qual estilo é a cara do seu projeto?</h2><p>Mande o número do estilo e o jogo que você vende. A gente responde com prazo e valor.</p><a class="btn" id="ctawa" href="#">Chamar no WhatsApp</a></div></div>
 <footer><div class="wrap"><span>© Lhart Design — prévias ilustrativas, nomes e produtos de exemplo.</span><a href="index.html">← Voltar ao site principal</a></div></footer>
+<a class="wf" id="wf" href="#">💬 <span>Falar no WhatsApp</span></a>
 
-<div class="md" id="md"><div class="mh"><b id="mt"></b><div class="dv" id="dv"><button class="on" data-m="d">Computador</button><button data-m="m">Celular</button></div><span class="sp"></span><a class="btn" id="mwa" href="#" style="padding:9px 16px;font-size:14px">Quero este estilo</a><a class="btn g" id="mo" href="#" target="_blank" rel="noopener" style="padding:9px 16px;font-size:14px">Abrir em aba</a><button class="x" id="mx" aria-label="Fechar">✕</button></div><div class="mb"><div class="fr" id="fr"></div></div></div>
+<div class="md" id="md"><div class="mh"><b id="mt"></b><div class="dv" id="dv"><button class="on" data-m="d">Computador</button><button data-m="m">Celular</button></div><span class="sp"></span><a class="btn" id="mwa" href="#">Quero este estilo</a><a class="btn g" id="mo" href="#" target="_blank" rel="noopener">Abrir em aba</a><button class="x" id="mx" aria-label="Fechar">✕</button></div><div class="mb"><div class="fr" id="fr"></div></div></div>
 
 <script>
-const WA='5511989304239';
-const wa=(t)=>'https://wa.me/'+WA+'?text='+encodeURIComponent(t);
-const CATS={loja:['Lojas RMT','#f0c35a'],bot:['Bot Discord','#7b86ff'],voz:['ShotCaller','#2dffc7'],guilda:['Sistema de Guilda','#e0b25c'],auto:['Automações','#ff5a36']};
+const WA='5511989304239',wa=t=>'https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+const CATS={loja:['Lojas RMT','#ffcf4a'],bot:['Bot Discord','#7b86ff'],guilda:['Guildas','#ff5a6e'],voz:['ShotCaller','#35e6ff'],auto:['Automações','#ff8a3a']};
 const S=[
- {f:'neon-arena',n:'Neon Arena',c:'loja',d:'Cyberpunk synthwave com grade em perspectiva e vitrine em carrossel. Para lojas de FPS, MOBA e jogos competitivos.',k:['#07040f','#ff2bd6','#18f0ff','#fff35c']},
- {f:'forja-runica',n:'Forja Rúnica',c:'loja',d:'Fantasia sombria com ouro, brasas e cofre de itens por raridade. Para MMORPG e ARPG.',k:['#0d0907','#d7a64a','#e2552b','#f1e6d2']},
- {f:'pixel-bazaar',n:'Pixel Bazaar',c:'loja',d:'Retrô 8-bit com menu de RPG, mochila e missões. Para jogos casuais, sandbox e público jovem.',k:['#1b1233','#ffd23f','#3ddc84','#ff4d6d']},
- {f:'frostbyte',n:'Frostbyte',c:'loja',d:'Vidro fosco claro com menu lateral por jogo e lista de ofertas com busca ao vivo. Visual limpo de marketplace.',k:['#e9f3fb','#2b7bff','#18c8d8','#0e2238']},
- {f:'toxic-loot',n:'Toxic Loot',c:'loja',d:'Brutalista verde ácido com tipografia gigante e tabela de preços. Para quem vende no grito.',k:['#0a0a0a','#c6ff00','#ff3d81','#f5f5f0']},
- {f:'magma-cubo',n:'Magma Cubo',c:'loja',d:'Loja voxel com arte em blocos 3D, compra rápida no topo e pacotes em destaque. Versão laranja, para Roblox e jogos de blocos.',k:['#0a0605','#f0561f','#ffc247','#fff4ee']},
- {f:'cyber-rosa',n:'Cyber Rosa',c:'loja',d:'Mesma estrutura voxel com paleta rosa e menta. Boa para público jovem e comunidades de streamers.',k:['#0a050a','#e0309a','#3dffd0','#fff1fa']},
- {f:'oceano-voxel',n:'Oceano Voxel',c:'loja',d:'Voxel azul-turquesa, mais sóbrio e confiável. Funciona bem para lojas de contas e robux.',k:['#05080d','#1f7ae0','#5ef2d6','#f2f8ff']},
- {f:'sentinela-bot',n:'Sentinela',c:'bot',d:'Landing de bot de Discord com chat simulado, lista de comandos clicável e planos. Para vender o bot como produto.',k:['#0b0d14','#5865f2','#c58bff','#3ba55d']},
- {f:'eco-caller',n:'Eco Caller',c:'voz',d:'Painel de comando tático com microfone interativo e 12 PTs reagindo. Mostra o ShotCaller funcionando.',k:['#05080a','#2dffc7','#ffb02e','#ff4b4b']},
- {f:'livro-de-pontos',n:'Livro de Pontos',c:'guilda',d:'Painel da guilda: ranking, extrato, valor por evento editável, board de PTs e troca PT/ES. Visões de jogador e staff.',k:['#0e1015','#c8353f','#e0b25c','#4fcf8f']},
- {f:'fluxo-discord',n:'Fluxo',c:'auto',d:'Estilo neo-brutalista claro com receitas de automação: tickets, chamada, leilão e avisos, cada uma com prévia do Discord.',k:['#f6f1e7','#ff5a36','#6c5bff','#19c37d']}
+ {f:'barao-dos-cards',n:'Barão dos Cards',c:['loja'],t:'NOVO',ins:'Estilo catálogo de gift cards',d:'Vitrine de plataformas com busca, faixa de confiança, banner e aviso de entrega no Discord.',k:['#14204a','#e2283e','#ffc93c','#f2f4fa']},
+ {f:'apex-boost-hub',n:'Apex Boost Hub',c:['loja'],t:'NOVO',ins:'Estilo marketplace de boost',d:'Abas por gênero, pôsteres de jogos, ofertas com contagem regressiva e avaliações verificadas.',k:['#0b0820','#7c5cff','#34e0ff','#ffcf4a']},
+ {f:'gamepass-galaxy',n:'Gamepass Galaxy',c:['loja'],t:'NOVO',ins:'Estilo Pix + feed de entregas',d:'Herói inclinado, últimas entregas em tempo real e faixa de avaliações. Gera confiança no primeiro olhar.',k:['#0a0612','#8b3dff','#ff3df0','#2dff9a']},
+ {f:'buff-do-compadre',n:'Buff do Compadre',c:['loja'],t:'NOVO',ins:'Baseado em projeto entregue',d:'Branco e laranja, jogos com cor própria, botões de WhatsApp e Discord. Vende conversando.',k:['#ffffff','#ff6a1a','#25d366','#5865f2']},
+ {f:'falcon-seller',n:'Falcon Seller',c:['loja'],t:'NOVO',ins:'Baseado em projeto entregue',d:'Página de jogo com filtros, ordenação e chat do pedido ao lado. Entrega acompanhada.',k:['#070d18','#19d3c5','#f5b942','#e8f1ff']},
+ {f:'neon-arena',n:'Neon Arena',c:['loja'],d:'Cyberpunk synthwave com grade em perspectiva e vitrine em carrossel. Para FPS, MOBA e competitivos.',k:['#07040f','#ff2bd6','#18f0ff','#fff35c']},
+ {f:'forja-runica',n:'Forja Rúnica',c:['loja'],d:'Fantasia sombria com ouro, brasas e cofre de itens por raridade. Para MMORPG e ARPG.',k:['#0d0907','#d7a64a','#e2552b','#f1e6d2']},
+ {f:'pixel-bazaar',n:'Pixel Bazaar',c:['loja'],d:'Retrô 8-bit com menu de RPG, mochila e missões. Para jogos casuais e sandbox.',k:['#1b1233','#ffd23f','#3ddc84','#ff4d6d']},
+ {f:'frostbyte',n:'Frostbyte',c:['loja'],d:'Vidro fosco claro com menu lateral por jogo e busca ao vivo. Visual limpo de marketplace.',k:['#e9f3fb','#2b7bff','#18c8d8','#0e2238']},
+ {f:'toxic-loot',n:'Toxic Loot',c:['loja'],d:'Brutalista verde ácido com tipografia gigante e tabela de preços. Vende no grito.',k:['#0a0a0a','#c6ff00','#ff3d81','#f5f5f0']},
+ {f:'magma-cubo',n:'Magma Cubo',c:['loja'],d:'Loja voxel com arte em blocos 3D e compra rápida no topo. Versão laranja para Roblox.',k:['#0a0605','#f0561f','#ffc247','#fff4ee']},
+ {f:'cyber-rosa',n:'Cyber Rosa',c:['loja'],d:'Estrutura voxel com paleta rosa e menta. Boa para público jovem e streamers.',k:['#0a050a','#e0309a','#3dffd0','#fff1fa']},
+ {f:'oceano-voxel',n:'Oceano Voxel',c:['loja'],d:'Voxel azul-turquesa, mais sóbrio e confiável. Funciona bem para contas e robux.',k:['#05080d','#1f7ae0','#5ef2d6','#f2f8ff']},
+ {f:'caixa-bot',n:'Caixa Bot',c:['bot','loja'],t:'NOVO',ins:'Loja dentro do Discord',d:'Venda inteira no chat: vitrine com botões, Pix, entrega, ticket e avisos da staff. Clique e veja o fluxo.',k:['#1e1f22','#5865f2','#3ba55d','#faa61a']},
+ {f:'sentinela-bot',n:'Sentinela',c:['bot'],d:'Landing de bot com chat simulado, comandos clicáveis e planos. Para vender o bot como produto.',k:['#0b0d14','#5865f2','#c58bff','#3ba55d']},
+ {u:'https://reapersguild.duckdns.org/',n:'Reapers — site real',c:['bot','guilda'],t:'NO AR',ins:'Cliente em produção desde 08/2026',d:'O livro-caixa da guilda no ar: ranking, chamadas, leilões e eventos ligados ao bot. Duas guildas no mesmo servidor.',k:['#07040c','#8a3dff','#d6b3ff','#0d0713']},
+ {f:'vanguarda-eterna',n:'Vanguarda Eterna',c:['guilda'],t:'NOVO',ins:'Clima de MMO de raid',d:'Moldura dourada, ranking com cor de classe, progresso de raid e dica de item no leilão.',k:['#0a1220','#f2c75c','#3fa7ff','#a335ee']},
+ {f:'santuario-carmesim',n:'Santuário Carmesim',c:['guilda'],t:'NOVO',ins:'Clima de ARPG gótico',d:'Orbes de vida e mana, runa giratória, espólios por raridade e comandos do bot em destaque.',k:['#070405','#b3121f','#c9a45a','#ffd34e']},
+ {f:'exilados-ledger',n:'Exilados do Cinza',c:['guilda'],t:'NOVO',ins:'Clima de ARPG de economia',d:'Ladder ordenável com tendência, item único em leilão e legenda de raridades. Para quem gosta de números.',k:['#0c0b0a','#af6025','#d9b86a','#8888ff']},
+ {f:'livro-de-pontos',n:'Livro de Pontos',c:['guilda'],d:'Painel da guilda: ranking, extrato, valor por evento editável, board de PTs e troca PT/ES.',k:['#0e1015','#c8353f','#e0b25c','#4fcf8f']},
+ {f:'eco-caller',n:'Eco Caller',c:['voz'],d:'Painel tático com microfone interativo e 12 PTs reagindo. Mostra o ShotCaller funcionando.',k:['#05080a','#2dffc7','#ffb02e','#ff4b4b']},
+ {f:'fluxo-discord',n:'Fluxo',c:['auto'],d:'Neo-brutalista claro com receitas de automação: tickets, chamada, leilão e avisos com prévia do Discord.',k:['#f6f1e7','#ff5a36','#6c5bff','#19c37d']}
 ];
+S.forEach((s,i)=>{s.i=i;s.src=s.u||'demos/'+s.f+'.html'});
+tot.textContent=S.length;document.querySelector('[data-n="22"]').dataset.n=S.length;
 let cat='all';
-chips.innerHTML=['<button class="chip on" data-c="all">Todos <small>'+S.length+'</small></button>'].concat(Object.entries(CATS).map(([k,v])=>`<button class="chip" data-c="${k}">${v[0]} <small>${S.filter(s=>s.c==k).length}</small></button>`)).join('');
-function draw(){const L=S.map((s,i)=>({...s,i})).filter(s=>cat=='all'||s.c==cat);
-gal.innerHTML=L.map((s,j)=>`<article class="card" style="--c:${CATS[s.c][1]};animation-delay:${j*.05}s"><div class="pv" data-f="${s.f}" data-n="${s.n}" data-i="${s.i}"><span class="num">#${String(s.i+1).padStart(2,'0')}</span><iframe data-src="demos/${s.f}.html" title="Prévia ${s.n}" tabindex="-1" loading="lazy"></iframe></div>
-<div class="cb"><span class="cat">${CATS[s.c][0]}</span><h3>${s.n}</h3><div class="sw">${s.k.map(c=>`<i style="background:${c}"></i>`).join('')}</div><p>${s.d}</p><div class="acts"><button class="btn g" data-o="${s.f}" data-n="${s.n}" data-i="${s.i}">Ver ao vivo</button><a class="btn" href="${wa('Oi! Quero o estilo #'+String(s.i+1).padStart(2,'0')+' - '+s.n+' (Sites para Games)')}" target="_blank" rel="noopener">Quero este</a></div></div></article>`).join('');
-fit();lazy()}
-function fit(){document.querySelectorAll('.pv').forEach(p=>{const f=p.querySelector('iframe');f.style.transform='scale('+(p.clientWidth/1280)+')'})}
-let io;function lazy(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const f=e.target.querySelector('iframe');if(!f.src)f.src=f.dataset.src;io.unobserve(e.target)}}),{rootMargin:'300px'});document.querySelectorAll('.pv').forEach(p=>io.observe(p))}
+chips.innerHTML=['<button class="chip on" data-c="all">Todos<small>'+S.length+'</small></button>'].concat(Object.entries(CATS).map(([k,v])=>`<button class="chip" data-c="${k}">${v[0]}<small>${S.filter(s=>s.c.includes(k)).length}</small></button>`)).join('');
+const num=i=>'#'+String(i+1).padStart(2,'0');
+function draw(){const L=S.filter(s=>cat=='all'||s.c.includes(cat));
+gal.innerHTML=L.map((s,j)=>{const k=CATS[s.c[0]];return `<article class="card" style="--c:${k[1]};animation-delay:${Math.min(j,8)*.05}s"><div class="pv" data-i="${s.i}"><span class="num">${num(s.i)}</span>${s.t?`<span class="tag">${s.t}</span>`:''}<iframe data-src="${s.src}" title="Prévia ${s.n}" tabindex="-1"></iframe></div>
+<div class="cb"><span class="cat">${s.c.map(x=>CATS[x][0]).join(' · ')}</span><h3>${s.n}</h3>${s.ins?`<span class="ins">${s.ins}</span>`:''}<div class="sw">${s.k.map(c=>`<i style="background:${c}"></i>`).join('')}</div><p>${s.d}</p><div class="acts"><button class="btn g" data-o="${s.i}">Ver ao vivo</button><a class="btn" target="_blank" rel="noopener" href="${wa('Oi! Quero o estilo '+num(s.i)+' - '+s.n+' (Sites para Games)')}">Quero este</a></div></div></article>`}).join('');
+fit();lazy();hov()}
+function fit(){document.querySelectorAll('.pv,.dev').forEach(p=>{const f=p.querySelector('iframe');const w=p.clientWidth;f.style.transform='scale('+(w/1280)+')'})}
+let io;function lazy(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const f=e.target.querySelector('iframe');if(f&&!f.src)f.src=f.dataset.src;io.unobserve(e.target)}}),{rootMargin:'300px'});document.querySelectorAll('.pv,.dev').forEach(p=>io.observe(p))}
+/* rola o site da prévia ao passar o mouse (só páginas do mesmo domínio) */
+function hov(){document.querySelectorAll('.pv').forEach(p=>{let raf,t0,dir=1;const f=p.querySelector('iframe');
+p.onmouseenter=()=>{cancelAnimationFrame(raf);let w;try{w=f.contentWindow;w.document}catch(e){return}const max=Math.min(w.document.documentElement.scrollHeight-800,2600);if(max<50)return;const from=w.scrollY||0;t0=performance.now();const dur=Math.max(3500,max*3);const step=n=>{const k=Math.min((n-t0)/dur,1);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;w.scrollTo(0,from+(max-from)*e);if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)};
+p.onmouseleave=()=>{cancelAnimationFrame(raf);try{const w=f.contentWindow;const from=w.scrollY||0;const t=performance.now();const back=n=>{const k=Math.min((n-t)/500,1);w.scrollTo(0,from*(1-k));if(k<1)raf=requestAnimationFrame(back)};raf=requestAnimationFrame(back)}catch(e){}}})}
 addEventListener('resize',fit);
 chips.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x==b));draw()};
-function open_(f,n,i){mt.textContent='#'+String(i+1).padStart(2,'0')+' · '+n;fr.className='fr';dv.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m=='d'));fr.innerHTML='<iframe src="demos/'+f+'.html" title="'+n+'"></iframe>';mo.href='demos/'+f+'.html';mwa.href=wa('Oi! Quero o estilo #'+String(i+1).padStart(2,'0')+' - '+n+' (Sites para Games)');md.classList.add('on');document.body.style.overflow='hidden'}
-gal.onclick=e=>{const o=e.target.closest('[data-o]')||e.target.closest('.pv');if(!o)return;const d=o.dataset;open_(d.o||d.f,d.n,+d.i)};
+function open_(i){const s=S[i];mt.textContent=num(i)+' · '+s.n;fr.className='fr';dv.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m=='d'));fr.innerHTML='<iframe src="'+s.src+'" title="'+s.n+'"></iframe>';mo.href=s.src;mwa.href=wa('Oi! Quero o estilo '+num(i)+' - '+s.n+' (Sites para Games)');md.classList.add('on');document.body.style.overflow='hidden'}
+gal.onclick=e=>{const o=e.target.closest('[data-o]')||e.target.closest('.pv');if(o)open_(+(o.dataset.o??o.dataset.i))};
 function close_(){md.classList.remove('on');fr.innerHTML='';document.body.style.overflow=''}
 mx.onclick=close_;md.onclick=e=>{if(e.target.classList.contains('mb'))close_()};addEventListener('keydown',e=>{if(e.key=='Escape')close_()});
 dv.onclick=e=>{const b=e.target.closest('button');if(!b)return;dv.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b));fr.classList.toggle('m',b.dataset.m=='m')};
-const g=wa('Oi! Vi a aba Sites para Games e quero fazer um site para o meu projeto.');navwa.href=g;ctawa.href=g;[navwa,ctawa].forEach(a=>{a.target='_blank';a.rel='noopener'});mwa.target='_blank';mwa.rel='noopener';
-tot.textContent=S.length;draw();
+[mwa,mo].forEach(a=>{a.target='_blank';a.rel='noopener'});
+const g=wa('Oi! Vi a aba Sites para Games e quero fazer um site para o meu projeto.');[navwa,ctawa,wf].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'});
+/* parallax 3D do herói */
+const stg=document.getElementById('stage');document.querySelector('.hero').addEventListener('mousemove',e=>{const r=stg.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;stg.querySelectorAll('.dev').forEach((d,i)=>{const k=(i+1)*6;d.style.transform=`rotateY(${x*k}deg) rotateX(${-y*k}deg)`})});
+stg.querySelectorAll('.dev').forEach(d=>d.onclick=()=>{});
+/* contadores */
+const cn=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,n=+el.dataset.n,t0=performance.now();const s=x=>{const k=Math.min((x-t0)/1400,1);el.textContent=Math.round(n*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(s)};requestAnimationFrame(s);cn.unobserve(el)}));document.querySelectorAll('[data-n]').forEach(x=>cn.observe(x));
+draw();setTimeout(()=>{fit();lazy()},50);
 </script></body></html>

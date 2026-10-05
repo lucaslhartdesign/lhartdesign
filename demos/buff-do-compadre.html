@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Buff do Compadre — Compra e venda de itens</title>
+<style>
+:root{--ch:#fff;--ch2:#fff7f0;--ln:#f0e1d4;--lj:#ff6a1a;--lj2:#e5540a;--tx:#2a1a0f;--tx2:#6a5546;--tx3:#a08c7c;--zap:#25d366;--dc:#5865f2;--r:12px;color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--ch);color:var(--tx);font:400 16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.wrap{max-width:1200px;margin:auto;padding:0 18px}
+.av{background:var(--lj);color:#fff;text-align:center;font-size:14px;font-weight:600;padding:8px}
+.nv{position:sticky;top:0;z-index:9;background:#fffffff2;backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}.nv .wrap{display:flex;align-items:center;gap:22px;height:70px}
+.mc{font-weight:900;font-size:24px;letter-spacing:-.03em;display:flex;align-items:center;gap:8px}.mc i{width:38px;height:38px;border-radius:12px;background:var(--lj);display:grid;place-items:center;font-style:normal;font-size:20px;transform:rotate(-6deg)}.mc b{color:var(--lj)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1}.tabs a{white-space:nowrap;padding:8px 14px;border-radius:99px;font-weight:600;font-size:15px;color:var(--tx2)}.tabs a:hover{background:var(--ch2);color:var(--lj2)}
+.z{background:var(--zap);color:#fff;font-weight:700;padding:10px 18px;border-radius:99px;font-size:14px;white-space:nowrap}
+.hero{background:linear-gradient(135deg,#fff3e8,#ffe3cf);border-bottom:1px solid var(--ln);overflow:hidden}.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding-block:48px;min-height:420px}
+.sl{display:inline-block;background:#fff;border:1px solid var(--ln);border-radius:99px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--lj2)}
+h1{font-size:clamp(34px,5.4vw,62px);line-height:1;letter-spacing:-.04em;margin:16px 0 14px;font-weight:900}h1 em{font-style:normal;color:var(--lj);position:relative}h1 em::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:10px;background:#ff6a1a33;z-index:-1}
+.hero p{font-size:19px;color:var(--tx2);max-width:42ch;margin:0 0 24px}
+.bt{display:flex;gap:10px;flex-wrap:wrap}.b{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;border-radius:var(--r);font-weight:800;border:0;transition:.15s}.b:hover{transform:translateY(-2px)}.b.o{background:var(--lj);color:#fff;box-shadow:0 6px 0 var(--lj2)}.b.g{background:var(--zap);color:#fff;box-shadow:0 6px 0 #1a9a4a}.b.d{background:var(--dc);color:#fff;box-shadow:0 6px 0 #3a45c0}
+.coins{position:relative;height:320px}.cn{position:absolute;display:grid;place-items:center;border-radius:50%;font-weight:900;color:#fff;box-shadow:0 10px 24px #0003,inset 0 -6px 0 #0002;animation:fl 5s ease-in-out infinite}
+.cn.a{width:170px;height:170px;left:26%;top:60px;background:#ffb020;font-size:60px}.cn.b{width:110px;height:110px;left:4%;top:150px;background:#ff6a1a;font-size:40px;animation-delay:-2s}.cn.c{width:90px;height:90px;left:62%;top:20px;background:#8a5cff;font-size:34px;animation-delay:-3s}.cn.d{width:120px;height:120px;left:64%;top:170px;background:#25a8ff;font-size:44px;animation-delay:-1s}
+@keyframes fl{50%{translate:0 -14px}}
+h2{font-size:30px;letter-spacing:-.03em;margin:50px 0 6px}.sb{color:var(--tx2);margin:0 0 22px}
+.gs{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.gc{background:#fff;border:2px solid var(--c);border-radius:16px;padding:18px 10px;text-align:center;transition:.2s;cursor:pointer}.gc:hover{transform:translateY(-6px);box-shadow:0 14px 30px color-mix(in srgb,var(--c) 30%,transparent);background:color-mix(in srgb,var(--c) 6%,#fff)}
+.gc i{display:block;font-style:normal;font-size:44px;margin-bottom:6px}.gc b{display:block}.gc small{color:var(--tx3)}
+.pd{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.p{background:#fff;border:1px solid var(--ln);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:4px;transition:.2s}.p:hover{box-shadow:0 12px 30px #ff6a1a22;border-color:var(--lj)}
+.p .t{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--tx3)}.p .e{background:#e9fff1;color:#16863f;padding:2px 8px;border-radius:99px}
+.p h3{margin:6px 0 0;font-size:19px}.p small{color:var(--tx3)}.p .pr{font-size:26px;font-weight:900;color:var(--lj2);margin-top:10px}.p .b{width:100%;justify-content:center;margin-top:10px;padding:12px;font-size:14px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:50px 0}
+.cx{border-radius:22px;padding:30px;color:#fff}.cx.v{background:linear-gradient(135deg,var(--lj),#ff9a3c)}.cx.s{background:linear-gradient(135deg,#3a45c0,var(--dc))}
+.cx h3{font-size:28px;margin:0 0 8px;letter-spacing:-.02em}.cx p{margin:0 0 18px;opacity:.95}.cx .b{background:#fff;color:var(--tx);box-shadow:none}
+.rd{background:var(--ch2);border-block:1px solid var(--ln);padding:34px 0;margin-top:20px}.rd .wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}.rd b{font-size:22px}
+footer{padding:26px 0;text-align:center;color:var(--tx3);font-size:14px}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.coins{height:220px}.gs{grid-template-columns:repeat(2,1fr)}.pd{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.z span{display:none}}
+@media(max-width:520px){.pd{grid-template-columns:1fr}}
+</style></head><body>
+<div class="av">🔥 Frete grátis em moedas acima de R$ 50 · atendimento direto no WhatsApp e no Discord</div>
+<div class="nv"><div class="wrap"><a class="mc" href="#"><i>🪙</i>Buff do <b>Compadre</b></a><div class="tabs"><a href="#j">Jogos</a><a href="#d">Destaques</a><a href="#vs">Vender</a><a href="#">Dúvidas</a></div><a class="z" href="#">💬 <span>WhatsApp</span></a></div></div>
+<div class="hero"><div class="wrap"><div><span class="sl">⚡ Entrega combinada em minutos</span><h1>Compra e venda de <em>moedas e itens</em>, sem dor de cabeça</h1><p>Fale direto com a gente, confira o estoque na tela e feche o pedido pelo WhatsApp ou pelo Discord.</p><div class="bt"><a class="b o" href="#d">Ver destaques</a><a class="b g" href="#">💬 WhatsApp</a><a class="b d" href="#">Discord</a></div></div><div class="coins"><div class="cn a">$</div><div class="cn b">★</div><div class="cn c">+</div><div class="cn d">⚡</div></div></div></div>
+<div class="wrap"><h2 id="j">Escolha o jogo</h2><p class="sb">Cada jogo tem a sua cor e a sua lista de produtos.</p><div class="gs" id="gs"></div>
+<h2 id="d">Em destaque</h2><p class="sb">Preço, estoque e botão direto para o WhatsApp com a mensagem pronta.</p><div class="pd" id="pd"></div>
+<div class="cols" id="vs"><div class="cx v"><h3>Quer comprar?</h3><p>Escolha o item, veja o estoque e chame no WhatsApp com o pedido já escrito.</p><a class="b" href="#d">Ver produtos</a></div><div class="cx s"><h3>Quer vender?</h3><p>Mande o que você tem pelo Discord. A gente avalia e responde no mesmo dia.</p><a class="b" href="#">Vender pelo Discord</a></div></div></div>
+<div class="rd"><div class="wrap"><div><b>Siga o Compadre</b><br><span style="color:var(--tx2)">Sorteios, promoções e novidades toda semana.</span></div><div class="bt"><a class="b o" href="#">Instagram</a><a class="b d" href="#">Discord</a></div></div></div>
+<footer>Buff do Compadre · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</footer>
+<script>
+const G=[['Aether Online','⚔️','#7c3aed'],['Crown Wars','👑','#ff6a1a'],['Skyblock Pro','🧱','#16a34a'],['Rift Arena','🎯','#e11d48'],['Sea Raiders','🏴‍☠️','#0ea5e9']];
+gs.innerHTML=G.map(g=>`<div class="gc" style="--c:${g[2]}"><i>${g[1]}</i><b>${g[0]}</b><small>ver produtos</small></div>`).join('');
+const P=[['Aether Online','Gold 100M','Entrega manual','12 em estoque','R$ 39,90'],['Crown Wars','Gemas 6.500','Entrega rápida','30 em estoque','R$ 54,90'],['Skyblock Pro','Ilha Premium','Entrega 20 min','5 em estoque','R$ 29,00'],['Rift Arena','Pacote Skins','Entrega 15 min','8 em estoque','R$ 64,00']];
+pd.innerHTML=P.map(p=>`<div class="p"><div class="t"><span>${p[0]}</span><span class="e">${p[3]}</span></div><h3>${p[1]}</h3><small>${p[2]}</small><div class="pr">${p[4]}</div><a class="b g" href="#">💬 Comprar no WhatsApp</a></div>`).join('');
+</script></body></html>

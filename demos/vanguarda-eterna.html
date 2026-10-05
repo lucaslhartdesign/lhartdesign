@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vanguarda Eterna — Guilda de raid</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1220;--p:#101c33;--p2:#16264a;--bd:#8a6a2a;--gd:#f2c75c;--bl:#3fa7ff;--ink:#e9eef9;--mu:#8fa0c4;--ep:#a335ee;--lg:#ff8000;--rr:#0070dd;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(800px 500px at 50% -5%,#1f3a78,transparent 70%),var(--bg);color:var(--ink);font:400 17px/1.55 Lora,serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.ci{font-family:Cinzel,serif}.wrap{max-width:1180px;margin:auto;padding:0 20px}
+.hd{border-bottom:2px solid var(--bd);background:linear-gradient(#0d1a33,#0a1220)}.hd .wrap{display:flex;justify-content:space-between;align-items:center;padding-block:14px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:14px}.logo i{width:52px;height:52px;border:2px solid var(--gd);border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:24px;background:radial-gradient(#2a4a99,#0a1a44);box-shadow:0 0 18px #3fa7ff66}
+.logo b{font:900 24px Cinzel;color:var(--gd);letter-spacing:.1em;display:block;line-height:1}.logo small{font-size:12px;letter-spacing:.3em;color:var(--mu)}
+nav{display:flex;gap:4px}nav button{background:none;border:0;color:var(--mu);font:700 14px Cinzel;letter-spacing:.14em;text-transform:uppercase;padding:10px 16px;border-bottom:2px solid transparent}nav button:hover{color:#fff}nav button.on{color:var(--gd);border-color:var(--gd)}
+.bot{font:13px Lora;color:#7bffb0;border:1px solid #2a7a52;padding:6px 12px;border-radius:99px;background:#0a3a2a66}.bot::before{content:"● ";animation:bl 1.5s infinite}@keyframes bl{50%{opacity:.3}}
+.hero{text-align:center;padding:50px 0 30px}.hero h1{font:900 clamp(34px,6vw,70px)/1 Cinzel;margin:0;background:linear-gradient(#fff6d0,var(--gd) 55%,#9a6a14);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 4px 14px #3fa7ff55)}
+.hero p{max-width:56ch;margin:12px auto 0;color:#b6c4e4;font-style:italic}
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0}
+.fr{background:linear-gradient(var(--p2),var(--p));border:2px solid var(--bd);border-radius:6px;position:relative;box-shadow:inset 0 0 0 3px #0008}
+.fr::before,.fr::after{content:"";position:absolute;width:12px;height:12px;border:2px solid var(--gd)}.fr::before{top:-2px;left:-2px;border-right:0;border-bottom:0}.fr::after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.k{padding:18px;text-align:center}.k b{display:block;font:900 34px Cinzel;color:var(--gd)}.k span{font-size:13px;color:var(--mu);letter-spacing:.14em;text-transform:uppercase}
+.gd{display:grid;grid-template-columns:1.2fr 1fr;gap:20px}
+.pn{padding:22px}.pn h2{margin:0 0 14px;font:700 20px Cinzel;color:var(--gd);letter-spacing:.1em;text-transform:uppercase}
+table{width:100%;border-collapse:collapse}td,th{padding:9px 8px;border-bottom:1px solid #ffffff10;text-align:left;font-size:15px}th{font:700 11px Cinzel;color:var(--mu);letter-spacing:.14em;text-transform:uppercase}
+.cl{font-weight:600}.n{font:700 18px Cinzel;color:var(--gd);width:32px}.pt{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.bs{display:grid;gap:12px}.b{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:14px}.b .t{grid-column:1/-1;height:10px;background:#0006;border:1px solid var(--bd);border-radius:5px;overflow:hidden}.b .t i{display:block;height:100%;background:linear-gradient(90deg,#1b6dd1,var(--bl));width:var(--w);animation:g 1.2s backwards}@keyframes g{from{width:0}}
+.b.h .t i{background:linear-gradient(90deg,#8a1a9a,var(--ep))}
+.it{position:relative;display:flex;gap:16px;align-items:center}.ic{width:64px;height:64px;border:2px solid var(--lg);border-radius:6px;display:grid;place-items:center;font-size:34px;background:#3a1a00;box-shadow:0 0 16px #ff800066}
+.tip{position:absolute;left:80px;top:-20px;width:280px;background:#050a14f7;border:1px solid var(--bd);padding:12px 14px;font-size:14px;opacity:0;pointer-events:none;transition:.2s;z-index:5;box-shadow:0 10px 30px #000}.it:hover .tip{opacity:1}
+.tip b{color:var(--lg);font:700 16px Cinzel;display:block}.tip span{display:block;color:#fff}.tip em{color:#1eff00;font-style:normal;display:block}.tip small{color:var(--gd)}
+.bid{border:0;background:linear-gradient(#f2c75c,#b88a24);color:#2a1a00;font:700 13px Cinzel;letter-spacing:.14em;text-transform:uppercase;padding:11px 20px;border-radius:4px;margin-top:12px}.bid:hover{filter:brightness(1.15)}
+.tab{display:none}.tab.on{display:block}
+.ev{display:grid;gap:8px}.e{display:flex;justify-content:space-between;padding:10px 12px;background:#0004;border-left:3px solid var(--bl);font-size:15px}.e span{color:var(--mu)}
+footer{border-top:2px solid var(--bd);margin-top:50px;padding:24px 0;text-align:center;color:var(--mu);font-size:14px}
+@media(max-width:860px){.gd{grid-template-columns:1fr}.kp{grid-template-columns:1fr 1fr}nav button{padding:8px 10px;font-size:12px}.tip{left:0;top:80px}}
+</style></head><body>
+<div class="hd"><div class="wrap"><div class="logo"><i>⚔</i><div><b>VANGUARDA ETERNA</b><small>CRÔNICA DA RAID</small></div></div><nav id="nv"><button class="on" data-t="a">Início</button><button data-t="b">Eventos</button><button data-t="c">Leilão</button></nav><span class="bot">Bot online</span></div></div>
+<div class="wrap"><div class="hero"><h1>O Livro de Guerra</h1><p>Todo ponto é um lançamento no livro. Presença vinda da sala de voz, leilão de itens e raid organizada, direto do Discord.</p></div>
+<div class="kp"><div class="fr k"><b>96</b><span>Membros</span></div><div class="fr k"><b>212</b><span>Chamadas</span></div><div class="fr k"><b>1,2 mi</b><span>Pontos</span></div><div class="fr k"><b>8/9</b><span>Chefes abatidos</span></div></div>
+<div class="tab on" id="ta"><div class="gd"><div class="fr pn"><h2>Ranking da guilda</h2><table><tr><th></th><th>Jogador</th><th>Classe</th><th style="text-align:right">Pontos</th></tr>
+<tr><td class="n">1</td><td class="cl" style="color:#c79c6e">Thalgrim</td><td>Guerreiro</td><td class="pt">10.321</td></tr><tr><td class="n">2</td><td class="cl" style="color:#f58cba">Seraphine</td><td>Paladina</td><td class="pt">10.307</td></tr><tr><td class="n">3</td><td class="cl" style="color:#69ccf0">Aelwyn</td><td>Maga</td><td class="pt">10.056</td></tr><tr><td class="n">4</td><td class="cl" style="color:#abd473">Korvash</td><td>Caçador</td><td class="pt">9.876</td></tr><tr><td class="n">5</td><td class="cl" style="color:#fff">Mirelle</td><td>Sacerdotisa</td><td class="pt">9.519</td></tr></table></div>
+<div style="display:grid;gap:20px"><div class="fr pn"><h2>Progresso da raid</h2><div class="bs"><div class="b"><span>Normal</span><b>9/9</b><div class="t"><i style="--w:100%"></i></div></div><div class="b h"><span>Heroico</span><b>8/9</b><div class="t"><i style="--w:89%"></i></div></div></div></div>
+<div class="fr pn"><h2>Leilão aberto</h2><div class="it"><div class="ic">🗡</div><div><b class="ci" style="color:var(--lg)">Lâmina do Crepúsculo</b><br><small style="color:var(--mu)">Lance atual: 420 pts · 2h restantes</small></div><div class="tip"><b>Lâmina do Crepúsculo</b><span>Arma de uma mão</span><em>+312 de dano</em><em>+48 Força</em><small>Nível 80 · Lendário</small></div></div><button class="bid" id="bid">Dar lance</button></div></div></div></div>
+<div class="tab" id="tb"><div class="fr pn"><h2>Últimas chamadas</h2><div class="ev"><div class="e">Raid heroica — quarta <span>54 presentes · +40 pts</span></div><div class="e">Cerco ao Castelo <span>47 presentes · +30 pts</span></div><div class="e">Chefe mundial <span>21 presentes · +15 pts</span></div></div></div></div>
+<div class="tab" id="tc"><div class="fr pn"><h2>Leilões</h2><p>Lances pelo Discord ou pelo site, com limite amarrado ao saldo e escolha do contemplado entre os melhores colocados.</p><button class="bid">Abrir novo leilão</button></div></div></div>
+<footer>Vanguarda Eterna · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</footer>
+<script>
+nv.onclick=e=>{const b=e.target.closest('button');if(!b)return;nv.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b));['a','b','c'].forEach(k=>document.getElementById('t'+k).classList.toggle('on',k==b.dataset.t))};
+bid.onclick=()=>{bid.textContent='Lance enviado ✓'};
+</script></body></html>
