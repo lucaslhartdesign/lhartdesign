@@ -4,107 +4,213 @@
 <title>Delivery para Restaurantes — Lhart Design</title>
 <meta name="description" content="Site e app de delivery próprio para restaurantes: cardápio com fotos, cupom, rota no Google Maps, app do motoboy e tela da cozinha sincronizados. Sem comissão por pedido.">
 <meta property="og:title" content="Delivery para Restaurantes — Lhart Design"><meta property="og:type" content="website">
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="i18n-pages.js"></script><script src="i18n-delivery.js"></script><script src="i18n-delivery-extra.js"></script>
 <style>
-:root{--bg:#09080d;--p:#131119;--p2:#1c1924;--ln:#2e2a3d;--ac:#ff6a3d;--ac2:#ffb347;--pk:#ff3d6e;--gr:#3df0a0;--ink:#f4f1fa;--mu:#a29db8;color-scheme:dark}
+:root{--bg:#0a0908;--p:#12100e;--p2:#1a1714;--ln:#2b2621;--gold:#e8c37a;--gold2:#f6dfae;--ac:#ff6a3d;--pk:#ff3d6e;--gr:#4be39a;--ink:#f6f1e9;--mu:#a69d90;color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Manrope,sans-serif;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 Manrope,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
-.d{font-family:"Chakra Petch",sans-serif}.wrap{max-width:1280px;margin:auto;padding:0 20px}
-.nav{position:sticky;top:0;z-index:30;background:rgba(9,8,13,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
-.nav img{height:34px;width:auto}.nav .l{display:flex;gap:22px;color:var(--mu);font-size:15px;font-weight:600;align-items:center}.nav .l a:hover,.nav .l a.on{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--pk));color:#fff;font-weight:800;border:0;border-radius:14px;padding:15px 28px;transition:.2s;box-shadow:0 10px 30px #ff6a3d55}
-.btn:hover{transform:translateY(-3px);box-shadow:0 16px 40px #ff3d6e55}.btn.g{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ln);color:var(--ink)}.btn.g:hover{box-shadow:inset 0 0 0 1.5px var(--ac2);color:var(--ac2)}
+.serif{font-family:Fraunces,Georgia,serif}.wrap{max-width:1280px;margin:auto;padding:0 24px}
+.nav{position:sticky;top:0;z-index:30;background:rgba(10,9,8,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--ln)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.nav img{height:34px;width:auto}.nav .l{display:flex;gap:24px;color:var(--mu);font-size:14.5px;font-weight:600;align-items:center}.nav .l a:hover,.nav .l a.on{color:var(--gold2)}
+.langsw{display:flex;border:1px solid var(--ln);border-radius:99px;padding:3px;background:var(--p)}.langsw button{border:0;background:none;color:var(--mu);padding:5px 11px;border-radius:99px;font:700 12px Manrope;letter-spacing:.05em}.langsw button[aria-current="true"]{background:linear-gradient(135deg,var(--gold),#c99a4a);color:#1c1408}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--gold),#d49a47);color:#1c1408;font-weight:800;border:0;border-radius:99px;padding:15px 30px;transition:.25s;box-shadow:0 12px 34px #e8c37a33;letter-spacing:.01em}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 44px #e8c37a55}.btn.g{background:transparent;box-shadow:inset 0 0 0 1.5px #ffffff30;color:var(--ink)}.btn.g:hover{box-shadow:inset 0 0 0 1.5px var(--gold);color:var(--gold2)}
 /* hero */
-.hero{position:relative;overflow:hidden;padding:60px 0 50px;isolation:isolate}
-.hero::before{content:"";position:absolute;inset:-20% -10% 0;z-index:-1;background:radial-gradient(600px 400px at 12% 20%,#ff6a3d3a,transparent 70%),radial-gradient(500px 400px at 88% 40%,#ff3d6e2e,transparent 70%),radial-gradient(500px 300px at 50% 100%,#ffb34722,transparent 70%)}
-.hero .wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:30px;align-items:center}
-.kick{display:inline-flex;gap:8px;align-items:center;font:700 13px "Chakra Petch";letter-spacing:.2em;text-transform:uppercase;color:var(--ac2);border:1px solid #ffb34755;padding:7px 16px;border-radius:99px;background:#ffb34712}
-.kick i{width:8px;height:8px;border-radius:50%;background:var(--gr);box-shadow:0 0 10px var(--gr);animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
-h1{font:700 clamp(38px,5.6vw,72px)/.98 "Chakra Petch";letter-spacing:-.02em;margin:22px 0 18px}
-h1 .g1{background:linear-gradient(90deg,var(--ac2),var(--ac),var(--pk));-webkit-background-clip:text;color:transparent}
-.hero .l{color:#cfcadf;font-size:19px;max-width:46ch;margin:0 0 26px}
+.hero{position:relative;overflow:hidden;padding:64px 0 48px;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-20% -10% 0;z-index:-1;background:radial-gradient(640px 420px at 10% 20%,#ff6a3d33,transparent 70%),radial-gradient(560px 420px at 90% 40%,#e8c37a26,transparent 70%)}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:34px;align-items:center}
+.kick{display:inline-flex;gap:10px;align-items:center;font:700 12px Manrope;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);border:1px solid #e8c37a44;padding:8px 18px;border-radius:99px;background:#e8c37a10}
+.kick i{width:7px;height:7px;border-radius:50%;background:var(--gr);box-shadow:0 0 10px var(--gr);animation:bl 1.6s infinite}@keyframes bl{50%{opacity:.3}}
+h1{font:500 clamp(40px,5.6vw,76px)/1 Fraunces,serif;letter-spacing:-.02em;margin:24px 0 20px}
+h1 em,h2 em{font-style:italic;font-weight:500;background:linear-gradient(90deg,var(--gold2),var(--gold),var(--ac));-webkit-background-clip:text;color:transparent;padding-right:.06em}
+.hero .l{color:#d6cdc0;font-size:19px;max-width:47ch;margin:0 0 28px}
 .row{display:flex;gap:12px;flex-wrap:wrap}
-.chk{display:grid;gap:8px;margin-top:26px;padding:0;list-style:none}.chk li{display:flex;gap:10px;color:#cfcadf;font-size:15.5px}.chk li::before{content:"✓";color:var(--gr);font-weight:900}
-/* stage com os 3 apps ao vivo */
+.chk{display:grid;gap:10px;margin:28px 0 0;padding:0;list-style:none}.chk li{display:flex;gap:12px;color:#d6cdc0;font-size:15.5px}.chk li::before{content:"✓";color:var(--gold);font-weight:900}
 .stage{position:relative;height:560px}
-.fr{position:absolute;overflow:hidden;background:#000;border:6px solid #1b1a24;box-shadow:0 40px 80px #000c,0 0 60px #ff6a3d22}
+.fr{position:absolute;overflow:hidden;background:#000;border:6px solid #1b1814;box-shadow:0 40px 80px #000c,0 0 70px #e8c37a1f}
 .fr iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
 .fr.ph{border-radius:30px}.fr.tb{border-radius:18px}
 .fr.a{width:230px;height:470px;left:0;top:70px;z-index:3;animation:fa 7s ease-in-out infinite}
 .fr.b{width:440px;height:300px;left:150px;top:0;z-index:1;animation:fa 8s ease-in-out infinite -2s}
 .fr.c{width:230px;height:470px;right:0;top:90px;z-index:3;animation:fa 9s ease-in-out infinite -4s}
 @keyframes fa{50%{translate:0 -12px}}
-.cap{position:absolute;z-index:6;font:700 11px "Chakra Petch";letter-spacing:.14em;text-transform:uppercase;background:#09080dd9;border:1px solid var(--ln);border-radius:99px;padding:5px 12px;color:var(--ac2)}
-.sec{padding:80px 0}.sec h2{font:700 clamp(30px,4.6vw,54px)/1 "Chakra Petch";margin:0 0 12px;letter-spacing:-.02em}.sec h2 span{background:linear-gradient(90deg,var(--ac2),var(--pk));-webkit-background-clip:text;color:transparent}.sec .s{color:var(--mu);max-width:62ch;margin:0 0 36px;font-size:18px}
-.alt{background:linear-gradient(#0d0b12,#120f18);border-block:1px solid var(--ln)}
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.ap{background:linear-gradient(160deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:24px;padding:28px;position:relative;overflow:hidden;transition:.25s}.ap:hover{transform:translateY(-6px);border-color:var(--c)}
-.ap::before{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:var(--c);opacity:.2;filter:blur(30px)}
-.ap i{font-style:normal;font-size:40px}.ap h3{margin:8px 0 4px;font:700 26px "Chakra Petch"}.ap small{color:var(--c);font:700 12px "Chakra Petch";letter-spacing:.14em;text-transform:uppercase}
-.ap ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px;color:#cfcadf;font-size:15.5px}.ap li{display:flex;gap:10px}.ap li::before{content:"→";color:var(--c);font-weight:800}
-.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:stretch;margin-top:36px}
-.fl{background:var(--p);border:1px solid var(--ln);padding:20px 16px;text-align:center;position:relative}.fl:first-child{border-radius:18px 0 0 18px}.fl:last-child{border-radius:0 18px 18px 0}.fl+.fl{border-left:0}
-.fl i{font-style:normal;font-size:30px;display:block}.fl b{display:block;font:700 16px "Chakra Petch";margin:4px 0 2px}.fl span{color:var(--mu);font-size:13.5px}
-.fl::after{content:"▶";position:absolute;right:-9px;top:50%;translate:0 -50%;color:var(--ac);font-size:13px;z-index:2;background:var(--bg);border-radius:50%;width:18px;height:18px;display:grid;place-items:center}.fl:last-child::after{display:none}
-.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.ft{background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:22px;transition:.2s}.ft:hover{border-color:var(--ac);transform:translateY(-4px)}.ft i{font-style:normal;font-size:28px}.ft h4{margin:6px 0 4px;font:700 18px "Chakra Petch"}.ft p{margin:0;color:var(--mu);font-size:14.5px}
-.qa{display:grid;grid-template-columns:1fr 1fr;gap:16px}.q{background:var(--p);border:1px solid var(--ln);border-radius:20px;padding:26px}.q h3{margin:0 0 8px;font:700 22px "Chakra Petch"}.q p{margin:0 0 10px;color:#cfcadf;font-size:15.5px}.q ul{margin:0;padding-left:18px;color:var(--mu);font-size:14.5px;display:grid;gap:4px}
-.q.ok{border-color:#3df0a066}.tg{display:inline-block;font:700 11px "Chakra Petch";letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:99px;margin-bottom:10px}.tg.g{background:#3df0a022;color:var(--gr)}.tg.o{background:#ffb34722;color:var(--ac2)}
-/* galeria */
+.cap{position:absolute;z-index:6;font:700 11px Manrope;letter-spacing:.16em;text-transform:uppercase;background:#0a0908d9;border:1px solid var(--ln);border-radius:99px;padding:5px 13px;color:var(--gold)}
+.trust{border-block:1px solid var(--ln);background:var(--p)}.trust .wrap{display:flex;gap:10px 40px;justify-content:center;flex-wrap:wrap;padding-block:18px}.trust span{color:var(--mu);font-size:14px;font-weight:600;display:flex;gap:8px;align-items:center}.trust span::before{content:"◆";color:var(--gold);font-size:9px}
+.sec{padding:96px 0}.sec h2{font:500 clamp(32px,4.6vw,58px)/1.02 Fraunces,serif;margin:0 0 14px;letter-spacing:-.02em}.sec .s{color:var(--mu);max-width:64ch;margin:0 0 42px;font-size:18px}
+.eyebrow{font:700 12px Manrope;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block}
+.alt{background:linear-gradient(#0e0c0a,#13100d);border-block:1px solid var(--ln)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ap{background:linear-gradient(160deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:26px;padding:32px;position:relative;overflow:hidden;transition:.3s}.ap:hover{transform:translateY(-6px);border-color:var(--c)}
+.ap::before{content:"";position:absolute;right:-50px;top:-50px;width:190px;height:190px;border-radius:50%;background:var(--c);opacity:.16;filter:blur(34px)}
+.ap i{font-style:normal;font-size:40px}.ap h3{margin:10px 0 4px;font:500 28px Fraunces,serif}.ap small{color:var(--c);font:700 11.5px Manrope;letter-spacing:.18em;text-transform:uppercase}
+.ap ul{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:9px;color:#d6cdc0;font-size:15.5px}.ap li{display:flex;gap:10px}.ap li::before{content:"→";color:var(--c);font-weight:800}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);margin-top:40px}
+.fl{background:var(--p);border:1px solid var(--ln);padding:22px 16px;text-align:center;position:relative}.fl:first-child{border-radius:20px 0 0 20px}.fl:last-child{border-radius:0 20px 20px 0}.fl+.fl{border-left:0}
+.fl i{font-style:normal;font-size:30px;display:block}.fl b{display:block;font:600 17px Fraunces,serif;margin:6px 0 2px}.fl span{color:var(--mu);font-size:13.5px}
+.fl::after{content:"▶";position:absolute;right:-9px;top:50%;translate:0 -50%;color:var(--gold);font-size:12px;z-index:2;background:var(--bg);border-radius:50%;width:18px;height:18px;display:grid;place-items:center}.fl:last-child::after{display:none}
+/* logística */
+.log{display:grid;grid-template-columns:.9fr 1.1fr;gap:26px;align-items:start}
+.steps{display:grid;gap:8px}.stp{display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:center;text-align:left;background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:12px 16px;color:var(--ink);transition:.25s}.stp:hover{border-color:#e8c37a66}.stp b{width:42px;height:42px;border-radius:50%;background:var(--p2);display:grid;place-items:center;font:600 16px Fraunces,serif;color:var(--gold);border:1px solid var(--ln)}.stp span{font-weight:700;font-size:15.5px}.stp small{display:block;color:var(--mu);font-weight:500;font-size:13px}
+.stp.on{background:linear-gradient(135deg,#2a2218,#1c1712);border-color:var(--gold)}.stp.on b{background:var(--gold);color:#1c1408;border-color:var(--gold)}
+.det{position:sticky;top:90px;background:linear-gradient(160deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:28px;padding:32px}
+.det .no{font:500 64px Fraunces,serif;color:transparent;-webkit-text-stroke:1px var(--gold);line-height:1}.det h3{margin:6px 0 8px;font:500 30px/1.1 Fraunces,serif}.det p{margin:0 0 20px;color:#d6cdc0}
+.who{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.who div{background:#0a0908aa;border:1px solid var(--ln);border-radius:16px;padding:14px}.who small{display:block;font:700 10.5px Manrope;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}.who span{font-size:14px;color:#d6cdc0}
+.tech{margin-top:14px;font-size:13.5px;color:var(--mu);border-top:1px dashed var(--ln);padding-top:14px}.tech b{color:var(--gold2)}
+.faq{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:30px}
+.q{background:var(--p);border:1px solid var(--ln);border-radius:22px;padding:26px}.q h3{margin:0 0 8px;font:500 22px Fraunces,serif}.q p{margin:0 0 8px;color:#d6cdc0;font-size:15.5px}.q ul{margin:0;padding-left:18px;color:var(--mu);font-size:14.5px;display:grid;gap:4px}
+.q.ok{border-color:#4be39a55}.q.warn{border-color:#e8c37a66}
+.tg{display:inline-block;font:700 10.5px Manrope;letter-spacing:.16em;text-transform:uppercase;padding:4px 11px;border-radius:99px;margin-bottom:12px}.tg.g{background:#4be39a22;color:var(--gr)}.tg.o{background:#e8c37a22;color:var(--gold)}
+/* pagamentos */
+.pf{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-bottom:34px}
+.pm{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:34px}
+.pc{background:linear-gradient(160deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:24px;padding:26px}.pc i{font-style:normal;font-size:30px}.pc h3{margin:6px 0 4px;font:500 24px Fraunces,serif}.pc .tag{font:700 11px Manrope;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}.pc p{margin:8px 0 0;color:#d6cdc0;font-size:15px}
+.tbw{overflow-x:auto;border:1px solid var(--ln);border-radius:22px;background:var(--p)}
+table{width:100%;border-collapse:collapse;min-width:760px;font-size:14.5px}th{text-align:left;font:700 11px Manrope;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding:16px 18px;border-bottom:1px solid var(--ln);background:#0e0c0a}
+td{padding:14px 18px;border-bottom:1px solid #ffffff0a;color:#d6cdc0;vertical-align:top}tr:last-child td{border:0}td b{color:var(--ink)}td .y{color:var(--gr);font-weight:800}td .n{color:#6f665a}td small{display:block;color:var(--mu);font-size:12.5px}
+.note{margin-top:14px;font-size:13.5px;color:var(--mu)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:34px}
+.bx{background:var(--p);border:1px solid var(--ln);border-radius:24px;padding:28px}.bx h3{margin:0 0 12px;font:500 24px Fraunces,serif}.bx ul{margin:0;padding:0;list-style:none;display:grid;gap:10px;color:#d6cdc0;font-size:15.5px}.bx li{display:flex;gap:10px}.bx li::before{content:"✓";color:var(--gold);font-weight:900}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.ft{background:var(--p);border:1px solid var(--ln);border-radius:20px;padding:24px;transition:.25s}.ft:hover{border-color:var(--gold);transform:translateY(-4px)}.ft i{font-style:normal;font-size:28px}.ft h4{margin:8px 0 4px;font:500 20px Fraunces,serif}.ft p{margin:0;color:var(--mu);font-size:14.5px}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.card{background:var(--p);border:1px solid var(--ln);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,border-color .25s,box-shadow .25s}
-.card:hover{transform:translateY(-8px);border-color:var(--c);box-shadow:0 26px 60px #000a,0 0 0 1px var(--c),0 0 50px color-mix(in srgb,var(--c) 30%,transparent)}
+.card{background:var(--p);border:1px solid var(--ln);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:transform .3s,border-color .3s,box-shadow .3s}
+.card:hover{transform:translateY(-8px);border-color:var(--c);box-shadow:0 26px 60px #000a,0 0 0 1px var(--c),0 0 50px color-mix(in srgb,var(--c) 28%,transparent)}
 .pv{position:relative;aspect-ratio:16/10;overflow:hidden;background:#000;cursor:pointer;border-bottom:1px solid var(--ln)}.pv iframe{position:absolute;left:0;top:0;width:1500px;height:900px;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
-.pv::after{content:"Abrir ao vivo →";position:absolute;left:50%;bottom:16px;translate:-50% 20px;opacity:0;transition:.25s;background:#000c;border:1px solid #ffffff44;padding:9px 20px;border-radius:99px;font:700 13px "Chakra Petch";letter-spacing:.1em;text-transform:uppercase;z-index:3}.card:hover .pv::after{opacity:1;translate:-50% 0}
-.num{position:absolute;top:12px;left:12px;z-index:4;background:#09080de6;border:1px solid var(--ln);border-radius:9px;padding:3px 10px;font:700 13px "Chakra Petch";color:var(--ac2)}
-.cb{padding:20px 22px 22px;display:flex;flex-direction:column;gap:6px;flex:1}.cat{font:700 11px "Chakra Petch";letter-spacing:.18em;text-transform:uppercase;color:var(--c)}.card h3{margin:0;font:700 26px "Chakra Petch"}.card p{margin:0;color:var(--mu);font-size:15px}
-.sw{display:flex;gap:6px;margin:6px 0 2px}.sw i{width:22px;height:22px;border-radius:7px;border:1px solid #fff2}
-.acts{display:flex;gap:8px;margin-top:auto;padding-top:14px}.acts .btn{flex:1;padding:12px 10px;font-size:14px;box-shadow:none}.acts .btn.g{box-shadow:inset 0 0 0 1.5px var(--ln)}
-.need{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.need div{padding:16px 18px;background:var(--p);border:1px solid var(--ln);border-radius:14px;font-size:15px}.need b{display:block;color:var(--ac2);font:700 15px "Chakra Petch"}.need span{color:var(--mu);font-size:14px}
-.cta{margin:20px 0 80px;border-radius:32px;padding:70px 30px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#a3361c,#e0482c 55%,#d6285a)}
+.pv::after{content:"Abrir ao vivo →";position:absolute;left:50%;bottom:16px;translate:-50% 20px;opacity:0;transition:.25s;background:#000c;border:1px solid #ffffff44;padding:9px 20px;border-radius:99px;font:700 12.5px Manrope;letter-spacing:.1em;text-transform:uppercase;z-index:3}.card:hover .pv::after{opacity:1;translate:-50% 0}
+.num{position:absolute;top:12px;left:12px;z-index:4;background:#0a0908e6;border:1px solid var(--ln);border-radius:99px;padding:3px 11px;font:700 12px Manrope;color:var(--gold)}
+.cb{padding:22px 24px 24px;display:flex;flex-direction:column;gap:6px;flex:1}.cat{font:700 11px Manrope;letter-spacing:.18em;text-transform:uppercase;color:var(--c)}.card h3{margin:0;font:500 28px Fraunces,serif}.card p{margin:0;color:var(--mu);font-size:15px}
+.sw{display:flex;gap:6px;margin:6px 0 2px}.sw i{width:22px;height:22px;border-radius:50%;border:1px solid #fff2}
+.acts{display:flex;gap:8px;margin-top:auto;padding-top:16px}.acts .btn{flex:1;padding:12px 10px;font-size:14px;box-shadow:none}.acts .btn.g{box-shadow:inset 0 0 0 1.5px #ffffff30}
+.need{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.need div{padding:18px 20px;background:var(--p);border:1px solid var(--ln);border-radius:18px}.need b{display:block;color:var(--gold2);font:600 18px Fraunces,serif;margin-bottom:2px}.need span{color:var(--mu);font-size:14.5px}
+.cta{margin:20px 0 90px;border-radius:36px;padding:80px 30px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#7a3a1c,#c8552a 55%,#b8324f)}
 .cta::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-60deg,transparent 0 40px,#ffffff0a 40px 80px)}.cta>*{position:relative}
-.cta h2{font:700 clamp(30px,5vw,58px)/1 "Chakra Petch";margin:0 0 12px}.cta p{margin:0 auto 28px;max-width:52ch;color:#ffe8df;font-size:19px}.cta .btn{background:#fff;color:#8a2210;box-shadow:0 12px 40px #0006}
-footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:14px}footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.cta h2{font:500 clamp(32px,5vw,62px)/1 Fraunces,serif;margin:0 0 14px}.cta p{margin:0 auto 30px;max-width:54ch;color:#ffe8da;font-size:19px}.cta .btn{background:#fff;color:#7a2a10;box-shadow:0 12px 40px #0006}
+footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:14px}footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .wf{position:fixed;right:18px;bottom:18px;z-index:40;background:#25d366;color:#04200f;font-weight:800;padding:14px 22px;border-radius:99px;box-shadow:0 10px 30px #25d36655;display:flex;gap:8px;align-items:center}
-.md{position:fixed;inset:0;z-index:60;background:#03030bf0;backdrop-filter:blur(10px);display:none;flex-direction:column}.md.on{display:flex}
-.mh{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--ln);background:var(--p);flex-wrap:wrap}.mh b{font:700 18px "Chakra Petch"}.mh .sp{flex:1}.mh .btn{padding:9px 16px;font-size:14px;box-shadow:none}
-.mh .x{border:0;background:var(--p2);color:var(--ink);width:38px;height:38px;border-radius:10px;font-size:18px}
+.md{position:fixed;inset:0;z-index:60;background:#050403f2;backdrop-filter:blur(10px);display:none;flex-direction:column}.md.on{display:flex}
+.mh{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--ln);background:var(--p);flex-wrap:wrap}.mh b{font:500 20px Fraunces,serif}.mh .sp{flex:1}.mh .btn{padding:9px 18px;font-size:14px;box-shadow:none}
+.mh .x{border:0;background:var(--p2);color:var(--ink);width:38px;height:38px;border-radius:50%;font-size:18px}
 .mb{flex:1;padding:14px;min-height:0}.mb iframe{width:100%;height:100%;border:0;border-radius:14px;background:#fff;display:block}
-@media(max-width:1100px){.hero .wrap{grid-template-columns:1fr}.stage{display:none}.three,.feat,.gal,.qa,.need{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.fl,.fl:first-child,.fl:last-child{border-radius:0;border-left:1px solid var(--ln)}.fl::after{display:none}}
-@media(max-width:680px){.three,.feat,.gal,.qa,.need{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:40px 0 20px}.wf span{display:none}}
+@media(max-width:1100px){.hero .wrap,.log{grid-template-columns:1fr}.stage{display:none}.three,.feat,.gal,.faq,.need,.pm,.two{grid-template-columns:1fr 1fr}.flow,.pf{grid-template-columns:1fr}.fl,.fl:first-child,.fl:last-child{border-radius:0;border-left:1px solid var(--ln)}.fl::after{display:none}.det{position:static}}
+@media(max-width:680px){.three,.feat,.gal,.faq,.need,.pm,.two,.who{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:40px 0 20px}.wf span{display:none}.sec{padding:64px 0}}
+
+/* tutorial */
+.tut{display:grid;grid-template-columns:.85fr 1.15fr;gap:30px;align-items:start}
+.tl{display:grid;gap:8px}
+.ts{display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:center;text-align:left;background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:12px 16px;color:var(--ink);transition:.25s;position:relative;overflow:hidden}
+.ts b{width:42px;height:42px;border-radius:50%;background:var(--p2);display:grid;place-items:center;font:600 16px Fraunces,serif;color:var(--gold);border:1px solid var(--ln)}
+.ts span{font-weight:700;font-size:15.5px}.ts small{display:block;color:var(--mu);font-weight:500;font-size:13px}
+.ts.done b{background:#4be39a22;border-color:#4be39a66;color:var(--gr)}.ts.on{background:linear-gradient(135deg,#2a2218,#1c1712);border-color:var(--gold)}.ts.on b{background:var(--gold);color:#1c1408;border-color:var(--gold)}
+.ts.on::after{content:"";position:absolute;left:0;bottom:0;height:3px;background:var(--gold);width:var(--w,0%);transition:width .4s}
+.tc{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.tc button{border:1px solid var(--ln);background:var(--p);color:var(--ink);border-radius:99px;padding:11px 20px;font-weight:700;font-size:14px;transition:.2s}.tc button:hover:not(:disabled){border-color:var(--gold);color:var(--gold2)}.tc button:disabled{opacity:.4;cursor:default}.tc .go{background:linear-gradient(135deg,var(--gold),#d49a47);color:#1c1408;border:0}
+.tip{margin-top:16px;background:linear-gradient(135deg,#1d1a10,#14110b);border:1px solid #e8c37a55;border-radius:20px;padding:18px 20px}.tip small{font:700 10.5px Manrope;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:6px}.tip p{margin:0;color:#e9dfcd;font-size:15.5px}.tip h4{margin:0 0 6px;font:500 22px Fraunces,serif}
+.tmode{margin-top:10px;font-size:13px;color:var(--mu)}.tmode label{display:inline-flex;gap:8px;align-items:center;cursor:pointer}.tmode input{accent-color:#e8c37a;width:16px;height:16px}
+#tstage{position:relative;height:650px}
+#tstage .fr.a{width:272px;height:570px;left:0;top:44px;z-index:3;animation:none}
+#tstage .fr.b{width:530px;height:350px;left:200px;top:0;z-index:1;animation:none}
+#tstage .fr.c{width:272px;height:570px;right:0;top:70px;z-index:3;animation:none}
+#tstage.live .fr iframe{pointer-events:auto}
+/* faturamento */
+.gain{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.gc{background:linear-gradient(160deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:24px;padding:28px;transition:.3s;position:relative;overflow:hidden}.gc:hover{transform:translateY(-5px);border-color:var(--gold)}
+.gc i{font-style:normal;font-size:32px}.gc h3{margin:8px 0 6px;font:500 24px/1.1 Fraunces,serif}.gc p{margin:0;color:#d6cdc0;font-size:15.5px}.gc .k{display:inline-block;margin-top:14px;font:700 10.5px Manrope;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid #e8c37a44;border-radius:99px;padding:3px 10px}
+.calc{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--ln);border-radius:30px;overflow:hidden;background:var(--p)}
+.calc .in{padding:32px}.calc .out{padding:32px;background:linear-gradient(160deg,#2a2016,#16110b);border-left:1px solid var(--ln)}
+.calc h3{margin:0 0 6px;font:500 28px Fraunces,serif}.calc .sub2{margin:0 0 22px;color:var(--mu);font-size:14.5px}
+.fld{margin-bottom:16px}.fld label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:700;color:#e9dfcd;margin-bottom:6px}.fld label b{color:var(--gold2);font-variant-numeric:tabular-nums}
+.fld input[type=number]{width:100%;background:#0a0908;border:1px solid var(--ln);border-radius:14px;padding:12px 14px;color:var(--ink);font:inherit;outline:0}.fld input[type=number]:focus{border-color:var(--gold)}
+.fld input[type=range]{width:100%;accent-color:#e8c37a}
+.rg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.out small{font:700 10.5px Manrope;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.big2{font:500 clamp(40px,5vw,64px)/1 Fraunces,serif;margin:6px 0 4px;background:linear-gradient(90deg,var(--gold2),var(--gold));-webkit-background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.out .y{color:#d6cdc0;font-size:15px;margin:0 0 22px}
+.rw{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px dashed #ffffff22;font-size:14.5px;color:#d6cdc0}.rw b{color:var(--ink);font-variant-numeric:tabular-nums}
+.disc{margin-top:16px;font-size:12.5px;color:var(--mu)}
+@media(max-width:1100px){.tut,.calc{grid-template-columns:1fr}.gain{grid-template-columns:1fr 1fr}.calc .out{border-left:0;border-top:1px solid var(--ln)}#tstage{height:580px;max-width:340px;margin:auto}#tstage .fr.b,#tstage .fr.c{display:none}#tstage .fr.a{left:34px}}
+@media(max-width:680px){.gain,.rg2{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
 <div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
-<div class="l"><a href="index.html">Início</a><a href="vitrine.html">Sites para Games</a><a class="on" href="delivery.html">Delivery</a><a href="#estilos">Estilos</a><a class="btn" id="navwa" href="#" style="padding:10px 18px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
+<div class="l"><a href="index.html">Início</a><a href="vitrine.html">Sites para Games</a><a class="on" href="delivery.html">Delivery</a><a href="#estilos">Estilos</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
 
 <div class="hero"><div class="wrap"><div><span class="kick"><i></i> Delivery próprio</span>
-<h1>Seu delivery, <span class="g1">sem dividir</span> o lucro</h1>
+<h1 data-ih="d.h1">Seu delivery, <em>sem dividir</em> o lucro</h1>
 <p class="l">Site e app de pedidos com a sua marca: o cliente pede, a cozinha recebe e o motoboy entrega, tudo sincronizado e sem comissão por pedido. Os três apps ao lado estão rodando de verdade, e conversam entre si.</p>
-<div class="row"><a class="btn" href="#estilos">Ver os 6 estilos ↓</a><a class="btn g" href="#como">Como funciona</a></div>
-<ul class="chk"><li>Cardápio com foto, preço e cupom de desconto</li><li>Endereço no Google Maps e rota para o motoboy</li><li>Tela da cozinha com os pedidos na ordem de chegada</li><li>Status automático: preparando, pronto, saiu, entregue</li></ul></div>
-<div class="stage" id="stage"><div class="fr tb b" data-v="cozinha" data-w="900" data-h="620"><iframe data-src="demos/delivery-sabor-express.html?view=cozinha"></iframe></div><div class="fr ph a" data-v="cliente" data-w="390" data-h="780"><iframe data-src="demos/delivery-sabor-express.html?view=cliente"></iframe></div><div class="fr ph c" data-v="motoboy" data-w="390" data-h="780"><iframe data-src="demos/delivery-sabor-express.html?view=motoboy"></iframe></div>
+<div class="row"><a class="btn" href="#estilos">Ver os 6 estilos ↓</a><a class="btn g" href="#tutorial">Ver o tutorial</a></div>
+<ul class="chk"><li>Cardápio com foto, preço e cupom de desconto</li><li>Motoboy no mapa em tempo real, com aviso de “chegando”</li><li>Pix e cartão pela API do banco, dinheiro direto na sua conta</li><li>Tela da cozinha com os pedidos na ordem de chegada</li></ul></div>
+<div class="stage" id="stage"><div class="fr tb b" data-v="cozinha" data-w="900"><iframe data-src="demos/delivery-sabor-express.html?view=cozinha" title="Cozinha"></iframe></div><div class="fr ph a" data-v="cliente" data-w="390"><iframe data-src="demos/delivery-sabor-express.html?view=cliente" title="Cliente"></iframe></div><div class="fr ph c" data-v="motoboy" data-w="390"><iframe data-src="demos/delivery-sabor-express.html?view=motoboy" title="Motoboy"></iframe></div>
 <span class="cap" style="left:0;top:30px">📱 Cliente</span><span class="cap" style="left:50%;top:-10px;translate:-20% 0">👨‍🍳 Cozinha</span><span class="cap" style="right:0;top:50px">🛵 Motoboy</span></div></div></div>
+<div class="trust"><div class="wrap"><span>Sem comissão por pedido</span><span>Dinheiro direto na conta do restaurante</span><span>Português, inglês e espanhol</span><span>Android e iPhone</span><span>Google Maps integrado</span></div></div>
 
-<div class="sec alt" id="como"><div class="wrap"><h2>Três apps, <span>um só pedido</span></h2><p class="s">Cada pessoa vê só o que precisa. Quando alguém muda o status, os outros dois já veem na hora.</p>
-<div class="three"><div class="ap" style="--c:#ff6a3d"><i>📱</i><small>Para o cliente</small><h3>App do cliente</h3><ul><li>Cardápio com foto, descrição e preço</li><li>Sacola, cupom de desconto e taxa de entrega</li><li>Endereço de entrega já no Google Maps</li><li>Acompanha o motoboy no mapa e recebe o código de entrega</li><li>Conversa com a loja dentro do pedido</li></ul></div>
-<div class="ap" style="--c:#ffb347"><i>👨‍🍳</i><small>Para a cozinha</small><h3>Tela da cozinha</h3><ul><li>Funciona no tablet ou no PC da cozinha</li><li>Pedidos em ordem de chegada, com cronômetro</li><li>Aviso sonoro de pedido novo</li><li>Um toque para: preparando, pronto, saiu para entrega</li><li>Responde o cliente pelo chat</li></ul></div>
-<div class="ap" style="--c:#8b5cf6"><i>🛵</i><small>Para o entregador</small><h3>App do motoboy</h3><ul><li>Vê as corridas prontas e aceita</li><li>Endereço do cliente e itens do pedido</li><li>Abre a rota no Google Maps com um toque</li><li>Confirma a entrega com o código do cliente</li><li>Acompanha corridas e ganhos do dia</li></ul></div></div>
+
+<div class="sec" id="tutorial"><div class="wrap"><span class="eyebrow">Tutorial</span><h2 data-ih="d.tut">Veja o delivery <em>funcionando em 7 passos</em></h2><p class="s">É o aplicativo de verdade, rodando ao lado. Aperte “Próximo passo” e acompanhe o pedido passar pelo cliente, pela cozinha e pelo motoboy. Em cada passo mostramos como isso ajuda o faturamento.</p>
+<div class="tut"><div><div class="tl" id="tl"></div><div class="tc"><button class="go" id="tnext">Próximo passo ▶</button><button id="tprev">◀ Voltar</button><button id="tauto">▶▶ Rodar tudo</button><button id="trst">↺ Reiniciar</button></div>
+<div class="tmode"><label><input type="checkbox" id="tlive"> Quero mexer eu mesmo no app (modo livre)</label></div><div class="tip" id="ttip"></div></div>
+<div id="tstage"><div class="fr tb b" data-v="cozinha" data-w="900"><iframe data-src="demos/delivery-forno-a-lenha.html?view=cozinha" title="Cozinha"></iframe></div><div class="fr ph a" data-v="cliente" data-w="390"><iframe data-src="demos/delivery-forno-a-lenha.html?view=cliente" title="Cliente"></iframe></div><div class="fr ph c" data-v="motoboy" data-w="390"><iframe data-src="demos/delivery-forno-a-lenha.html?view=motoboy" title="Motoboy"></iframe></div>
+<span class="cap" style="left:0;top:14px">📱 Cliente</span><span class="cap" style="left:50%;top:-10px;translate:-10% 0">👨‍🍳 Cozinha</span><span class="cap" style="right:0;top:40px">🛵 Motoboy</span></div></div></div></div>
+
+<div class="sec alt" id="faturamento"><div class="wrap"><span class="eyebrow">Resultado</span><h2 data-ih="d.fat">Como isso ajuda a <em>aumentar o faturamento</em></h2><p class="s">O delivery próprio não cria cliente do nada: ele faz você ficar com mais do que vende, vender mais por pedido e fazer o cliente voltar. Veja onde está o ganho.</p>
+<div class="gain"><div class="gc"><i>💰</i><h3>Você fica com a margem</h3><p>No canal próprio não há comissão por pedido para o marketplace. Você paga apenas a taxa do meio de pagamento, que costuma ser bem menor.</p><span class="k">Mais lucro por pedido</span></div>
+<div class="gc"><i>🍔</i><h3>Aumenta o ticket médio</h3><p>Combos, adicionais, selo “mais pedido” e sugestões na sacola levam o cliente a pedir mais itens a cada compra.</p><span class="k">Mais valor por pedido</span></div>
+<div class="gc"><i>🔁</i><h3>O cliente volta</h3><p>Cupom de primeira compra, frete grátis e avisos por WhatsApp. Você tem o contato de quem comprou e pode chamar de volta.</p><span class="k">Mais recompra</span></div>
+<div class="gc"><i>⏱</i><h3>Atende mais por hora</h3><p>Pedidos na ordem de chegada, sem anotar errado nem perder pedido, e com tempo de preparo medido na cozinha.</p><span class="k">Mais pedidos no pico</span></div>
+<div class="gc"><i>⭐</i><h3>Entrega melhor, nota melhor</h3><p>Rastreio no mapa, aviso de “chegando” e código de entrega acabam com o “cadê meu pedido?”. Avaliações boas trazem mais clientes.</p><span class="k">Mais reputação</span></div>
+<div class="gc"><i>📊</i><h3>Os dados são seus</h3><p>Lista de clientes, produtos mais vendidos e horários de pico para decidir cardápio, preço e campanha.</p><span class="k">Decisões melhores</span></div></div>
+<div class="calc"><div class="in"><h3>Calcule a sua economia</h3><p class="sub2">Use os seus números. Nada é estimado por nós: o resultado vem do que você digitar.</p>
+<div class="rg2"><div class="fld"><label>Pedidos por mês</label><input type="number" id="c1" value="1500" min="0"></div><div class="fld"><label>Ticket médio</label><input type="number" id="c2" value="55" min="0"></div></div>
+<div class="rg2"><div class="fld"><label>Comissão que você paga hoje (%)</label><input type="number" id="c3" value="20" min="0" max="60"></div><div class="fld"><label>Taxa do meio de pagamento (%)</label><input type="number" id="c4" value="1.5" min="0" max="10" step="0.1"></div></div>
+<div class="fld"><label><span>Pedidos que você leva para o canal próprio</span><b id="c5v">30%</b></label><input type="range" id="c5" min="5" max="100" value="30"></div>
+<div class="fld"><label>Mensalidade do sistema (opcional)</label><input type="number" id="c6" value="0" min="0"></div></div>
+<div class="out"><small>Economia estimada por mês</small><div class="big2" id="r1">R$ 0</div><p class="y" id="r2"></p>
+<div class="rw"><span>Pedidos no canal próprio</span><b id="r3"></b></div><div class="rw"><span>Comissão que deixaria de pagar</span><b id="r4"></b></div><div class="rw"><span>Taxa do meio de pagamento</span><b id="r5"></b></div><div class="rw"><span>Mensalidade do sistema</span><b id="r6"></b></div><div class="rw"><span>Economia por ano</span><b id="r7"></b></div>
+<p class="disc">Cálculo simples com os números informados. O resultado real depende do seu movimento e de quanto você divulga o canal próprio (Instagram, QR code no balcão, WhatsApp).</p></div></div></div></div>
+
+<div class="sec alt" id="como"><div class="wrap"><span class="eyebrow">O sistema</span><h2 data-ih="d.como">Três apps, <em>um só pedido</em></h2><p class="s">Cada pessoa vê só o que precisa. Quando alguém muda o status, os outros dois já veem na hora.</p>
+<div class="three"><div class="ap" style="--c:#ff6a3d"><i>📱</i><small>Para o cliente</small><h3>App do cliente</h3><ul><li>Cardápio com foto, descrição e preço</li><li>Sacola, cupom de desconto e taxa de entrega</li><li>Paga no Pix ou cartão, sem sair do app</li><li>Acompanha o motoboy no mapa e recebe o código de entrega</li><li>Conversa com a loja dentro do pedido</li></ul></div>
+<div class="ap" style="--c:#e8c37a"><i>👨‍🍳</i><small>Para a cozinha</small><h3>Tela da cozinha</h3><ul><li>Funciona no tablet ou no PC da cozinha</li><li>Só aparece pedido pago, na ordem de chegada, com cronômetro</li><li>Aviso sonoro de pedido novo</li><li>Um toque para: preparando, pronto, saiu para entrega</li><li>Responde o cliente pelo chat</li></ul></div>
+<div class="ap" style="--c:#8b5cf6"><i>🛵</i><small>Para o entregador</small><h3>App do motoboy</h3><ul><li>Vê as corridas prontas e aceita</li><li>Compartilha a localização só durante a corrida</li><li>Abre a rota no Google Maps com um toque</li><li>Avisa “cheguei” e confirma com o código do cliente</li><li>Acompanha corridas e ganhos do dia</li></ul></div></div>
 <div class="flow"><div class="fl"><i>🛍</i><b>Cliente pede</b><span>Escolhe, usa cupom e paga</span></div><div class="fl"><i>🔔</i><b>Cozinha recebe</b><span>Toca o alerta, na fila</span></div><div class="fl"><i>✅</i><b>Pedido pronto</b><span>Motoboy é avisado</span></div><div class="fl"><i>🗺</i><b>Rota no mapa</b><span>Motoboy retira e sai</span></div><div class="fl"><i>🎉</i><b>Entrega confirmada</b><span>Código do cliente</span></div></div></div></div>
 
-<div class="sec"><div class="wrap"><h2>Site, app ou <span>os dois</span>?</h2><p class="s">Resposta direta sobre o que dá para entregar e como cada opção funciona.</p>
-<div class="qa"><div class="q ok"><span class="tg g">Entrega mais rápida</span><h3>App web instalável (PWA)</h3><p>É um site que o cliente instala na tela inicial do celular, com ícone próprio, tela cheia e notificações. É o que mostramos nesta página.</p><ul><li>Funciona em Android e iPhone, sem loja de aplicativos</li><li>Atualização na hora, sem esperar aprovação</li><li>Cliente pede pelo link, QR code do balcão ou Instagram</li></ul></div>
-<div class="q"><span class="tg o">Opcional</span><h3>App nas lojas (Google Play e App Store)</h3><p>Dá para empacotar o mesmo sistema como aplicativo nativo, para quem quer estar nas lojas.</p><ul><li>Exige conta de desenvolvedor da loja (paga) e aprovação do Google e da Apple</li><li>Leva mais prazo que o app web</li><li>Recomendamos começar pelo app web e migrar depois</li></ul></div></div></div></div>
+<div class="sec alt" id="logistica"><div class="wrap"><span class="eyebrow">Logística</span><h2 data-ih="d.log">Como o cliente <em>acompanha o motoboy</em></h2><p class="s">O cliente não precisa compartilhar nada. Quem compartilha a localização é o motoboy, só durante a corrida. Clique em cada etapa para ver quem faz o quê.</p>
+<div class="log"><div class="steps" id="steps"></div><div class="det" id="det"></div></div>
+<div class="faq"><div class="q ok"><span class="tg g">Cliente</span><h3>O cliente precisa compartilhar a localização?</h3><p>Não. Ele informa o endereço de entrega. Se quiser, pode tocar em “usar minha localização” só para preencher o endereço, e nada fica ligado depois.</p><ul><li>Ele vê o motoboy no mapa e o tempo de chegada</li><li>Recebe aviso quando o motoboy está chegando e quando chegou</li></ul></div>
+<div class="q ok"><span class="tg g">Motoboy</span><h3>O motoboy precisa deixar o GPS ligado?</h3><p>Sim, durante a corrida. O app pede a permissão de localização e só compartilha a posição enquanto existe uma entrega ativa. Ao confirmar a entrega, o compartilhamento termina.</p><ul><li>Posição atualizada a cada poucos segundos</li><li>O número do cliente e o do motoboy ficam protegidos</li></ul></div>
+<div class="q warn"><span class="tg o">Importante</span><h3>App web ou app nativo para o motoboy?</h3><p>No navegador (app web), a localização funciona com a tela ligada. Com a tela bloqueada, o celular, principalmente o iPhone, limita o GPS. Para quem opera com vários entregadores, recomendamos o app nativo do motoboy.</p><ul><li>Cliente e cozinha funcionam muito bem como app web</li><li>Motoboy: app nativo (Android e iPhone) é o ideal</li></ul></div>
+<div class="q"><span class="tg o">Privacidade</span><h3>E a privacidade de todo mundo?</h3><p>A localização do motoboy só é compartilhada durante a entrega e é apagada ao final. Seguimos a LGPD, e as regras equivalentes em outros países, e só guardamos o necessário para a operação.</p><ul><li>Ligação pelo número protegido da loja</li><li>Histórico de entregas no painel do restaurante</li></ul></div></div></div></div>
 
-<div class="sec alt"><div class="wrap"><h2>O que vem <span>no pacote</span></h2><p class="s">Tudo configurável pelo painel do dono, sem mexer em código.</p>
+<div class="sec" id="pagamentos"><div class="wrap"><span class="eyebrow">Pagamentos</span><h2 data-ih="d.pag">Como o dinheiro <em>chega na sua conta</em></h2><p class="s">O pedido é pago dentro do app, por uma API de banco ou de plataforma de pagamento. O valor cai direto na conta do restaurante, sem a Lhart segurar o dinheiro.</p>
+<div class="flow pf"><div class="fl"><i>🛍</i><b>Cliente paga</b><span>Pix, cartão ou dinheiro</span></div><div class="fl"><i>🏦</i><b>API gera a cobrança</b><span>QR Pix ou cartão tokenizado</span></div><div class="fl"><i>⚡</i><b>Webhook confirma</b><span>Banco avisa em tempo real</span></div><div class="fl"><i>👨‍🍳</i><b>Pedido vai à cozinha</b><span>Só entra pedido pago</span></div><div class="fl"><i>💰</i><b>Dinheiro liquida</b><span>Na conta do restaurante</span></div></div>
+<div class="pm"><div class="pc"><i>⚡</i><span class="tag">Brasil</span><h3>Pix</h3><p>QR Code dinâmico gerado pela API do banco. A confirmação chega por webhook na hora e o dinheiro cai na conta do restaurante, normalmente no mesmo instante.</p></div><div class="pc"><i>💳</i><span class="tag">Brasil e mundo</span><h3>Cartão</h3><p>Crédito e débito com dados do cartão tokenizados, sem passar pelo nosso servidor. O prazo para receber depende do contrato com o provedor; no crédito costuma ser em torno de 30 dias, com opção de antecipar.</p></div><div class="pc"><i>💵</i><span class="tag">Opcional</span><h3>Dinheiro na entrega</h3><p>O motoboy recebe e informa o troco no app. O valor entra no fechamento do dia do restaurante, com o pedido já marcado como “pagar na entrega”.</p></div></div>
+<div class="tbw"><table><thead><tr><th>Provedor</th><th>Tipo</th><th>Pix por API</th><th>Cartão</th><th>Split</th><th>Observação</th></tr></thead><tbody>
+<tr><td><b>Banco Inter</b></td><td>Banco</td><td><span class="y">✓</span></td><td><span class="n">consultar</span></td><td><span class="n">consultar</span></td><td>Cobrança imediata e com vencimento pela API Pix para empresas.</td></tr>
+<tr><td><b>Efí Bank</b></td><td>Banco digital</td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td><span class="y">✓</span> <small>Split Pix</small></td><td>Divide e repassa automaticamente o valor de uma venda por Pix.</td></tr>
+<tr><td><b>Itaú</b></td><td>Banco</td><td><span class="y">✓</span></td><td><span class="n">consultar</span></td><td><span class="n">consultar</span></td><td>API Pix para recebimento com confirmação por webhook.</td></tr>
+<tr><td><b>Sicoob</b></td><td>Banco cooperativo</td><td><span class="y">✓</span></td><td><span class="n">consultar</span></td><td><span class="n">consultar</span></td><td>API Pix com manual técnico publicado.</td></tr>
+<tr><td><b>Asaas</b></td><td>Plataforma de pagamentos</td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td>Split funciona com Pix, boleto e cartão.</td></tr>
+<tr><td><b>Mercado Pago</b></td><td>Plataforma de pagamentos</td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td>Split via API, indicado para marketplaces.</td></tr>
+<tr><td><b>Pagar.me</b></td><td>Gateway</td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td>Split via API para dividir entre mais de um recebedor.</td></tr>
+<tr><td><b>PagBank</b></td><td>Plataforma de pagamentos</td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td><span class="y">✓</span></td><td>Split via API.</td></tr>
+<tr><td><b>Stripe</b></td><td>Internacional</td><td><span class="n">consultar</span></td><td><span class="y">✓</span></td><td><span class="y">✓</span> <small>Connect</small></td><td>Cartões, Apple Pay e Google Pay. Bom para EUA, Europa e outros países.</td></tr>
+<tr><td><b>Adyen · Square · PayPal</b></td><td>Internacional</td><td><span class="n">—</span></td><td><span class="y">✓</span></td><td><span class="n">consultar</span></td><td>Alternativas conforme o país do restaurante.</td></tr></tbody></table></div>
+<p class="note">Disponibilidade, taxas e prazos variam por provedor, por contrato e pelo seu tipo de empresa (CNPJ, MEI ou conta no exterior). Antes de fechar, confirmamos o que está liberado para o seu caso. Outros bancos com API Pix também podem ser integrados: a lista oficial de participantes está no repositório do Banco Central.</p>
+<div class="two"><div class="bx"><h3>Como o dinheiro é recebido</h3><ul><li>Pix: cai direto na conta do restaurante, normalmente na hora</li><li>Cartão: liquida pelo prazo contratado, com opção de antecipação</li><li>A Lhart não segura nem repassa o seu dinheiro</li><li>Split opcional: dividir a taxa de entrega com o motoboy ou uma comissão, quando o provedor permite</li><li>Painel com pagamentos, estornos e conciliação por pedido</li></ul></div>
+<div class="bx"><h3>O que precisamos para conectar</h3><ul><li>Conta no banco ou na plataforma escolhida, no nome do restaurante</li><li>Chaves de API (e certificado, quando o banco exige) e a chave Pix</li><li>Aprovação de cadastro do provedor, que pode levar alguns dias</li><li>Teste completo no ambiente de homologação antes de ir ao ar</li><li>Nota fiscal (NFC-e) pode ser integrada sob consulta</li></ul></div></div></div></div>
+
+<div class="sec alt"><div class="wrap"><span class="eyebrow">Site, app ou os dois</span><h2 data-ih="d.app">Entrega <em>mais rápida</em> com app web</h2><p class="s">Resposta direta sobre o que dá para entregar e como cada opção funciona.</p>
+<div class="faq"><div class="q ok"><span class="tg g">Entrega mais rápida</span><h3>App web instalável (PWA)</h3><p>É um site que o cliente instala na tela inicial do celular, com ícone próprio, tela cheia e notificações. É o que mostramos nesta página.</p><ul><li>Funciona em Android e iPhone, sem loja de aplicativos</li><li>Atualização na hora, sem esperar aprovação</li><li>Cliente pede pelo link, QR code do balcão ou Instagram</li></ul></div>
+<div class="q"><span class="tg o">Opcional</span><h3>App nas lojas (Google Play e App Store)</h3><p>Dá para empacotar o mesmo sistema como aplicativo nativo, para quem quer estar nas lojas. É a melhor opção para o app do motoboy.</p><ul><li>Exige conta de desenvolvedor da loja (paga) e aprovação do Google e da Apple</li><li>Leva mais prazo que o app web</li><li>Recomendamos começar pelo app web e migrar depois</li></ul></div></div></div></div>
+
+<div class="sec"><div class="wrap"><span class="eyebrow">Recursos</span><h2 data-ih="d.rec">O que vem <em>no pacote</em></h2><p class="s">Tudo configurável pelo painel do dono, sem mexer em código.</p>
 <div class="feat"><div class="ft"><i>🖼</i><h4>Cardápio com fotos</h4><p>Você sobe as fotos, muda preço, categoria e disponibilidade quando quiser.</p></div><div class="ft"><i>🎟</i><h4>Cupons</h4><p>Percentual, frete grátis e primeira compra, com validade.</p></div><div class="ft"><i>🗺</i><h4>Google Maps</h4><p>Endereço e rota até o cliente, para o motoboy e para o cliente acompanhar.</p></div><div class="ft"><i>💬</i><h4>Chat com a loja</h4><p>O cliente pergunta dentro do pedido. A cozinha responde na própria tela.</p></div>
 <div class="ft"><i>⚡</i><h4>Pix automático</h4><p>Pagamento confirmado sozinho, com opção de cartão e dinheiro na entrega.</p></div><div class="ft"><i>🔔</i><h4>Avisos</h4><p>Alerta sonoro na cozinha e aviso de cada etapa no celular do cliente.</p></div><div class="ft"><i>📊</i><h4>Relatórios</h4><p>Vendas por dia, produtos mais pedidos e tempo médio de entrega.</p></div><div class="ft"><i>🔗</i><h4>Discord e WhatsApp</h4><p>Pedido novo e entrega avisados no canal da equipe, se você quiser.</p></div></div></div></div>
 
-<div class="sec" id="estilos"><div class="wrap"><h2>6 estilos para <span>cada tipo de cozinha</span></h2><p class="s">Mexa de verdade: faça um pedido no app do cliente e veja ele aparecer na cozinha e no motoboy.</p><div class="gal" id="gal"></div></div></div>
+<div class="sec alt" id="estilos"><div class="wrap"><span class="eyebrow">Estilos</span><h2 data-ih="d.est">6 estilos para <em>cada tipo de cozinha</em></h2><p class="s">Mexa de verdade: faça um pedido no app do cliente e veja ele aparecer na cozinha e no motoboy.</p><div class="gal" id="gal"></div></div></div>
 
-<div class="sec alt"><div class="wrap"><h2>Para <span>entrar no ar</span></h2><p class="s">O que precisamos de você para configurar o sistema com os dados reais do restaurante.</p>
-<div class="need"><div><b>Cardápio e fotos</b><span>Produtos, preços, categorias e fotos dos pratos</span></div><div><b>Endereço e horários</b><span>Local da loja, área e taxa de entrega</span></div><div><b>Pagamento</b><span>Conta no gateway de Pix e cartão do restaurante</span></div><div><b>Google Maps</b><span>Chave do Google para mapa e rotas (criada na conta do restaurante)</span></div><div><b>Marca</b><span>Logo, cores e nome do restaurante</span></div><div><b>Equipe</b><span>Quem usa a cozinha e quem são os motoboys</span></div></div>
-<div class="cta" style="margin-top:60px"><h2>Quer o delivery do seu restaurante?</h2><p>Escolha o estilo, mande o cardápio e a gente responde com prazo e valor.</p><a class="btn" id="ctawa" href="#">Chamar no WhatsApp</a></div></div></div>
+<div class="sec"><div class="wrap"><span class="eyebrow">Próximos passos</span><h2 data-ih="d.need">Para <em>entrar no ar</em></h2><p class="s">O que precisamos de você para configurar o sistema com os dados reais do restaurante.</p>
+<div class="need"><div><b>Cardápio e fotos</b><span>Produtos, preços, categorias e fotos dos pratos</span></div><div><b>Endereço e horários</b><span>Local da loja, área e taxa de entrega</span></div><div><b>Pagamento</b><span>Conta no banco ou na plataforma de pagamento, no nome do restaurante</span></div><div><b>Google Maps</b><span>Chave do Google para mapa e rotas (criada na conta do restaurante)</span></div><div><b>Marca</b><span>Logo, cores e nome do restaurante</span></div><div><b>Equipe</b><span>Quem usa a cozinha e quem são os motoboys</span></div></div>
+<div class="cta" style="margin-top:70px"><h2>Quer o delivery do seu restaurante?</h2><p>Escolha o estilo, mande o cardápio e a gente responde com prazo e valor.</p><a class="btn" id="ctawa" href="#">Chamar no WhatsApp</a></div></div></div>
 <footer><div class="wrap"><span>© Lhart Design — demonstrações com dados fictícios. O mapa real, o Pix e as notificações são ativados na instalação, com as contas do restaurante.</span><a href="vitrine.html">← Sites para Games</a></div></footer>
 <a class="wf" id="wf" href="#">💬 <span>Falar no WhatsApp</span></a>
 <div class="md" id="md"><div class="mh"><b id="mt"></b><span class="sp"></span><a class="btn" id="mwa" href="#">Quero este estilo</a><a class="btn g" id="mo" href="#" target="_blank" rel="noopener">Abrir em aba</a><button class="x" id="mx" aria-label="Fechar">✕</button></div><div class="mb" id="mb"></div></div>
@@ -118,33 +224,97 @@ const S=[
  {f:'delivery-acai-tropical',n:'Açaí Tropical',c:'#6a1fd1',d:'Açaí, bowls e sucos. Roxo vibrante, cantos bem redondos e cardápio em grade.',t:'Açaí · Bowls · Sucos',k:['#ffffff','#6a1fd1','#c026d3','#f6efff']},
  {f:'delivery-marmita-caseira',n:'Dona Rita',c:'#d9631a',d:'Marmitaria e comida caseira. Tons quentes de laranja e creme, aconchegante.',t:'Marmita · Caseira · Fitness',k:['#fff8ef','#d9631a','#f2a33a','#3a2417']}];
 const num=i=>'#'+String(i+1).padStart(2,'0');
-gal.innerHTML=S.map((s,i)=>`<article class="card" style="--c:${s.c}"><div class="pv" data-i="${i}"><span class="num">${num(i)}</span><iframe data-src="demos/${s.f}.html" title="Prévia ${s.n}" tabindex="-1"></iframe></div><div class="cb"><span class="cat">${s.t}</span><h3>${s.n}</h3><div class="sw">${s.k.map(c=>`<i style="background:${c}"></i>`).join('')}</div><p>${s.d}</p><div class="acts"><button class="btn g" data-o="${i}">Ver ao vivo</button><a class="btn" target="_blank" rel="noopener" href="${wa('Oi! Quero o delivery estilo '+num(i)+' - '+s.n)}">Quero este</a></div></div></article>`).join('');
+function draw(){gal.innerHTML=S.map((s,i)=>`<article class="card" style="--c:${s.c}"><div class="pv" data-i="${i}"><span class="num">${num(i)}</span><iframe data-src="demos/${s.f}.html" title="${LH.t('Prévia')} ${s.n}" tabindex="-1"></iframe></div><div class="cb"><span class="cat">${s.t}</span><h3>${s.n}</h3><div class="sw">${s.k.map(c=>`<i style="background:${c}"></i>`).join('')}</div><p>${s.d}</p><div class="acts"><button class="btn g" data-o="${i}">Ver ao vivo</button><a class="btn" target="_blank" rel="noopener" href="${wa(LH.t('Oi! Quero o delivery estilo {n} - {name}',{n:num(i),name:s.n}))}">Quero este</a></div></div></article>`).join('');
+ fit();lazy()}
 function fit(){document.querySelectorAll('.pv').forEach(p=>{const f=p.querySelector('iframe');f.style.transform='scale('+(p.clientWidth/1500)+')'});document.querySelectorAll('.fr').forEach(p=>{const f=p.querySelector('iframe');const w=+p.dataset.w,k=p.clientWidth/w;f.style.width=w+'px';f.style.height=(p.clientHeight/k)+'px';f.style.transform='scale('+k+')'})}
-const io=new IntersectionObserver(es=>es.forEach(e=>{const f=e.target.querySelector('iframe');if(!f)return;if(e.isIntersecting){if(!f.src)f.src=f.dataset.src}}),{rootMargin:'300px'});
-document.querySelectorAll('.pv,.fr').forEach(p=>io.observe(p));addEventListener('resize',fit);fit();setTimeout(fit,200);
-function open_(i){const s=S[i];mt.textContent=num(i)+' · '+s.n;mb.innerHTML='<iframe src="demos/'+s.f+'.html" title="'+s.n+'"></iframe>';mo.href='demos/'+s.f+'.html';mwa.href=wa('Oi! Quero o delivery estilo '+num(i)+' - '+s.n);md.classList.add('on');document.body.style.overflow='hidden'}
+let io;function lazy(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{const f=e.target.querySelector('iframe');if(!f)return;if(e.isIntersecting){if(f.dataset.on!=='1'){f.src=f.dataset.src;f.dataset.on='1'}}else if(f.dataset.on==='1'){f.src='about:blank';f.dataset.on=''}}),{rootMargin:'300px'});document.querySelectorAll('.pv').forEach(p=>io.observe(p))}
+addEventListener('resize',fit);
+function open_(i){const s=S[i];mt.textContent=num(i)+' · '+s.n;mb.innerHTML='<iframe src="demos/'+s.f+'.html" title="'+s.n+'"></iframe>';mo.href='demos/'+s.f+'.html';mwa.href=wa(LH.t('Oi! Quero o delivery estilo {n} - {name}',{n:num(i),name:s.n}));md.classList.add('on');document.body.style.overflow='hidden'}
 gal.onclick=e=>{const o=e.target.closest('[data-o]')||e.target.closest('.pv');if(o)open_(+(o.dataset.o??o.dataset.i))};
 function close_(){md.classList.remove('on');mb.innerHTML='';document.body.style.overflow=''}
 mx.onclick=close_;addEventListener('keydown',e=>{if(e.key=='Escape')close_()});[mwa,mo].forEach(a=>{a.target='_blank';a.rel='noopener'});
-const g=wa('Oi! Vi a aba Delivery e quero um sistema de pedidos para o meu restaurante.');[navwa,ctawa,wf].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'});
+function links(){const g=wa(LH.t('Oi! Vi a aba Delivery e quero um sistema de pedidos para o meu restaurante.'));[navwa,ctawa,wf].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'})}links();
+/* logística: etapas clicáveis */
+const ST=[
+ ['Pedido pago','O banco avisa por webhook','A cozinha recebe só o que já está pago. O cliente vê “pedido recebido” e o horário na linha do tempo.','Vê o status e a linha do tempo','Recebe o pedido e o alerta sonoro','—','Webhook da API do banco ou da plataforma de pagamento'],
+ ['Preparo e “Pronto”','A cozinha toca em um botão','A cozinha marca “preparando” e depois “pronto”. Quando fica pronto, os motoboys disponíveis são avisados.','Acompanha “em preparo”','Marca preparando e pronto','É avisado do pedido pronto','Atualização em tempo real entre os três apps'],
+ ['Motoboy aceita','Atribuição manual ou automática','O motoboy aceita a corrida (ou o sistema escolhe o mais próximo). O cliente já vê o nome, a moto e a avaliação dele.','Vê o nome e a moto do entregador','Vê quem vai retirar','Aceita a corrida','Atribuição por proximidade (opcional)'],
+ ['Retirada e GPS ao vivo','Começa o compartilhamento','Ao tocar em “retirei o pedido”, o app do motoboy começa a compartilhar a localização com o cliente, só durante essa entrega.','Vê o motoboy se movendo no mapa','Vê “em rota”','Retira e sai; GPS ligado','Localização do celular do motoboy a cada poucos segundos'],
+ ['Em rota','Tempo de chegada atualizado','O tempo estimado é recalculado conforme o trânsito. O cliente pode abrir a rota no Google Maps ou compartilhar o acompanhamento com quem está em casa.','Vê o trajeto e o tempo estimado','Vê o progresso da rota','Segue a rota no Google Maps','Google Maps Routes e Distance Matrix'],
+ ['“Chegando”','Aviso automático ao cliente','Quando faltam cerca de dois minutos (ou poucas centenas de metros), o cliente recebe uma notificação: “seu entregador está chegando”.','Recebe o aviso no celular','—','Nada a fazer: o aviso é automático','Geocerca (raio ao redor do endereço) e notificação push ou WhatsApp'],
+ ['“Cheguei”','O motoboy avisa no endereço','O motoboy toca em “cheguei ao endereço”. O cliente recebe o aviso e o código de entrega aparece em destaque.','Recebe “entregador chegou” e vê o código','Vê “entregador no local”','Toca em “Cheguei ao endereço”','Notificação push e atualização da tela'],
+ ['Entrega confirmada','Código de 4 dígitos','O motoboy digita o código que o cliente informa. A entrega é concluída, o GPS para e a localização é apagada. O cliente avalia.','Informa o código e avalia','Pedido vai para “entregue”','Confirma com o código; GPS desliga','Código de entrega e encerramento do compartilhamento']];
+let cur=0;
+function steps(){steps_.innerHTML=ST.map((s,i)=>`<button class="stp ${i==cur?'on':''}" data-i="${i}"><b>${i+1}</b><div><span>${s[0]}</span><small>${s[1]}</small></div></button>`).join('');
+ const s=ST[cur];det.innerHTML=`<div class="no">0${cur+1}</div><h3>${s[0]}</h3><p>${s[2]}</p><div class="who"><div><small>Cliente</small><span>${s[3]}</span></div><div><small>Cozinha</small><span>${s[4]}</span></div><div><small>Motoboy</small><span>${s[5]}</span></div></div><div class="tech"><b>Tecnologia:</b> ${s[6]}</div>`}
+const steps_=document.getElementById('steps'),det=document.getElementById('det');
+steps_.onclick=e=>{const b=e.target.closest('.stp');if(b){cur=+b.dataset.i;steps()}};
 /* demonstração automática: o pedido feito no app do cliente aparece na cozinha e no motoboy */
-(function(){const fr=[...document.querySelectorAll('.fr')];const W={};let T=[],run=false,ready=0;
+(function(){const fr=[...document.querySelectorAll('#stage .fr')];const W={},loaded={};let T=[],run=false,vis=false;
  const ev=(k,code)=>{try{return W[k].eval(code)}catch(e){return null}};
  const L=(f,t)=>T.push(setTimeout(f,t));
  const clk=(k,sel)=>ev(k,'(function(){var e=document.querySelector('+JSON.stringify(sel)+');if(e){e.click();return 1}return 0})()');
  function play(){T.forEach(clearTimeout);T=[];
   ev('cliente',"S=seed();save();L.my=null;L.screen='menu';L.cart={};L.seen=null;L.coupon=null;L.cmsg='';localStorage.removeItem(KEY+'-my');renderAll()");
+  L(()=>clk('motoboy','[data-a="gps"]'),2600);
   L(()=>clk('cliente','[data-a="add"][data-id="se1"]'),1200);L(()=>clk('cliente','[data-a="add"][data-id="se1"]'),2000);L(()=>clk('cliente','[data-a="add"][data-id="se4"]'),2800);
   L(()=>clk('cliente','[data-a="cart"]'),3800);
   L(()=>{ev('cliente',"document.getElementById('cup').value='BEMVINDO10'");clk('cliente','[data-a="coupon"]')},5200);
   L(()=>clk('cliente','[data-a="order"]'),6800);
-  L(()=>clk('cozinha','[data-a="k"][data-s="preparando"][data-o="4821"]'),9200);
-  L(()=>clk('cozinha','[data-a="k"][data-s="pronto"][data-o="4821"]'),12000);
-  L(()=>clk('motoboy','[data-a="maccept"][data-o="4821"]'),13800);
-  L(()=>{clk('motoboy','[data-a="mpick"]');ev('cliente',"var o=find(L.my);if(o){o.t.routeStart=Date.now()-ROUTE_MS*.62;save();renderAll()}")},15600);
-  L(()=>{ev('motoboy',"var o=find(L.my);var i=document.getElementById('mcode');if(i&&o)i.value=o.code");clk('motoboy','[data-a="mdone"]')},23000);
-  L(play,29500)}
- const start=()=>{if(ready>=3&&!run&&vis){run=true;play()}};let vis=true;
- fr.forEach(f=>{const i=f.querySelector('iframe');i.addEventListener('load',()=>{W[f.dataset.v]=i.contentWindow;ready++;start()})});
- new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis)start();else if(run){run=false;T.forEach(clearTimeout);T=[]}},{threshold:.2}).observe(document.getElementById('stage'))})();
+  L(()=>clk('cliente','[data-a="paynow"]'),9300);
+  L(()=>clk('cozinha','[data-a="k"][data-s="preparando"][data-o="4821"]'),11500);
+  L(()=>clk('cozinha','[data-a="k"][data-s="pronto"][data-o="4821"]'),14000);
+  L(()=>clk('motoboy','[data-a="maccept"][data-o="4821"]'),15800);
+  L(()=>{clk('motoboy','[data-a="mpick"]');ev('motoboy',"var o=find(4821);if(o){o.t.routeStart=Date.now()-ROUTE_MS*.6;save();renderAll()}")},17600);
+  L(()=>clk('motoboy','[data-a="march"]'),28200);
+  L(()=>{ev('motoboy',"var o=find(4821);var i=document.getElementById('mcode');if(i&&o)i.value=o.code");clk('motoboy','[data-a="mdone"]')},30800);
+  L(play,36500)}
+ const allLoaded=()=>fr.every(f=>loaded[f.dataset.v]);
+ const start=()=>{if(vis&&allLoaded()&&!run){run=true;play()}};
+ fr.forEach(f=>{const i=f.querySelector('iframe');i.addEventListener('load',()=>{if(!i.dataset.on)return;W[f.dataset.v]=i.contentWindow;loaded[f.dataset.v]=true;start()})});
+ new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis){fr.forEach(f=>{const i=f.querySelector('iframe');if(i.dataset.on!=='1'){i.dataset.on='1';i.src=i.dataset.src}});start()}else{run=false;T.forEach(clearTimeout);T=[];fr.forEach(f=>{const i=f.querySelector('iframe');i.dataset.on='';loaded[f.dataset.v]=false;i.src='about:blank'})}},{threshold:.15,rootMargin:'100px'}).observe(document.getElementById('stage'))})();
+
+/* tutorial guiado: cada passo executa a ação de verdade dentro do app */
+(function(){const fr=[...document.querySelectorAll('#tstage .fr')],W={},loaded={};let cur=-1,busy=false,vis=false,auto=false,gen=0;
+ const ev=(k,code)=>{try{return W[k].eval(code)}catch(e){return null}};
+ const clk=(k,sel)=>ev(k,'(function(){var e=document.querySelector('+JSON.stringify(sel)+');if(e){e.click();return 1}return 0})()');
+ const sl=ms=>new Promise(r=>setTimeout(r,ms));
+ const clk2=async(k,sel)=>{for(let i=0;i<24;i++){if(clk(k,sel))return true;await sl(150)}return false};
+ const TS=[
+  ['O cliente escolhe os pratos','Abre o link, vê as fotos e monta a sacola','Cardápio com foto e “mais pedido”','Foto boa e destaque no que mais sai fazem o cliente pedir mais. Combos e adicionais aumentam o valor de cada pedido.',async()=>{for(const id of['fl1','fl3','fl3']){await clk2('cliente','[data-a="add"][data-id="'+id+'"]');await sl(650)}}],
+  ['Cupom e pagamento no Pix','Aplica o cupom e paga dentro do app','Cupom e Pix sem sair do app','O cupom traz a primeira compra e a recompra. O Pix tem QR e confirmação automática, sem o cliente mandar comprovante.',async()=>{await clk2('cliente','[data-a="cart"]');await sl(900);ev('cliente',"document.getElementById('cup').value='BEMVINDO10'");await clk2('cliente','[data-a="coupon"]');await sl(900);await clk2('cliente','[data-a="order"]');await sl(700)}],
+  ['O banco confirma e a cozinha recebe','O pedido pago cai na tela da cozinha','Webhook do banco, pedido na fila','Só entra pedido pago, na ordem de chegada. Acabou o pedido anotado errado ou perdido, e o dinheiro cai direto na sua conta.',async()=>{await clk2('cliente','[data-a="paynow"]');await sl(900)}],
+  ['A cozinha prepara e marca “pronto”','Um toque atualiza o cliente e o motoboy','Status automático para todos','Cozinha organizada atende mais pedidos no horário de pico. O cliente acompanha sem precisar ligar para a loja.',async()=>{await clk2('cozinha','[data-a="k"][data-s="preparando"][data-o="4821"]');await sl(1500);await clk2('cozinha','[data-a="k"][data-s="pronto"][data-o="4821"]');await sl(700)}],
+  ['O motoboy aceita e sai para entregar','Libera o GPS, aceita a corrida e retira','GPS ao vivo só durante a corrida','Entrega rápida e bem organizada. O motoboy sabe a rota e o cliente sabe onde ele está, sem ligação nem WhatsApp.',async()=>{await clk2('motoboy','[data-a="gps"]');await sl(800);await clk2('motoboy','[data-a="maccept"][data-o="4821"]');await sl(1000);await clk2('motoboy','[data-a="mpick"]');ev('motoboy',"var o=find(4821);if(o){o.t.routeStart=Date.now()-ROUTE_MS*.3;save();renderAll()}");await sl(600)}],
+  ['O cliente acompanha e recebe “chegando”','Mapa ao vivo, tempo estimado e aviso automático','Rastreio no mapa e notificação','Menos “cadê meu pedido?” e menos reclamação. Cliente tranquilo avalia melhor, e avaliação boa traz mais pedidos.',async()=>{ev('motoboy',"var o=find(4821);if(o){o.t.routeStart=Date.now()-ROUTE_MS*.8;save();renderAll()}");await sl(1800)}],
+  ['Entrega confirmada com o código','O motoboy avisa que chegou e confirma o código','Código de 4 dígitos e avaliação','Entrega confirmada sem disputa e pedido encerrado. O cliente avalia e você ganha um cliente que volta a comprar.',async()=>{ev('motoboy',"var o=find(4821);if(o){o.t.routeStart=Date.now()-ROUTE_MS-500;save();renderAll()}");await sl(1500);await clk2('motoboy','[data-a="march"]');await sl(900);ev('motoboy',"var o=find(4821);var i=document.getElementById('mcode');if(i&&o)i.value=o.code");await clk2('motoboy','[data-a="mdone"]');await sl(600)}]];
+ const tl=document.getElementById('tl'),tip=document.getElementById('ttip'),nx=document.getElementById('tnext'),pv=document.getElementById('tprev'),au=document.getElementById('tauto'),rs=document.getElementById('trst');
+ function draw(){tl.innerHTML=TS.map((s,i)=>`<button class="ts ${i<cur?'done':''} ${i===cur?'on':''}" data-i="${i}" style="--w:${i===cur?100:0}%"><b>${i<cur?'✓':i+1}</b><div><span>${s[0]}</span><small>${s[1]}</small></div></button>`).join('');
+  tip.innerHTML=cur<0?`<small>Como usar</small><p>Aperte “Próximo passo” para ver o pedido percorrer o sistema, ou “Rodar tudo” para ver o caminho completo.</p>`:`<small>Como isso ajuda o faturamento</small><h4>${TS[cur][2]}</h4><p>${TS[cur][3]}</p>`;
+  nx.disabled=busy||cur>=TS.length-1;pv.disabled=busy||cur<0;au.disabled=busy;rs.disabled=busy}
+ const loadedAll=()=>fr.every(f=>loaded[f.dataset.v]);
+ function reset(){ev('cliente',"S=seed();save();L.my=null;L.screen='menu';L.cart={};L.seen=null;L.coupon=null;L.cmsg='';localStorage.removeItem(KEY+'-my');renderAll()");ev('motoboy',"S.gps=false;save();renderAll()")}
+ async function step(i){busy=true;draw();await TS[i][4]();cur=i;busy=false;draw()}
+ async function toStep(n){const my=++gen;busy=true;draw();reset();cur=-1;await sl(400);for(let i=0;i<=n;i++){if(my!==gen)return;await TS[i][4]();cur=i;draw()}busy=false;draw()}
+ nx.onclick=()=>{if(!loadedAll()||busy)return;if(cur<0)reset();step(cur+1)};
+ pv.onclick=()=>{if(!loadedAll()||busy)return;if(cur<=0){gen++;reset();cur=-1;draw()}else toStep(cur-1)};
+ rs.onclick=()=>{if(!loadedAll())return;gen++;busy=false;reset();cur=-1;draw()};
+ au.onclick=async()=>{if(!loadedAll()||busy)return;const my=++gen;busy=true;draw();reset();cur=-1;await sl(500);for(let i=0;i<TS.length;i++){if(my!==gen)return;cur=i;draw();await TS[i][4]();await sl(1300)}busy=false;draw()};
+ tl.onclick=e=>{const b=e.target.closest('.ts');if(b&&loadedAll()&&!busy)toStep(+b.dataset.i)};
+ document.getElementById('tlive').onchange=e=>document.getElementById('tstage').classList.toggle('live',e.target.checked);
+ fr.forEach(f=>{const i=f.querySelector('iframe');i.addEventListener('load',()=>{if(!i.dataset.on)return;W[f.dataset.v]=i.contentWindow;loaded[f.dataset.v]=true;if(loadedAll()){reset();cur=-1;draw()}})});
+ new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis){fr.forEach(f=>{const i=f.querySelector('iframe');if(i.dataset.on!=='1'){i.dataset.on='1';i.src=i.dataset.src}})}else{gen++;busy=false;fr.forEach(f=>{const i=f.querySelector('iframe');i.dataset.on='';loaded[f.dataset.v]=false;i.src='about:blank'})}},{threshold:.1,rootMargin:'150px'}).observe(document.getElementById('tstage'));
+ window.__tutDraw=draw;draw()})();
+/* calculadora de economia */
+(function(){const g=id=>document.getElementById(id);const ids=['c1','c2','c3','c4','c5','c6'];
+ const cur=()=>({pt:'R$',en:'$',es:'$'}[LH.lang]||'R$');
+ const f=v=>cur()+' '+Math.round(v).toLocaleString(LH.lang==='pt'?'pt-BR':LH.lang==='es'?'es-ES':'en-US');
+ function calc(){const n=+g('c1').value||0,t=+g('c2').value||0,c=(+g('c3').value||0)/100,p=(+g('c4').value||0)/100,sh=(+g('c5').value||0)/100,m=+g('c6').value||0;
+  g('c5v').textContent=Math.round(sh*100)+'%';const moved=n*sh,rev=moved*t,com=rev*c,fee=rev*p,net=com-fee-m;
+  g('r1').textContent=f(Math.max(net,0));g('r3').textContent=Math.round(moved).toLocaleString()+' · '+f(rev);g('r4').textContent=f(com);g('r5').textContent='− '+f(fee);g('r6').textContent='− '+f(m);g('r7').textContent=f(net*12);
+  g('r2').textContent=net>0?LH.t('Dinheiro que deixa de ir para comissão e fica no caixa do restaurante.'):LH.t('Com esses números não há economia. Ajuste a comissão ou a parcela de pedidos.')}
+ ids.forEach(i=>g(i).addEventListener('input',calc));LH.on(calc);calc();window.__calc=calc})();
+LH.switcher(langsw);LH.observe(document.body);
+LH.on(()=>{draw();links();steps();window.__tutDraw&&window.__tutDraw()});
+LH.start();
 </script></body></html>

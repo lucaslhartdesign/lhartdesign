@@ -17,6 +17,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--pk));color:#fff;font-weight:800;border:0;border-radius:14px;padding:15px 28px;transition:.2s;box-shadow:0 10px 30px #8f7bff55}
 .btn:hover{transform:translateY(-3px);box-shadow:0 16px 40px #ff4fd855}
 .btn.g{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ln);color:var(--ink)}.btn.g:hover{box-shadow:inset 0 0 0 1.5px var(--cy);color:var(--cy)}
+.langsw{display:flex;border:1px solid var(--ln);border-radius:99px;padding:3px;background:var(--p)}.langsw button{border:0;background:none;color:var(--mu);padding:5px 11px;border-radius:99px;font:700 12px "Chakra Petch";letter-spacing:.06em}.langsw button[aria-current="true"]{background:linear-gradient(135deg,var(--ac),var(--pk));color:#fff}
 /* HERO */
 .hero{position:relative;overflow:hidden;padding:70px 0 40px;isolation:isolate}
 .hero::before{content:"";position:absolute;inset:-20% -10% 0;z-index:-2;background:radial-gradient(600px 400px at 15% 20%,#8f7bff44,transparent 70%),radial-gradient(500px 400px at 85% 30%,#ff4fd833,transparent 70%),radial-gradient(500px 300px at 50% 100%,#35e6ff22,transparent 70%)}
@@ -120,13 +121,14 @@ footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:1
 @media(max-width:1100px){.hero .wrap{grid-template-columns:1fr}.stage{display:none}.gal{grid-template-columns:repeat(2,1fr)}.bg{grid-template-columns:repeat(2,1fr)}.st{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){.gal,.pillars,.inc,.st,.bg{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:44px 0 20px}.dv{display:none}.stats{gap:22px}.wf span{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body>
+</style><script src="i18n-pages.js"></script><script src="i18n-games.js"></script>
+</head><body>
 <div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
-<div class="l"><a href="index.html">Início</a><a class="on" href="vitrine.html">Sites para Games</a><a href="delivery.html">Delivery</a><a href="#bots">Bots</a><a href="#galeria">Estilos</a><a class="btn" id="navwa" href="#" style="padding:10px 18px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
+<div class="l"><a href="index.html">Início</a><a class="on" href="vitrine.html">Sites para Games</a><a href="delivery.html">Delivery</a><a href="#bots">Bots</a><a href="#galeria">Estilos</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 18px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
 
 <div class="hero"><div class="wrap"><div><span class="kick"><i></i> Sites · Bots · ShotCaller</span>
-<h1>Sua loja de jogos com cara de <span class="g1">jogo</span></h1>
-<p class="l">Lojas de itens e moedas, bots de Discord para guilda e loja, ShotCaller e automações. Veja <b id="tot">26</b> estilos funcionando ao vivo e a gente monta o seu com a sua marca.</p>
+<h1 data-ih="g.h1">Sua loja de jogos com cara de <span class="g1">jogo</span></h1>
+<p class="l" data-ih="g.lead">Lojas de itens e moedas, bots de Discord para guilda e loja, ShotCaller e automações. Veja <b id="tot">26</b> estilos funcionando ao vivo e a gente monta o seu com a sua marca.</p>
 <div class="row"><a class="btn" href="#galeria">Ver os estilos ↓</a><a class="btn g" href="#bots">Ver os bots em ação</a></div>
 <div class="stats"><div><b data-n="26">0</b><span>estilos prontos</span></div><div><b data-n="170">0</b><span>jogadores em produção</span></div><div><b data-n="3">0</b><span>idiomas: PT, ES, EN</span></div></div></div>
 <div class="stage" id="stage"><div class="dev a" data-p="neon-arena"><iframe data-src="demos/neon-arena.html" tabindex="-1"></iframe></div><div class="dev b" data-p="caixa-bot"><iframe data-src="demos/caixa-bot.html" tabindex="-1"></iframe></div><div class="dev c" data-p="santuario-carmesim"><iframe data-src="demos/santuario-carmesim.html" tabindex="-1"></iframe></div></div></div>
@@ -134,7 +136,7 @@ footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:1
 
 <div class="wrap"><div class="pillars"><div class="pl" style="--c:#ffcf4a"><i>🛒</i><h3>Lojas de itens e moedas</h3><p>Catálogo por jogo, Pix com confirmação automática, entrega com chat e painel da equipe.</p></div><div class="pl" style="--c:#5865f2"><i>🤖</i><h3>Bots de Discord</h3><p>Vendem, atendem, fazem chamada por voz, leilão e avisos. Tudo editável por painel.</p></div><div class="pl" style="--c:#35e6ff"><i>🎙</i><h3>ShotCaller</h3><p>O caller fala uma vez e as 12 PTs ouvem. Painel de controle pelo site.</p></div></div></div>
 
-<div class="bots sec" id="bots"><div class="wrap"><h2>Bots em <span>ação</span></h2><p class="s">Exemplos do que o bot faz no seu Discord. É o mesmo tipo de bot que roda hoje numa guilda com 170 jogadores.</p>
+<div class="bots sec" id="bots"><div class="wrap"><h2 data-ih="g.bots">Bots em <span>ação</span></h2><p class="s">Exemplos do que o bot faz no seu Discord. É o mesmo tipo de bot que roda hoje numa guilda com 170 jogadores.</p>
 <div class="flow" id="flow"><div class="win"><div class="wh"># vitrine · Loja Bot<span>Discord</span></div><div class="fd" id="ffd"></div></div>
 <div class="fs"><div class="bb"><i></i><i></i><i></i><span>🔒 sualoja.com.br</span></div><div class="bd"><div class="ph" id="ph1"><h4>Gold e itens</h4><p>Escolha no site ou direto no Discord.</p><div class="row2"><div><i>🪙</i>Gold 100M<br><b>R$ 39,90</b></div><div><i>⚔️</i>Espada +12<br><b>R$ 89,00</b></div><div><i>💎</i>Gemas<br><b>R$ 54,90</b></div></div><div class="sy" style="background:#eef0ff;color:#4a5bff">Aguardando um pedido do Discord…</div></div>
 <div class="ph off" id="ph2"><h4>Pedido #4821</h4><p>Gold 100M · R$ 39,90</p><div class="tl2" id="tl2"><div><i>✓</i>Pedido criado no Discord</div><div><i>✓</i>Pix confirmado</div><div><i>✓</i>Entregue automaticamente</div></div><div class="cd2">GLD-7K2P-9QX4</div><div class="sy">⚡ Sincronizado com o Discord agora</div></div></div></div>
@@ -150,7 +152,7 @@ footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:1
 <div class="bar" id="galeria"><div class="wrap"><div class="chips" id="chips"></div></div></div>
 <div class="wrap"><div class="gal" id="gal"></div></div>
 
-<div class="wrap sec" id="como" style="padding-top:30px"><h2>Do estilo ao ar em <span>4 passos</span></h2><p class="s">Os layouts são ponto de partida: nome, cores, logo e jogos são trocados para a sua marca.</p>
+<div class="wrap sec" id="como" style="padding-top:30px"><h2 data-ih="g.como">Do estilo ao ar em <span>4 passos</span></h2><p class="s">Os layouts são ponto de partida: nome, cores, logo e jogos são trocados para a sua marca.</p>
 <div class="st"><div><b>01</b><h4>Você escolhe</h4><p>O estilo que combina com seu público e seus jogos.</p></div><div><b>02</b><h4>Montamos</h4><p>Nome, logo, cores e catálogo trocados para o seu negócio.</p></div><div><b>03</b><h4>Ligamos tudo</h4><p>Pix, entrega, painel da equipe e bot do Discord.</p></div><div><b>04</b><h4>Você opera</h4><p>Treinamento da equipe e acompanhamento nos primeiros dias.</p></div></div></div>
 
 <div class="wrap" style="padding-bottom:10px"><h2 style="font:700 clamp(26px,4vw,42px) 'Chakra Petch';margin:0 0 20px">Vem em qualquer estilo</h2><div class="inc">
@@ -193,13 +195,13 @@ const S=[
  {f:'fluxo-discord',n:'Fluxo',c:['auto'],d:'Neo-brutalista claro com receitas de automação: tickets, chamada, leilão e avisos com prévia do Discord.',k:['#f6f1e7','#ff5a36','#6c5bff','#19c37d']}
 ];
 S.forEach((s,i)=>{s.i=i;s.src=s.u||'demos/'+s.f+'.html'});
-tot.textContent=S.length;document.querySelector('.stats [data-n]').dataset.n=S.length;
+LH.vars.n=S.length;document.querySelector('.stats [data-n]').dataset.n=S.length;
 let cat='all';
 chips.innerHTML=['<button class="chip on" data-c="all">Todos<small>'+S.length+'</small></button>'].concat(Object.entries(CATS).map(([k,v])=>`<button class="chip" data-c="${k}">${v[0]}<small>${S.filter(s=>s.c.includes(k)).length}</small></button>`)).join('');
 const num=i=>'#'+String(i+1).padStart(2,'0');
 function draw(){const L=S.filter(s=>cat=='all'||s.c.includes(cat));
-gal.innerHTML=L.map((s,j)=>{const k=CATS[s.c[0]];return `<article class="card" style="--c:${k[1]};animation-delay:${Math.min(j,8)*.05}s"><div class="pv" data-i="${s.i}"><span class="num">${num(s.i)}</span>${s.t?`<span class="tag">${s.t}</span>`:''}<iframe data-src="${s.src}" title="Prévia ${s.n}" tabindex="-1"></iframe></div>
-<div class="cb"><span class="cat">${s.c.map(x=>CATS[x][0]).join(' · ')}</span><h3>${s.n}</h3>${s.ins?`<span class="ins">${s.ins}</span>`:''}<div class="sw">${s.k.map(c=>`<i style="background:${c}"></i>`).join('')}</div><p>${s.d}</p><div class="acts"><button class="btn g" data-o="${s.i}">Ver ao vivo</button><a class="btn" target="_blank" rel="noopener" href="${wa('Oi! Quero o estilo '+num(s.i)+' - '+s.n+' (Sites para Games)')}">Quero este</a></div></div></article>`}).join('');
+gal.innerHTML=L.map((s,j)=>{const k=CATS[s.c[0]];return `<article class="card" style="--c:${k[1]};animation-delay:${Math.min(j,8)*.05}s"><div class="pv" data-i="${s.i}"><span class="num">${num(s.i)}</span>${s.t?`<span class="tag">${s.t}</span>`:''}<iframe data-src="${s.src}" title="${LH.t('Prévia')} ${s.n}" tabindex="-1"></iframe></div>
+<div class="cb"><span class="cat">${s.c.map(x=>CATS[x][0]).join(' · ')}</span><h3>${s.n}</h3>${s.ins?`<span class="ins">${s.ins}</span>`:''}<div class="sw">${s.k.map(c=>`<i style="background:${c}"></i>`).join('')}</div><p>${s.d}</p><div class="acts"><button class="btn g" data-o="${s.i}">Ver ao vivo</button><a class="btn" target="_blank" rel="noopener" href="${wa(LH.t('Oi! Quero o estilo {n} - {name} (Sites para Games)',{n:num(s.i),name:s.n}))}">Quero este</a></div></div></article>`}).join('');
 fit();lazy();hov()}
 function fit(){document.querySelectorAll('.pv,.dev').forEach(p=>{const f=p.querySelector('iframe');const w=p.clientWidth;f.style.transform='scale('+(w/1280)+')'})}
 let io;function lazy(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{const f=e.target.querySelector('iframe');if(!f)return;if(e.isIntersecting){if(f.dataset.on!=='1'){f.src=f.dataset.src;f.dataset.on='1'}}else if(f.dataset.on==='1'&&!e.target.classList.contains('dev')){f.src='about:blank';f.dataset.on=''}}),{rootMargin:'250px'});document.querySelectorAll('.pv,.dev').forEach(p=>io.observe(p))}
@@ -215,13 +217,13 @@ function hov(){document.querySelectorAll('.pv').forEach(p=>{let raf;const f=p.qu
  p.onmouseleave=()=>{p.classList.remove('hv');if(tg)run(0,500,tg)}})}
 addEventListener('resize',fit);
 chips.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x==b));draw()};
-function open_(i){const s=S[i];mt.textContent=num(i)+' · '+s.n;fr.className='fr';dv.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m=='d'));fr.innerHTML='<iframe src="'+s.src+'" title="'+s.n+'"></iframe>';mo.href=s.src;mwa.href=wa('Oi! Quero o estilo '+num(i)+' - '+s.n+' (Sites para Games)');md.classList.add('on');document.body.style.overflow='hidden'}
+function open_(i){const s=S[i];mt.textContent=num(i)+' · '+s.n;fr.className='fr';dv.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m=='d'));fr.innerHTML='<iframe src="'+s.src+'" title="'+s.n+'"></iframe>';mo.href=s.src;mwa.href=wa(LH.t('Oi! Quero o estilo {n} - {name} (Sites para Games)',{n:num(i),name:s.n}));md.classList.add('on');document.body.style.overflow='hidden'}
 gal.onclick=e=>{const o=e.target.closest('[data-o]')||e.target.closest('.pv');if(o)open_(+(o.dataset.o??o.dataset.i))};
 function close_(){md.classList.remove('on');fr.innerHTML='';document.body.style.overflow=''}
 mx.onclick=close_;md.onclick=e=>{if(e.target.classList.contains('mb'))close_()};addEventListener('keydown',e=>{if(e.key=='Escape')close_()});
 dv.onclick=e=>{const b=e.target.closest('button');if(!b)return;dv.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b));fr.classList.toggle('m',b.dataset.m=='m')};
 [mwa,mo].forEach(a=>{a.target='_blank';a.rel='noopener'});
-const g=wa('Oi! Vi a aba Sites para Games e quero fazer um site para o meu projeto.');[navwa,ctawa,wf].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'});
+function links(){const g=wa(LH.t('Oi! Vi a aba Sites para Games e quero fazer um site para o meu projeto.'));[navwa,ctawa,wf].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'})}links();
 /* parallax 3D do herói */
 const stg=document.getElementById('stage');document.querySelector('.hero').addEventListener('mousemove',e=>{const r=stg.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;stg.querySelectorAll('.dev').forEach((d,i)=>{const k=(i+1)*6;d.style.transform=`rotateY(${x*k}deg) rotateX(${-y*k}deg)`})});
 stg.querySelectorAll('.dev').forEach(d=>d.onclick=()=>{});
@@ -248,6 +250,7 @@ function play(){T.forEach(clearTimeout);T=[];fd.innerHTML='';ph1.classList.remov
      L(()=>{click(b3);const sb=fl.querySelector('.fs .bd');
       L(()=>{const r=sb.getBoundingClientRect();go(sb,r.width*.5,r.height*.75);ph1.classList.add('off');ph2.classList.remove('off');step(3)},500);
       L(play,7500)},1900)},1400)},1300)},2000)},600)}
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!run){run=true;play()}else if(!e.isIntersecting&&run){run=false;T.forEach(clearTimeout);T=[]}}),{threshold:.35});io.observe(fl)})();
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!run){run=true;play()}else if(!e.isIntersecting&&run){run=false;T.forEach(clearTimeout);T=[]}}),{threshold:.35});io.observe(fl);window.__flowReplay=()=>{if(run)play()}})();
 draw();setTimeout(()=>{fit();lazy()},50);
+LH.switcher(langsw);LH.observe(document.body);LH.on(()=>{draw();links();window.__flowReplay&&window.__flowReplay()});LH.start();
 </script></body></html>
