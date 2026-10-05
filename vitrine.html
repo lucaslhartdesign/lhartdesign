@@ -57,6 +57,31 @@ h1 .g1{background:linear-gradient(90deg,var(--ac2),var(--pk),var(--gd));backgrou
 .dm .e{border-left:4px solid var(--c);background:#232428;border-radius:4px;padding:10px 12px}.dm .e b{display:block;color:#fff;margin-bottom:3px}.dm .e span{color:#b5bac1}
 .dm .bt{display:flex;gap:6px;margin-top:10px}.dm .bt span{background:#4e5058;padding:5px 12px;border-radius:4px;font-size:12.5px;font-weight:600}.dm .bt span.p{background:#5865f2}
 .bl{display:flex;gap:30px;margin-top:40px;flex-wrap:wrap}.bl div{display:flex;gap:10px;align-items:center;color:#c8c7e6}.bl div::before{content:"✓";color:var(--gr);font-weight:900}
+
+/* BOT FLOW (animação automática) */
+.flow{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;position:relative;margin:0 0 34px}
+.flow .win{background:#2b2d31;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px #000a;border:1px solid #ffffff14;height:430px;display:flex;flex-direction:column}
+.flow .wh{padding:11px 16px;font-weight:700;color:#fff;font-size:14px;border-bottom:1px solid #1e1f22;background:#2b2d31;display:flex;justify-content:space-between;align-items:center}.flow .wh span{color:#80848e;font-weight:400;font-size:12px}
+.flow .fd{flex:1;overflow:hidden;padding:14px;display:flex;flex-direction:column;gap:12px;justify-content:flex-end;background:#313338}
+.fm{display:grid;grid-template-columns:36px 1fr;gap:10px;animation:up .4s backwards;font-size:13.5px;color:#dbdee1}
+.fm .av{width:36px;height:36px;border-radius:50%;background:#5865f2;display:grid;place-items:center}.fm .av.u{background:#3a3d44}.fm b{color:#fff}.fm b i{font-style:normal;background:#5865f2;color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;margin-left:5px}
+.fm .e{margin-top:4px;border-left:4px solid var(--c,#5865f2);background:#2b2d31;border-radius:4px;padding:9px 12px;color:#c4c9ce;max-width:380px}.fm .e h5{margin:0 0 3px;color:#fff;font-size:14px}
+.fm .qr{display:inline-block;width:78px;height:78px;border:6px solid #fff;border-radius:4px;background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0 0/16px 16px;margin-top:6px}
+.fm .bs{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}.fm .bs button{border:0;color:#fff;font-weight:600;padding:6px 14px;border-radius:4px;font-size:12.5px;background:#4e5058;font-family:inherit}.fm .bs .g{background:#3ba55d}.fm .bs .p{background:#5865f2}.fm .bs button.dn{opacity:.55}
+.fst{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.fst span{font:700 12px "Chakra Petch";letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:99px;background:var(--p);border:1px solid var(--ln);color:var(--mu);transition:.3s}.fst span.on{background:linear-gradient(135deg,var(--ac),var(--pk));border-color:transparent;color:#fff}
+.fs{background:#fff;color:#14172b;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px #000a;height:430px;display:flex;flex-direction:column}
+.fs .bb{background:#e8eaf3;padding:9px 14px;display:flex;gap:10px;align-items:center;font-size:12px;color:#6a708f}.fs .bb i{width:9px;height:9px;border-radius:50%;background:#c4c8dc}.fs .bb span{flex:1;background:#fff;border-radius:99px;padding:4px 12px}
+.fs .bd{flex:1;padding:20px;position:relative;overflow:hidden}
+.fs .ph{position:absolute;inset:0;padding:20px;transition:opacity .5s,transform .5s}
+.fs .ph.off{opacity:0;transform:translateY(14px);pointer-events:none}
+.fs h4{margin:0 0 4px;font:700 22px "Chakra Petch"}.fs p{margin:0 0 12px;color:#6a708f;font-size:14px}
+.fs .row2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.fs .row2 div{border:2px solid #e3e6f2;border-radius:12px;padding:10px;text-align:center;font-size:13px}.fs .row2 i{display:block;font-style:normal;font-size:28px}.fs .row2 b{color:#4a5bff}
+.tl2{display:grid;gap:10px;margin:8px 0 12px}.tl2 div{display:flex;gap:10px;align-items:center;font-size:14px;opacity:.3;transition:.4s}.tl2 div.on{opacity:1}.tl2 i{width:22px;height:22px;border-radius:50%;background:#35e08a;color:#022;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800}
+.cd2{background:#14172b;color:#7cffb0;font:700 17px "Chakra Petch";letter-spacing:.12em;padding:12px;border-radius:10px;text-align:center}
+.sy{margin-top:12px;display:inline-flex;gap:8px;align-items:center;font-size:12.5px;font-weight:700;color:#16863f;background:#e9fff1;border-radius:99px;padding:6px 12px}
+.cur{position:absolute;left:0;top:0;z-index:30;width:26px;height:26px;pointer-events:none;transition:transform .9s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 4px 6px #0008)}
+.cur::after{content:"";position:absolute;left:-12px;top:-12px;width:30px;height:30px;border-radius:50%;border:3px solid #fff;opacity:0}.cur.ck::after{animation:rp .5s}@keyframes rp{from{opacity:1;transform:scale(.3)}to{opacity:0;transform:scale(1.6)}}
+@media(max-width:1100px){.flow{grid-template-columns:1fr}.fs{height:360px}}
 /* FILTERS */
 .bar{position:sticky;top:64px;z-index:20;background:rgba(7,7,15,.94);backdrop-filter:blur(12px);border-block:1px solid var(--ln);padding:12px 0}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
@@ -110,7 +135,12 @@ footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:1
 <div class="wrap"><div class="pillars"><div class="pl" style="--c:#ffcf4a"><i>🛒</i><h3>Lojas de itens e moedas</h3><p>Catálogo por jogo, Pix com confirmação automática, entrega com chat e painel da equipe.</p></div><div class="pl" style="--c:#5865f2"><i>🤖</i><h3>Bots de Discord</h3><p>Vendem, atendem, fazem chamada por voz, leilão e avisos. Tudo editável por painel.</p></div><div class="pl" style="--c:#35e6ff"><i>🎙</i><h3>ShotCaller</h3><p>O caller fala uma vez e as 12 PTs ouvem. Painel de controle pelo site.</p></div></div></div>
 
 <div class="bots sec" id="bots"><div class="wrap"><h2>Bots em <span>ação</span></h2><p class="s">Exemplos do que o bot faz no seu Discord. É o mesmo tipo de bot que roda hoje numa guilda com 170 jogadores.</p>
-<div class="bg">
+<div class="flow" id="flow"><div class="win"><div class="wh"># vitrine · Loja Bot<span>Discord</span></div><div class="fd" id="ffd"></div></div>
+<div class="fs"><div class="bb"><i></i><i></i><i></i><span>🔒 sualoja.com.br</span></div><div class="bd"><div class="ph" id="ph1"><h4>Gold e itens</h4><p>Escolha no site ou direto no Discord.</p><div class="row2"><div><i>🪙</i>Gold 100M<br><b>R$ 39,90</b></div><div><i>⚔️</i>Espada +12<br><b>R$ 89,00</b></div><div><i>💎</i>Gemas<br><b>R$ 54,90</b></div></div><div class="sy" style="background:#eef0ff;color:#4a5bff">Aguardando um pedido do Discord…</div></div>
+<div class="ph off" id="ph2"><h4>Pedido #4821</h4><p>Gold 100M · R$ 39,90</p><div class="tl2" id="tl2"><div><i>✓</i>Pedido criado no Discord</div><div><i>✓</i>Pix confirmado</div><div><i>✓</i>Entregue automaticamente</div></div><div class="cd2">GLD-7K2P-9QX4</div><div class="sy">⚡ Sincronizado com o Discord agora</div></div></div></div>
+<svg class="cur" id="cur" viewBox="0 0 24 24"><path d="M3 2l17 8-7.5 2L9 20z" fill="#fff" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+<div class="fst" id="fst"><span>1 · Cliente clica</span><span>2 · Pix confirmado</span><span>3 · Entrega automática</span><span>4 · Site atualizado</span></div>
+<div class="bg" style="margin-top:40px">
 <div class="dm" style="--c:#3ba55d"><div class="h"><div class="av">🤖</div><b>Loja Bot<i>BOT</i></b></div><div class="e"><b>💰 Venda #4821 paga</b><span>Gold 100M · R$ 39,90<br>Entrega automática concluída.</span></div></div>
 <div class="dm" style="--c:#5865f2;animation-delay:.1s"><div class="h"><div class="av">🎫</div><b>Atendimento<i>BOT</i></b></div><div class="e"><b>Ticket aberto</b><span>Canal privado criado e espelhado com o site.</span></div><div class="bt"><span class="p">Assumir</span><span>Fechar</span></div></div>
 <div class="dm" style="--c:#faa61a;animation-delay:.2s"><div class="h"><div class="av">🎙</div><b>Chamada<i>BOT</i></b></div><div class="e"><b>Chamada paga</b><span>Presentes 62 · Avisaram 4 · Faltaram 9<br>+30 pontos pela sala de voz.</span></div></div>
@@ -172,11 +202,17 @@ gal.innerHTML=L.map((s,j)=>{const k=CATS[s.c[0]];return `<article class="card" s
 <div class="cb"><span class="cat">${s.c.map(x=>CATS[x][0]).join(' · ')}</span><h3>${s.n}</h3>${s.ins?`<span class="ins">${s.ins}</span>`:''}<div class="sw">${s.k.map(c=>`<i style="background:${c}"></i>`).join('')}</div><p>${s.d}</p><div class="acts"><button class="btn g" data-o="${s.i}">Ver ao vivo</button><a class="btn" target="_blank" rel="noopener" href="${wa('Oi! Quero o estilo '+num(s.i)+' - '+s.n+' (Sites para Games)')}">Quero este</a></div></div></article>`}).join('');
 fit();lazy();hov()}
 function fit(){document.querySelectorAll('.pv,.dev').forEach(p=>{const f=p.querySelector('iframe');const w=p.clientWidth;f.style.transform='scale('+(w/1280)+')'})}
-let io;function lazy(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const f=e.target.querySelector('iframe');if(f&&!f.src)f.src=f.dataset.src;io.unobserve(e.target)}}),{rootMargin:'300px'});document.querySelectorAll('.pv,.dev').forEach(p=>io.observe(p))}
-/* rola o site da prévia ao passar o mouse (só páginas do mesmo domínio) */
-function hov(){document.querySelectorAll('.pv').forEach(p=>{let raf,t0,dir=1;const f=p.querySelector('iframe');
-p.onmouseenter=()=>{cancelAnimationFrame(raf);let w;try{w=f.contentWindow;w.document}catch(e){return}const max=Math.min(w.document.documentElement.scrollHeight-800,2600);if(max<50)return;const from=w.scrollY||0;t0=performance.now();const dur=Math.max(3500,max*3);const step=n=>{const k=Math.min((n-t0)/dur,1);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;w.scrollTo(0,from+(max-from)*e);if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)};
-p.onmouseleave=()=>{cancelAnimationFrame(raf);try{const w=f.contentWindow;const from=w.scrollY||0;const t=performance.now();const back=n=>{const k=Math.min((n-t)/500,1);w.scrollTo(0,from*(1-k));if(k<1)raf=requestAnimationFrame(back)};raf=requestAnimationFrame(back)}catch(e){}}})}
+let io;function lazy(){io&&io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{const f=e.target.querySelector('iframe');if(!f)return;if(e.isIntersecting){if(f.dataset.on!=='1'){f.src=f.dataset.src;f.dataset.on='1'}}else if(f.dataset.on==='1'&&!e.target.classList.contains('dev')){f.src='about:blank';f.dataset.on=''}}),{rootMargin:'250px'});document.querySelectorAll('.pv,.dev').forEach(p=>io.observe(p))}
+/* rola o site da prévia ao passar o mouse (mesmo domínio): desliga o scroll suave da página, rola o documento ou o maior painel interno */
+function scrollTarget(w){const d=w.document,root=d.scrollingElement||d.documentElement;root.style.scrollBehavior='auto';d.body&&(d.body.style.scrollBehavior='auto');
+ let max=root.scrollHeight-w.innerHeight;if(max>=60)return{el:root,max:Math.min(max,2600)};
+ let best=null;d.querySelectorAll('*').forEach(e=>{const o=w.getComputedStyle(e).overflowY;if((o=='auto'||o=='scroll')&&e.scrollHeight-e.clientHeight>=60&&(!best||e.scrollHeight>best.scrollHeight))best=e});
+ if(best){best.style.scrollBehavior='auto';return{el:best,max:Math.min(best.scrollHeight-best.clientHeight,1600)}}return null}
+function hov(){document.querySelectorAll('.pv').forEach(p=>{let raf;const f=p.querySelector('iframe');
+ const run=(to,dur,tg)=>{cancelAnimationFrame(raf);const t0=performance.now(),a=tg.el.scrollTop;const step=n=>{const k=Math.min((n-t0)/dur,1),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;tg.el.scrollTop=a+(to-a)*e;if(k<1)raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)};
+ let tg=null;
+ p.onmouseenter=()=>{p.classList.add('hv');let w;try{w=f.contentWindow;w.document}catch(e){tg=null;return}tg=scrollTarget(w);if(!tg)return;run(tg.max,Math.max(3200,tg.max*3),tg)};
+ p.onmouseleave=()=>{p.classList.remove('hv');if(tg)run(0,500,tg)}})}
 addEventListener('resize',fit);
 chips.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x==b));draw()};
 function open_(i){const s=S[i];mt.textContent=num(i)+' · '+s.n;fr.className='fr';dv.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m=='d'));fr.innerHTML='<iframe src="'+s.src+'" title="'+s.n+'"></iframe>';mo.href=s.src;mwa.href=wa('Oi! Quero o estilo '+num(i)+' - '+s.n+' (Sites para Games)');md.classList.add('on');document.body.style.overflow='hidden'}
@@ -191,5 +227,27 @@ const stg=document.getElementById('stage');document.querySelector('.hero').addEv
 stg.querySelectorAll('.dev').forEach(d=>d.onclick=()=>{});
 /* contadores */
 const cn=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,n=+el.dataset.n,t0=performance.now();const s=x=>{const k=Math.min((x-t0)/1400,1);el.textContent=Math.round(n*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(s)};requestAnimationFrame(s);cn.unobserve(el)}));document.querySelectorAll('[data-n]').forEach(x=>cn.observe(x));
+
+/* animação automática: cursor clica no Discord até chegar ao site */
+(function(){const fl=document.getElementById('flow'),cur=document.getElementById('cur'),fd=document.getElementById('ffd'),st=[...document.querySelectorAll('#fst span')],ph1=document.getElementById('ph1'),ph2=document.getElementById('ph2'),tl=[...document.querySelectorAll('#tl2 div')];
+let T=[],run=false;const L=(f,t)=>T.push(setTimeout(f,t));
+function msg(u,html,bot){const e=document.createElement('div');e.className='fm';e.innerHTML='<div class="av '+(bot?'':'u')+'">'+(bot?'🤖':'🧙')+'</div><div><b>'+(bot?'Loja Bot<i>BOT</i>':'Marcos')+'</b>'+html+'</div>';fd.appendChild(e);while(fd.children.length>3)fd.firstChild.remove();return e}
+function go(el,dx,dy){const a=fl.getBoundingClientRect(),b=el.getBoundingClientRect();cur.style.transform='translate('+(b.left-a.left+(dx==null?b.width*.6:dx))+'px,'+(b.top-a.top+(dy==null?b.height*.55:dy))+'px)'}
+function click(el){cur.classList.remove('ck');void cur.getBoundingClientRect();cur.classList.add('ck');el&&el.classList.add('dn')}
+function step(n){st.forEach((x,i)=>x.classList.toggle('on',i==n))}
+function play(){T.forEach(clearTimeout);T=[];fd.innerHTML='';ph1.classList.remove('off');ph2.classList.add('off');tl.forEach(x=>x.classList.remove('on'));st.forEach(x=>x.classList.remove('on'));
+ const a=fl.getBoundingClientRect();cur.style.transform='translate('+a.width*.35+'px,'+a.height*.8+'px)';
+ L(()=>{const m=msg(0,'<div class="e" style="--c:#faa61a"><h5>🪙 Gold 100M</h5>R$ 39,90 · entrega automática</div><div class="bs"><button class="g">Comprar com Pix</button><button>Detalhes</button></div>',1);const b1=m.querySelector('.g');
+  L(()=>go(b1),500);
+  L(()=>{click(b1);step(0);msg(0,'Quero comprar!')},1700);
+  L(()=>{const m2=msg(0,'<div class="e" style="--c:#3ba55d"><h5>Pague com Pix</h5>Pedido #4821 · R$ 39,90<br><span class="qr"></span></div><div class="bs"><button class="p">Já paguei</button></div>',1);const b2=m2.querySelector('.p');
+   L(()=>go(b2),500);
+   L(()=>{click(b2);step(1);tl[0].classList.add('on');
+    L(()=>{const m3=msg(0,'<div class="e" style="--c:#3ba55d"><h5>✅ Pago · 📦 Entregue em 2 min 14 s</h5>Código enviado na DM e no site.</div><div class="bs"><button class="p">Ver pedido no site ↗</button></div>',1);const b3=m3.querySelector('.p');step(2);tl[1].classList.add('on');tl[2].classList.add('on');
+     L(()=>go(b3),600);
+     L(()=>{click(b3);const sb=fl.querySelector('.fs .bd');
+      L(()=>{const r=sb.getBoundingClientRect();go(sb,r.width*.5,r.height*.75);ph1.classList.add('off');ph2.classList.remove('off');step(3)},500);
+      L(play,7500)},1900)},1400)},1300)},2000)},600)}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!run){run=true;play()}else if(!e.isIntersecting&&run){run=false;T.forEach(clearTimeout);T=[]}}),{threshold:.35});io.observe(fl)})();
 draw();setTimeout(()=>{fit();lazy()},50);
 </script></body></html>
