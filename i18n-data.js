@@ -1,6 +1,6 @@
 window.LHART_I18N = {
 en: {
-  nav: { method: 'How it works', cases: 'Our work', services: 'What we do', client: 'Client area', threed: '3D', plans: 'Plans', games: 'Game sites', cta: 'Get your plan' },
+  nav: { method: 'How it works', cases: 'Our work', services: 'What we do', client: 'Client area', threed: '3D', plans: 'Plans', games: 'Game sites', delivery: 'Restaurant delivery', cta: 'Get your plan' },
   hero: {
     line1: 'We Don\u2019t Just Create Content.', line2: 'We Build Revenue Engines.',
     leftTag: 'The Most Complete Media & Growth Platform.', rightTag: 'Our focus is to make your brand the first choice in your market — bringing in more customers, sales and bookings through cinematic media, targeted ads and our own AI system.',
@@ -119,7 +119,7 @@ en: {
   whatsapp: { genericMsg: 'Hi! I\u2019d like to talk about a plan for my business.', formIntro: 'New request:' }
 },
 es: {
-  nav: { method: 'Cómo funciona', cases: 'Nuestro trabajo', services: 'Qué hacemos', client: 'Área de clientes', threed: '3D', plans: 'Planes', games: 'Sitios para juegos', cta: 'Ver mi plan' },
+  nav: { method: 'Cómo funciona', cases: 'Nuestro trabajo', services: 'Qué hacemos', client: 'Área de clientes', threed: '3D', plans: 'Planes', games: 'Sitios para juegos', delivery: 'Delivery para restaurantes', cta: 'Ver mi plan' },
   hero: {
     line1: 'No Solo Creamos Contenido.', line2: 'Construimos Motores de Ingresos.',
     leftTag: 'La Plataforma Más Completa de Medios y Crecimiento.', rightTag: 'Nuestro enfoque es convertir tu marca en la primera opción de tu mercado — generando más clientes, ventas y reservas con medios cinematográficos, anuncios segmentados y nuestro propio sistema de IA.',
@@ -238,7 +238,7 @@ es: {
   whatsapp: { genericMsg: '¡Hola! Quisiera hablar sobre un plan para mi negocio.', formIntro: 'Nueva solicitud:' }
 },
 pt: {
-  nav: { method: 'Como funciona', cases: 'Nosso trabalho', services: 'O que fazemos', client: 'Área do cliente', threed: '3D', plans: 'Planos', games: 'Sites para Games', cta: 'Ver meu plano' },
+  nav: { method: 'Como funciona', cases: 'Nosso trabalho', services: 'O que fazemos', client: 'Área do cliente', threed: '3D', plans: 'Planos', games: 'Sites para Games', delivery: 'Delivery para restaurantes', cta: 'Ver meu plano' },
   hero: {
     line1: 'Não Criamos Apenas Conteúdo.', line2: 'Construímos Motores de Receita.',
     leftTag: 'A Plataforma Mais Completa de Mídia e Crescimento.', rightTag: 'Nosso foco é fazer da sua marca a primeira escolha do seu mercado — trazendo mais clientes, vendas e reservas com mídia cinematográfica, anúncios segmentados e nosso próprio sistema de IA.',

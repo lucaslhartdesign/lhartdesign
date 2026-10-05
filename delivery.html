@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delivery para Restaurantes — Lhart Design</title>
+<meta name="description" content="Site e app de delivery próprio para restaurantes: cardápio com fotos, cupom, rota no Google Maps, app do motoboy e tela da cozinha sincronizados. Sem comissão por pedido.">
+<meta property="og:title" content="Delivery para Restaurantes — Lhart Design"><meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#09080d;--p:#131119;--p2:#1c1924;--ln:#2e2a3d;--ac:#ff6a3d;--ac2:#ffb347;--pk:#ff3d6e;--gr:#3df0a0;--ink:#f4f1fa;--mu:#a29db8;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Manrope,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.d{font-family:"Chakra Petch",sans-serif}.wrap{max-width:1280px;margin:auto;padding:0 20px}
+.nav{position:sticky;top:0;z-index:30;background:rgba(9,8,13,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.nav img{height:34px;width:auto}.nav .l{display:flex;gap:22px;color:var(--mu);font-size:15px;font-weight:600;align-items:center}.nav .l a:hover,.nav .l a.on{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--ac),var(--pk));color:#fff;font-weight:800;border:0;border-radius:14px;padding:15px 28px;transition:.2s;box-shadow:0 10px 30px #ff6a3d55}
+.btn:hover{transform:translateY(-3px);box-shadow:0 16px 40px #ff3d6e55}.btn.g{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ln);color:var(--ink)}.btn.g:hover{box-shadow:inset 0 0 0 1.5px var(--ac2);color:var(--ac2)}
+/* hero */
+.hero{position:relative;overflow:hidden;padding:60px 0 50px;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-20% -10% 0;z-index:-1;background:radial-gradient(600px 400px at 12% 20%,#ff6a3d3a,transparent 70%),radial-gradient(500px 400px at 88% 40%,#ff3d6e2e,transparent 70%),radial-gradient(500px 300px at 50% 100%,#ffb34722,transparent 70%)}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:30px;align-items:center}
+.kick{display:inline-flex;gap:8px;align-items:center;font:700 13px "Chakra Petch";letter-spacing:.2em;text-transform:uppercase;color:var(--ac2);border:1px solid #ffb34755;padding:7px 16px;border-radius:99px;background:#ffb34712}
+.kick i{width:8px;height:8px;border-radius:50%;background:var(--gr);box-shadow:0 0 10px var(--gr);animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
+h1{font:700 clamp(38px,5.6vw,72px)/.98 "Chakra Petch";letter-spacing:-.02em;margin:22px 0 18px}
+h1 .g1{background:linear-gradient(90deg,var(--ac2),var(--ac),var(--pk));-webkit-background-clip:text;color:transparent}
+.hero .l{color:#cfcadf;font-size:19px;max-width:46ch;margin:0 0 26px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.chk{display:grid;gap:8px;margin-top:26px;padding:0;list-style:none}.chk li{display:flex;gap:10px;color:#cfcadf;font-size:15.5px}.chk li::before{content:"✓";color:var(--gr);font-weight:900}
+/* stage com os 3 apps ao vivo */
+.stage{position:relative;height:560px}
+.fr{position:absolute;overflow:hidden;background:#000;border:6px solid #1b1a24;box-shadow:0 40px 80px #000c,0 0 60px #ff6a3d22}
+.fr iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
+.fr.ph{border-radius:30px}.fr.tb{border-radius:18px}
+.fr.a{width:230px;height:470px;left:0;top:70px;z-index:3;animation:fa 7s ease-in-out infinite}
+.fr.b{width:440px;height:300px;left:150px;top:0;z-index:1;animation:fa 8s ease-in-out infinite -2s}
+.fr.c{width:230px;height:470px;right:0;top:90px;z-index:3;animation:fa 9s ease-in-out infinite -4s}
+@keyframes fa{50%{translate:0 -12px}}
+.cap{position:absolute;z-index:6;font:700 11px "Chakra Petch";letter-spacing:.14em;text-transform:uppercase;background:#09080dd9;border:1px solid var(--ln);border-radius:99px;padding:5px 12px;color:var(--ac2)}
+.sec{padding:80px 0}.sec h2{font:700 clamp(30px,4.6vw,54px)/1 "Chakra Petch";margin:0 0 12px;letter-spacing:-.02em}.sec h2 span{background:linear-gradient(90deg,var(--ac2),var(--pk));-webkit-background-clip:text;color:transparent}.sec .s{color:var(--mu);max-width:62ch;margin:0 0 36px;font-size:18px}
+.alt{background:linear-gradient(#0d0b12,#120f18);border-block:1px solid var(--ln)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ap{background:linear-gradient(160deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:24px;padding:28px;position:relative;overflow:hidden;transition:.25s}.ap:hover{transform:translateY(-6px);border-color:var(--c)}
+.ap::before{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:var(--c);opacity:.2;filter:blur(30px)}
+.ap i{font-style:normal;font-size:40px}.ap h3{margin:8px 0 4px;font:700 26px "Chakra Petch"}.ap small{color:var(--c);font:700 12px "Chakra Petch";letter-spacing:.14em;text-transform:uppercase}
+.ap ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:8px;color:#cfcadf;font-size:15.5px}.ap li{display:flex;gap:10px}.ap li::before{content:"→";color:var(--c);font-weight:800}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:stretch;margin-top:36px}
+.fl{background:var(--p);border:1px solid var(--ln);padding:20px 16px;text-align:center;position:relative}.fl:first-child{border-radius:18px 0 0 18px}.fl:last-child{border-radius:0 18px 18px 0}.fl+.fl{border-left:0}
+.fl i{font-style:normal;font-size:30px;display:block}.fl b{display:block;font:700 16px "Chakra Petch";margin:4px 0 2px}.fl span{color:var(--mu);font-size:13.5px}
+.fl::after{content:"▶";position:absolute;right:-9px;top:50%;translate:0 -50%;color:var(--ac);font-size:13px;z-index:2;background:var(--bg);border-radius:50%;width:18px;height:18px;display:grid;place-items:center}.fl:last-child::after{display:none}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.ft{background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:22px;transition:.2s}.ft:hover{border-color:var(--ac);transform:translateY(-4px)}.ft i{font-style:normal;font-size:28px}.ft h4{margin:6px 0 4px;font:700 18px "Chakra Petch"}.ft p{margin:0;color:var(--mu);font-size:14.5px}
+.qa{display:grid;grid-template-columns:1fr 1fr;gap:16px}.q{background:var(--p);border:1px solid var(--ln);border-radius:20px;padding:26px}.q h3{margin:0 0 8px;font:700 22px "Chakra Petch"}.q p{margin:0 0 10px;color:#cfcadf;font-size:15.5px}.q ul{margin:0;padding-left:18px;color:var(--mu);font-size:14.5px;display:grid;gap:4px}
+.q.ok{border-color:#3df0a066}.tg{display:inline-block;font:700 11px "Chakra Petch";letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:99px;margin-bottom:10px}.tg.g{background:#3df0a022;color:var(--gr)}.tg.o{background:#ffb34722;color:var(--ac2)}
+/* galeria */
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{background:var(--p);border:1px solid var(--ln);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,border-color .25s,box-shadow .25s}
+.card:hover{transform:translateY(-8px);border-color:var(--c);box-shadow:0 26px 60px #000a,0 0 0 1px var(--c),0 0 50px color-mix(in srgb,var(--c) 30%,transparent)}
+.pv{position:relative;aspect-ratio:16/10;overflow:hidden;background:#000;cursor:pointer;border-bottom:1px solid var(--ln)}.pv iframe{position:absolute;left:0;top:0;width:1500px;height:900px;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
+.pv::after{content:"Abrir ao vivo →";position:absolute;left:50%;bottom:16px;translate:-50% 20px;opacity:0;transition:.25s;background:#000c;border:1px solid #ffffff44;padding:9px 20px;border-radius:99px;font:700 13px "Chakra Petch";letter-spacing:.1em;text-transform:uppercase;z-index:3}.card:hover .pv::after{opacity:1;translate:-50% 0}
+.num{position:absolute;top:12px;left:12px;z-index:4;background:#09080de6;border:1px solid var(--ln);border-radius:9px;padding:3px 10px;font:700 13px "Chakra Petch";color:var(--ac2)}
+.cb{padding:20px 22px 22px;display:flex;flex-direction:column;gap:6px;flex:1}.cat{font:700 11px "Chakra Petch";letter-spacing:.18em;text-transform:uppercase;color:var(--c)}.card h3{margin:0;font:700 26px "Chakra Petch"}.card p{margin:0;color:var(--mu);font-size:15px}
+.sw{display:flex;gap:6px;margin:6px 0 2px}.sw i{width:22px;height:22px;border-radius:7px;border:1px solid #fff2}
+.acts{display:flex;gap:8px;margin-top:auto;padding-top:14px}.acts .btn{flex:1;padding:12px 10px;font-size:14px;box-shadow:none}.acts .btn.g{box-shadow:inset 0 0 0 1.5px var(--ln)}
+.need{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.need div{padding:16px 18px;background:var(--p);border:1px solid var(--ln);border-radius:14px;font-size:15px}.need b{display:block;color:var(--ac2);font:700 15px "Chakra Petch"}.need span{color:var(--mu);font-size:14px}
+.cta{margin:20px 0 80px;border-radius:32px;padding:70px 30px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#a3361c,#e0482c 55%,#d6285a)}
+.cta::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-60deg,transparent 0 40px,#ffffff0a 40px 80px)}.cta>*{position:relative}
+.cta h2{font:700 clamp(30px,5vw,58px)/1 "Chakra Petch";margin:0 0 12px}.cta p{margin:0 auto 28px;max-width:52ch;color:#ffe8df;font-size:19px}.cta .btn{background:#fff;color:#8a2210;box-shadow:0 12px 40px #0006}
+footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:14px}footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.wf{position:fixed;right:18px;bottom:18px;z-index:40;background:#25d366;color:#04200f;font-weight:800;padding:14px 22px;border-radius:99px;box-shadow:0 10px 30px #25d36655;display:flex;gap:8px;align-items:center}
+.md{position:fixed;inset:0;z-index:60;background:#03030bf0;backdrop-filter:blur(10px);display:none;flex-direction:column}.md.on{display:flex}
+.mh{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--ln);background:var(--p);flex-wrap:wrap}.mh b{font:700 18px "Chakra Petch"}.mh .sp{flex:1}.mh .btn{padding:9px 16px;font-size:14px;box-shadow:none}
+.mh .x{border:0;background:var(--p2);color:var(--ink);width:38px;height:38px;border-radius:10px;font-size:18px}
+.mb{flex:1;padding:14px;min-height:0}.mb iframe{width:100%;height:100%;border:0;border-radius:14px;background:#fff;display:block}
+@media(max-width:1100px){.hero .wrap{grid-template-columns:1fr}.stage{display:none}.three,.feat,.gal,.qa,.need{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.fl,.fl:first-child,.fl:last-child{border-radius:0;border-left:1px solid var(--ln)}.fl::after{display:none}}
+@media(max-width:680px){.three,.feat,.gal,.qa,.need{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:40px 0 20px}.wf span{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
+<div class="l"><a href="index.html">Início</a><a href="vitrine.html">Sites para Games</a><a class="on" href="delivery.html">Delivery</a><a href="#estilos">Estilos</a><a class="btn" id="navwa" href="#" style="padding:10px 18px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
+
+<div class="hero"><div class="wrap"><div><span class="kick"><i></i> Delivery próprio</span>
+<h1>Seu delivery, <span class="g1">sem dividir</span> o lucro</h1>
+<p class="l">Site e app de pedidos com a sua marca: o cliente pede, a cozinha recebe e o motoboy entrega, tudo sincronizado e sem comissão por pedido. Os três apps ao lado estão rodando de verdade, e conversam entre si.</p>
+<div class="row"><a class="btn" href="#estilos">Ver os 6 estilos ↓</a><a class="btn g" href="#como">Como funciona</a></div>
+<ul class="chk"><li>Cardápio com foto, preço e cupom de desconto</li><li>Endereço no Google Maps e rota para o motoboy</li><li>Tela da cozinha com os pedidos na ordem de chegada</li><li>Status automático: preparando, pronto, saiu, entregue</li></ul></div>
+<div class="stage" id="stage"><div class="fr tb b" data-v="cozinha" data-w="900" data-h="620"><iframe data-src="demos/delivery-sabor-express.html?view=cozinha"></iframe></div><div class="fr ph a" data-v="cliente" data-w="390" data-h="780"><iframe data-src="demos/delivery-sabor-express.html?view=cliente"></iframe></div><div class="fr ph c" data-v="motoboy" data-w="390" data-h="780"><iframe data-src="demos/delivery-sabor-express.html?view=motoboy"></iframe></div>
+<span class="cap" style="left:0;top:30px">📱 Cliente</span><span class="cap" style="left:50%;top:-10px;translate:-20% 0">👨‍🍳 Cozinha</span><span class="cap" style="right:0;top:50px">🛵 Motoboy</span></div></div></div>
+
+<div class="sec alt" id="como"><div class="wrap"><h2>Três apps, <span>um só pedido</span></h2><p class="s">Cada pessoa vê só o que precisa. Quando alguém muda o status, os outros dois já veem na hora.</p>
+<div class="three"><div class="ap" style="--c:#ff6a3d"><i>📱</i><small>Para o cliente</small><h3>App do cliente</h3><ul><li>Cardápio com foto, descrição e preço</li><li>Sacola, cupom de desconto e taxa de entrega</li><li>Endereço de entrega já no Google Maps</li><li>Acompanha o motoboy no mapa e recebe o código de entrega</li><li>Conversa com a loja dentro do pedido</li></ul></div>
+<div class="ap" style="--c:#ffb347"><i>👨‍🍳</i><small>Para a cozinha</small><h3>Tela da cozinha</h3><ul><li>Funciona no tablet ou no PC da cozinha</li><li>Pedidos em ordem de chegada, com cronômetro</li><li>Aviso sonoro de pedido novo</li><li>Um toque para: preparando, pronto, saiu para entrega</li><li>Responde o cliente pelo chat</li></ul></div>
+<div class="ap" style="--c:#8b5cf6"><i>🛵</i><small>Para o entregador</small><h3>App do motoboy</h3><ul><li>Vê as corridas prontas e aceita</li><li>Endereço do cliente e itens do pedido</li><li>Abre a rota no Google Maps com um toque</li><li>Confirma a entrega com o código do cliente</li><li>Acompanha corridas e ganhos do dia</li></ul></div></div>
+<div class="flow"><div class="fl"><i>🛍</i><b>Cliente pede</b><span>Escolhe, usa cupom e paga</span></div><div class="fl"><i>🔔</i><b>Cozinha recebe</b><span>Toca o alerta, na fila</span></div><div class="fl"><i>✅</i><b>Pedido pronto</b><span>Motoboy é avisado</span></div><div class="fl"><i>🗺</i><b>Rota no mapa</b><span>Motoboy retira e sai</span></div><div class="fl"><i>🎉</i><b>Entrega confirmada</b><span>Código do cliente</span></div></div></div></div>
+
+<div class="sec"><div class="wrap"><h2>Site, app ou <span>os dois</span>?</h2><p class="s">Resposta direta sobre o que dá para entregar e como cada opção funciona.</p>
+<div class="qa"><div class="q ok"><span class="tg g">Entrega mais rápida</span><h3>App web instalável (PWA)</h3><p>É um site que o cliente instala na tela inicial do celular, com ícone próprio, tela cheia e notificações. É o que mostramos nesta página.</p><ul><li>Funciona em Android e iPhone, sem loja de aplicativos</li><li>Atualização na hora, sem esperar aprovação</li><li>Cliente pede pelo link, QR code do balcão ou Instagram</li></ul></div>
+<div class="q"><span class="tg o">Opcional</span><h3>App nas lojas (Google Play e App Store)</h3><p>Dá para empacotar o mesmo sistema como aplicativo nativo, para quem quer estar nas lojas.</p><ul><li>Exige conta de desenvolvedor da loja (paga) e aprovação do Google e da Apple</li><li>Leva mais prazo que o app web</li><li>Recomendamos começar pelo app web e migrar depois</li></ul></div></div></div></div>
+
+<div class="sec alt"><div class="wrap"><h2>O que vem <span>no pacote</span></h2><p class="s">Tudo configurável pelo painel do dono, sem mexer em código.</p>
+<div class="feat"><div class="ft"><i>🖼</i><h4>Cardápio com fotos</h4><p>Você sobe as fotos, muda preço, categoria e disponibilidade quando quiser.</p></div><div class="ft"><i>🎟</i><h4>Cupons</h4><p>Percentual, frete grátis e primeira compra, com validade.</p></div><div class="ft"><i>🗺</i><h4>Google Maps</h4><p>Endereço e rota até o cliente, para o motoboy e para o cliente acompanhar.</p></div><div class="ft"><i>💬</i><h4>Chat com a loja</h4><p>O cliente pergunta dentro do pedido. A cozinha responde na própria tela.</p></div>
+<div class="ft"><i>⚡</i><h4>Pix automático</h4><p>Pagamento confirmado sozinho, com opção de cartão e dinheiro na entrega.</p></div><div class="ft"><i>🔔</i><h4>Avisos</h4><p>Alerta sonoro na cozinha e aviso de cada etapa no celular do cliente.</p></div><div class="ft"><i>📊</i><h4>Relatórios</h4><p>Vendas por dia, produtos mais pedidos e tempo médio de entrega.</p></div><div class="ft"><i>🔗</i><h4>Discord e WhatsApp</h4><p>Pedido novo e entrega avisados no canal da equipe, se você quiser.</p></div></div></div></div>
+
+<div class="sec" id="estilos"><div class="wrap"><h2>6 estilos para <span>cada tipo de cozinha</span></h2><p class="s">Mexa de verdade: faça um pedido no app do cliente e veja ele aparecer na cozinha e no motoboy.</p><div class="gal" id="gal"></div></div></div>
+
+<div class="sec alt"><div class="wrap"><h2>Para <span>entrar no ar</span></h2><p class="s">O que precisamos de você para configurar o sistema com os dados reais do restaurante.</p>
+<div class="need"><div><b>Cardápio e fotos</b><span>Produtos, preços, categorias e fotos dos pratos</span></div><div><b>Endereço e horários</b><span>Local da loja, área e taxa de entrega</span></div><div><b>Pagamento</b><span>Conta no gateway de Pix e cartão do restaurante</span></div><div><b>Google Maps</b><span>Chave do Google para mapa e rotas (criada na conta do restaurante)</span></div><div><b>Marca</b><span>Logo, cores e nome do restaurante</span></div><div><b>Equipe</b><span>Quem usa a cozinha e quem são os motoboys</span></div></div>
+<div class="cta" style="margin-top:60px"><h2>Quer o delivery do seu restaurante?</h2><p>Escolha o estilo, mande o cardápio e a gente responde com prazo e valor.</p><a class="btn" id="ctawa" href="#">Chamar no WhatsApp</a></div></div></div>
+<footer><div class="wrap"><span>© Lhart Design — demonstrações com dados fictícios. O mapa real, o Pix e as notificações são ativados na instalação, com as contas do restaurante.</span><a href="vitrine.html">← Sites para Games</a></div></footer>
+<a class="wf" id="wf" href="#">💬 <span>Falar no WhatsApp</span></a>
+<div class="md" id="md"><div class="mh"><b id="mt"></b><span class="sp"></span><a class="btn" id="mwa" href="#">Quero este estilo</a><a class="btn g" id="mo" href="#" target="_blank" rel="noopener">Abrir em aba</a><button class="x" id="mx" aria-label="Fechar">✕</button></div><div class="mb" id="mb"></div></div>
+<script>
+const WA='5511989304239',wa=t=>'https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+const S=[
+ {f:'delivery-sabor-express',n:'Sabor Express',c:'#ea1d2c',d:'Lanchonete e pizzaria. Visual claro e direto, vermelho e laranja, cardápio em lista.',t:'Hambúrguer · Pizza · Lanches',k:['#ffffff','#ea1d2c','#ff6a3d','#1b1b24']},
+ {f:'delivery-burger-neon',n:'Burger Neon',c:'#ff2bd6',d:'Hamburgueria noturna. Modo escuro com neon rosa e ciano, cardápio em grade.',t:'Smash · Drinks · Noite',k:['#0c0b16','#ff2bd6','#7a3dff','#35e6ff']},
+ {f:'delivery-sushi-zen',n:'Sushi Zen',c:'#b8322a',d:'Culinária japonesa. Papel claro, vermelho tradicional e tipografia com serifa.',t:'Japonês · Combinados',k:['#faf6ee','#b8322a','#2a1f1a','#e3d9c6']},
+ {f:'delivery-forno-a-lenha',n:'Forno a Lenha',c:'#2f6b3a',d:'Pizzaria artesanal. Creme, vermelho e verde, com foto grande em cada pizza.',t:'Pizza artesanal · Vinhos',k:['#fbf3e4','#b3261e','#2f6b3a','#2a1b12']},
+ {f:'delivery-acai-tropical',n:'Açaí Tropical',c:'#6a1fd1',d:'Açaí, bowls e sucos. Roxo vibrante, cantos bem redondos e cardápio em grade.',t:'Açaí · Bowls · Sucos',k:['#ffffff','#6a1fd1','#c026d3','#f6efff']},
+ {f:'delivery-marmita-caseira',n:'Dona Rita',c:'#d9631a',d:'Marmitaria e comida caseira. Tons quentes de laranja e creme, aconchegante.',t:'Marmita · Caseira · Fitness',k:['#fff8ef','#d9631a','#f2a33a','#3a2417']}];
+const num=i=>'#'+String(i+1).padStart(2,'0');
+gal.innerHTML=S.map((s,i)=>`<article class="card" style="--c:${s.c}"><div class="pv" data-i="${i}"><span class="num">${num(i)}</span><iframe data-src="demos/${s.f}.html" title="Prévia ${s.n}" tabindex="-1"></iframe></div><div class="cb"><span class="cat">${s.t}</span><h3>${s.n}</h3><div class="sw">${s.k.map(c=>`<i style="background:${c}"></i>`).join('')}</div><p>${s.d}</p><div class="acts"><button class="btn g" data-o="${i}">Ver ao vivo</button><a class="btn" target="_blank" rel="noopener" href="${wa('Oi! Quero o delivery estilo '+num(i)+' - '+s.n)}">Quero este</a></div></div></article>`).join('');
+function fit(){document.querySelectorAll('.pv').forEach(p=>{const f=p.querySelector('iframe');f.style.transform='scale('+(p.clientWidth/1500)+')'});document.querySelectorAll('.fr').forEach(p=>{const f=p.querySelector('iframe');const w=+p.dataset.w,k=p.clientWidth/w;f.style.width=w+'px';f.style.height=(p.clientHeight/k)+'px';f.style.transform='scale('+k+')'})}
+const io=new IntersectionObserver(es=>es.forEach(e=>{const f=e.target.querySelector('iframe');if(!f)return;if(e.isIntersecting){if(!f.src)f.src=f.dataset.src}}),{rootMargin:'300px'});
+document.querySelectorAll('.pv,.fr').forEach(p=>io.observe(p));addEventListener('resize',fit);fit();setTimeout(fit,200);
+function open_(i){const s=S[i];mt.textContent=num(i)+' · '+s.n;mb.innerHTML='<iframe src="demos/'+s.f+'.html" title="'+s.n+'"></iframe>';mo.href='demos/'+s.f+'.html';mwa.href=wa('Oi! Quero o delivery estilo '+num(i)+' - '+s.n);md.classList.add('on');document.body.style.overflow='hidden'}
+gal.onclick=e=>{const o=e.target.closest('[data-o]')||e.target.closest('.pv');if(o)open_(+(o.dataset.o??o.dataset.i))};
+function close_(){md.classList.remove('on');mb.innerHTML='';document.body.style.overflow=''}
+mx.onclick=close_;addEventListener('keydown',e=>{if(e.key=='Escape')close_()});[mwa,mo].forEach(a=>{a.target='_blank';a.rel='noopener'});
+const g=wa('Oi! Vi a aba Delivery e quero um sistema de pedidos para o meu restaurante.');[navwa,ctawa,wf].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'});
+/* demonstração automática: o pedido feito no app do cliente aparece na cozinha e no motoboy */
+(function(){const fr=[...document.querySelectorAll('.fr')];const W={};let T=[],run=false,ready=0;
+ const ev=(k,code)=>{try{return W[k].eval(code)}catch(e){return null}};
+ const L=(f,t)=>T.push(setTimeout(f,t));
+ const clk=(k,sel)=>ev(k,'(function(){var e=document.querySelector('+JSON.stringify(sel)+');if(e){e.click();return 1}return 0})()');
+ function play(){T.forEach(clearTimeout);T=[];
+  ev('cliente',"S=seed();save();L.my=null;L.screen='menu';L.cart={};L.seen=null;L.coupon=null;L.cmsg='';localStorage.removeItem(KEY+'-my');renderAll()");
+  L(()=>clk('cliente','[data-a="add"][data-id="se1"]'),1200);L(()=>clk('cliente','[data-a="add"][data-id="se1"]'),2000);L(()=>clk('cliente','[data-a="add"][data-id="se4"]'),2800);
+  L(()=>clk('cliente','[data-a="cart"]'),3800);
+  L(()=>{ev('cliente',"document.getElementById('cup').value='BEMVINDO10'");clk('cliente','[data-a="coupon"]')},5200);
+  L(()=>clk('cliente','[data-a="order"]'),6800);
+  L(()=>clk('cozinha','[data-a="k"][data-s="preparando"][data-o="4821"]'),9200);
+  L(()=>clk('cozinha','[data-a="k"][data-s="pronto"][data-o="4821"]'),12000);
+  L(()=>clk('motoboy','[data-a="maccept"][data-o="4821"]'),13800);
+  L(()=>{clk('motoboy','[data-a="mpick"]');ev('cliente',"var o=find(L.my);if(o){o.t.routeStart=Date.now()-ROUTE_MS*.62;save();renderAll()}")},15600);
+  L(()=>{ev('motoboy',"var o=find(L.my);var i=document.getElementById('mcode');if(i&&o)i.value=o.code");clk('motoboy','[data-a="mdone"]')},23000);
+  L(play,29500)}
+ const start=()=>{if(ready>=3&&!run&&vis){run=true;play()}};let vis=true;
+ fr.forEach(f=>{const i=f.querySelector('iframe');i.addEventListener('load',()=>{W[f.dataset.v]=i.contentWindow;ready++;start()})});
+ new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis)start();else if(run){run=false;T.forEach(clearTimeout);T=[]}},{threshold:.2}).observe(document.getElementById('stage'))})();
+</script></body></html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ff2bd6">
+<title>Burger Neon — Delivery próprio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--page:#07060f;--pcard:#15142a;--pink:#f4f2ff;--pmu:#9a97c4;--pline:#2a2850;--bg:#0c0b16;--card:#16152a;--ink:#f4f2ff;--mu:#9a97c4;--line:#2a2850;--ac:#ff2bd6;--ac2:#7a3dff;--acink:#fff;--price:#35e6ff;--rad:14px;--f1:Orbitron,sans-serif;--f2:Rajdhani,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--page);color:var(--ink);font:400 15px/1.45 var(--f2);overflow-x:hidden}
+a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}
+.f1{font-family:var(--f1)}
+/* barra de demonstração */
+.demo{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;max-width:1500px;margin:auto;padding:14px 20px 6px}
+.demo h1{margin:0;font:700 20px var(--f1)}.demo p{margin:0;color:var(--pmu);font-size:13px}
+.dbt{display:flex;gap:8px;flex-wrap:wrap}.dbt button,.dbt a{background:var(--pcard);color:var(--pink);border:1px solid var(--pline);border-radius:10px;padding:9px 14px;font-weight:600;font-size:13px}.dbt .go{background:var(--ac);color:var(--acink);border:0}
+.stage{max-width:1500px;margin:auto;padding:12px 20px 40px;display:grid;grid-template-columns:360px minmax(0,1fr) 360px;gap:22px;align-items:start}
+.col>.lb{font:700 12px var(--f2);letter-spacing:.14em;text-transform:uppercase;color:var(--pmu);margin:0 0 8px;display:flex;gap:8px;align-items:center}.lb i{width:8px;height:8px;border-radius:50%;background:#2fd77a;box-shadow:0 0 8px #2fd77a}
+.dev{background:var(--bg);color:var(--ink);border:9px solid #14141c;border-radius:42px;height:720px;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 30px 70px #0007}
+.dev.tab{border-radius:26px;border-width:10px}
+.sc{flex:1;overflow:auto;position:relative;scroll-behavior:auto}
+.sc::-webkit-scrollbar{width:0}
+.sb{height:26px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:6px 22px 0;font-size:11px;font-weight:700;color:var(--mu)}
+/* single view */
+body.single .demo,body.single .col>.lb,body.single .mt{display:none!important}
+body.single .stage{display:block;padding:0;max-width:none}
+body.single .col{display:none}body.single .col.on{display:block}
+body.single .dev{height:100vh;border:0;border-radius:0;max-width:520px;margin:auto}
+body.single .dev.tab{max-width:none}
+/* tabs mobile */
+.mt{display:none}
+@media(max-width:1180px){.stage{grid-template-columns:1fr;padding:12px 14px 90px}.col{display:none}.col.on{display:block}.dev{max-width:440px;margin:auto;height:calc(100vh - 190px);min-height:560px}.dev.tab{max-width:none}
+ .mt{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--pcard);border-top:1px solid var(--pline);padding:8px 8px calc(8px + env(safe-area-inset-bottom,0))}.mt button{flex:1;border:0;background:none;color:var(--pmu);font-weight:700;padding:10px 4px;border-radius:12px;font-size:13px}.mt button.on{background:var(--ac);color:var(--acink)}
+ body.single .dev{height:100vh}}
+/* ====== CLIENTE ====== */
+.hero{padding:16px 16px 12px;background:linear-gradient(160deg,var(--ac),var(--ac2));color:var(--acink);position:relative;overflow:hidden}
+.hero::after{content:attr(data-e);position:absolute;right:-8px;top:-6px;font-size:96px;opacity:.28;transform:rotate(12deg)}
+.hero .nm{font:800 22px/1.1 var(--f1);position:relative}.hero .tg{font-size:13px;opacity:.9;margin:2px 0 10px;position:relative}
+.meta{display:flex;gap:8px;flex-wrap:wrap;position:relative}.meta span{background:#ffffff30;border-radius:99px;padding:4px 10px;font-size:12px;font-weight:600;backdrop-filter:blur(4px)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scrollbar-width:none;position:sticky;top:0;background:var(--bg);z-index:3}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);color:var(--mu);border-radius:99px;padding:8px 14px;font-weight:600;font-size:13px}.chip.on{background:var(--ac);color:var(--acink);border-color:var(--ac)}
+.cat{padding:6px 16px 2px;font:700 17px var(--f1)}
+.items{padding:6px 16px 90px;display:grid;gap:10px}
+.it{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:12px;display:grid;grid-template-columns:1fr 84px;gap:12px;align-items:center;transition:.15s}
+.it:active{transform:scale(.98)}
+.it b{display:block;font-size:15px;line-height:1.2}.it .d{color:var(--mu);font-size:12.5px;margin:3px 0 6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.it .p{font-weight:800;color:var(--price)}
+.art{width:84px;height:84px;border-radius:calc(var(--rad) - 4px);display:grid;place-items:center;font-size:44px;background:linear-gradient(135deg,var(--a),var(--b));position:relative}
+.art .ad{position:absolute;right:-6px;bottom:-6px;width:32px;height:32px;border-radius:50%;border:3px solid var(--card);background:var(--ac);color:var(--acink);font-weight:800;font-size:18px;display:grid;place-items:center;line-height:0}
+.lay-grid .items{grid-template-columns:1fr 1fr}.lay-grid .it{grid-template-columns:1fr;padding:10px;gap:8px}.lay-grid .art{width:100%;height:92px;order:-1;font-size:50px}.lay-grid .it .d{display:none}
+.lay-big .it{grid-template-columns:1fr}.lay-big .art{width:100%;height:128px;order:-1;font-size:64px}
+.cbar{position:absolute;left:14px;right:14px;bottom:14px;background:var(--ac);color:var(--acink);border:0;border-radius:calc(var(--rad) - 2px);padding:14px 16px;font-weight:800;display:flex;justify-content:space-between;box-shadow:0 12px 30px #0006;z-index:5;animation:up .35s}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.hd{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);font:800 17px var(--f1);position:sticky;top:0;background:var(--bg);z-index:4}.hd button{border:0;background:var(--card);color:var(--ink);width:34px;height:34px;border-radius:50%;font-size:16px}
+.sec{padding:14px 16px;border-bottom:1px solid var(--line)}.sec h4{margin:0 0 10px;font:700 14px var(--f2);color:var(--mu);text-transform:uppercase;letter-spacing:.08em}
+.ci{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;margin-bottom:10px}.ci .art{width:44px;height:44px;font-size:24px}.ci b{display:block;font-size:14px}.ci small{color:var(--mu)}
+.qt{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:2px}.qt button{width:28px;height:28px;border:0;border-radius:50%;background:var(--ac);color:var(--acink);font-weight:800}.qt span{min-width:16px;text-align:center;font-weight:700}
+.in{width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:12px 14px;outline:0}.in:focus{border-color:var(--ac)}
+.row{display:flex;gap:8px}.row .btn{flex:none}
+.btn{border:0;background:var(--ac);color:var(--acink);font-weight:800;padding:12px 18px;border-radius:12px}.btn.g{background:var(--card);color:var(--ink);border:1px solid var(--line)}.btn.w{width:100%;padding:15px;font-size:16px;border-radius:14px}.btn:disabled{opacity:.45}
+.pays{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.pays button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 4px;font-weight:600;font-size:13px}.pays button.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 16%,var(--card));font-weight:800}
+.sum div{display:flex;justify-content:space-between;padding:3px 0;color:var(--mu)}.sum .t{color:var(--ink);font:800 18px var(--f1);border-top:1px dashed var(--line);margin-top:6px;padding-top:10px}.sum .dc{color:#2fd77a}
+.msg{font-size:12.5px;margin-top:6px;font-weight:600}.msg.ok{color:#2fd77a}.msg.er{color:#ff5a5a}
+.map{width:100%;border-radius:14px;display:block;background:var(--card);border:1px solid var(--line)}
+.mapfr{width:100%;height:210px;border:0;border-radius:14px;display:block}
+.mt2{display:flex;gap:8px;margin:8px 0 0}.mt2 button,.mt2 a{flex:1;text-align:center;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px;border-radius:10px;font-weight:700;font-size:12.5px}
+.big{text-align:center;padding:20px 16px 10px}.big .e{font-size:54px;display:block;animation:pop .5s}@keyframes pop{from{transform:scale(.4);opacity:0}}.big h2{margin:6px 0 2px;font:800 22px var(--f1)}.big p{margin:0;color:var(--mu)}
+.stp{display:flex;padding:6px 16px 14px;gap:4px}.stp div{flex:1;text-align:center;font-size:10.5px;color:var(--mu);font-weight:600}.stp div::before{content:"";display:block;height:6px;border-radius:3px;background:var(--line);margin-bottom:6px;transition:.4s}.stp div.on{color:var(--ink)}.stp div.on::before{background:var(--ac)}
+.code{background:var(--card);border:2px dashed var(--ac);border-radius:14px;padding:10px;text-align:center;margin:0 16px 4px}.code b{display:block;font:800 26px var(--f1);letter-spacing:.3em;color:var(--ac)}.code small{color:var(--mu)}
+.chat{display:grid;gap:6px;max-height:150px;overflow:auto;margin-bottom:8px}.bb{max-width:82%;padding:8px 12px;border-radius:14px;font-size:13.5px;animation:up .25s}.bb.me{background:var(--ac);color:var(--acink);margin-left:auto;border-bottom-right-radius:4px}.bb.lj{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.stars{display:flex;gap:6px;justify-content:center;font-size:30px;margin:6px 0}.stars button{border:0;background:none;padding:0;filter:grayscale(1);opacity:.5}.stars button.on{filter:none;opacity:1}
+.toast{position:absolute;left:12px;right:12px;top:30px;z-index:20;background:#fff;color:#16161d;border-radius:16px;padding:10px 14px;box-shadow:0 14px 40px #0008;font-size:13px;transform:translateY(-120px);transition:transform .5s cubic-bezier(.2,1.3,.4,1)}.toast.on{transform:none}.toast b{display:block}
+/* ====== COZINHA ====== */
+.kh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}.kh b{font:800 18px var(--f1)}.kh small{display:block;color:var(--mu);font-size:12px}
+.kc{display:flex;gap:8px;flex-wrap:wrap}.kc span{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 10px;font-size:12px;color:var(--mu);font-weight:600}.kc b{font:800 15px var(--f1);color:var(--ink);margin-right:4px}.kh button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:7px 12px;font-weight:700;font-size:12.5px}
+.kb{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:10px;padding:12px;align-items:start;overflow:auto;flex:1;min-height:0}
+.kcol h5{margin:0 0 8px;font:800 13px var(--f2);text-transform:uppercase;letter-spacing:.08em;display:flex;justify-content:space-between;color:var(--col)}.kcol h5 em{font-style:normal;background:var(--col);color:#fff;border-radius:99px;min-width:22px;text-align:center;padding:0 7px}
+.ko{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--col);border-radius:12px;padding:10px 12px;margin-bottom:10px;animation:up .4s}
+.ko.new{animation:flash 1.2s 2}@keyframes flash{50%{background:color-mix(in srgb,var(--col) 25%,var(--card))}}
+.ko .h{display:flex;justify-content:space-between;align-items:baseline}.ko .h b{font:800 15px var(--f1)}.ko .h span{font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;color:var(--mu)}.ko .h span.late{color:#ff5a5a}
+.ko .c{font-size:12.5px;color:var(--mu);margin:1px 0 6px}.ko ul{margin:0 0 8px;padding:0;list-style:none;font-size:13.5px}.ko li b{color:var(--ac)}
+.ko .nt{font-size:12px;background:color-mix(in srgb,#ffb020 18%,var(--card));border-radius:8px;padding:5px 8px;margin-bottom:8px}
+.ko .ac{display:flex;gap:6px}.ko .ac button{flex:1;border:0;border-radius:9px;padding:9px 4px;font-weight:800;font-size:12.5px;background:var(--col);color:#fff}.ko .ac button.g{flex:none;background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.ko .cx{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}.ko .cx .in{padding:8px 10px;font-size:13px}
+.ko .tg2{font-size:12px;color:var(--mu)}
+.mini{font-size:11.5px;color:var(--mu)}
+/* ====== MOTOBOY ====== */
+.mh{padding:14px 16px;background:linear-gradient(160deg,#20222e,#14151d);color:#fff;display:flex;justify-content:space-between;align-items:center}.mh b{font:800 17px var(--f1)}.mh small{color:#9aa0b8;display:block;font-size:12px}.mh .on{background:#2fd77a;color:#042;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:800}
+.ms{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px}.ms div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.ms small{color:var(--mu);font-size:11.5px}.ms b{display:block;font:800 19px var(--f1)}
+.mj{margin:0 16px 10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;animation:up .35s}.mj .h{display:flex;justify-content:space-between;align-items:baseline}.mj .h b{font:800 15px var(--f1)}.mj .h span{color:#2fd77a;font-weight:800}.mj p{margin:3px 0 8px;color:var(--mu);font-size:13px}
+.mq{padding:10px 16px;font:800 13px var(--f2);color:var(--mu);text-transform:uppercase;letter-spacing:.08em}
+.empty{text-align:center;color:var(--mu);padding:26px 20px}.empty b{display:block;font-size:34px}
+.stp2{display:grid;gap:8px;margin:8px 0}.stp2 div{display:flex;gap:10px;align-items:center;font-size:13.5px;opacity:.4}.stp2 div.on{opacity:1}.stp2 i{width:22px;height:22px;border-radius:50%;background:var(--ac);color:var(--acink);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800}
+.lay-grid .hero,.lay-big .hero{}
+.hero{box-shadow:inset 0 -30px 60px #0008}.it{box-shadow:0 0 0 1px #ff2bd622}.it:hover{box-shadow:0 0 18px #ff2bd655}.cbar{box-shadow:0 0 26px #ff2bd699}.hero .nm{text-shadow:0 0 16px #fff8}body{font-size:16px}
+</style></head>
+<body class="lay-grid">
+<div class="demo"><div><h1 class="f1">Burger Neon · delivery próprio</h1><p>Demonstração ao vivo: o pedido feito no app do cliente cai na cozinha e vai para o motoboy, tudo sincronizado.</p></div>
+<div class="dbt"><button class="go" data-a="fake">＋ Pedido de outro cliente</button><button data-a="reset">↺ Reiniciar demo</button><a href="?view=cliente" target="_blank">App do cliente ↗</a><a href="?view=cozinha" target="_blank">Cozinha ↗</a><a href="?view=motoboy" target="_blank">Motoboy ↗</a></div></div>
+<div class="stage">
+<div class="col" id="col-cliente"><div class="lb"><i></i>App do cliente</div><div class="dev" id="cliente"></div></div>
+<div class="col" id="col-cozinha"><div class="lb"><i></i>Cozinha (tablet ou PC)</div><div class="dev tab" id="cozinha"></div></div>
+<div class="col" id="col-motoboy"><div class="lb"><i></i>App do motoboy</div><div class="dev" id="motoboy"></div></div>
+</div>
+<div class="mt" id="mt"><button data-a="tab" data-t="cliente">🍔 Cliente</button><button data-a="tab" data-t="cozinha">👨‍🍳 Cozinha</button><button data-a="tab" data-t="motoboy">🛵 Motoboy</button></div>
+<script>
+const CFG={"slug": "delivery-burger-neon", "accent": "#ff2bd6", "mapBg": "#171a33", "road": "#2b2e52", "store": {"name": "BURGER NEON", "tag": "Smash burgers artesanais · aberto até 2h", "emoji": "🍔", "rating": "4,9", "eta": "25-35 min", "fee": 5.0, "pay": 8.0, "addr": "Rua Augusta, 2000 - São Paulo"}, "menu": [{"name": "Smash", "items": [{"id": "bn1", "name": "Neon Classic", "desc": "Smash 90g, cheddar duplo e picles", "price": 27.9, "e": "🍔", "a": "#ff2bd6", "b": "#7a3dff"}, {"id": "bn2", "name": "Cyber Bacon", "desc": "Smash duplo, bacon e molho barbecue", "price": 34.9, "e": "🥓", "a": "#7a3dff", "b": "#35e6ff"}, {"id": "bn3", "name": "Plasma Blue", "desc": "Smash, queijo azul e cebola caramelizada", "price": 36.9, "e": "🧀", "a": "#35e6ff", "b": "#3d7aff"}, {"id": "bn4", "name": "Veggie Pulse", "desc": "Burger de grão-de-bico, rúcula e tomate", "price": 31.9, "e": "🥬", "a": "#2dffb1", "b": "#35e6ff"}]}, {"name": "Acompanhamentos", "items": [{"id": "bn5", "name": "Batata Neon", "desc": "Batata rústica com páprica", "price": 18.9, "e": "🍟", "a": "#ffd24a", "b": "#ff2bd6"}, {"id": "bn6", "name": "Nuggets x8", "desc": "Crocantes com molho especial", "price": 21.9, "e": "🍗", "a": "#ff9a3d", "b": "#ff2bd6"}]}, {"name": "Drinks", "items": [{"id": "bn7", "name": "Milkshake Ovomaltine", "desc": "400ml", "price": 19.9, "e": "🥛", "a": "#c8a2ff", "b": "#7a3dff"}, {"id": "bn8", "name": "Soda Italiana", "desc": "Blue lemon 400ml", "price": 14.9, "e": "🧊", "a": "#35e6ff", "b": "#7a3dff"}]}]};
+const KEY='dlv2-'+CFG.slug,ROUTE_MS=42000;
+const $=id=>document.getElementById(id),qa=(s,r=document)=>[...r.querySelectorAll(s)];
+const R=v=>'R$ '+v.toFixed(2).replace('.',',');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const STAT={novo:['Pedido recebido','🧾','#3b82f6'],preparando:['Em preparo','👨‍🍳','#f59e0b'],pronto:['Pronto','✅','#10b981'],rota:['Saiu para entrega','🛵','#8b5cf6'],entregue:['Entregue','🎉','#64748b']};
+const ORDER=['novo','preparando','pronto','rota','entregue'];
+const ALL=CFG.menu.flatMap(c=>c.items.map(i=>Object.assign({cat:c.name},i)));
+const byId=id=>ALL.find(i=>i.id===id);
+const NAMES=['Marcos','Larissa','Thor','Kaique','Bia','Dante','Mel','Rafa','Júlia','Pedro'],ADDR=['Rua das Flores, 120','Av. Brasil, 455','Rua do Sol, 78 ap 32','Praça Central, 9','Rua Verde, 301','Av. das Palmeiras, 1500'];
+const bc=window.BroadcastChannel?new BroadcastChannel(KEY):null;
+let S=load();
+function seed(){const t=Date.now(),it=ALL;const mk=(id,st,min,who,items,addr,notes)=>({id,cust:who,items,addr,pay:'Pix',notes:notes||'',st,t:{novo:t-min*60000},chat:[],code:String(1000+Math.floor(Math.random()*9000)),fee:CFG.store.fee,disc:0});
+ const a=mk(4819,'preparando',9,'Marcos',[[it[0].id,2],[it[3].id,1]],ADDR[0],'Sem cebola');a.t.preparando=t-7*60000;
+ const b=mk(4820,'novo',2,'Larissa',[[it[1].id,1],[it[2].id,2]],ADDR[1]);
+ return{v:2,seq:4821,orders:[a,b]}}
+function load(){try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.v===2)return j}catch(e){}return seed()}
+function save(){S.orders=S.orders.filter((o,i,a)=>o.st!=='entregue'||a.length-i<=14);try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}bc&&bc.postMessage(1)}
+if(bc)bc.onmessage=()=>{S=load();renderAll()};addEventListener('storage',e=>{if(e.key===KEY){S=load();renderAll()}});
+const total=o=>o.items.reduce((s,[id,q])=>s+byId(id).price*q,0)-o.disc+o.fee;
+const sub=o=>o.items.reduce((s,[id,q])=>s+byId(id).price*q,0);
+const prog=o=>o.st==='entregue'?1:o.st==='rota'?Math.min((Date.now()-o.t.routeStart)/ROUTE_MS,1):0;
+const L={screen:'menu',cart:{},cat:'Todos',coupon:null,cmsg:'',addr:ADDR[0],pay:'Pix',my:+(localStorage.getItem(KEY+'-my')||0)||null,real:false,seen:null,lastSt:{},sound:true,chats:{},rated:0,tab:'menu'};
+const art=i=>`<div class="art" style="--a:${i.a};--b:${i.b}">${i.e}</div>`;
+const find=id=>S.orders.find(o=>o.id===id);
+function setSt(o,st){o.st=st;o.t[st]=Date.now();if(st==='rota'){o.t.routeStart=Date.now();if(!o.courier)o.courier='Carlos'}save();renderAll()}
+/* ---------- mapa ---------- */
+const PATH='M44 164 L44 112 L156 112 L156 54 L276 54';
+function mapSVG(o){return `<svg class="map" viewBox="0 0 320 210" data-oid="${o.id}"><rect width="320" height="210" fill="${CFG.mapBg||'#e9eef3'}"/><g stroke="${CFG.road||'#fff'}" stroke-width="9" stroke-linecap="round"><path d="M0 112H320M0 54H320M0 164H320M44 0V210M156 0V210M276 0V210M100 0V210M214 0V210"/></g><rect x="106" y="120" width="44" height="38" rx="6" fill="#bfe3c4" opacity=".8"/><rect x="220" y="118" width="50" height="40" rx="6" fill="#cfe0f5" opacity=".9"/><path class="rt" d="${PATH}" fill="none" stroke="${CFG.accent}" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round"/><text x="44" y="186" text-anchor="middle" font-size="22">🏪</text><text x="276" y="48" text-anchor="middle" font-size="22">🏠</text><g class="cr"><circle r="13" fill="${CFG.accent}" stroke="#fff" stroke-width="3"/><text y="6" text-anchor="middle" font-size="16">🛵</text></g></svg>`}
+function moveCouriers(){qa('svg.map[data-oid]').forEach(s=>{const o=find(+s.dataset.oid);if(!o)return;const p=s.querySelector('.rt'),n=p.getTotalLength(),pt=p.getPointAtLength(n*prog(o));s.querySelector('.cr').setAttribute('transform','translate('+pt.x+','+pt.y+')')})}
+function gmaps(o){return 'https://www.google.com/maps/dir/?api=1&travelmode=motorcycle&origin='+encodeURIComponent(CFG.store.addr)+'&destination='+encodeURIComponent(o.addr||L.addr)}
+function realMap(addr){return `<iframe class="mapfr" loading="lazy" src="https://www.google.com/maps?output=embed&saddr=${encodeURIComponent(CFG.store.addr)}&daddr=${encodeURIComponent(addr)}"></iframe>`}
+/* ---------- CLIENTE ---------- */
+const cartItems=()=>Object.entries(L.cart).filter(([,q])=>q>0).map(([id,q])=>[id,q]);
+const cartSub=()=>cartItems().reduce((s,[id,q])=>s+byId(id).price*q,0);
+const cartFee=()=>L.coupon==='FRETEGRATIS'?0:CFG.store.fee;
+const cartDisc=()=>L.coupon==='BEMVINDO10'?cartSub()*.1:0;
+function cliente(){const el=$('cliente');const sc=el.querySelector('.sc');const top=sc?sc.scrollTop:0;let h='<div class="sb"><span>9:41</span><span>5G ▮</span></div><div class="sc">';
+ if(L.screen==='menu'){const cats=['Todos',...CFG.menu.map(c=>c.name)];
+  h+=`<div class="hero" data-e="${CFG.store.emoji}"><div class="nm">${esc(CFG.store.name)}</div><div class="tg">${esc(CFG.store.tag)}</div><div class="meta"><span>★ ${CFG.store.rating}</span><span>⏱ ${CFG.store.eta}</span><span>🛵 ${CFG.store.fee?R(CFG.store.fee):'Grátis'}</span><span>🟢 Aberto</span></div></div>
+  <div class="chips">${cats.map(c=>`<button class="chip ${L.cat===c?'on':''}" data-a="cat" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>`;
+  CFG.menu.filter(c=>L.cat==='Todos'||L.cat===c.name).forEach(c=>{h+=`<div class="cat">${esc(c.name)}</div><div class="items">${c.items.map(i=>`<div class="it" data-a="add" data-id="${i.id}"><div><b>${esc(i.name)}</b><div class="d">${esc(i.desc)}</div><div class="p">${R(i.price)}</div></div><div class="art" style="--a:${i.a};--b:${i.b}">${i.e}<span class="ad">${L.cart[i.id]?L.cart[i.id]:'+'}</span></div></div>`).join('')}</div>`});
+  const n=cartItems().reduce((s,[,q])=>s+q,0);if(n)h+=`</div><button class="cbar" data-a="cart"><span>🛍 Ver sacola · ${n} ${n>1?'itens':'item'}</span><span>${R(cartSub())}</span></button>`;else h+='</div>';
+ }else if(L.screen==='cart'){const it=cartItems(),s=cartSub(),d=cartDisc(),f=cartFee();
+  h+=`<div class="hd"><button data-a="menu">←</button>Sua sacola</div>
+  <div class="sec">${it.map(([id,q])=>{const i=byId(id);return `<div class="ci">${art(i)}<div><b>${esc(i.name)}</b><small>${R(i.price)}</small></div><div class="qt"><button data-a="dec" data-id="${id}">−</button><span>${q}</span><button data-a="inc" data-id="${id}">+</button></div></div>`}).join('')||'<div class="empty"><b>🛍</b>Sacola vazia</div>'}</div>
+  <div class="sec"><h4>Cupom</h4><div class="row"><input class="in" id="cup" placeholder="Ex.: BEMVINDO10" value="${L.coupon||''}"><button class="btn" data-a="coupon">Aplicar</button></div><div class="msg ${L.cmsg.startsWith('✓')?'ok':'er'}">${L.cmsg}</div></div>
+  <div class="sec"><h4>Entregar em</h4><input class="in" id="adr" value="${esc(L.addr)}"><div id="mapbox" style="margin-top:8px">${L.real?realMap(L.addr):mapSVG({id:'cart',st:'novo',t:{}})}</div><div class="mt2"><button data-a="real">${L.real?'Ver mapa simples':'🗺 Ver no Google Maps'}</button><a href="${gmaps({addr:L.addr})}" target="_blank" rel="noopener">Abrir rota ↗</a></div></div>
+  <div class="sec"><h4>Pagamento</h4><div class="pays">${['Pix','Cartão','Dinheiro'].map(m=>`<button class="${L.pay===m?'on':''}" data-a="pay" data-m="${m}">${m==='Pix'?'⚡ ':m==='Cartão'?'💳 ':'💵 '}${m}</button>`).join('')}</div></div>
+  <div class="sec sum"><div><span>Subtotal</span><span>${R(s)}</span></div>${d?`<div class="dc"><span>Cupom</span><span>− ${R(d)}</span></div>`:''}<div><span>Entrega</span><span>${f?R(f):'Grátis'}</span></div><div class="t"><span>Total</span><span>${R(s-d+f)}</span></div></div>
+  <div class="sec" style="border:0;padding-bottom:30px"><button class="btn w" data-a="order" ${it.length?'':'disabled'}>Fazer pedido · ${R(s-d+f)}</button></div>`;
+ }else{const o=find(L.my);if(!o){L.screen='menu';return cliente()}const idx=ORDER.indexOf(o.st),p=prog(o),eta=Math.max(1,Math.round((1-p)*12));
+  h+=`<div class="hd"><button data-a="menu">←</button>Pedido #${o.id}</div><div class="big"><span class="e">${STAT[o.st][1]}</span><h2>${o.st==='rota'?'Seu pedido está a caminho':STAT[o.st][0]}</h2><p>${o.st==='rota'?'Chega em ~'+eta+' min · '+esc(o.courier||'Carlos')+' está com seu pedido':o.st==='entregue'?'Bom apetite!':o.st==='novo'?'Aguardando a loja confirmar':o.st==='preparando'?'A cozinha está preparando':'Aguardando o motoboy retirar'}</p></div>
+  <div class="stp">${ORDER.map((s,i)=>`<div class="${i<=idx?'on':''}">${STAT[s][0].replace('Pedido ','').replace('Saiu para entrega','A caminho')}</div>`).join('')}</div>
+  ${o.st==='rota'?`<div class="code"><small>Código de entrega · informe ao motoboy</small><b>${o.code}</b></div>`:''}
+  <div class="sec">${L.real?realMap(o.addr):mapSVG(o)}<div class="mt2"><button data-a="real">${L.real?'Ver mapa simples':'🗺 Mapa real'}</button><a href="${gmaps(o)}" target="_blank" rel="noopener">Google Maps ↗</a></div></div>
+  <div class="sec"><h4>Fale com a loja</h4><div class="chat" id="cchat">${o.chat.map(m=>`<div class="bb ${m.f==='c'?'me':'lj'}">${esc(m.t)}</div>`).join('')||'<div class="mini">Dúvida sobre o pedido? Escreva aqui.</div>'}</div><div class="row"><input class="in" id="cmsg" data-enter="csend" placeholder="Escreva uma mensagem"><button class="btn" id="csend" data-a="csend">Enviar</button></div></div>
+  <div class="sec"><h4>Resumo</h4><div class="sum">${o.items.map(([id,q])=>`<div><span>${q}× ${esc(byId(id).name)}</span><span>${R(byId(id).price*q)}</span></div>`).join('')}<div><span>Entrega</span><span>${o.fee?R(o.fee):'Grátis'}</span></div><div class="t"><span>Total · ${o.pay}</span><span>${R(total(o))}</span></div></div></div>
+  ${o.st==='entregue'?`<div class="sec"><h4>Avalie</h4><div class="stars">${[1,2,3,4,5].map(n=>`<button class="${L.rated>=n?'on':''}" data-a="star" data-n="${n}">⭐</button>`).join('')}</div><button class="btn w" data-a="again">Fazer novo pedido</button></div>`:'<div style="height:30px"></div>'}`;}
+ h+='</div><div class="toast" id="toast"></div>';el.innerHTML=h;const n=el.querySelector('.sc');if(n)n.scrollTop=top;moveCouriers();const c=el.querySelector('#cchat');if(c)c.scrollTop=1e5}
+function toast(t,b){const e=$('toast');if(!e)return;e.innerHTML=`<b>${b}</b>${t}`;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2600)}
+/* ---------- COZINHA ---------- */
+const mmss=ms=>{const s=Math.max(0,Math.floor(ms/1000));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function cozinha(){const el=$('cozinha');const open=qa('.cx',el).map(x=>x.dataset.o);const val=($('kin')||{}).value;const fo=document.activeElement&&document.activeElement.id==='kin';
+ const ord=[...S.orders].sort((a,b)=>a.t.novo-b.t.novo),cols=[['novo','Novos'],['preparando','Preparando'],['pronto','Prontos'],['rota','Em rota']];
+ const cnt=s=>ord.filter(o=>o.st===s).length;
+ let h=`<div class="sb"><span>${CFG.store.name}</span><span>${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="kh"><div><b>Cozinha</b><small>Pedidos na ordem de chegada</small></div><div class="kc">${cols.map(([s,n])=>`<span><b>${cnt(s)}</b>${n}</span>`).join('')}<span><b>${cnt('entregue')}</b>Entregues</span></div><button data-a="ksound">${L.sound?'🔔 Som ligado':'🔕 Som desligado'}</button></div><div class="kb">`;
+ cols.forEach(([s,n])=>{const col=STAT[s][2];h+=`<div class="kcol" style="--col:${col}"><h5>${n}<em>${cnt(s)}</em></h5>`;
+  ord.filter(o=>o.st===s).forEach(o=>{const isNew=L.fresh&&L.fresh.has(o.id);const late=Date.now()-o.t.novo>15*60000&&(s==='novo'||s==='preparando');
+   h+=`<div class="ko ${isNew?'new':''}"><div class="h"><b>#${o.id}</b><span class="${late?'late':''}" data-since="${o.t.novo}">${mmss(Date.now()-o.t.novo)}</span></div><div class="c">${esc(o.cust)} · ${o.pay} · ${R(total(o))}</div><ul>${o.items.map(([id,q])=>`<li><b>${q}×</b> ${esc(byId(id).name)}</li>`).join('')}</ul>${o.notes?`<div class="nt">📝 ${esc(o.notes)}</div>`:''}
+   ${s==='rota'?`<div class="tg2">🛵 ${esc(o.courier||'Carlos')} · <span data-pg="${o.id}">${Math.round(prog(o)*100)}</span>% do trajeto</div>`:''}
+   <div class="ac">${s==='novo'?`<button data-a="k" data-o="${o.id}" data-s="preparando">▶ Preparar</button>`:s==='preparando'?`<button data-a="k" data-o="${o.id}" data-s="pronto">✓ Pronto</button>`:s==='pronto'?`<button data-a="k" data-o="${o.id}" data-s="rota">🛵 Saiu p/ entrega</button>`:''}<button class="g" data-a="kchat" data-o="${o.id}">💬${o.chat.filter(m=>m.f==='c').length||''}</button></div>
+   ${open.includes(String(o.id))?`<div class="cx" data-o="${o.id}"><div class="chat">${o.chat.map(m=>`<div class="bb ${m.f==='l'?'me':'lj'}">${esc(m.t)}</div>`).join('')||'<div class="mini">Sem mensagens.</div>'}</div><div class="row"><input class="in" id="kin" data-enter="ksend${o.id}" placeholder="Responder ao cliente"><button class="btn" id="ksend${o.id}" data-a="ksend" data-o="${o.id}">➤</button></div></div>`:''}</div>`});
+  if(!cnt(s))h+='<div class="mini" style="text-align:center;padding:14px 0">vazio</div>';h+='</div>'});
+ h+='</div>';el.innerHTML=h;if(fo&&$('kin')){$('kin').value=val||'';$('kin').focus()}}
+/* ---------- MOTOBOY ---------- */
+function motoboy(){const el=$('motoboy');const mine=S.orders.find(o=>o.courier==='Carlos'&&(o.st==='pronto'||o.st==='rota')&&o.accepted);const avail=S.orders.filter(o=>o.st==='pronto'&&!o.courier);const done=S.orders.filter(o=>o.st==='entregue'&&o.courier==='Carlos');
+ let h=`<div class="sb"><span>9:41</span><span>5G ▮</span></div><div class="sc"><div class="mh"><div><b>Carlos · Moto</b><small>Entregador parceiro</small></div><span class="on">● Online</span></div><div class="ms"><div><small>Corridas hoje</small><b>${done.length+7}</b></div><div><small>Ganhos hoje</small><b>${R((done.length+7)*CFG.store.pay)}</b></div></div>`;
+ if(mine){const o=mine,p=prog(o),code=(L.cerr?'<div class="msg er">Código incorreto</div>':'');
+  h+=`<div class="mq">Corrida atual</div><div class="mj"><div class="h"><b>#${o.id} · ${esc(o.cust)}</b><span>${R(CFG.store.pay)}</span></div><p>📍 ${esc(o.addr)}</p>
+  <div class="stp2"><div class="on"><i>1</i>Aceita · ir até a loja</div><div class="${o.st==='rota'?'on':''}"><i>2</i>Pedido retirado</div><div class="${o.st==='rota'?'on':''}"><i>3</i>Em rota até o cliente</div><div class="${p>=1?'on':''}"><i>4</i>Confirmar código</div></div>
+  ${L.real?realMap(o.addr):mapSVG(o)}<div class="mt2"><button data-a="real">${L.real?'Mapa simples':'🗺 Google Maps'}</button><a href="${gmaps(o)}" target="_blank" rel="noopener">▶ Iniciar rota ↗</a></div>
+  <ul style="margin:10px 0 0;padding-left:18px;font-size:13.5px">${o.items.map(([id,q])=>`<li>${q}× ${esc(byId(id).name)}</li>`).join('')}</ul>
+  ${o.st==='pronto'?`<button class="btn w" style="margin-top:12px" data-a="mpick" data-o="${o.id}">Retirei o pedido</button>`:p<1?`<div class="empty" style="padding:12px"><b>🛵</b>Em rota… ${Math.round(p*100)}%</div>`:`<input class="in" id="mcode" data-enter="mdone" placeholder="Código do cliente (4 dígitos)" inputmode="numeric" maxlength="4" style="margin-top:12px;text-align:center;letter-spacing:.3em">${code}<button class="btn w" id="mdone" style="margin-top:8px" data-a="mdone" data-o="${o.id}">Confirmar entrega</button><div class="mini" style="text-align:center;margin-top:6px">Demo: o código é ${o.code}</div>`}</div>`;
+ }else{h+=`<div class="mq">Corridas disponíveis (${avail.length})</div>`;
+  h+=avail.map(o=>`<div class="mj"><div class="h"><b>#${o.id} · ${esc(CFG.store.name)}</b><span>${R(CFG.store.pay)}</span></div><p>📍 ${esc(o.addr)} · ~${(1.2+o.id%5*.7).toFixed(1)} km</p><button class="btn w" data-a="maccept" data-o="${o.id}">Aceitar corrida</button></div>`).join('')||'<div class="empty"><b>⏳</b>Nenhuma corrida agora.<br>Quando a cozinha marcar “Pronto”, aparece aqui.</div>'}
+ h+='</div>';el.innerHTML=h;moveCouriers()}
+/* ---------- ações ---------- */
+function renderAll(){const ids=new Set(S.orders.map(o=>o.id));if(L.seen){const nw=[...ids].filter(i=>!L.seen.has(i));if(nw.length){L.fresh=new Set(nw);if(L.sound&&S.orders.find(o=>o.id===nw[0]&&o.st==='novo'))beep()}}else L.fresh=null;L.seen=ids;
+ const o=find(L.my);if(o){const prev=L.lastSt[o.id];if(prev&&prev!==o.st&&L.screen==='track'){setTimeout(()=>toast(STAT[o.st][0],STAT[o.st][1]+' Pedido #'+o.id),60)}L.lastSt[o.id]=o.st}
+ if(L.screen==='track'||!document.activeElement||document.activeElement.tagName!=='INPUT')cliente();cozinha();motoboy()}
+function beep(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.setValueAtTime(.2,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.5);o.start();o.stop(c.currentTime+.5)}catch(e){}}
+function fake(){const n=1+Math.floor(Math.random()*3),its=[];for(let i=0;i<n;i++){its.push([ALL[Math.floor(Math.random()*ALL.length)].id,1+Math.floor(Math.random()*2)])}const o={id:S.seq++,cust:NAMES[Math.floor(Math.random()*NAMES.length)],items:its,addr:ADDR[Math.floor(Math.random()*ADDR.length)],pay:['Pix','Cartão','Dinheiro'][Math.floor(Math.random()*3)],notes:Math.random()<.3?'Capricha no molho':'',st:'novo',t:{novo:Date.now()},chat:[],code:String(1000+Math.floor(Math.random()*9000)),fee:CFG.store.fee,disc:0};S.orders.push(o);save();L.fresh=null;renderAll()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,d=b.dataset;
+ if(a==='cat'){L.cat=d.c;cliente()}else if(a==='add'){L.cart[d.id]=(L.cart[d.id]||0)+1;cliente()}else if(a==='cart'){L.screen='cart';cliente()}else if(a==='menu'){L.screen=L.screen==='track'&&find(L.my)&&find(L.my).st!=='entregue'?'menu':'menu';cliente()}
+ else if(a==='inc'){L.cart[d.id]++;cliente()}else if(a==='dec'){L.cart[d.id]=Math.max(0,L.cart[d.id]-1);cliente()}
+ else if(a==='coupon'){const v=($('cup').value||'').trim().toUpperCase();if(v==='BEMVINDO10'){L.coupon=v;L.cmsg='✓ 10% de desconto aplicado'}else if(v==='FRETEGRATIS'){L.coupon=v;L.cmsg='✓ Entrega grátis aplicada'}else{L.coupon=null;L.cmsg='Cupom inválido. Tente BEMVINDO10 ou FRETEGRATIS'}L.addr=$('adr').value;cliente()}
+ else if(a==='pay'){L.addr=$('adr').value;L.pay=d.m;cliente()}else if(a==='real'){const x=$('adr');if(x)L.addr=x.value;L.real=!L.real;renderAll()}
+ else if(a==='order'){L.addr=$('adr').value||L.addr;const it=cartItems();if(!it.length)return;const o={id:S.seq++,cust:'Você',items:it,addr:L.addr,pay:L.pay,notes:'',st:'novo',t:{novo:Date.now()},chat:[],code:String(1000+Math.floor(Math.random()*9000)),fee:cartFee(),disc:cartDisc()};S.orders.push(o);save();L.my=o.id;localStorage.setItem(KEY+'-my',o.id);L.cart={};L.coupon=null;L.cmsg='';L.screen='track';L.rated=0;renderAll()}
+ else if(a==='csend'){const v=$('cmsg').value.trim();if(!v)return;const o=find(L.my);o.chat.push({f:'c',t:v});save();renderAll();if(!o.replied){o.replied=1;save();setTimeout(()=>{const x=find(o.id);if(x){x.chat.push({f:'l',t:'Recebemos sua mensagem! Já estamos vendo 😊'});save();renderAll()}},1600)}}
+ else if(a==='star'){L.rated=+d.n;cliente()}else if(a==='again'){L.screen='menu';L.my=null;localStorage.removeItem(KEY+'-my');cliente()}
+ else if(a==='k'){const o=find(+d.o);setSt(o,d.s)}else if(a==='ksound'){L.sound=!L.sound;cozinha()}
+ else if(a==='kchat'){const x=qa('.cx',$('cozinha')).find(z=>z.dataset.o===d.o);if(x)x.remove();else{const o=find(+d.o);o.__open=1;const card=b.closest('.ko');card.insertAdjacentHTML('beforeend',`<div class="cx" data-o="${d.o}"><div class="chat">${o.chat.map(m=>`<div class="bb ${m.f==='l'?'me':'lj'}">${esc(m.t)}</div>`).join('')||'<div class="mini">Sem mensagens.</div>'}</div><div class="row"><input class="in" id="kin" data-enter="ksend${d.o}" placeholder="Responder ao cliente"><button class="btn" id="ksend${d.o}" data-a="ksend" data-o="${d.o}">➤</button></div></div>`);$('kin').focus()}}
+ else if(a==='ksend'){const i=$('kin');const v=i&&i.value.trim();if(!v)return;const o=find(+d.o);o.chat.push({f:'l',t:v});save();renderAll();const k=$('kin');if(k){k.value='';k.focus()}}
+ else if(a==='maccept'){const o=find(+d.o);o.courier='Carlos';o.accepted=1;save();renderAll()}
+ else if(a==='mpick'){const o=find(+d.o);setSt(o,'rota')}
+ else if(a==='mdone'){const o=find(+d.o);if(($('mcode').value||'')===o.code){L.cerr=false;setSt(o,'entregue')}else{L.cerr=true;motoboy()}}
+ else if(a==='fake')fake();else if(a==='reset'){S=seed();save();L.my=null;L.screen='menu';L.cart={};L.seen=null;localStorage.removeItem(KEY+'-my');renderAll()}
+ else if(a==='tab')setTab(d.t)});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'){const i=e.target.closest('[data-enter]');if(i){const b=$(i.dataset.enter);b&&b.click()}}});
+function setTab(t){qa('.col').forEach(c=>c.classList.toggle('on',c.id==='col-'+t));qa('#mt button').forEach(b=>b.classList.toggle('on',b.dataset.t===t))}
+const v=new URLSearchParams(location.search).get('view');
+if(v&&['cliente','cozinha','motoboy'].includes(v)){document.body.classList.add('single');setTab(v)}else setTab(L.tab==='menu'?'cliente':'cliente');
+if(!v&&matchMedia('(min-width:1181px)').matches)qa('.col').forEach(c=>c.classList.add('on'));
+addEventListener('resize',()=>{if(!v&&matchMedia('(min-width:1181px)').matches)qa('.col').forEach(c=>c.classList.add('on'));else if(!v)setTab(qa('.col.on')[0]?qa('.col.on')[0].id.slice(4):'cliente')});
+if(L.my&&find(L.my)){L.screen='track'}
+renderAll();
+setInterval(()=>{qa('[data-since]').forEach(s=>{const ms=Date.now()-(+s.dataset.since);s.textContent=mmss(ms);s.classList.toggle('late',ms>15*60000)});moveCouriers();const o=find(L.my);if(o&&o.st==='rota'&&L.screen==='track'&&!(document.activeElement&&document.activeElement.tagName==='INPUT')){const p=prog(o);if(Math.round(p*20)!==L.lastP){L.lastP=Math.round(p*20);cliente()}}qa('[data-pg]').forEach(x=>{const o=find(+x.dataset.pg);if(o)x.textContent=Math.round(prog(o)*100)});
+ const m=S.orders.find(o=>o.st==='rota'&&o.courier==='Carlos'&&o.accepted);if(m&&prog(m)>=1&&L.arrived!==m.id){L.arrived=m.id;if(!(document.activeElement&&document.activeElement.id==='mcode'))motoboy()}},1000);
+</script></body></html>
