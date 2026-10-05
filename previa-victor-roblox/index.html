@@ -298,6 +298,9 @@ footer{position:relative}
 .final::after{filter:blur(26px);opacity:.55;z-index:-2}
 @media(max-width:700px){.sec::before{width:360px;height:360px;filter:blur(80px)}}
 @media(prefers-reduced-motion:reduce){.sec::before,.sec::after,footer::before,.label::before,.step .n,.prod::before,.game::after,.rev::before,.share::before,.final::before,.final::after{animation:none}}
+.game .shine{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(105deg,transparent 36%,rgba(255,255,255,.55) 50%,transparent 64%);transform:translateX(-130%);animation:sweepg 4.5s ease-in-out infinite}
+@keyframes sweepg{40%,100%{transform:translateX(130%)}}
+@media(prefers-reduced-motion:reduce){.game .shine{animation:none;display:none}}
 .cart.bump{animation:bump .45s}
 @keyframes bump{40%{transform:scale(1.14) rotate(-3deg)}}
 .pack{transition:transform .12s,background .15s,box-shadow .15s}
@@ -534,10 +537,10 @@ var games=[
   {n:'Steal a Brainrot',d:'Brainrots e boosts',c:'#8265FF',k:[[0,0,0],[1,1,0],[2,2,0],[1,1,1],[2,2,1],[2,2,2]]},
   {n:'Todos os jogos',d:'Veja a lista completa',c:'#F4F3FF',k:[[0,0,0],[1,0,0],[2,0,0],[0,1,0],[1,1,0],[2,1,0]]}
 ];
-document.getElementById('games').innerHTML=games.map(function(g){
+document.getElementById('games').innerHTML=games.map(function(g,gi){
   var cubes=g.k.map(function(p,i){return{x:p[0],y:p[1],z:p[2],c:i===g.k.length-1?g.c:(i%2?'#2a2f55':'#38306f')}});
   var img=GAME_IMGS[g.n];
-  return '<a class="game'+(img?' has-img':'')+(g.n==='Robux'?' cutout':'')+'" href="#produtos" style="--ac:'+g.c+'">'+(img?'<img class="photo'+(g.n==='Adopt Me'?' low':'')+(g.n==='Robux'?' cut':'')+'" alt="" loading="lazy" src="'+img+'">':'<div class="cl">'+iso(cubes,24,6)+'</div>')+'<span class="go"><svg class="ico"><use href="#i-arrow"/></svg></span><b>'+g.n+'</b><small>'+g.d+'</small></a>';
+  return '<a class="game'+(img?' has-img':'')+(g.n==='Robux'?' cutout':'')+'" href="#produtos" style="--ac:'+g.c+'">'+(img?'<img class="photo'+(g.n==='Adopt Me'?' low':'')+(g.n==='Robux'?' cut':'')+'" alt="" loading="lazy" src="'+img+'">':'<div class="cl">'+iso(cubes,24,6)+'</div>')+'<i class="shine" style="animation-delay:'+(gi*.55).toFixed(2)+'s"></i><span class="go"><svg class="ico"><use href="#i-arrow"/></svg></span><b>'+g.n+'</b><small>'+g.d+'</small></a>';
 }).join('');
 
 /* ---- compra rápida ---- */
