@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eco Caller — ShotCaller para Discord</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05080a;--p:#0b1317;--ln:#17313a;--tl:#2dffc7;--am:#ffb02e;--rd:#ff4b4b;--ink:#dff5ef;--mu:#6f9a96;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 "Chakra Petch",sans-serif;background-image:linear-gradient(#2dffc708 1px,transparent 1px),linear-gradient(90deg,#2dffc708 1px,transparent 1px);background-size:44px 44px}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.mono{font-family:"Share Tech Mono",monospace}
+.wrap{max-width:1160px;margin:auto;padding:0 22px}
+header{border-bottom:1px solid var(--ln);background:#05080acc;backdrop-filter:blur(8px);position:sticky;top:0;z-index:9}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:62px}
+.logo{font-weight:700;font-size:21px;letter-spacing:.14em;display:flex;align-items:center;gap:10px}.logo::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--rd);box-shadow:0 0 12px var(--rd);animation:bl 1.2s infinite}
+@keyframes bl{50%{opacity:.25}}
+.tag{font:13px "Share Tech Mono";color:var(--tl);border:1px solid var(--tl);padding:6px 12px;letter-spacing:.1em}
+.hero{padding:70px 0 40px;text-align:center}
+.hero .mono{color:var(--tl);letter-spacing:.3em;font-size:14px}
+h1{font-size:clamp(38px,7vw,84px);line-height:1;margin:14px 0 18px;font-weight:700;letter-spacing:-.01em;text-transform:uppercase}
+h1 span{color:var(--tl);text-shadow:0 0 30px #2dffc788}
+.hero p{max-width:52ch;margin:0 auto 28px;color:#a9cbc5;font-size:20px}
+.btn{display:inline-block;background:var(--tl);color:#00221a;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:15px 30px;border:0;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));transition:.15s}.btn:hover{filter:brightness(1.15)}.btn.o{background:var(--p);color:var(--tl);outline:1px solid var(--tl);outline-offset:-1px}
+.deck{border:1px solid var(--ln);background:var(--p);margin:30px 0 20px;position:relative}
+.deck::before{content:"PAINEL DO CALLER";position:absolute;top:-11px;left:16px;background:var(--bg);padding:0 10px;font:12px "Share Tech Mono";color:var(--tl);letter-spacing:.2em}
+.top{display:flex;gap:20px;align-items:center;justify-content:space-between;padding:24px;border-bottom:1px solid var(--ln);flex-wrap:wrap}
+.caller{display:flex;gap:16px;align-items:center}
+.mic{width:76px;height:76px;border-radius:50%;border:2px solid var(--ln);background:var(--bg);color:var(--mu);font-size:30px;display:grid;place-items:center;transition:.2s;position:relative}
+.mic.on{border-color:var(--rd);color:var(--rd);box-shadow:0 0 0 0 #ff4b4b88;animation:pl 1.2s infinite}
+@keyframes pl{to{box-shadow:0 0 0 22px #ff4b4b00}}
+.caller b{display:block;font-size:20px}.caller span{font:14px "Share Tech Mono";color:var(--mu)}
+.wave{display:flex;gap:3px;align-items:center;height:56px;flex:1;min-width:200px;justify-content:center}
+.wave i{width:4px;height:6px;background:var(--mu);border-radius:2px;transition:background .2s}
+.wave.on i{background:var(--tl);animation:w .6s ease-in-out infinite alternate;animation-delay:var(--d)}
+@keyframes w{to{height:var(--h)}}
+.pts{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--ln)}
+.pt{background:var(--p);padding:14px 12px;display:grid;gap:6px;position:relative;transition:.2s}
+.pt .h{display:flex;justify-content:space-between;font:13px "Share Tech Mono";color:var(--mu)}
+.pt .dot{width:8px;height:8px;border-radius:50%;background:var(--ln);align-self:center}.pt.hear .dot{background:var(--tl);box-shadow:0 0 8px var(--tl)}
+.pt b{font-size:15px}.pt .m{height:4px;background:var(--ln)}.pt .m i{display:block;height:100%;background:var(--am);width:0;transition:width .3s}
+.pt.talk .m i{width:var(--lv)}.pt.talk{background:#14150f}
+.foot{padding:12px 24px;display:flex;justify-content:space-between;font:13px "Share Tech Mono";color:var(--mu);flex-wrap:wrap;gap:8px}
+section{padding:70px 0}
+h2{font-size:clamp(26px,4vw,40px);text-transform:uppercase;margin:0 0 8px;letter-spacing:.02em}h2 span{color:var(--tl)}
+.sub{color:var(--mu);margin:0 0 34px;max-width:58ch}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--ln)}
+.fs{padding:28px 22px;border-right:1px solid var(--ln);background:var(--p)}.fs:last-child{border:0}
+.fs .mono{color:var(--tl);font-size:13px;letter-spacing:.2em}.fs h3{margin:8px 0 6px;font-size:21px}.fs p{margin:0;color:var(--mu);font-size:15px}
+.sp{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.s{border:1px solid var(--ln);background:var(--p);padding:22px}.s b{font:700 40px "Chakra Petch";color:var(--am);display:block;line-height:1}.s span{color:var(--mu);font-size:15px}
+.lim{border:1px solid var(--am);background:#ffb02e0d;padding:24px;display:grid;gap:8px;font-size:16px}.lim b{color:var(--am);letter-spacing:.15em;font:14px "Share Tech Mono"}
+footer{border-top:1px solid var(--ln);padding:26px 0;color:var(--mu);font:13px "Share Tech Mono"}
+@media(max-width:900px){.pts{grid-template-columns:repeat(3,1fr)}.flow,.sp{grid-template-columns:1fr}.fs{border-right:0;border-bottom:1px solid var(--ln)}}
+@media(max-width:480px){.pts{grid-template-columns:repeat(2,1fr)}}
+</style></head><body>
+<header><div class="wrap"><a class="logo" href="#">ECO CALLER</a><span class="tag">SHOTCALLER · DISCORD</span></div></header>
+<div class="wrap"><div class="hero"><div class="mono">// UMA VOZ · DOZE PTs</div><h1>O caller fala <span>uma vez</span></h1><p>Sua voz chega em todas as salas de PT ao mesmo tempo, e a resposta de cada PT volta para o caller. Sem repetir call, sem gritar em doze canais.</p><a class="btn" href="#demo">Testar o painel</a> <a class="btn o" href="#como">Como funciona</a></div>
+<div class="deck" id="demo"><div class="top"><div class="caller"><button class="mic" id="mic" aria-label="Falar">🎙</button><div><b id="who">CALLER BOSS</b><span id="st">STANDBY · clique no microfone</span></div></div><div class="wave" id="wave"></div></div>
+<div class="pts" id="pts"></div><div class="foot"><span>14 BOTS DE VOZ · 2 CALLERS · 12 PTs</span><span id="lat">LATÊNCIA —</span></div></div></div>
+<section id="como"><div class="wrap"><h2>Como a <span>call</span> viaja</h2><p class="sub">Um bot de voz por sala. Os bots repassam o áudio entre si, controlados pelo painel no site.</p>
+<div class="flow"><div class="fs"><div class="mono">01</div><h3>Caller fala</h3><p>Na sala do caller (BOSS ou GUERRA).</p></div><div class="fs"><div class="mono">02</div><h3>Bots ouvem</h3><p>Um bot por sala analisa e captura o áudio.</p></div><div class="fs"><div class="mono">03</div><h3>12 PTs recebem</h3><p>Cada PT escuta a call no próprio canal.</p></div><div class="fs"><div class="mono">04</div><h3>Voz volta</h3><p>A fala da PT retorna ao caller, mais baixa enquanto o caller fala.</p></div></div></div></section>
+<section><div class="wrap"><h2>No <span>painel</span></h2><p class="sub">Tudo pelo site da guilda.</p><div class="sp"><div class="s"><b>14</b><span>bots de voz: 2 de caller e 12 de PT</span></div><div class="s"><b>2</b><span>callers que se ouvem, ex.: BOSS e GUERRA</span></div><div class="s"><b>1 clique</b><span>liga, desliga e define quem ouve quem</span></div></div></div></section>
+<section style="padding-top:0"><div class="wrap"><div class="lim"><b>LIMITES, DITOS ANTES DE VENDER</b><span>• Precisa de bots próprios no Discord e de uma máquina com CPU sobrando: voz é o que mais pesa.</span><span>• Só quem está na sala de voz ouve a call.</span></div></div></section>
+<footer><div class="wrap">ECO CALLER · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</div></footer>
+<script>
+wave.innerHTML=Array.from({length:44},(_,i)=>`<i style="--h:${10+Math.random()*44}px;--d:${(i%9)*.07}s"></i>`).join('');
+const N=['Raid','Tank','Cura','DPS 1','DPS 2','Mago','Arco','Flanco','Suporte','Boss','Reserva','Guerra'];
+pts.innerHTML=N.map((n,i)=>`<div class="pt" id="p${i}"><div class="h"><span>PT ${String(i+1).padStart(2,'0')}</span><span class="dot"></span></div><b>${n}</b><div class="m"><i></i></div></div>`).join('');
+let on=false,tm,tk;mic.onclick=()=>{on=!on;mic.classList.toggle('on',on);wave.classList.toggle('on',on);st.textContent=on?'AO VIVO · call enviada para 12 PTs':'STANDBY · clique no microfone';lat.textContent=on?'LATÊNCIA 42 ms':'LATÊNCIA —';
+document.querySelectorAll('.pt').forEach(p=>p.classList.toggle('hear',on));clearInterval(tk);document.querySelectorAll('.pt').forEach(p=>p.classList.remove('talk'));
+if(on)tk=setInterval(()=>{document.querySelectorAll('.pt').forEach(p=>p.classList.remove('talk'));if(Math.random()<.7){const p=document.getElementById('p'+Math.floor(Math.random()*12));p.style.setProperty('--lv',(30+Math.random()*60)+'%');p.classList.add('talk')}},900)};
+</script></body></html>

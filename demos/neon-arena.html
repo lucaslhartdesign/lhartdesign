@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neon Arena — Loja de moedas e itens</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07040f;--pn:#120a24;--ln:#2b1750;--mg:#ff2bd6;--cy:#18f0ff;--ye:#fff35c;--ink:#f3eaff;--mu:#a592c9;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 18px/1.5 Rajdhani,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.d{font-family:Orbitron,sans-serif;text-transform:uppercase}
+.wrap{max-width:1180px;margin:auto;padding:0 20px}
+header{position:sticky;top:0;z-index:10;background:rgba(7,4,15,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{font:900 22px Orbitron;letter-spacing:.08em}.logo b{color:var(--mg);text-shadow:0 0 14px var(--mg)}
+nav{display:flex;gap:22px;color:var(--mu);font-weight:600}nav a:hover{color:var(--cy)}
+.cart{border:1px solid var(--cy);background:transparent;color:var(--cy);padding:8px 16px;border-radius:4px;box-shadow:0 0 14px rgba(24,240,255,.35)}
+.hero{position:relative;text-align:center;padding:90px 0 150px;overflow:hidden}
+.hero::before{content:"";position:absolute;left:-20%;right:-20%;bottom:0;height:60%;background:linear-gradient(transparent,rgba(255,43,214,.18)),repeating-linear-gradient(90deg,rgba(255,43,214,.45) 0 1px,transparent 1px 70px),repeating-linear-gradient(0deg,rgba(24,240,255,.35) 0 1px,transparent 1px 46px);transform:perspective(380px) rotateX(62deg);transform-origin:bottom;mask-image:linear-gradient(transparent,#000 60%);animation:grid 3s linear infinite}
+@keyframes grid{to{background-position:0 0,0 46px}}
+.sun{position:absolute;left:50%;top:40px;width:340px;height:340px;margin-left:-170px;border-radius:50%;background:linear-gradient(#ffe45c,#ff2bd6 60%);filter:blur(1px);opacity:.9;mask-image:repeating-linear-gradient(transparent 0 12px,#000 12px 100%);mask-size:100% 100%}
+.hero .wrap{position:relative}
+.kick{color:var(--cy);letter-spacing:.3em;font-weight:700}
+h1{font:900 clamp(40px,8vw,96px)/1 Orbitron;margin:14px 0 18px;text-transform:uppercase;text-shadow:0 0 30px rgba(255,43,214,.6)}
+h1 span{color:var(--mg);animation:flick 4s infinite}
+@keyframes flick{0%,92%,100%{opacity:1}94%{opacity:.4}96%{opacity:1}98%{opacity:.5}}
+.hero p{max-width:46ch;margin:0 auto 28px;color:#d6c8f5;font-size:21px}
+.btn{display:inline-block;background:var(--mg);color:#fff;font:900 16px Orbitron;letter-spacing:.1em;text-transform:uppercase;padding:16px 30px;border:0;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);box-shadow:0 0 0 #0000;transition:.2s}
+.btn:hover{background:var(--cy);color:#001418;filter:drop-shadow(0 0 14px var(--cy))}
+.btn.alt{background:transparent;outline:1px solid var(--cy);color:var(--cy)}
+.stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-top:44px}
+.stats b{display:block;font:900 30px Orbitron;color:var(--ye)}.stats span{color:var(--mu);font-size:15px}
+section{padding:70px 0}
+h2{font:900 clamp(26px,4vw,40px)/1.1 Orbitron;text-transform:uppercase;margin:0 0 8px}
+h2::after{content:"";display:block;width:80px;height:4px;margin-top:12px;background:linear-gradient(90deg,var(--mg),var(--cy))}
+.sub{color:var(--mu);margin:0 0 30px}
+.rail{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 22px;scroll-snap-type:x mandatory}
+.rail::-webkit-scrollbar{height:6px}.rail::-webkit-scrollbar-thumb{background:var(--mg)}
+.card{flex:0 0 270px;scroll-snap-align:start;background:linear-gradient(160deg,var(--pn),#0b0618);border:1px solid var(--ln);padding:18px;position:relative;transition:.2s;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
+.card:hover{border-color:var(--cy);transform:translateY(-6px);box-shadow:0 12px 30px rgba(24,240,255,.18)}
+.ico{height:130px;display:grid;place-items:center;font-size:64px;background:radial-gradient(circle,rgba(255,43,214,.3),transparent 70%)}
+.tag{position:absolute;top:12px;left:12px;background:var(--ye);color:#1a1600;font:900 11px Orbitron;padding:3px 8px}
+.card small{color:var(--cy);letter-spacing:.14em;font-weight:700}
+.card h3{margin:2px 0 8px;font:700 22px Rajdhani}
+.pr{display:flex;align-items:baseline;gap:10px}.pr b{font:900 26px Orbitron;color:var(--ye)}.pr s{color:var(--mu)}
+.card button{width:100%;margin-top:12px;padding:11px;background:transparent;color:var(--ink);border:1px solid var(--mg);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.card button:hover{background:var(--mg)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mode{border:1px solid var(--ln);padding:26px;background:var(--pn)}
+.mode i{font:900 44px Orbitron;color:transparent;-webkit-text-stroke:1px var(--cy)}
+.mode h3{font:900 20px Orbitron;text-transform:uppercase;margin:6px 0}.mode p{color:var(--mu);margin:0}
+.cta{margin:40px 0 90px;padding:50px;text-align:center;border:1px solid var(--mg);background:radial-gradient(circle at 50% 0,rgba(255,43,214,.25),transparent 70%);box-shadow:0 0 40px rgba(255,43,214,.2)}
+footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:15px}
+@media(max-width:760px){nav{display:none}.modes{grid-template-columns:1fr}.sun{width:240px;height:240px;margin-left:-120px}}
+</style></head><body>
+<header><div class="wrap"><a class="logo" href="#">NEON<b>ARENA</b></a><nav><a href="#loja">Loja</a><a href="#como">Como funciona</a><a href="#ajuda">Suporte</a></nav><button class="cart" id="cart">⚡ Carrinho <span id="n">0</span></button></div></header>
+<div class="hero"><div class="sun"></div><div class="wrap"><div class="kick d">// entrega em minutos</div><h1>Suba de nível<br>sem <span>grind</span></h1><p>Moedas, itens e contas dos jogos mais jogados. Pague no Pix e acompanhe a entrega num chat dentro do pedido.</p><a class="btn" href="#loja">Entrar na arena</a> <a class="btn alt" href="#como">Como funciona</a>
+<div class="stats"><div><b>4.9★</b><span>avaliação</span></div><div><b>12 min</b><span>entrega média</span></div><div><b>+8 mil</b><span>pedidos</span></div></div></div></div>
+<section id="loja"><div class="wrap"><h2>Drops da semana</h2><p class="sub">Arraste para o lado. Preços atualizados na hora.</p>
+<div class="rail" id="rail"></div></div></section>
+<section id="como" style="background:var(--pn);border-block:1px solid var(--ln)"><div class="wrap"><h2>Três fases</h2><p class="sub">Do clique ao item na sua mão.</p>
+<div class="modes"><div class="mode"><i>01</i><h3>Escolha</h3><p>Jogo, item e quantidade. O preço é calculado na tela.</p></div><div class="mode"><i>02</i><h3>Pague no Pix</h3><p>Confirmação automática, sem esperar atendente.</p></div><div class="mode"><i>03</i><h3>Receba</h3><p>Entrega acompanhada num chat dentro do pedido.</p></div></div></div></section>
+<section id="ajuda"><div class="wrap"><div class="cta"><h2 style="display:inline-block">Pronto pra jogar?</h2><p class="sub">Primeira compra com cupom NEON10.</p><a class="btn" href="#loja">Ver ofertas</a></div></div></section>
+<footer><div class="wrap">Neon Arena · prévia de layout feita pela Lhart Design — conteúdo ilustrativo.</div></footer>
+<script>
+const P=[['🪙','Moedas','Gold Rush 100M','R$ 39,90','R$ 54',"-26%"],['⚔️','Item','Lâmina do Eclipse','R$ 89,00','R$ 120',"HOT"],['🛡️','Conta','Conta Nível 80 Full','R$ 249,00','',"NOVO"],['💎','Moedas','Gemas 5.000','R$ 59,90','R$ 74',"-19%"],['🚀','Boost','Boost Rank Ouro','R$ 129,00','',""],['🧪','Item','Kit Poções Raras','R$ 24,50','R$ 32',"-24%"]];
+rail.innerHTML=P.map(p=>`<div class="card">${p[5]?`<span class="tag">${p[5]}</span>`:''}<div class="ico">${p[0]}</div><small>${p[1].toUpperCase()}</small><h3>${p[2]}</h3><div class="pr"><b>${p[3]}</b><s>${p[4]}</s></div><button>Adicionar</button></div>`).join('');
+let c=0;rail.onclick=e=>{if(e.target.tagName=='BUTTON'){n.textContent=++c;cart.style.boxShadow='0 0 24px var(--cy)';setTimeout(()=>cart.style.boxShadow='',300)}};
+</script></body></html>

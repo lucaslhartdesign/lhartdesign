@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fluxo — Automações para Discord</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1e7;--ink:#14110d;--ln:#14110d;--a:#ff5a36;--b:#6c5bff;--c:#19c37d;--d:#ffcf33;color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.55 "Space Grotesk",sans-serif;background-image:radial-gradient(#14110d22 1.2px,transparent 1.2px);background-size:22px 22px}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.wrap{max-width:1140px;margin:auto;padding:0 22px}
+header{border-bottom:3px solid var(--ln);background:var(--bg)}header .wrap{display:flex;justify-content:space-between;align-items:center;height:68px}
+.logo{font-weight:700;font-size:24px;letter-spacing:-.03em;display:flex;align-items:center;gap:8px}.logo i{width:26px;height:26px;background:var(--a);border:3px solid var(--ln);border-radius:50% 50% 50% 0;display:block}
+nav{display:flex;gap:24px;font-weight:500}nav a:hover{text-decoration:underline;text-decoration-thickness:3px}
+.btn{display:inline-block;background:var(--a);color:var(--ink);font-weight:700;padding:14px 26px;border:3px solid var(--ln);border-radius:14px;box-shadow:5px 5px 0 var(--ln);transition:.1s}.btn:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ln)}.btn.w{background:#fff}
+.hero{padding:70px 0 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+h1{font-size:clamp(40px,6.4vw,80px);line-height:.98;letter-spacing:-.045em;margin:0 0 18px}
+h1 mark{background:var(--d);padding:0 8px;border:3px solid var(--ln);border-radius:10px;display:inline-block;transform:rotate(-2deg)}
+.hero p{max-width:42ch;font-size:21px;margin:0 0 28px}
+.nodes{position:relative;height:420px}
+.nd{position:absolute;background:#fff;border:3px solid var(--ln);border-radius:16px;padding:12px 16px;font-weight:700;box-shadow:5px 5px 0 var(--ln);font-size:16px;animation:fl 5s ease-in-out infinite}
+.nd small{display:block;font-weight:500;color:#555;font-size:13px}
+.nd:nth-child(2){animation-delay:-1s}.nd:nth-child(3){animation-delay:-2s}.nd:nth-child(4){animation-delay:-3s}.nd:nth-child(5){animation-delay:-4s}
+@keyframes fl{50%{transform:translateY(-10px)}}
+.nodes svg{position:absolute;inset:0;width:100%;height:100%}.nodes path{fill:none;stroke:var(--ln);stroke-width:3;stroke-dasharray:6 8;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-14}}
+section{padding:70px 0}
+h2{font-size:clamp(30px,4.6vw,52px);letter-spacing:-.04em;line-height:1;margin:0 0 10px}
+.sub{max-width:56ch;margin:0 0 34px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.tabs button{background:#fff;border:3px solid var(--ln);border-radius:99px;padding:10px 20px;font-weight:700}.tabs button.on{background:var(--ln);color:#fff}
+.stage{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cd{background:#fff;border:3px solid var(--ln);border-radius:22px;padding:28px;box-shadow:8px 8px 0 var(--ln)}
+.cd h3{margin:0 0 8px;font-size:28px;letter-spacing:-.03em}
+.steps{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.steps li{display:flex;gap:12px;align-items:flex-start}.steps b{flex:none;width:28px;height:28px;border-radius:50%;border:3px solid var(--ln);display:grid;place-items:center;font-size:13px;background:var(--c)}
+.cd.col{background:var(--cl)}
+.mini{background:#2b2d31;color:#dbdee1;border-radius:14px;padding:16px;font-size:14.5px;display:grid;gap:10px;align-self:start;border:3px solid var(--ln)}
+.mini .m b{color:#fff}.mini .m i{font-style:normal;background:#5865f2;color:#fff;font-size:10px;padding:2px 5px;border-radius:4px;margin-left:5px}
+.mini .e{border-left:4px solid var(--c);background:#232428;padding:8px 12px;border-radius:4px}
+.mini .bs{display:flex;gap:8px}.mini .bs span{background:#4e5058;padding:5px 12px;border-radius:4px;font-size:13px}.mini .bs .p{background:#5865f2}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.g{background:#fff;border:3px solid var(--ln);border-radius:18px;padding:22px;box-shadow:5px 5px 0 var(--ln);transition:.15s}.g:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ln)}
+.g span{font-size:30px}.g h4{margin:8px 0 4px;font-size:21px}.g p{margin:0;font-size:15px;color:#4a443a}
+.cta{background:var(--b);color:#fff;border:3px solid var(--ln);border-radius:28px;box-shadow:8px 8px 0 var(--ln);padding:50px;text-align:center;margin:20px 0 70px}.cta h2{color:#fff}.cta .btn{background:var(--d);color:var(--ink)}
+footer{border-top:3px solid var(--ln);padding:24px 0;font-size:14px}
+@media(max-width:900px){.hero,.stage{grid-template-columns:1fr}.grid{grid-template-columns:1fr}nav{display:none}.nodes{height:330px}}
+</style></head><body>
+<header><div class="wrap"><a class="logo" href="#"><i></i>Fluxo</a><nav><a href="#rec">Receitas</a><a href="#mais">Mais</a><a class="btn" style="padding:9px 18px;box-shadow:3px 3px 0 var(--ln)" href="#fim">Quero o meu</a></nav></div></header>
+<div class="wrap"><div class="hero"><div><h1>Seu Discord, <mark>no piloto</mark> automático.</h1><p>Tickets, chamada, leilão, boas-vindas e avisos. Montamos as automações do seu servidor e você muda tudo por painel.</p><a class="btn" href="#rec">Ver receitas</a> <a class="btn w" href="#fim">Falar com a gente</a></div>
+<div class="nodes"><svg viewBox="0 0 400 420" preserveAspectRatio="none"><path d="M120 70 C 200 70,160 170,250 170"/><path d="M250 190 C 200 250,150 240,110 300"/><path d="M250 190 C 320 250,300 300,290 350"/></svg>
+<div class="nd" style="left:0;top:40px;background:var(--d)">Jogador entra<small>gatilho</small></div><div class="nd" style="left:48%;top:140px;background:var(--b);color:#fff">Bot recebe<small style="color:#ddd">regra do servidor</small></div><div class="nd" style="left:6%;top:290px;background:var(--c)">Cargo + boas-vindas<small>PT / ES</small></div><div class="nd" style="left:56%;top:340px;background:var(--a)">Aviso à staff<small>canal privado</small></div></div></div></div>
+<section id="rec"><div class="wrap"><h2>Receitas prontas</h2><p class="sub">Escolha uma, a gente ajusta ao seu servidor.</p><div class="tabs" id="tabs"></div><div class="stage" id="stage"></div></div></section>
+<section id="mais" style="background:#fff;border-block:3px solid var(--ln)"><div class="wrap"><h2>E também…</h2><p class="sub">Tudo configurável sem programador.</p><div class="grid"><div class="g"><span>🌐</span><h4>Mensagens bilíngues</h4><p>Português e espanhol na mesma postagem.</p></div><div class="g"><span>🔐</span><h4>Cargos automáticos</h4><p>Quem entra recebe cargo; quem sai vira aviso para a staff.</p></div><div class="g"><span>💾</span><h4>Backup diário</h4><p>Cópia do banco todo dia num canal privado.</p></div></div></div></section>
+<section id="fim"><div class="wrap"><div class="cta"><h2>Qual tarefa você repete todo dia?</h2><p style="font-size:21px;margin:0 0 24px">Conta pra gente e a automação vira bot.</p><a class="btn" href="#">Chamar no WhatsApp</a></div></div></section>
+<footer><div class="wrap">Fluxo · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</div></footer>
+<script>
+const R=[
+['🎫','Tickets','Atendimento sem fila','Painel de botões abre um canal privado para cada pedido. A conversa é espelhada com o site e o canal fecha renomeando.',['Cliente clica em "Abrir ticket"','Bot cria o canal privado','Staff responde pelo Discord ou pelo site','Ticket fecha e fica no histórico'],'#ffcf33',['Ticket #0042 aberto','Olá! Conta o que você precisa que a equipe já responde.']],
+['🎙','Chamada','Presença pela sala de voz','O bot vigia a sala, soma quem passou na janela e paga os pontos na hora marcada.',['Evento começa no horário','Bot registra quem entrou na sala','Paga os pontos e desconta quem faltou','Relatório vai para o canal da staff'],'#19c37d',['Chamada paga','Presentes 62 · Avisaram 4 · Faltaram 9']],
+['🔨','Leilão','Lance direto no chat','Item vai a leilão com lance máximo amarrado ao saldo e escolha do contemplado entre os colocados.',['Staff abre o leilão com o item','Jogadores dão lance pelo Discord ou site','Saldo limita o lance','Staff escolhe entre os melhores colocados'],'#ff5a36',['Leilão: Égide do Guardião','Maior lance: 420 pts · termina em 2h']],
+['⏰','Avisos','Agenda e lembretes','Mensagens agendadas em português e espanhol: agenda do dia, lembrete de evento e cobrança.',['Staff escreve o texto uma vez','Bot posta no horário certo','Mensagem sai nos dois idiomas'],'#6c5bff',['Agenda de hoje · Agenda de hoy','Guerra às 21h · Guerra a las 21h']]];
+let s=0;function d(){tabs.innerHTML=R.map((r,i)=>`<button class="${i==s?'on':''}" data-i="${i}">${r[0]} ${r[1]}</button>`).join('');const r=R[s];
+stage.innerHTML=`<div class="cd" style="background:${r[5]}22"><h3>${r[2]}</h3><div>${r[3]}</div><ul class="steps">${r[4].map((x,i)=>`<li><b style="background:${r[5]}">${i+1}</b><span>${x}</span></li>`).join('')}</ul></div>
+<div class="mini"><div class="m"><b>Fluxo Bot</b><i>BOT</i></div><div class="e" style="border-color:${r[5]}"><b>${r[6][0]}</b><br>${r[6][1]}</div><div class="bs"><span class="p">Abrir</span><span>Detalhes</span></div></div>`}
+tabs.onclick=e=>{const b=e.target.closest('button');if(b){s=+b.dataset.i;d()}};d();
+</script></body></html>

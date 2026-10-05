@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Frostbyte — Marketplace de jogos</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e9f3fb;--gl:rgba(255,255,255,.62);--ln:rgba(255,255,255,.9);--ink:#0e2238;--mu:#5d7790;--ac:#2b7bff;--ac2:#18c8d8;--ok:#14b571;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font:400 16px/1.55 Sora,sans-serif;color:var(--ink);background:radial-gradient(800px 500px at 10% 0,#bfe0ff,transparent 60%),radial-gradient(700px 500px at 100% 20%,#c9f6f1,transparent 60%),var(--bg);min-height:100vh}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.app{display:grid;grid-template-columns:250px 1fr;gap:20px;max-width:1280px;margin:auto;padding:20px}
+.glass{background:var(--gl);backdrop-filter:blur(18px);border:1px solid var(--ln);border-radius:22px;box-shadow:0 10px 40px rgba(40,90,150,.12)}
+aside{padding:20px;position:sticky;top:20px;height:calc(100vh - 40px);display:flex;flex-direction:column;gap:6px}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.02em;margin-bottom:14px;display:flex;align-items:center;gap:10px}.logo i{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;color:#fff;font-style:normal;font-size:16px}
+aside small{color:var(--mu);font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:12px 8px 4px}
+.g{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;color:var(--mu);font-weight:600;font-size:14px;border:0;background:none;text-align:left}
+.g span{width:32px;height:32px;border-radius:10px;background:#fff;display:grid;place-items:center;font-size:16px;box-shadow:0 2px 6px #0001}
+.g:hover{background:#fff8}.g.on{background:#fff;color:var(--ink);box-shadow:0 4px 14px rgba(43,123,255,.18)}
+.sup{margin-top:auto;padding:14px;border-radius:16px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-size:13px}.sup b{display:block;font-size:15px}
+main{display:grid;gap:20px;min-width:0}
+.bar{display:flex;gap:12px;padding:12px 14px;align-items:center}
+.bar input{flex:1;border:0;background:#fff9;border-radius:12px;padding:12px 16px;font:inherit;outline:0;min-width:0}
+.bar button{border:0;background:#fff;border-radius:12px;padding:12px 16px;font-weight:700}
+.hero{padding:34px;display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;overflow:hidden;position:relative}
+.hero h1{font-size:clamp(28px,4vw,46px);line-height:1.08;letter-spacing:-.03em;margin:0 0 12px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;color:transparent}
+.hero p{color:var(--mu);margin:0 0 20px;max-width:42ch}
+.cta{display:inline-block;background:var(--ink);color:#fff;padding:14px 24px;border-radius:14px;font-weight:700;transition:.2s}.cta:hover{transform:translateY(-2px);box-shadow:0 10px 24px #0e223855}
+.orb{aspect-ratio:1;max-width:260px;justify-self:center;border-radius:50%;background:radial-gradient(circle at 30% 28%,#fff,#9fd2ff 35%,#2b7bff 80%);box-shadow:0 30px 60px rgba(43,123,255,.4),inset -20px -20px 40px #0a3a9a55;animation:fl 6s ease-in-out infinite;display:grid;place-items:center;font-size:84px}
+@keyframes fl{50%{transform:translateY(-14px)}}
+.h{display:flex;justify-content:space-between;align-items:center;padding:0 4px}.h h2{margin:0;font-size:20px}.h span{color:var(--mu);font-size:14px}
+.rows{display:grid;gap:10px}
+.row{display:grid;grid-template-columns:56px 1fr auto auto;gap:16px;align-items:center;padding:12px 16px;transition:.2s}
+.row:hover{transform:translateX(4px);background:#fffc}
+.th{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:28px;background:linear-gradient(135deg,#fff,#dbeaff)}
+.row b{display:block}.row small{color:var(--mu)}
+.dl{font-size:12px;color:var(--ok);font-weight:700;background:#14b57118;padding:5px 10px;border-radius:99px;white-space:nowrap}
+.pr{font-weight:800;font-size:18px;white-space:nowrap}
+.row button{border:0;background:var(--ac);color:#fff;border-radius:12px;padding:10px 16px;font-weight:700}.row button:hover{filter:brightness(1.1)}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.trust div{padding:20px}.trust b{display:block;font-size:26px;letter-spacing:-.02em}.trust span{color:var(--mu);font-size:14px}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;overflow-x:auto}aside small,.sup,.logo{display:none}.g{white-space:nowrap}.hero{grid-template-columns:1fr}.orb{max-width:150px;font-size:50px}.row{grid-template-columns:48px 1fr auto}.row .dl{display:none}.trust{grid-template-columns:1fr}}
+</style></head><body><div class="app">
+<aside class="glass"><div class="logo"><i>❄</i>Frostbyte</div><small>Jogos</small><div id="gl"></div><div class="sup"><b>Suporte 24h</b>Chat dentro do pedido</div></aside>
+<main>
+<div class="glass bar"><input id="q" placeholder="Buscar item, moeda ou conta…"><button>🛒 <span id="n">0</span></button></div>
+<div class="glass hero"><div><h1>O jeito <em>limpo</em> de comprar para seu jogo.</h1><p>Catálogo organizado por jogo, preço claro e entrega com chat. Sem anúncio, sem enrolação.</p><a class="cta" href="#l">Ver ofertas</a></div><div class="orb">❄️</div></div>
+<div class="h" id="l"><h2 id="tt">Todos os jogos</h2><span id="ct"></span></div><div class="rows" id="rows"></div>
+<div class="trust"><div class="glass"><b>Pix</b><span>Confirmação automática</span></div><div class="glass"><b>~12 min</b><span>Entrega média</span></div><div class="glass"><b>4,9 ★</b><span>Avaliação dos clientes</span></div></div>
+<div style="text-align:center;color:var(--mu);font-size:13px;padding:10px">Frostbyte · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</div>
+</main></div>
+<script>
+const G=[['Todos','🌐'],['Aether Online','⚡'],['Crown Wars','🏰'],['Skyblock Pro','🧱'],['Rift Arena','🎯']];
+const L=[['Aether Online','🪙','Moedas 100M','Entrega automática','R$ 39,90'],['Aether Online','⚔️','Espada Glacial +12','Entrega em 10 min','R$ 89,00'],['Crown Wars','👑','Conta Reino Nível 60','Troca de e-mail inclusa','R$ 199,00'],['Crown Wars','💎','Gemas 6.500','Entrega automática','R$ 54,90'],['Skyblock Pro','🧱','Ilha Premium','Entrega em 20 min','R$ 29,00'],['Rift Arena','🎯','Boost Platina → Diamante','Prazo 2 dias','R$ 120,00'],['Rift Arena','🛡️','Pacote Skins Raras','Entrega em 15 min','R$ 64,00']];
+let s=0;function d(){gl.innerHTML=G.map((g,i)=>`<button class="g ${i==s?'on':''}" data-i="${i}" style="width:100%"><span>${g[1]}</span>${g[0]}</button>`).join('');
+const t=q.value.toLowerCase(),r=L.filter(x=>(s==0||x[0]==G[s][0])&&(x[2]+x[0]).toLowerCase().includes(t));tt.textContent=G[s][0]=='Todos'?'Todos os jogos':G[s][0];ct.textContent=r.length+' ofertas';
+rows.innerHTML=r.map(x=>`<div class="glass row"><div class="th">${x[1]}</div><div><b>${x[2]}</b><small>${x[0]}</small></div><span class="dl">${x[3]}</span><div style="display:flex;gap:12px;align-items:center"><span class="pr">${x[4]}</span><button>Comprar</button></div></div>`).join('')||'<div class="glass row" style="display:block;color:var(--mu)">Nada encontrado.</div>'}
+gl.onclick=e=>{const b=e.target.closest('.g');if(b){s=+b.dataset.i;d()}};q.oninput=d;let c=0;rows.onclick=e=>{if(e.target.tagName=='BUTTON')n.textContent=++c};d();
+</script></body></html>

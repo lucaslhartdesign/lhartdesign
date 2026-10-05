@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Livro de Pontos — Sistema de guilda</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1015;--p:#161922;--p2:#1e222e;--ln:#2a2f3e;--cr:#c8353f;--gd:#e0b25c;--ink:#ecebe6;--mu:#8d93a6;--ok:#4fcf8f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Manrope,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.sf{font-family:"Cormorant Garamond",serif}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;border-bottom:1px solid var(--ln);background:var(--p);flex-wrap:wrap;gap:12px}
+.logo{font:700 26px "Cormorant Garamond";color:var(--gd);letter-spacing:.04em}.logo small{font:500 11px Manrope;letter-spacing:.2em;color:var(--mu);margin-left:10px;text-transform:uppercase}
+.sw{display:flex;background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:3px}.sw button{border:0;background:none;color:var(--mu);padding:7px 16px;border-radius:8px;font-weight:700;font-size:14px}.sw button.on{background:var(--cr);color:#fff}
+.lang{border:1px solid var(--ln);background:none;color:var(--mu);padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700}
+.main{max-width:1240px;margin:auto;padding:26px 24px 60px;display:grid;grid-template-columns:1.25fr 1fr;gap:22px}
+.pn{background:var(--p);border:1px solid var(--ln);border-radius:16px;padding:22px}
+.pn h2{margin:0 0 4px;font:700 26px "Cormorant Garamond";color:var(--gd)}.pn .d{color:var(--mu);font-size:14px;margin:0 0 16px}
+.kp{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.k{background:var(--p);border:1px solid var(--ln);border-radius:16px;padding:18px}.k span{color:var(--mu);font-size:13px}.k b{display:block;font:700 34px "Cormorant Garamond";color:var(--ink)}.k em{font-style:normal;font-size:12px;color:var(--ok);font-weight:700}
+table{width:100%;border-collapse:collapse}th{text-align:left;color:var(--mu);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--ln)}
+td{padding:11px 10px;border-bottom:1px solid #ffffff08;font-size:15px}tr.r{cursor:pointer}tr.r:hover td{background:var(--p2)}tr.sel td{background:var(--p2)}
+.pos{font:700 20px "Cormorant Garamond";color:var(--gd);width:34px}.pt{font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--ln);width:90px}.bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cr),var(--gd))}
+.ev{display:grid;gap:0}.l{display:grid;grid-template-columns:78px 1fr auto;gap:12px;padding:10px 0;border-bottom:1px dashed var(--ln);font-size:14px}.l span{color:var(--mu)}.l b.p{color:var(--ok)}.l b.n{color:var(--cr)}
+.led{border-left:3px solid var(--gd);padding-left:12px;color:var(--mu);font-size:13px;margin-top:14px}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ptc{background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:10px;min-height:100px}.ptc b{font-size:12px;color:var(--gd);letter-spacing:.1em}.ptc div{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px}.ptc i{width:16px;height:16px;border-radius:5px;background:var(--cr)}.ptc i.e{background:var(--ln)}.ptc i.l{background:var(--gd)}
+.cfg{display:grid;gap:10px}.cr{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:10px 14px}
+.cr input{width:70px;background:var(--p2);border:1px solid var(--ln);color:var(--ink);border-radius:8px;padding:7px;text-align:right;font:inherit;font-weight:800}
+.btn{border:0;background:var(--cr);color:#fff;font-weight:800;padding:11px 18px;border-radius:10px;margin-top:12px;width:100%}.btn:hover{filter:brightness(1.12)}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,40px);background:var(--ok);color:#052;font-weight:800;padding:11px 20px;border-radius:10px;opacity:0;transition:.3s}.toast.on{opacity:1;transform:translate(-50%,0)}
+.note{text-align:center;color:var(--mu);font-size:13px;padding:0 0 30px}
+@media(max-width:980px){.main{grid-template-columns:1fr}.kp{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.board{grid-template-columns:repeat(2,1fr)}.bar{display:none}}
+</style></head><body>
+<div class="top"><div class="logo">Livro de Pontos<small id="gname">Guilda Reapers</small></div><div style="display:flex;gap:10px;align-items:center"><div class="sw"><button class="on" data-v="j">Jogador</button><button data-v="s">Staff</button></div><button class="lang" id="lang">PT ⇄ ES</button></div></div>
+<div class="main" id="app"></div>
+<div class="note">Livro de Pontos · prévia de layout feita pela Lhart Design — dados fictícios</div><div class="toast" id="t">Valor salvo. O bot já usa o novo valor.</div>
+<script>
+const R=[['Valkyr',2140],['Nyx',1985],['Brutus',1820],['Ember',1760],['Sora',1544],['Kael',1490],['Mira',1322],['Dante',1210]];
+const X=[['10/10','Guerra de Castelo — presença','+30','p'],['09/10','Boss do mundo — presença','+15','p'],['08/10','Faltou sem aviso — Guerra','-20','n'],['07/10','Resgate de ranking — faixa 2','+25','p'],['05/10','Ajuste da staff: print aprovado','+30','p']];
+const ES={ev:{'Guerra de Castelo':30,'Boss do mundo':15,'Dungeon semanal':10}};
+let v='j',sel=0,es=false;
+const T=(a,b)=>es?b:a;
+function draw(){const mx=R[0][1];
+const kp=`<div class="kp"><div class="k"><span>${T('Jogadores ativos','Jugadores activos')}</span><b>168</b><em>+6 ${T('na semana','en la semana')}</em></div><div class="k"><span>${T('Pontos pagos no mês','Puntos pagados en el mes')}</span><b>41.280</b></div><div class="k"><span>${T('Presença média','Asistencia media')}</span><b>83%</b><em>▲ 4%</em></div><div class="k"><span>${T('Gear check pendente','Gear check pendiente')}</span><b>12</b></div></div>`;
+const rank=`<div class="pn"><h2>${T('Ranking','Ranking')}</h2><p class="d">${T('Clique num jogador para abrir o extrato.','Haz clic en un jugador para abrir el extracto.')}</p><table><tr><th></th><th>${T('Jogador','Jugador')}</th><th></th><th style="text-align:right">${T('Pontos','Puntos')}</th></tr>${R.map((r,i)=>`<tr class="r ${i==sel?'sel':''}" data-i="${i}"><td class="pos">${i+1}</td><td>${r[0]}</td><td><div class="bar"><i style="width:${r[1]/mx*100}%"></i></div></td><td class="pt">${r[1].toLocaleString('pt-BR')}</td></tr>`).join('')}</table></div>`;
+const ext=`<div class="pn"><h2>${T('Extrato de','Extracto de')} ${R[sel][0]}</h2><p class="d">${T('Cada ponto é lançado com motivo, autor e data. Nada é editado.','Cada punto se registra con motivo, autor y fecha. Nada se edita.')}</p><div class="ev">${X.map(x=>`<div class="l"><span>${x[0]}</span><div>${x[1]}</div><b class="${x[3]}">${x[2]}</b></div>`).join('')}</div><div class="led">${T('Livro que não se apaga: o saldo sempre pode ser explicado linha por linha.','Libro que no se borra: el saldo siempre se puede explicar línea por línea.')}</div></div>`;
+let side=ext;
+if(v=='s'){const b=Array.from({length:8},(_,i)=>`<div class="ptc"><b>PT ${i+1}</b><div>${Array.from({length:6},(_,j)=>`<i class="${(i*3+j)%7==0?'e':j==0?'l':''}"></i>`).join('')}</div></div>`).join('');
+side=`<div class="pn"><h2>${T('Quanto paga cada evento','Cuánto paga cada evento')}</h2><p class="d">${T('Edite na tela. O bot usa o valor novo na hora.','Edita en pantalla. El bot usa el valor nuevo al instante.')}</p><div class="cfg">${Object.entries(ES.ev).map(([k,x])=>`<div class="cr"><span>${k}</span><input type="number" value="${x}" data-k="${k}"></div>`).join('')}</div><button class="btn" id="sv">${T('Salvar valores','Guardar valores')}</button></div>
+<div class="pn" style="grid-column:1/-1"><h2>${T('Board de PTs','Board de PTs')}</h2><p class="d">${T('Líder por PT, 6 vagas, aviso de player repetido.','Líder por PT, 6 cupos, aviso de jugador repetido.')}</p><div class="board">${b}</div></div>`}
+app.innerHTML=kp+rank+(v=='s'?'':side)+(v=='s'?side:'')}
+document.querySelector('.sw').onclick=e=>{const b=e.target.closest('button');if(!b)return;v=b.dataset.v;document.querySelectorAll('.sw button').forEach(x=>x.classList.toggle('on',x==b));draw()};
+lang.onclick=()=>{es=!es;draw()};
+app.onclick=e=>{const r=e.target.closest('tr.r');if(r){sel=+r.dataset.i;draw()}if(e.target.id=='sv'){t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1800)}};draw();
+</script></body></html>

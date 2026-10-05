@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sentinela — Bot de Discord para guildas e lojas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d14;--p:#12151f;--p2:#1a1e2c;--ln:#262b3d;--bl:#5865f2;--bl2:#7b86ff;--gr:#3ba55d;--ink:#eceef7;--mu:#8f96b3;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Inter,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.wrap{max-width:1140px;margin:auto;padding:0 22px}
+header{position:sticky;top:0;z-index:9;background:#0b0d14e6;backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+.logo{font-weight:800;font-size:20px;display:flex;gap:10px;align-items:center}.logo i{width:30px;height:30px;border-radius:50%;background:var(--bl);display:grid;place-items:center;font-style:normal;font-size:15px}
+nav{display:flex;gap:26px;color:var(--mu);font-weight:500;font-size:15px;align-items:center}nav a:hover{color:#fff}
+.btn{display:inline-block;background:var(--bl);color:#fff;border:0;border-radius:10px;padding:13px 24px;font-weight:600;transition:.15s}.btn:hover{background:var(--bl2);transform:translateY(-1px)}
+.btn.g{background:var(--p2);box-shadow:inset 0 0 0 1px var(--ln)}
+.hero{padding:80px 0 70px;display:grid;grid-template-columns:1fr 1.05fr;gap:50px;align-items:center}
+.pill{display:inline-flex;gap:8px;align-items:center;background:var(--p2);border:1px solid var(--ln);border-radius:99px;padding:5px 14px;font-size:13px;color:var(--mu)}.pill b{width:8px;height:8px;border-radius:50%;background:var(--gr);box-shadow:0 0 8px var(--gr)}
+h1{font-size:clamp(36px,5.4vw,62px);line-height:1.05;letter-spacing:-.035em;font-weight:800;margin:18px 0}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--bl2),#c58bff);-webkit-background-clip:text;color:transparent}
+.hero p{color:var(--mu);margin:0 0 28px;max-width:44ch;font-size:19px}
+.dc{background:#313338;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px #0009,0 0 0 1px #ffffff12;font-size:15px}
+.dc .h{background:#2b2d31;padding:12px 16px;font-weight:600;border-bottom:1px solid #1e1f22;display:flex;gap:8px}.dc .h span{color:#80848e}
+.dc .m{padding:16px 16px 10px;min-height:340px;display:grid;gap:14px;align-content:start}
+.msg{display:grid;grid-template-columns:40px 1fr;gap:12px;animation:in .4s backwards}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:19px}
+.msg b{font-weight:600}.msg b i{font-style:normal;background:var(--bl);font-size:10px;padding:2px 5px;border-radius:4px;margin-left:6px;vertical-align:2px}.msg small{color:#80848e;margin-left:6px}
+.emb{margin-top:6px;background:#2b2d31;border-left:4px solid var(--gr);border-radius:4px;padding:10px 14px;max-width:420px;line-height:1.5}
+.emb h5{margin:0 0 4px;font-size:15px}.emb p{margin:0;color:#b5bac1;font-size:14px}
+.btns{display:flex;gap:8px;margin-top:8px}.btns span{background:#4e5058;padding:6px 14px;border-radius:4px;font-size:13px;font-weight:500}.btns span.p{background:var(--bl)}
+.inp{margin:0 16px 16px;background:#383a40;border-radius:8px;padding:11px 14px;color:#80848e;font-family:"JetBrains Mono";font-size:14px}.inp b{color:#dbdee1;font-weight:500}
+section{padding:70px 0}
+h2{font-size:clamp(28px,4vw,42px);letter-spacing:-.03em;margin:0 0 10px;line-height:1.1}
+.sub{color:var(--mu);margin:0 0 36px;max-width:56ch}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.f{background:var(--p);border:1px solid var(--ln);border-radius:16px;padding:26px;transition:.2s}.f:hover{border-color:var(--bl);transform:translateY(-4px)}
+.f i{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:var(--p2);font-style:normal;font-size:22px;margin-bottom:14px}
+.f h3{margin:0 0 6px;font-size:19px}.f p{margin:0;color:var(--mu);font-size:15px}
+.cmd{display:grid;grid-template-columns:230px 1fr;gap:20px;background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:14px}
+.cl{display:grid;gap:4px;align-content:start}.cl button{text-align:left;background:none;border:0;color:var(--mu);padding:11px 14px;border-radius:10px;font:500 15px "JetBrains Mono"}.cl button.on{background:var(--p2);color:#fff}
+.out{background:var(--p2);border-radius:12px;padding:24px;min-height:170px}.out h4{margin:0 0 8px;font-size:20px}.out p{margin:0;color:var(--mu)}.out code{display:inline-block;margin-top:14px;background:#0003;padding:8px 12px;border-radius:8px;font:500 14px "JetBrains Mono";color:var(--bl2)}
+.pl{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pc{background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:28px}.pc.f2{border-color:var(--bl);box-shadow:0 0 0 1px var(--bl),0 20px 60px #5865f233}
+.pc h3{margin:0}.pc .v{font-size:15px;color:var(--mu);margin:6px 0 16px}.pc ul{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:8px;font-size:15px}.pc li::before{content:"✓ ";color:var(--gr);font-weight:700}
+.pc .btn{width:100%;text-align:center}
+footer{border-top:1px solid var(--ln);padding:28px 0;color:var(--mu);font-size:14px}
+@media(max-width:860px){.hero,.cmd{grid-template-columns:1fr}.feat,.pl{grid-template-columns:1fr}nav a{display:none}.cl{grid-template-columns:1fr 1fr}}
+</style></head><body>
+<header><div class="wrap"><a class="logo" href="#"><i>🛡</i>Sentinela</a><nav><a href="#rec">Recursos</a><a href="#cmd">Comandos</a><a href="#pl">Planos</a><a class="btn" href="#pl">Adicionar ao Discord</a></nav></div></header>
+<div class="wrap"><div class="hero"><div><span class="pill"><b></b>online em 140 servidores</span><h1>O bot que cuida da <em>sua comunidade</em> enquanto você joga.</h1><p>Chamada por sala de voz, pontos, leilão, tickets e avisos automáticos. Tudo configurado por painel, sem mexer em código.</p><a class="btn" href="#pl">Adicionar ao Discord</a> <a class="btn g" href="#cmd">Ver comandos</a></div>
+<div class="dc"><div class="h"># <span>chamada-eventos</span></div><div class="m" id="chat"></div><div class="inp"><b>/</b>ausencia motivo:</div></div></div></div>
+<section id="rec"><div class="wrap"><h2>Feito para quem organiza gente</h2><p class="sub">Guildas, lojas de jogos, clãs e comunidades. O bot trabalha, a staff decide.</p>
+<div class="feat"><div class="f"><i>🎙</i><h3>Chamada por voz</h3><p>Vigia a sala, soma quem passou na janela e paga os pontos na hora marcada.</p></div><div class="f"><i>🎫</i><h3>Tickets e atendimento</h3><p>Painel de botões abre canal privado e espelha a conversa com o site.</p></div><div class="f"><i>🔨</i><h3>Leilão e sorteio</h3><p>Lances pelo Discord com limite pelo saldo e escolha do contemplado.</p></div><div class="f"><i>⏰</i><h3>Avisos agendados</h3><p>Agenda do dia e lembretes em dois idiomas na mesma mensagem.</p></div><div class="f"><i>📊</i><h3>Painel web</h3><p>Valores, textos e regras editáveis na tela. O bot lê na hora.</p></div><div class="f"><i>💾</i><h3>Backup diário</h3><p>Cópia do banco num canal privado, todo dia.</p></div></div></div></section>
+<section id="cmd" style="background:var(--p);border-block:1px solid var(--ln)"><div class="wrap"><h2>Comandos que a galera usa</h2><p class="sub">Clique e veja o que cada um faz.</p><div class="cmd"><div class="cl" id="cl"></div><div class="out" id="out"></div></div></div></section>
+<section id="pl"><div class="wrap"><h2>Escolha o tamanho</h2><p class="sub">Valores definidos sob consulta. Instalação e treinamento inclusos.</p><div class="pl">
+<div class="pc"><h3>Essencial</h3><div class="v">Bot de pontos e eventos</div><ul><li>Chamada por voz</li><li>Ausências e cotas</li><li>Instalação</li></ul><a class="btn g" href="#">Pedir orçamento</a></div>
+<div class="pc f2"><h3>Completo</h3><div class="v">Bot + site da guilda</div><ul><li>Tudo do Essencial</li><li>Painel e ranking web</li><li>Gear check e board</li></ul><a class="btn" href="#">Pedir orçamento</a></div>
+<div class="pc"><h3>Completo + Voz</h3><div class="v">Com ShotCaller</div><ul><li>Tudo do Completo</li><li>14 bots de voz</li><li>Painel do caller</li></ul><a class="btn g" href="#">Pedir orçamento</a></div></div></div></section>
+<footer><div class="wrap">Sentinela · prévia de layout feita pela Lhart Design — conteúdo ilustrativo.</div></footer>
+<script>
+const C=[['🧙','Aria','','Chamada aberta na sala <b>#guerra-noite</b>.'],['🛡','Sentinela','BOT','',1],['🧙','Aria','','Vou faltar hoje, tenho prova.'],['🛡','Sentinela','BOT','Ausência registrada ✅ Faltas justificadas: <b>1/3</b> no mês.']];
+let i=0;function add(){if(i>=C.length)return;const c=C[i++];chat.insertAdjacentHTML('beforeend',`<div class="msg"><div class="av" style="background:${c[2]?'#5865f2':'#3b3f4a'}">${c[0]}</div><div><b>${c[1]}${c[2]?'<i>BOT</i>':''}<small>hoje</small></b><div>${c[4]?'':c[3]}${c[4]?'<div class="emb"><h5>Chamada paga — Guerra de Castelo</h5><p>Presentes: 62 · Avisaram: 4 · Faltaram: 9<br>+30 pontos para quem estava na sala.</p></div><div class="btns"><span class="p">Ver relatório</span><span>Avisar ausência</span></div>':''}</div></div></div>`);setTimeout(add,1500)}add();
+const K=[['/chamada','Abre ou fecha a chamada de um evento manualmente.','/chamada evento:guerra'],['/ausencia','O jogador avisa que não vai e usa a cota do mês.','/ausencia motivo:prova'],['/leilao','Abre leilão de item com lances amarrados ao saldo.','/leilao item:Égide'],['/saldo','Mostra o extrato linha a linha, com o motivo de cada ponto.','/saldo'],['/pt','Mostra a PT do jogador no board da guilda.','/pt']];
+let s=0;function d(){cl.innerHTML=K.map((k,j)=>`<button class="${j==s?'on':''}" data-j="${j}">${k[0]}</button>`).join('');out.innerHTML=`<h4>${K[s][0]}</h4><p>${K[s][1]}</p><code>${K[s][2]}</code>`}cl.onclick=e=>{const b=e.target.closest('button');if(b){s=+b.dataset.j;d()}};d();
+</script></body></html>
