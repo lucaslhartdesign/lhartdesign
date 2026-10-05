@@ -87,6 +87,10 @@ nav.cats a:hover{color:var(--ink);border-color:var(--violet)}
 .total .pix{font-size:13px;font-weight:600;color:var(--ok);display:flex;gap:6px;align-items:center}
 .total .pix .ico{width:16px;height:16px}
 .quick .btn{width:100%}
+.pay{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.pm{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border:0;border-radius:12px;background:var(--card2);color:var(--muted);font-weight:600;box-shadow:inset 0 0 0 2px transparent}
+.pm .ico{width:20px;height:20px}
+.pm[aria-pressed="true"]{color:var(--ink);box-shadow:inset 0 0 0 3px var(--violet);background:#1b1740}
 @media(max-width:960px){
   .hero-copy,.hero-art{grid-column:1/-1}
   .hero-art{margin-top:8px;padding-bottom:0}
@@ -277,6 +281,7 @@ footer p{margin:0;max-width:62ch}
     <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.2 8 8 9 4.8-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
     <symbol id="i-pix" viewBox="0 0 24 24"><path d="M12 3 6.5 8.5a2 2 0 0 0 0 2.8L12 17"/><path d="m12 21 5.5-5.5a2 2 0 0 0 0-2.8L12 7"/><path d="M3 12h3m12 0h3"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
     <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.5l2.2 11h10.1l2-8H6.5"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
@@ -287,7 +292,8 @@ footer p{margin:0;max-width:62ch}
 </svg>
 
 <div class="promo"><div class="wrap">
-  <span><svg class="ico"><use href="#i-bolt"/></svg>Entrega imediata depois do Pix</span>
+  <span><svg class="ico"><use href="#i-bolt"/></svg>Entrega imediata depois do pagamento</span>
+  <span><svg class="ico"><use href="#i-card"/></svg>Pix e cartão de crédito</span>
   <span><svg class="ico"><use href="#i-chat"/></svg>Suporte em português</span>
   <span>Prévia de design com preços de exemplo</span>
 </div></div>
@@ -310,7 +316,7 @@ footer p{margin:0;max-width:62ch}
 <section class="hero"><div class="parts" id="parts" aria-hidden="true"></div><div class="wrap">
   <div class="hero-copy">
     <div class="label">Loja de Roblox do Brasil</div>
-    <h1>Robux e itens na sua conta, <em>pagando no Pix</em>.</h1>
+    <h1>Robux e itens na sua conta, <em>no Pix ou no cartão</em>.</h1>
     <p class="lead">Escolha, mostre para seus pais e receba. Tudo acompanhado pelo chat do pedido.</p>
     <div class="cta-row">
       <a class="btn btn-cyan" href="#robux">Comprar Robux <svg class="ico"><use href="#i-arrow"/></svg></a>
@@ -325,18 +331,22 @@ footer p{margin:0;max-width:62ch}
       <h2>Comprar Robux</h2>
       <p class="sub">Toque na quantidade e veja o preço.</p>
       <fieldset class="packs" id="packs"><legend style="position:absolute;left:-9999px">Quantidade de Robux</legend></fieldset>
+      <div class="pay" id="pay" role="group" aria-label="Forma de pagamento">
+        <button class="pm" type="button" data-m="pix" aria-pressed="true"><svg class="ico"><use href="#i-pix"/></svg>Pix</button>
+        <button class="pm" type="button" data-m="card" aria-pressed="false"><svg class="ico"><use href="#i-card"/></svg>Cartão</button>
+      </div>
       <div class="total">
         <div><div class="lbl">Você paga</div><div class="val" id="total">R$ 0,00</div></div>
-        <span class="pix"><svg class="ico"><use href="#i-pix"/></svg>Pix, confirma sozinho</span>
+        <span class="pix"><svg class="ico"><use href="#i-check"/></svg><span id="payNote">Pix, confirma sozinho</span></span>
       </div>
-      <button class="btn btn-cyan" id="buyNow" type="button">Comprar no Pix</button>
+      <button class="btn btn-cyan" id="buyNow" type="button"><span id="buyTxt">Comprar no Pix</span></button>
     </div>
   </div>
 </div></section>
 
 <section class="trust"><div class="wrap">
   <div class="trust-i"><svg class="ico"><use href="#i-bolt"/></svg><div><b>Entrega rápida</b><span>Começa assim que o Pix cai</span></div></div>
-  <div class="trust-i"><svg class="ico"><use href="#i-pix"/></svg><div><b>Pagamento por Pix</b><span>Confirmação automática</span></div></div>
+  <div class="trust-i"><svg class="ico"><use href="#i-card"/></svg><div><b>Pix ou cartão</b><span>Pix confirma sozinho</span></div></div>
   <div class="trust-i"><svg class="ico"><use href="#i-shield"/></svg><div><b>Sem pedir sua senha</b><span>Nunca, em nenhum pedido</span></div></div>
   <div class="trust-i"><svg class="ico"><use href="#i-chat"/></svg><div><b>Chat no pedido</b><span>Gente de verdade responde</span></div></div>
 </div></section>
@@ -352,7 +362,7 @@ footer p{margin:0;max-width:62ch}
   <div class="sec-head"><div class="label">Como comprar</div><h2>Três passos e pronto</h2></div>
   <div class="steps">
     <div class="step"><div class="n">1</div><h3>Escolha</h3><p>Pegue seus Robux ou o item do seu jogo favorito e coloque no carrinho.</p></div>
-    <div class="step"><div class="n">2</div><h3>Pague no Pix</h3><p>O QR Code aparece na tela. Quando o Pix cai, o pedido anda sozinho.</p></div>
+    <div class="step"><div class="n">2</div><h3>Pague como preferir</h3><p>Pix, com QR Code na tela, ou cartão de crédito. Pagou, o pedido já anda.</p></div>
     <div class="step"><div class="n">3</div><h3>Receba</h3><p>Acompanhe pelo chat do pedido. Qualquer dúvida, é só escrever ali.</p></div>
   </div>
 </div></section>
@@ -379,7 +389,7 @@ footer p{margin:0;max-width:62ch}
     <div class="label">Para os pais</div>
     <h2 style="margin-top:14px">Uma compra clara, sem susto</h2>
     <ul>
-      <li><svg class="ico"><use href="#i-check"/></svg><div><b>Valor e produto antes de pagar</b><span>O resumo do pedido aparece inteiro antes do Pix.</span></div></li>
+      <li><svg class="ico"><use href="#i-check"/></svg><div><b>Valor e produto antes de pagar</b><span>O resumo do pedido aparece inteiro antes do pagamento.</span></div></li>
       <li><svg class="ico"><use href="#i-check"/></svg><div><b>Nunca pedimos a senha da conta</b><span>A entrega é combinada pelo chat do pedido.</span></div></li>
       <li><svg class="ico"><use href="#i-check"/></svg><div><b>Atendimento em português</b><span>Uma pessoa responde, não um robô.</span></div></li>
     </ul>
@@ -387,7 +397,7 @@ footer p{margin:0;max-width:62ch}
   <div class="share">
     <h3>Mostre para seus pais</h3>
     <p>A mensagem já vem com o item que você escolheu. Copie e cole no WhatsApp.</p>
-    <div class="msg" id="msg">Oi! Quero comprar <b id="msgItem">800 Robux</b> na Blox Violeta por <b id="msgPrice">R$ 0,00</b>. Dá para pagar no Pix?</div>
+    <div class="msg" id="msg">Oi! Quero comprar <b id="msgItem">800 Robux</b> na Blox Violeta por <b id="msgPrice">R$ 0,00</b>. Dá para pagar no Pix ou no cartão?</div>
     <button class="btn" id="copyMsg" type="button">Copiar mensagem</button>
   </div>
 </div></section>
@@ -401,9 +411,9 @@ footer p{margin:0;max-width:62ch}
 <section class="sec" id="duvidas" style="padding-top:0"><div class="wrap">
   <div class="sec-head"><div class="label">Dúvidas</div><h2>Perguntas rápidas</h2></div>
   <div class="faq">
-    <details><summary>Quanto tempo demora para chegar?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Assim que o Pix é confirmado, o pedido entra na fila. No chat do pedido você vê cada etapa.</p></details>
+    <details><summary>Quanto tempo demora para chegar?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Assim que o pagamento é confirmado, o pedido entra na fila. No chat do pedido você vê cada etapa.</p></details>
     <details><summary>Preciso passar minha senha?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Não. Nunca pedimos a senha da sua conta do Roblox.</p></details>
-    <details><summary>Posso pagar de outro jeito?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Hoje o pagamento é por Pix, que confirma sozinho e é o mais rápido.</p></details>
+    <details><summary>Quais formas de pagamento?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Pix e cartão de crédito. O Pix confirma sozinho e é o mais rápido. Quem vai pagar é você ou seus pais, na tela de pagamento.</p></details>
     <details><summary>E se eu tiver algum problema?<svg class="ico"><use href="#i-plus"/></svg></summary><p>Abra o chat dentro do seu pedido. Nossa equipe responde em português.</p></details>
   </div>
 </div></section>
@@ -504,6 +514,11 @@ render();
 var te=document.getElementById('toast'),tt;
 function toast(t){te.textContent=t;te.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){te.classList.remove('on')},2200)}
 function add(name){cart++;document.getElementById('cartN').textContent=cart;toast(name+' no carrinho');var c=document.getElementById('cartBtn');c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump')}
+var method='pix';
+document.getElementById('pay').onclick=function(e){var b=e.target.closest('.pm');if(!b)return;method=b.dataset.m;
+  [].forEach.call(this.children,function(x){x.setAttribute('aria-pressed',x===b)});
+  document.getElementById('payNote').textContent=method==='pix'?'Pix, confirma sozinho':'Cartão de crédito';
+  document.getElementById('buyTxt').textContent=method==='pix'?'Comprar no Pix':'Comprar no cartão'};
 document.getElementById('buyNow').onclick=function(){add(packs[sel].n.toLocaleString('pt-BR')+' Robux')};
 document.getElementById('cartBtn').onclick=function(){toast(cart?cart+' item(ns) no carrinho':'Seu carrinho está vazio')};
 
@@ -559,7 +574,7 @@ if(GAME_IMGS.Robux){var sp=document.querySelector('.spin');sp.innerHTML='<img cl
   for(var i=0;i<14;i++){h+='<i style="left:'+(4+i*7)%96+'%;--s:'+(10+(i*7)%20)+'px;--c:'+cols[i%4]+';--t:'+(9+(i*5)%9)+'s;--dl:-'+(i*1.7).toFixed(1)+'s;--r:'+(i*37)%90+'deg"></i>'}
   document.getElementById('parts').innerHTML=h})();
 /* faixa de jogos */
-(function(){var names=['Robux','Blox Fruits','Adopt Me','Murder Mystery 2','Grow a Garden','Jujutsu Shenanigans','Steal a Brainrot','Entrega imediata','Pix'];
+(function(){var names=['Robux','Blox Fruits','Adopt Me','Murder Mystery 2','Grow a Garden','Jujutsu Shenanigans','Steal a Brainrot','Entrega imediata','Pix','Cartão de crédito'];
   var one=names.map(function(n){return '<span>'+n+'</span>'}).join('');
   document.getElementById('track').innerHTML=one+one})();
 /* cena do herói acompanha o mouse */
