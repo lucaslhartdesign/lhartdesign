@@ -304,6 +304,19 @@ footer{position:relative}
 .game b{display:inline-block;align-self:flex-start;text-wrap:balance;max-width:100%;background:var(--ac);color:#06070D;font-size:clamp(19px,2.1vw,26px);line-height:1.08;padding:7px 13px 8px;border-radius:11px;text-shadow:none;box-shadow:0 4px 0 rgba(0,0,0,.4);transform:rotate(-1.5deg);transition:transform .25s cubic-bezier(.2,1.4,.4,1)}
 .game:hover b{transform:rotate(0) scale(1.06)}
 .game small{align-self:flex-start;background:rgba(6,7,13,.78);color:#fff;padding:3px 11px;border-radius:99px;margin-top:10px;font-weight:500}
+
+/* cards de jogo: foto livre em cima, nome numa faixa embaixo */
+.game{--cap:76px;min-height:300px;padding:0}
+.game .photo{inset:0 0 auto 0;height:calc(100% - var(--cap))}
+.game .photo.cut{height:calc(100% - var(--cap))}
+.game .photo.low{inset:auto 0 var(--cap) 0;height:calc((100% - var(--cap)) * 1.3)}
+.game .cl{top:6px;width:56%}
+.game.has-img::before{display:none}
+.game .cap{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;gap:5px;min-height:var(--cap);padding:10px 14px;background:rgba(8,9,18,.94);border-top:3px solid var(--ac)}
+.game b{font-size:clamp(15px,1.45vw,18px);padding:4px 10px 5px;border-radius:8px;box-shadow:0 3px 0 rgba(0,0,0,.4)}
+.game small{background:none;padding:0;margin:0;font-size:13px;color:#C9CBE0;line-height:1.2}
+@media(max-width:900px){.game{min-height:270px}}
+@media(max-width:420px){.game{--cap:84px;min-height:230px}.game .cap{padding:8px 10px}.game b{font-size:15px}.game small{font-size:12px}}
 .cart.bump{animation:bump .45s}
 @keyframes bump{40%{transform:scale(1.14) rotate(-3deg)}}
 .pack{transition:transform .12s,background .15s,box-shadow .15s}
@@ -543,7 +556,7 @@ var games=[
 document.getElementById('games').innerHTML=games.map(function(g,gi){
   var cubes=g.k.map(function(p,i){return{x:p[0],y:p[1],z:p[2],c:i===g.k.length-1?g.c:(i%2?'#2a2f55':'#38306f')}});
   var img=GAME_IMGS[g.n];
-  return '<a class="game'+(img?' has-img':'')+(g.n==='Robux'?' cutout':'')+'" href="#produtos" style="--ac:'+g.c+'">'+(img?'<img class="photo'+(g.n==='Adopt Me'?' low':'')+(g.n==='Robux'?' cut':'')+'" alt="" loading="lazy" src="'+img+'">':'<div class="cl">'+iso(cubes,24,6)+'</div>')+'<i class="shine" style="animation-delay:'+(gi*.55).toFixed(2)+'s"></i><span class="go"><svg class="ico"><use href="#i-arrow"/></svg></span><b>'+g.n+'</b><small>'+g.d+'</small></a>';
+  return '<a class="game'+(img?' has-img':'')+(g.n==='Robux'?' cutout':'')+'" href="#produtos" style="--ac:'+g.c+'">'+(img?'<img class="photo'+(g.n==='Adopt Me'?' low':'')+(g.n==='Robux'?' cut':'')+'" alt="" loading="lazy" src="'+img+'">':'<div class="cl">'+iso(cubes,24,6)+'</div>')+'<i class="shine" style="animation-delay:'+(gi*.55).toFixed(2)+'s"></i><span class="go"><svg class="ico"><use href="#i-arrow"/></svg></span><div class="cap"><b>'+g.n+'</b><small>'+g.d+'</small></div></a>';
 }).join('');
 
 /* ---- compra rápida ---- */
