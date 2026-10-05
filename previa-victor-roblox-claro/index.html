@@ -318,6 +318,40 @@ footer{position:relative}
 .live small{color:var(--muted);font-size:12px}
 @media(max-width:700px){.live{bottom:84px}}
 @media(prefers-reduced-motion:reduce){.float,.cb,.parts i,.spin .coin,.hero h1 em,.btn-cyan::after,.ticker .track,.cart.bump,.total .val.roll{animation:none}.hero h1 em{color:var(--cyan);background:none}html{scroll-behavior:auto}.btn,.rv,.game .cl,.prod,.hero-art .scene{transition:none}.rv.pre{transform:none}}
+
+/* ---- tema claro ---- */
+:root{--bg:#F5F2FF;--night:#ECE7FF;--card:#FFFFFF;--card2:#F1EDFF;--line:#DAD3F4;--ink:#171433;--muted:#5A5580;--ok:#0C9A5F;--vi:#6B4FE0;color-scheme:light}
+header.top{background:rgba(245,242,255,.93)}
+.hero{background:radial-gradient(800px 520px at 78% 30%,rgba(130,101,255,.22),transparent 62%),var(--night)}
+.hero .lead{color:#3A3562}
+.hero h1 em{background:linear-gradient(100deg,#5B43D6 30%,#9B84FF 50%,#5B43D6 70%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo b{color:var(--vi)}
+.label{color:var(--muted)}
+.trust-i .ico{color:var(--vi)}
+.pack[aria-pressed="true"]{background:#DFF6FF;box-shadow:inset 0 0 0 3px #1fb6e0}
+.pm[aria-pressed="true"]{background:#ECE6FF;color:var(--ink)}
+.game.has-img b{color:#fff}
+.game small{color:var(--muted)}
+.game.has-img small{color:#E8E4FB}
+.msg{color:#F4F3FF}
+.share h3,.share p{color:#fff}
+.game.cutout{background:radial-gradient(circle at 62% 38%,#7A60F0,#34258a 75%)}
+.prod .price b{color:#D4431F}
+.prod .gn{color:var(--vi)}
+.quick{box-shadow:inset 0 0 0 2px var(--line),0 24px 60px rgba(60,40,140,.22)}
+.live{box-shadow:inset 0 0 0 2px var(--line),0 14px 40px rgba(60,40,140,.25)}
+.prod:hover{box-shadow:inset 0 0 0 2px var(--violet),0 18px 40px rgba(130,101,255,.28)}
+.beam{mix-blend-mode:normal;opacity:.3}
+.aur{opacity:.42}.a2{opacity:.3}
+.sec::before{opacity:.3}
+.hero::after{background:radial-gradient(420px circle at var(--mx,70%) var(--my,35%),rgba(130,101,255,.16),transparent 70%)}
+.grid{background:linear-gradient(90deg,rgba(130,101,255,.5) 2px,transparent 2px) 0 0/64px 64px,linear-gradient(rgba(31,182,224,.45) 2px,transparent 2px) 0 0/64px 64px}
+.btn-line{box-shadow:inset 0 0 0 2px #BDB2EE}
+.step .n{-webkit-text-stroke-color:var(--vi)}
+.parents li .ico{color:var(--ok)}
+.deal{box-shadow:0 10px 30px -10px rgba(255,121,87,.6)}
+summary .ico{color:var(--vi)}
+@media(max-width:700px){.dock{background:rgba(245,242,255,.97)}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
