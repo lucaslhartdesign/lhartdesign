@@ -254,6 +254,32 @@ footer p{margin:0;max-width:62ch}
 .prod .art svg{transition:transform .4s cubic-bezier(.2,1.3,.4,1)}
 .prod:hover .art svg{transform:scale(1.12) rotate(-5deg)}
 .prod .btn:active{transform:scale(.97)}
+/* ---- luzes RGB ---- */
+@property --a{syntax:'<angle>';initial-value:0deg;inherits:false}
+:root{--rgb:#ff2d55,#ffb000,#3dff5c,#00e5ff,#7a5cff,#ff2dd4,#ff2d55}
+.fx{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.aur{position:absolute;border-radius:50%;background:conic-gradient(var(--rgb));filter:blur(90px);opacity:.38;animation:rot 18s linear infinite}
+.a1{width:760px;height:760px;right:-140px;top:-170px}
+.a2{width:480px;height:480px;left:-200px;bottom:-220px;opacity:.2;animation-duration:26s;animation-direction:reverse}
+@keyframes rot{to{transform:rotate(360deg)}}
+.beam{position:absolute;top:-30%;width:15%;height:150%;filter:blur(22px);opacity:.55;transform-origin:top center;mix-blend-mode:screen}
+.b1{left:42%;background:linear-gradient(#00e5ff,transparent 85%);animation:sway 9s ease-in-out infinite alternate}
+.b2{left:62%;background:linear-gradient(#ff2dd4,transparent 85%);animation:sway 11s ease-in-out -4s infinite alternate}
+@keyframes sway{from{transform:rotate(-22deg)}to{transform:rotate(26deg)}}
+.grid{position:absolute;left:-20%;right:-20%;bottom:-2%;height:52%;transform:perspective(420px) rotateX(64deg);transform-origin:bottom;
+  background:linear-gradient(90deg,rgba(130,101,255,.65) 2px,transparent 2px) 0 0/64px 64px,linear-gradient(rgba(70,217,255,.55) 2px,transparent 2px) 0 0/64px 64px;
+  -webkit-mask-image:linear-gradient(transparent,#000 70%);mask-image:linear-gradient(transparent,#000 70%);animation:gridgo 2.4s linear infinite}
+@keyframes gridgo{to{background-position:0 0,0 64px}}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,70%) var(--my,35%),rgba(255,255,255,.10),transparent 70%)}
+header.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:linear-gradient(90deg,var(--rgb),#ff2d55) 0 0/200% 100%;animation:strip 5s linear infinite}
+@keyframes strip{to{background-position:-200% 0}}
+.quick{isolation:isolate}
+.quick::before,.quick::after{content:"";position:absolute;inset:-3px;border-radius:25px;background:conic-gradient(from var(--a),var(--rgb));z-index:-1;animation:spinA 5s linear infinite}
+.quick::after{filter:blur(18px);opacity:.65;z-index:-2}
+@keyframes spinA{to{--a:360deg}}
+.game:hover{box-shadow:inset 0 0 0 2px var(--ac),0 12px 38px -8px var(--ac)}
+@media(max-width:700px){.aur{filter:blur(60px)}.a1{width:520px;height:520px}.grid{height:40%}}
+@media(prefers-reduced-motion:reduce){.aur,.beam,.grid,header.top::after,.quick::before,.quick::after{animation:none}}
 .cart.bump{animation:bump .45s}
 @keyframes bump{40%{transform:scale(1.14) rotate(-3deg)}}
 .pack{transition:transform .12s,background .15s,box-shadow .15s}
@@ -314,7 +340,7 @@ footer p{margin:0;max-width:62ch}
 </header>
 
 <main id="topo">
-<section class="hero"><div class="parts" id="parts" aria-hidden="true"></div><div class="wrap">
+<section class="hero" id="hero"><div class="fx" aria-hidden="true"><i class="aur a1"></i><i class="aur a2"></i><i class="beam b1"></i><i class="beam b2"></i><div class="grid"></div></div><div class="parts" id="parts" aria-hidden="true"></div><div class="wrap">
   <div class="hero-copy">
     <div class="label">Loja de Roblox do Brasil</div>
     <h1>Robux e itens na sua conta, <em>no Pix ou no cartão</em>.</h1>
@@ -571,13 +597,16 @@ document.getElementById('reviews').innerHTML=rv.map(function(r){return '<div cla
 var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(GAME_IMGS.Robux){var sp=document.querySelector('.spin');sp.innerHTML='<img class="coin" alt="" src="'+GAME_IMGS.Robux+'">'}
 /* cubos subindo no fundo do herói */
-(function(){var h='',cols=['#8265FF','#46D9FF','#FF7957','#A895FF'];
-  for(var i=0;i<14;i++){h+='<i style="left:'+(4+i*7)%96+'%;--s:'+(10+(i*7)%20)+'px;--c:'+cols[i%4]+';--t:'+(9+(i*5)%9)+'s;--dl:-'+(i*1.7).toFixed(1)+'s;--r:'+(i*37)%90+'deg"></i>'}
+(function(){var h='',cols=['#8265FF','#46D9FF','#FF7957','#A895FF','#ff4fd8','#4dff88'];
+  for(var i=0;i<18;i++){h+='<i style="left:'+(4+i*7)%96+'%;--s:'+(10+(i*7)%20)+'px;--c:'+cols[i%6]+';--t:'+(9+(i*5)%9)+'s;--dl:-'+(i*1.7).toFixed(1)+'s;--r:'+(i*37)%90+'deg"></i>'}
   document.getElementById('parts').innerHTML=h})();
 /* faixa de jogos */
 (function(){var names=['Robux','Blox Fruits','Adopt Me','Murder Mystery 2','Grow a Garden','Jujutsu Shenanigans','Steal a Brainrot','Entrega imediata','Pix','Cartão de crédito'];
   var one=names.map(function(n){return '<span>'+n+'</span>'}).join('');
   document.getElementById('track').innerHTML=one+one})();
+/* luz que segue o mouse no herói */
+(function(){if(still)return;var h=document.getElementById('hero');
+  h.addEventListener('pointermove',function(e){var r=h.getBoundingClientRect();h.style.setProperty('--mx',(e.clientX-r.left)+'px');h.style.setProperty('--my',(e.clientY-r.top)+'px')})})();
 /* cena do herói acompanha o mouse */
 (function(){var s=document.getElementById('heroScene'),a=s.parentNode;
   if(still)return;
