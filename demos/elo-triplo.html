@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Elo Triplo — Site, Discord e celular conectados</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080a14;--p:#10142a;--ln:#242a50;--ac:#7c8cff;--gr:#35e08a;--ye:#ffc94a;--rd:#ff5a6e;--ink:#eef0ff;--mu:#8b93c4;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(900px 500px at 50% -10%,#2a2f7a55,transparent 70%),var(--bg);color:var(--ink);font:400 15px/1.45 Inter,sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.hd{max-width:1300px;margin:auto;padding:26px 20px 10px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+h1{font:700 clamp(28px,4vw,48px)/1 "Space Grotesk";margin:8px 0 6px;letter-spacing:-.03em}h1 span{background:linear-gradient(90deg,var(--ac),var(--gr));-webkit-background-clip:text;color:transparent}
+.hd p{margin:0;color:var(--mu);max-width:56ch}.k{font:700 12px "Space Grotesk";letter-spacing:.2em;text-transform:uppercase;color:var(--gr)}
+.ct{display:flex;gap:8px;flex-wrap:wrap}.ct button{background:var(--p);border:1px solid var(--ln);color:var(--ink);padding:12px 18px;border-radius:12px;font-weight:700;transition:.15s}.ct button:hover{border-color:var(--ac)}.ct button.go{background:linear-gradient(135deg,var(--ac),#a06bff);border:0}
+.tl{max-width:1300px;margin:14px auto;padding:0 20px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.st{background:var(--p);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--mu);transition:.3s;position:relative;overflow:hidden}.st b{display:block;color:var(--ink);font:700 14px "Space Grotesk"}.st::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--gr);transition:width .6s}
+.st.on{border-color:var(--gr);background:#35e08a12;color:#bfe9d2}.st.on::after{width:100%}
+.ws{max-width:1300px;margin:0 auto;padding:6px 20px 40px;display:grid;grid-template-columns:1.25fr 1fr .62fr;gap:18px;align-items:start}
+.lb{font:700 12px "Space Grotesk";letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin:0 0 8px;display:flex;align-items:center;gap:8px}.lb i{width:8px;height:8px;border-radius:50%;background:var(--gr);box-shadow:0 0 8px var(--gr)}
+.br{background:#fff;color:#14172b;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px #000a;height:560px;display:flex;flex-direction:column}
+.bb{background:#e8eaf3;padding:9px 14px;display:flex;gap:10px;align-items:center;font-size:12px;color:#6a708f}.bb i{width:9px;height:9px;border-radius:50%;background:#c4c8dc}.bb span{flex:1;background:#fff;border-radius:99px;padding:4px 12px}
+.sb{padding:18px;overflow:auto;flex:1;position:relative}.sb h3{margin:0 0 4px;font:700 22px "Space Grotesk"}.sb p{margin:0 0 14px;color:#6a708f;font-size:14px}
+.pd{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pc{border:2px solid #e3e6f2;border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:.15s}.pc:hover{border-color:#7c8cff}.pc.on{border-color:#5a6cff;background:#f1f3ff}.pc i{font-style:normal;font-size:34px;display:block}.pc b{display:block;font-size:14px}.pc small{color:#6a708f;display:block}.pc .p{color:#4a5bff;font-weight:700}.pc .e{font-size:11px;font-weight:700;color:#16863f}.pc .e.lo{color:#d6334a}
+.buy{width:100%;margin-top:14px;border:0;background:#4a5bff;color:#fff;font-weight:700;padding:14px;border-radius:12px;font-size:16px;transition:.15s}.buy:hover{background:#3a49d6}.buy:disabled{opacity:.5;cursor:default}
+.ov{position:absolute;inset:0;background:#fffffff2;padding:22px;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}.ov.on{display:flex}
+.qr{width:150px;height:150px;border:8px solid #14172b;border-radius:6px;background:repeating-conic-gradient(#14172b 0 25%,#fff 0 50%) 0 0/25px 25px}
+.ok{font-size:54px;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}@keyframes pop{from{transform:scale(0)}}
+.code{background:#14172b;color:#7cffb0;font:700 18px "Space Grotesk";letter-spacing:.14em;padding:12px 20px;border-radius:10px}
+.dc{background:#313338;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px #000a;height:560px;display:flex;flex-direction:column;font-size:14px}
+.dh{background:#2b2d31;padding:12px 16px;font-weight:700;border-bottom:1px solid #1e1f22;color:#fff}.dh span{color:#80848e;font-weight:400;margin-left:8px;font-size:12px}
+.df{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.m{display:grid;grid-template-columns:36px 1fr;gap:10px;animation:in .35s backwards}@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.av{width:36px;height:36px;border-radius:50%;background:#5865f2;display:grid;place-items:center}.m b{color:#fff}.m b i{font-style:normal;background:#5865f2;color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;margin-left:5px}.m time{color:#80848e;font-size:11px;margin-left:6px}
+.e{margin-top:4px;border-left:4px solid var(--c,#5865f2);background:#2b2d31;border-radius:4px;padding:9px 12px;color:#c4c9ce}.e h5{margin:0 0 3px;color:#fff;font-size:14px}
+.bs{display:flex;gap:6px;margin-top:7px}.bs span{background:#4e5058;color:#fff;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:600}.bs .p{background:#5865f2}
+.ph{width:100%;max-width:290px;margin:auto;background:#05060d;border:6px solid #1c2040;border-radius:40px;height:560px;padding:12px;position:relative;overflow:hidden;box-shadow:0 24px 60px #000a}
+.ph::before{content:"";position:absolute;top:10px;left:50%;translate:-50% 0;width:84px;height:22px;border-radius:99px;background:#000;z-index:5}
+.lk{height:100%;border-radius:28px;background:linear-gradient(160deg,#2a2f7a,#0d1030 60%,#3a1a5a);padding:44px 12px 12px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.clk{text-align:center;margin-bottom:10px}.clk b{font:700 54px "Space Grotesk";letter-spacing:-.04em}.clk span{display:block;color:#b8bde8;font-size:13px}
+.nt{background:#ffffff1f;backdrop-filter:blur(10px);border-radius:16px;padding:10px 12px;animation:ps .5s cubic-bezier(.2,1.3,.4,1) backwards;font-size:13px}@keyframes ps{from{opacity:0;transform:translateY(-30px) scale(.94)}}
+.nt small{color:#b8bde8;display:flex;justify-content:space-between;margin-bottom:2px;font-size:11px}.nt b{display:block}
+.lg{max-width:1300px;margin:0 auto;padding:0 20px 40px}.lg .box{background:var(--p);border:1px solid var(--ln);border-radius:16px;padding:16px 20px;font:13px/1.9 "Courier New",monospace;color:#9fb0e8;max-height:180px;overflow:auto}.lg b{color:var(--gr)}.lg .w{color:var(--ye)}
+.note{text-align:center;color:var(--mu);font-size:13px;padding:0 0 30px}
+@media(max-width:1100px){.ws{grid-template-columns:1fr}.tl{grid-template-columns:1fr 1fr}.ph{max-width:320px}}
+</style></head><body>
+<div class="hd"><div><span class="k">Automação de vendas</span><h1>Site, Discord e celular, <span>tudo conectado</span></h1><p>Um clique no site e o pagamento, a entrega e os avisos acontecem sozinhos nas três telas. Aperte o botão e acompanhe.</p></div><div class="ct"><button class="go" id="go">▶ Simular compra</button><button id="lo">⚠ Estoque baixo</button><button id="tk">🎫 Cliente pediu ajuda</button></div></div>
+<div class="tl" id="tl"><div class="st"><b>1 · Pedido</b>Cliente escolhe no site</div><div class="st"><b>2 · Pix</b>Pagamento confirmado</div><div class="st"><b>3 · Estoque</b>Código reservado</div><div class="st"><b>4 · Entrega</b>Automática, sem humano</div><div class="st"><b>5 · Avisos</b>Discord + celular</div></div>
+<div class="ws">
+<div><div class="lb"><i></i>Site da loja</div><div class="br"><div class="bb"><i></i><i></i><i></i><span>🔒 sualoja.com.br/loja</span></div><div class="sb"><h3>Gold e itens</h3><p>Entrega automática em até 2 minutos.</p><div class="pd" id="pd"></div><button class="buy" id="buy">Comprar com Pix</button>
+<div class="ov" id="ov"></div></div></div></div>
+<div><div class="lb"><i></i>Discord da equipe</div><div class="dc"><div class="dh"># vendas-staff<span>só a equipe vê</span></div><div class="df" id="df"></div></div></div>
+<div><div class="lb"><i></i>Celular do cliente</div><div class="ph"><div class="lk"><div class="clk"><b id="ck">14:02</b><span>Segunda, 5 de outubro</span></div><div id="nf" style="display:flex;flex-direction:column;gap:8px"></div></div></div></div></div>
+<div class="lg"><div class="lb"><i></i>Registro do sistema</div><div class="box" id="lgb"><span style="color:#6a708f">aguardando o primeiro pedido…</span></div></div>
+<div class="note">Elo Triplo · prévia de layout feita pela Lhart Design — conteúdo ilustrativo</div>
+<script>
+const P=[['🪙','Gold 100M','R$ 39,90',12],['⚔️','Espada +12','R$ 89,00',5],['💎','Gemas 6.500','R$ 54,90',3]];let sel=0,busy=false,T=[];
+const clock=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});ck.textContent=clock();
+function dp(){pd.innerHTML=P.map((p,i)=>`<div class="pc ${i==sel?'on':''}" data-i="${i}"><i>${p[0]}</i><b>${p[1]}</b><div class="p">${p[2]}</div><small class="e ${p[3]<4?'lo':''}">${p[3]} em estoque</small></div>`).join('')}
+pd.onclick=e=>{const c=e.target.closest('.pc');if(c&&!busy){sel=+c.dataset.i;dp()}};dp();
+const later=(f,t)=>T.push(setTimeout(f,t));
+function step(n){tl.children[n].classList.add('on')}
+function log(t,w){lgb.insertAdjacentHTML('beforeend',`<div>${clock()}:${String(new Date().getSeconds()).padStart(2,'0')} ${w?'<span class="w">':'<b>'}${t}${w?'</span>':'</b>'}</div>`);lgb.scrollTop=lgb.scrollHeight;if(lgb.querySelector('span[style]'))lgb.querySelector('span[style]').remove()}
+function dm(c,h,t,bt){df.insertAdjacentHTML('beforeend',`<div class="m"><div class="av">🤖</div><div><b>Elo Bot<i>BOT</i></b><time>${clock()}</time><div class="e" style="--c:${c}"><h5>${h}</h5>${t}</div>${bt?`<div class="bs">${bt}</div>`:''}</div></div>`);df.scrollTop=df.scrollHeight}
+function nt(app,h,t){nf.insertAdjacentHTML('afterbegin',`<div class="nt"><small><span>${app}</span><span>agora</span></small><b>${h}</b>${t}</div>`)}
+function reset(){T.forEach(clearTimeout);T=[];[...tl.children].forEach(x=>x.classList.remove('on'));ov.className='ov';busy=false;buy.disabled=false}
+go.onclick=buy.onclick=()=>{if(busy)return;reset();busy=true;buy.disabled=true;const p=P[sel],n=4800+Math.floor(Math.random()*90);
+step(0);log('POST /pedido → pedido #'+n+' criado ('+p[1]+')');
+ov.innerHTML=`<b style="font:700 20px 'Space Grotesk'">Pague com Pix</b><span class="qr"></span><span style="color:#6a708f">${p[2]} · pedido #${n}</span><span style="color:#6a708f;font-size:13px">Aguardando pagamento…</span>`;ov.classList.add('on');
+dm('#faa61a','🛒 Novo pedido #'+n,p[1]+' · '+p[2]+'<br>Aguardando pagamento.');nt('Loja','Pedido recebido','Pedido #'+n+' criado. Pague no Pix.');
+later(()=>{step(1);log('webhook Pix → pagamento confirmado');ov.innerHTML=`<div class="ok">✅</div><b style="font:700 20px 'Space Grotesk'">Pagamento confirmado</b><span style="color:#6a708f">Reservando o seu item…</span>`;dm('#3ba55d','💰 Pedido #'+n+' pago',p[1]+' · '+p[2]);nt('Pix','Pagamento aprovado',p[2]+' recebido.')},2200);
+later(()=>{step(2);P[sel][3]--;dp();log('estoque '+p[1]+': '+(P[sel][3]+1)+' → '+P[sel][3]+' (código reservado)')},3600);
+later(()=>{step(3);log('entrega automática concluída em 2 min 14 s');const cd='GLD-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+ov.innerHTML=`<div class="ok">📦</div><b style="font:700 20px 'Space Grotesk'">Entregue!</b><span class="code">${cd}</span><span style="color:#6a708f;font-size:13px">Código também enviado ao seu Discord e e-mail.</span>`;
+dm('#3ba55d','📦 Entrega automática concluída','Pedido #'+n+' entregue em 2 min 14 s.<br>Nenhuma ação da equipe necessária.');nt('Loja','Seu pedido foi entregue 🎉','Toque para ver o código.')},5200);
+later(()=>{step(4);log('avisos enviados: Discord #vendas-staff, DM do cliente, push no celular');dm('#5865f2','⭐ Pedir avaliação','Mensagem enviada ao cliente.','<span class="p">Ver pedido</span>');busy=false;buy.disabled=false},6600)};
+lo.onclick=()=>{log('alerta: estoque baixo',1);dm('#ed4245','⚠️ Estoque baixo','Gemas 6.500: restam <b>2</b> unidades. Reposição sugerida: 20.','<span class="p">Repor estoque</span><span>Ignorar</span>');nt('Equipe','Estoque baixo','Gemas 6.500 com 2 unidades.')};
+tk.onclick=()=>{log('ticket #0042 aberto no site → canal criado no Discord');dm('#5865f2','🎫 Ticket #0042 aberto','Cliente Marcos: "Meu item ainda não chegou". Canal privado criado e espelhado com o site.','<span class="p">Assumir</span><span>Fechar</span>');setTimeout(()=>nt('Suporte','Atendente respondeu','Já estou vendo seu pedido!'),1400)};
+setTimeout(()=>go.click(),900);
+</script></body></html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rastreio Live — Acompanhe o pedido no celular</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0618;--p:#150d2c;--p2:#1f1440;--ln:#33225e;--pk:#ff4fb8;--vi:#8f5bff;--gr:#3df0a0;--ye:#ffd84a;--ink:#f6f0ff;--mu:#a493d6;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(800px 600px at 80% 0,#5a2a9a55,transparent 70%),radial-gradient(700px 500px at 0 100%,#ff4fb833,transparent 70%),var(--bg);color:var(--ink);font:400 16px/1.5 "DM Sans",sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:auto;padding:40px 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;min-height:100vh}
+.k{font:700 12px Unbounded;letter-spacing:.18em;text-transform:uppercase;color:var(--pk)}
+h1{font:900 clamp(32px,4.6vw,58px)/1.02 Unbounded;margin:14px 0 16px;letter-spacing:-.03em}h1 span{background:linear-gradient(90deg,var(--pk),var(--ye));-webkit-background-clip:text;color:transparent}
+.tx p{color:#cbbdf0;font-size:18px;max-width:46ch;margin:0 0 24px}
+.ft{display:grid;gap:12px;margin:0 0 26px;padding:0;list-style:none}.ft li{display:flex;gap:14px;align-items:center;background:var(--p);border:1px solid var(--ln);border-radius:16px;padding:14px 16px;transition:.2s}.ft li:hover{border-color:var(--pk);transform:translateX(6px)}.ft i{font-style:normal;font-size:24px;width:46px;height:46px;border-radius:14px;background:var(--p2);display:grid;place-items:center;flex:none}.ft b{display:block}.ft span{color:var(--mu);font-size:14px}
+.ct{display:flex;gap:8px;flex-wrap:wrap}.ct button{background:linear-gradient(135deg,var(--pk),var(--vi));color:#fff;border:0;font-weight:700;padding:14px 22px;border-radius:14px;box-shadow:0 10px 30px #8f5bff55}.ct button.g{background:var(--p);box-shadow:inset 0 0 0 1px var(--ln)}
+.dv{position:relative;display:grid;place-items:center}
+.dv::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:conic-gradient(from 0,#ff4fb8,#8f5bff,#3df0a0,#ff4fb8);filter:blur(80px);opacity:.4;animation:rt 14s linear infinite}@keyframes rt{to{transform:rotate(360deg)}}
+.ph{position:relative;width:340px;height:700px;background:#05030d;border:9px solid #241848;border-radius:54px;padding:12px;box-shadow:0 40px 100px #000c,0 0 0 2px #3a2a70}
+.ph::before{content:"";position:absolute;top:14px;left:50%;translate:-50% 0;width:100px;height:26px;border-radius:99px;background:#000;z-index:10}
+.sc{height:100%;border-radius:40px;background:linear-gradient(#150d2c,#0b0618);overflow:hidden;display:flex;flex-direction:column;position:relative}
+.sb{padding:14px 24px 0;display:flex;justify-content:space-between;font-size:12px;font-weight:700;height:44px;align-items:center}
+.hd{padding:6px 20px 14px}.hd small{color:var(--mu)}.hd b{display:block;font:700 20px Unbounded}
+.cd{margin:0 16px;background:linear-gradient(135deg,#3a1f7a,#6a2a9a);border-radius:22px;padding:16px;display:flex;gap:14px;align-items:center}.cd .i{font-size:42px}.cd b{display:block;font-size:17px}.cd span{font-size:13px;color:#e0d4ff}
+.tm{padding:18px 22px;flex:1;overflow:auto;position:relative}
+.tm::before{content:"";position:absolute;left:34px;top:26px;bottom:20px;width:3px;background:var(--ln);border-radius:2px}
+.s{display:grid;grid-template-columns:26px 1fr;gap:14px;padding:0 0 18px;position:relative;opacity:.35;transition:.5s}.s.on{opacity:1}
+.s .d{width:26px;height:26px;border-radius:50%;background:var(--p2);border:3px solid var(--ln);display:grid;place-items:center;font-size:12px;z-index:1;transition:.5s}.s.on .d{background:var(--gr);border-color:var(--gr);color:#022}.s.now .d{animation:pu 1.4s infinite}@keyframes pu{50%{box-shadow:0 0 0 8px #3df0a033}}
+.s b{display:block;font-size:15px}.s small{color:var(--mu);font-size:12.5px}
+.cdbox{margin:4px 0 0;background:var(--bg);border:1px dashed var(--gr);border-radius:12px;padding:10px 12px;font:700 15px Unbounded;color:var(--gr);letter-spacing:.06em;display:none;text-align:center}.cdbox.on{display:block;animation:pp .5s}@keyframes pp{from{opacity:0;transform:scale(.9)}}
+.ch{border-top:1px solid var(--ln);padding:12px 16px 20px;background:var(--p)}.ch div{background:var(--p2);border-radius:14px;padding:9px 12px;font-size:13px;color:#d8ccf5;margin-bottom:6px;animation:pp .4s}.ch div.me{background:var(--vi);margin-left:30px}
+.push{position:absolute;left:12px;right:12px;top:46px;z-index:20;background:#ffffffee;color:#1a1030;border-radius:18px;padding:11px 14px;font-size:13px;box-shadow:0 14px 40px #0008;transform:translateY(-120px);transition:transform .5s cubic-bezier(.2,1.3,.4,1)}.push.on{transform:none}.push small{display:flex;justify-content:space-between;color:#6a5a90;font-size:11px;font-weight:700;margin-bottom:2px}.push b{display:block}
+.pw{position:absolute;right:-30px;top:200px;display:flex;flex-direction:column;gap:10px}
+@media(max-width:960px){.wrap{grid-template-columns:1fr;gap:30px}.ph{width:310px;height:640px}}
+</style></head><body><div class="wrap">
+<div class="tx"><span class="k">Acompanhamento em tempo real</span><h1>Cada pedido, <span>no bolso do cliente</span></h1><p>O cliente acompanha tudo pelo celular: pagamento, entrega automática e chat com a equipe. Sem ficar perguntando "já chegou?".</p>
+<ul class="ft"><li><i>⚡</i><div><b>Entrega automática</b><span>O código aparece na tela assim que o Pix cai.</span></div></li><li><i>🔔</i><div><b>Aviso em cada etapa</b><span>Notificação no celular e mensagem no Discord do cliente.</span></div></li><li><i>💬</i><div><b>Chat dentro do pedido</b><span>Se precisar, a equipe responde pelo Discord e o cliente vê aqui.</span></div></li></ul>
+<div class="ct"><button id="re">↻ Ver de novo</button><button class="g" id="ms">💬 Cliente manda mensagem</button></div></div>
+<div class="dv"><div class="ph"><div class="push" id="ps"><small><span>🛒 LOJA</span><span>agora</span></small><b id="pt"></b><span id="px"></span></div>
+<div class="sc"><div class="sb"><span id="ck">14:02</span><span>●●● 5G ▮</span></div><div class="hd"><small>Pedido #4821</small><b>Gold 100M</b></div>
+<div class="cd"><span class="i">🪙</span><div><b id="cs">Aguardando pagamento</b><span id="cx">Pix de R$ 39,90</span></div></div>
+<div class="tm" id="tm"><div class="s"><span class="d">1</span><div><b>Pedido criado</b><small>Pelo site</small></div></div><div class="s"><span class="d">2</span><div><b>Pagamento confirmado</b><small>Pix aprovado</small></div></div><div class="s"><span class="d">3</span><div><b>Item reservado</b><small>Estoque atualizado</small></div></div><div class="s"><span class="d">4</span><div><b>Entregue automaticamente</b><small id="s4">Em instantes</small><div class="cdbox" id="cb"></div></div></div><div class="s"><span class="d">5</span><div><b>Avaliação</b><small>Conte como foi</small></div></div></div>
+<div class="ch" id="ch"><div>Equipe: estamos com você por aqui 👋</div></div></div></div></div></div>
+<script>
+const clk=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});ck.textContent=clk();
+let T=[];const later=(f,t)=>T.push(setTimeout(f,t));
+function push(h,t){pt.textContent=h;px.textContent=t;ps.classList.add('on');later(()=>ps.classList.remove('on'),2200)}
+function on(i,last){const s=tm.children[i];s.classList.add('on');[...tm.children].forEach(x=>x.classList.remove('now'));if(!last)s.classList.add('now')}
+function play(){T.forEach(clearTimeout);T=[];[...tm.children].forEach(x=>x.classList.remove('on','now'));cb.className='cdbox';cs.textContent='Aguardando pagamento';cx.textContent='Pix de R$ 39,90';s4.textContent='Em instantes';ch.innerHTML='<div>Equipe: estamos com você por aqui 👋</div>';
+later(()=>on(0),400);
+later(()=>{on(1);cs.textContent='Pagamento aprovado';cx.textContent='Reservando seu item…';push('Pagamento aprovado','Recebemos seu Pix de R$ 39,90.')},2000);
+later(()=>{on(2);cx.textContent='Item reservado'},3400);
+later(()=>{on(3);cs.textContent='Entregue! 🎉';cx.textContent='Em 2 min 14 s, sem ninguém da equipe';s4.textContent='Código entregue também no Discord';cb.textContent='GLD-7K2P-9QX4';cb.classList.add('on');push('Seu pedido foi entregue 🎉','Toque para ver o código.')},5200);
+later(()=>{on(4,1);push('Como foi a compra?','Avalie com 1 toque ⭐')},7400)}
+re.onclick=play;ms.onclick=()=>{ch.insertAdjacentHTML('beforeend','<div class="me">Posso trocar o personagem de entrega?</div>');later(()=>{ch.insertAdjacentHTML('beforeend','<div>Rafa (staff): pode sim! Me passa o nome novo 😉</div>');push('Equipe respondeu','Rafa: pode sim! Me passa o nome novo.')},1200)};
+play();
+</script></body></html>

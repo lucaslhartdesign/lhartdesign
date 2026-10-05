@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Central Pulso — Painel de vendas automáticas</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06100f;--p:#0c1b1a;--p2:#122826;--ln:#1d3a37;--tl:#2ee6c4;--gd:#ffc94a;--rd:#ff5d6c;--bl:#5b8cff;--ink:#e6fbf7;--mu:#7aa8a1;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.45 Outfit,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+aside{background:#040b0a;border-right:1px solid var(--ln);padding:20px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.lg{font:800 22px Outfit;display:flex;gap:8px;align-items:center;margin:0 6px 18px}.lg i{width:30px;height:30px;border-radius:9px;background:var(--tl);color:#032;display:grid;place-items:center;font-style:normal;animation:pl 2s infinite}@keyframes pl{50%{box-shadow:0 0 0 7px #2ee6c422}}
+aside a{padding:10px 12px;border-radius:10px;color:var(--mu);font-weight:500;display:flex;gap:10px}aside a.on{background:var(--p2);color:#fff}aside a:hover{color:#fff}
+aside .sy{margin-top:auto;background:var(--p);border:1px solid var(--ln);border-radius:14px;padding:12px;font-size:13px;color:var(--mu)}.sy b{display:flex;gap:8px;color:var(--tl);align-items:center}.sy b::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--tl);box-shadow:0 0 8px var(--tl);animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
+main{padding:22px 26px 50px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.top h1{margin:0;font:800 28px Outfit;letter-spacing:-.02em}.top small{color:var(--mu);font-weight:400;font-size:14px;margin-left:8px}
+.src{display:flex;gap:6px}.src span{font-size:12px;font-weight:700;padding:6px 12px;border-radius:99px;background:var(--p);border:1px solid var(--ln);color:var(--mu)}.src span.s{color:var(--bl)}.src span.d{color:#a3adff}.src span.w{color:#5ee08a}
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.k{background:var(--p);border:1px solid var(--ln);border-radius:16px;padding:16px 18px;position:relative;overflow:hidden}.k span{color:var(--mu);font-size:13px}.k b{display:block;font:800 30px Outfit;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}.k em{font-style:normal;font-size:12px;color:var(--tl)}
+.k.f{border-color:var(--tl);animation:fl .8s}@keyframes fl{from{background:#2ee6c433}}
+.sp{position:absolute;right:10px;bottom:8px;width:90px;height:30px;opacity:.7}
+.gd{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.pn{background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:18px}.pn h2{margin:0 0 12px;font:700 17px Outfit;display:flex;justify-content:space-between;align-items:center}.pn h2 small{font:500 12px Outfit;color:var(--mu)}
+.pl{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}.pl div{background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:10px;text-align:center}.pl b{display:block;font:800 24px Outfit;font-variant-numeric:tabular-nums}.pl span{font-size:12px;color:var(--mu)}
+.fd{display:grid;gap:8px;max-height:380px;overflow:hidden}
+.o{display:grid;grid-template-columns:34px 1fr auto auto;gap:12px;align-items:center;background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;animation:in .5s backwards}@keyframes in{from{opacity:0;transform:translateY(-14px);background:#2ee6c426}}
+.o i{width:34px;height:34px;border-radius:10px;background:var(--p2);display:grid;place-items:center;font-style:normal}.o b{display:block;font-size:14.5px}.o small{color:var(--mu);font-size:12px}
+.o .v{font-weight:800;font-variant-numeric:tabular-nums}.o .t{font-size:11px;font-weight:800;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.t.pg{background:#ffc94a22;color:var(--gd)}.t.en{background:#5b8cff22;color:var(--bl)}.t.ok{background:#2ee6c422;color:var(--tl)}
+.stk{display:grid;gap:12px}.sr{display:grid;gap:5px}.sr .h{display:flex;justify-content:space-between;font-size:14px}.sr .h span{color:var(--mu)}.bar{height:9px;border-radius:5px;background:var(--bg);overflow:hidden;border:1px solid var(--ln)}.bar i{display:block;height:100%;background:linear-gradient(90deg,#1aa890,var(--tl));width:var(--w);transition:width .8s}.bar.lo i{background:linear-gradient(90deg,#c43a4a,var(--rd))}
+.rl{display:grid;gap:8px;margin-top:4px}.r{display:flex;align-items:center;gap:12px;background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:11px 14px}.r span{flex:1;font-size:14px}.r small{display:block;color:var(--mu);font-size:12px}
+.tg{width:42px;height:24px;border-radius:99px;background:#2a4a46;position:relative;border:0;transition:.2s;flex:none}.tg::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}.tg.on{background:var(--tl)}.tg.on::after{left:21px}
+.al{margin-top:16px;display:grid;gap:8px}.a{display:flex;gap:10px;align-items:flex-start;background:#ff5d6c14;border:1px solid #ff5d6c55;border-radius:12px;padding:10px 14px;font-size:14px;animation:in .5s backwards}.a.k2{background:#5b8cff14;border-color:#5b8cff55}.a b{display:block}.a small{color:var(--mu)}
+.note{text-align:center;color:var(--mu);font-size:13px;padding:20px 0 0}
+@media(max-width:980px){.app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;overflow-x:auto}aside .sy,.lg span{display:none}.kp{grid-template-columns:1fr 1fr}.gd{grid-template-columns:1fr}.o{grid-template-columns:34px 1fr auto}.o .t{display:none}.pl{grid-template-columns:1fr 1fr}}
+</style></head><body><div class="app">
+<aside><div class="lg"><i>◉</i><span>Pulso</span></div><a class="on">📊 Visão geral</a><a>🧾 Pedidos</a><a>📦 Estoque</a><a>🤖 Automações</a><a>💬 Atendimento</a><a>⚙️ Ajustes</a><div class="sy"><b>Tudo conectado</b>Site · Discord · WhatsApp<br>Última sincronia: agora</div></aside>
+<main><div class="top"><h1>Painel de vendas <small>atualiza sozinho</small></h1><div class="src"><span class="s">● Site</span><span class="d">● Discord</span><span class="w">● WhatsApp</span></div></div>
+<div class="kp"><div class="k" id="k1"><span>Vendas hoje</span><b id="v1">R$ 0</b><em id="e1">0 pedidos</em><svg class="sp" viewBox="0 0 90 30"><polyline fill="none" stroke="#2ee6c4" stroke-width="2" points="0,26 15,22 30,24 45,14 60,16 75,6 90,3"/></svg></div><div class="k" id="k2"><span>Entregas automáticas</span><b id="v2">0</b><em>sem ninguém da equipe</em></div><div class="k"><span>Tempo médio de entrega</span><b>2m 08s</b><em>▼ 14 s vs. ontem</em></div><div class="k"><span>Avisos enviados</span><b id="v4">0</b><em>Discord + celular</em></div></div>
+<div class="gd"><div class="pn"><h2>Pedidos ao vivo <small>site, Discord e WhatsApp</small></h2><div class="pl"><div><b id="p1">0</b><span>Aguardando Pix</span></div><div><b id="p2">0</b><span>Entregando</span></div><div><b id="p3">0</b><span>Entregues</span></div><div><b>0</b><span>Com problema</span></div></div><div class="fd" id="fd"></div></div>
+<div style="display:grid;gap:16px;align-content:start"><div class="pn"><h2>Estoque <small>baixa sozinho</small></h2><div class="stk" id="stk"></div></div>
+<div class="pn"><h2>Regras automáticas</h2><div class="rl"><div class="r"><span>Entregar código após o Pix<small>sem aprovação manual</small></span><button class="tg on"></button></div><div class="r"><span>Avisar a staff no Discord<small>cada venda e cada ticket</small></span><button class="tg on"></button></div><div class="r"><span>Push no celular do cliente<small>pedido, entrega e resposta</small></span><button class="tg on"></button></div><div class="r"><span>Alertar estoque abaixo de 5<small>com botão de repor</small></span><button class="tg on"></button></div></div></div></div></div>
+<div class="al" id="al"></div><div class="note">Central Pulso · prévia de layout feita pela Lhart Design — dados fictícios, simulados em tempo real</div></main></div>
+<script>
+const S=[['🪙','Gold 100M',39.9,14],['💎','Gemas 6.500',54.9,8],['🗡️','Espada +12',89,6],['🧪','Kit Poções',24.5,20]];
+const O=['site','Discord','WhatsApp'],N=['Marcos','Lari','Thor','Kaique','Bia','Dante','Mel','Rafa'];
+let rev=0,cnt=0,del=0,ntf=0,id=4800;
+const f=v=>'R$ '+v.toFixed(2).replace('.',',');
+function stk(){document.getElementById('stk').innerHTML=S.map(s=>{const w=Math.max(s[3]/20*100,4);return `<div class="sr"><div class="h"><b>${s[0]} ${s[1]}</b><span>${s[3]} un.</span></div><div class="bar ${s[3]<5?'lo':''}"><i style="--w:${w}%"></i></div></div>`}).join('')}
+const fd=document.getElementById('fd');
+function bump(el){el.classList.remove('f');void el.offsetWidth;el.classList.add('f')}
+function alert_(k,h,t){const a=document.createElement('div');a.className='a '+k;a.innerHTML=`<span>${k?'🎫':'⚠️'}</span><div><b>${h}</b><small>${t}</small></div>`;al.prepend(a);while(al.children.length>3)al.lastChild.remove()}
+function sale(){const i=Math.floor(Math.random()*S.length),s=S[i];if(s[3]<=0)return;id++;const o=O[Math.floor(Math.random()*3)],n=N[Math.floor(Math.random()*N.length)];s[3]--;
+const el=document.createElement('div');el.className='o';el.innerHTML=`<i>${s[0]}</i><div><b>${s[1]}</b><small>#${id} · ${n} · via ${o}</small></div><span class="v">${f(s[2])}</span><span class="t pg">Aguardando Pix</span>`;fd.prepend(el);while(fd.children.length>6)fd.lastChild.remove();
+p1.textContent=+p1.textContent+1;
+setTimeout(()=>{const t=el.querySelector('.t');t.className='t en';t.textContent='Entregando';p1.textContent=+p1.textContent-1;p2.textContent=+p2.textContent+1;rev+=s[2];cnt++;v1.textContent=f(rev);e1.textContent=cnt+' pedidos';bump(k1);stk();ntf++;v4.textContent=ntf},1600);
+setTimeout(()=>{const t=el.querySelector('.t');t.className='t ok';t.textContent='Entregue ✓';p2.textContent=+p2.textContent-1;p3.textContent=+p3.textContent+1;del++;v2.textContent=del;bump(k2);ntf+=2;v4.textContent=ntf;if(s[3]<5&&!s.w){s.w=1;alert_('', 'Estoque baixo: '+s[1],'Restam '+s[3]+' unidades. Aviso enviado ao Discord e ao WhatsApp da equipe.')}},3400)}
+function tk(){alert_('k2','Ticket #00'+(40+Math.floor(Math.random()*9))+' aberto','Cliente pediu ajuda no site. Canal criado no Discord e aviso enviado ao celular da equipe.')}
+stk();sale();setTimeout(sale,1500);setInterval(sale,3800);setTimeout(tk,9000);setInterval(tk,22000);
+document.querySelectorAll('.tg').forEach(t=>t.onclick=()=>t.classList.toggle('on'));
+</script></body></html>
