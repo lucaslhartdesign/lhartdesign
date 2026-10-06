@@ -1,6 +1,7 @@
 window.LHART_I18N = {
 en: {
-  nav: { method: 'How it works', cases: 'Our work', services: 'What we do', client: 'Client area', threed: '3D', plans: 'Plans', games: 'Game sites', delivery: 'Restaurant delivery', cta: 'Get your plan' },
+  nav: { home: 'Home', method: 'How it works', cases: 'Our work', services: 'What we do', client: 'Client area', threed: '3D', plans: 'Plans', games: 'Game sites', delivery: 'Delivery apps', cta: 'Get your plan' },
+  appband: { kicker: 'Also for restaurants', title: 'We also build delivery apps for restaurants.', note: 'Your own ordering app, with no marketplace taking a big cut of every order. The same restaurants we film and promote can take orders directly: customer app, kitchen screen and courier app, all in sync.', cta: 'See the delivery apps' },
   hero: {
     line1: 'We Don\u2019t Just Create Content.', line2: 'We Build Revenue Engines.',
     leftTag: 'The Most Complete Media & Growth Platform.', rightTag: 'Our focus is to make your brand the first choice in your market — bringing in more customers, sales and bookings through cinematic media, targeted ads and our own AI system.',
@@ -119,7 +120,8 @@ en: {
   whatsapp: { genericMsg: 'Hi! I\u2019d like to talk about a plan for my business.', formIntro: 'New request:' }
 },
 es: {
-  nav: { method: 'Cómo funciona', cases: 'Nuestro trabajo', services: 'Qué hacemos', client: 'Área de clientes', threed: '3D', plans: 'Planes', games: 'Sitios para juegos', delivery: 'Delivery para restaurantes', cta: 'Ver mi plan' },
+  nav: { home: 'Inicio', method: 'Cómo funciona', cases: 'Nuestro trabajo', services: 'Qué hacemos', client: 'Área de clientes', threed: '3D', plans: 'Planes', games: 'Sitios para juegos', delivery: 'Apps de delivery', cta: 'Ver mi plan' },
+  appband: { kicker: 'También para restaurantes', title: 'También creamos apps de delivery para restaurantes.', note: 'Tu propia app de pedidos, sin un marketplace quedándose con una gran parte de cada pedido. Los mismos restaurantes que filmamos y promocionamos pueden recibir pedidos directo: app del cliente, pantalla de cocina y app del repartidor, todo sincronizado.', cta: 'Ver las apps de delivery' },
   hero: {
     line1: 'No Solo Creamos Contenido.', line2: 'Construimos Motores de Ingresos.',
     leftTag: 'La Plataforma Más Completa de Medios y Crecimiento.', rightTag: 'Nuestro enfoque es convertir tu marca en la primera opción de tu mercado — generando más clientes, ventas y reservas con medios cinematográficos, anuncios segmentados y nuestro propio sistema de IA.',
@@ -238,7 +240,8 @@ es: {
   whatsapp: { genericMsg: '¡Hola! Quisiera hablar sobre un plan para mi negocio.', formIntro: 'Nueva solicitud:' }
 },
 pt: {
-  nav: { method: 'Como funciona', cases: 'Nosso trabalho', services: 'O que fazemos', client: 'Área do cliente', threed: '3D', plans: 'Planos', games: 'Sites para Games', delivery: 'Delivery para restaurantes', cta: 'Ver meu plano' },
+  nav: { home: 'Início', method: 'Como funciona', cases: 'Nosso trabalho', services: 'O que fazemos', client: 'Área do cliente', threed: '3D', plans: 'Planos', games: 'Sites para Games', delivery: 'Apps de delivery', cta: 'Ver meu plano' },
+  appband: { kicker: 'Também para restaurantes', title: 'Também criamos apps de delivery para restaurantes.', note: 'Seu app próprio de pedidos, sem um marketplace ficando com uma parte grande de cada pedido. Os mesmos restaurantes que filmamos e divulgamos podem receber pedidos direto: app do cliente, tela da cozinha e app do motoboy, tudo sincronizado.', cta: 'Ver os apps de delivery' },
   hero: {
     line1: 'Não Criamos Apenas Conteúdo.', line2: 'Construímos Motores de Receita.',
     leftTag: 'A Plataforma Mais Completa de Mídia e Crescimento.', rightTag: 'Nosso foco é fazer da sua marca a primeira escolha do seu mercado — trazendo mais clientes, vendas e reservas com mídia cinematográfica, anúncios segmentados e nosso próprio sistema de IA.',

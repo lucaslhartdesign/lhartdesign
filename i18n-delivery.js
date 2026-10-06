@@ -11,7 +11,7 @@ LH.html({
 });
 LH.add([
   /* menu e herói */
-  ['Início', 'Home', 'Inicio'], ['Sites para Games', 'Game Sites', 'Sitios para Juegos'], ['Delivery', 'Delivery', 'Delivery'], ['Estilos', 'Styles', 'Estilos'], ['Pedir o meu', 'Get mine', 'Pedir el mío'],
+  ['Início', 'Home', 'Inicio'], ['Social Media & Tráfego', 'Social Media & Traffic', 'Social Media y Tráfico'], ['Apps de Delivery', 'Delivery Apps', 'Apps de Delivery'], ['Quer vender mais, além de receber pedidos?', 'Want to sell more, not just take orders?', '¿Quieres vender más, no solo recibir pedidos?'], ['Também fazemos fotos do cardápio, vídeos, vídeos de drone e tráfego pago para o seu restaurante aparecer para quem está com fome.', 'We also do menu photos, videos, drone footage and paid traffic so your restaurant shows up for hungry people.', 'También hacemos fotos del menú, videos, videos de dron y tráfico pago para que tu restaurante aparezca ante quien tiene hambre.'], ['Ver foto, vídeo e tráfego', 'See photo, video and traffic', 'Ver foto, video y tráfico'], ['Estilos', 'Styles', 'Estilos'], ['Pedir o meu', 'Get mine', 'Pedir el mío'],
   ['Delivery próprio', 'Your own delivery', 'Delivery propio'],
   ['Site e app de pedidos com a sua marca: o cliente pede, a cozinha recebe e o motoboy entrega, tudo sincronizado e sem comissão por pedido. Os três apps ao lado estão rodando de verdade, e conversam entre si.',
    'An ordering site and app with your brand: the customer orders, the kitchen receives and the courier delivers, all in sync and with no commission per order. The three apps beside this text are really running, and they talk to each other.',
@@ -166,7 +166,7 @@ LH.add([
   ['Quer o delivery do seu restaurante?', 'Want delivery for your restaurant?', '¿Quieres el delivery de tu restaurante?'], ['Escolha o estilo, mande o cardápio e a gente responde com prazo e valor.', 'Pick the style, send the menu and we reply with a deadline and a price.', 'Elige el estilo, envía el menú y respondemos con plazo y valor.'],
   ['Chamar no WhatsApp', 'Chat on WhatsApp', 'Hablar por WhatsApp'], ['Falar no WhatsApp', 'Talk on WhatsApp', 'Hablar por WhatsApp'],
   ['© Lhart Design — demonstrações com dados fictícios. O mapa real, o Pix e as notificações são ativados na instalação, com as contas do restaurante.', '© Lhart Design — demos with fictional data. The real map, Pix and notifications are activated at installation, with the restaurant\'s accounts.', '© Lhart Design — demostraciones con datos ficticios. El mapa real, el Pix y las notificaciones se activan en la instalación, con las cuentas del restaurante.'],
-  ['← Sites para Games', '← Game Sites', '← Sitios para Juegos'], ['Quero este estilo', 'I want this style', 'Quiero este estilo'], ['Abrir em aba', 'Open in new tab', 'Abrir en pestaña'],
+  ['← Voltar ao início', '← Back to home', '← Volver al inicio'], ['Quero este estilo', 'I want this style', 'Quiero este estilo'], ['Abrir em aba', 'Open in new tab', 'Abrir en pestaña'],
   /* WhatsApp */
   ['Oi! Quero o delivery estilo {n} - {name}', 'Hi! I want delivery style {n} - {name}', '¡Hola! Quiero el delivery estilo {n} - {name}'],
   ['Oi! Vi a aba Delivery e quero um sistema de pedidos para o meu restaurante.', 'Hi! I saw the Delivery tab and I want an ordering system for my restaurant.', '¡Hola! Vi la pestaña Delivery y quiero un sistema de pedidos para mi restaurante.']

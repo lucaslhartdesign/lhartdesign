@@ -2,15 +2,15 @@
 LH.html({
   'g.h1': { pt: 'Sua loja de jogos com cara de <span class="g1">jogo</span>', en: 'Your game store with the look of a <span class="g1">game</span>', es: 'Tu tienda de juegos con cara de <span class="g1">juego</span>' },
   'g.lead': {
-    pt: 'Lojas de itens e moedas, bots de Discord para guilda e loja, ShotCaller e automações. Veja <b id="tot">{n}</b> estilos funcionando ao vivo e a gente monta o seu com a sua marca.',
-    en: 'Item and currency stores, Discord bots for guilds and shops, ShotCaller and automations. See <b id="tot">{n}</b> styles running live and we build yours with your brand.',
-    es: 'Tiendas de ítems y monedas, bots de Discord para gremios y tiendas, ShotCaller y automatizaciones. Mira <b id="tot">{n}</b> estilos funcionando en vivo y armamos el tuyo con tu marca.' },
+    pt: 'Lojas de itens e moedas, bots de Discord para guilda e loja, ShotCaller e automações. A loja recebe o pedido e o bot avisa a equipe e entrega sozinho: um puxa o outro. Veja <b id="tot">{n}</b> estilos funcionando ao vivo e a gente monta o seu com a sua marca.',
+    en: 'Item and currency stores, Discord bots for guilds and shops, ShotCaller and automations. The store takes the order and the bot alerts your team and delivers on its own: each one pulls the other. See <b id="tot">{n}</b> styles running live and we build yours with your brand.',
+    es: 'Tiendas de ítems y monedas, bots de Discord para gremios y tiendas, ShotCaller y automatizaciones. La tienda recibe el pedido y el bot avisa al equipo y entrega solo: uno impulsa al otro. Mira <b id="tot">{n}</b> estilos funcionando en vivo y armamos el tuyo con tu marca.' },
   'g.bots': { pt: 'Bots em <span>ação</span>', en: 'Bots in <span>action</span>', es: 'Bots en <span>acción</span>' },
   'g.como': { pt: 'Do estilo ao ar em <span>4 passos</span>', en: 'From style to live in <span>4 steps</span>', es: 'Del estilo al aire en <span>4 pasos</span>' }
 });
 LH.add([
   /* menu */
-  ['Início', 'Home', 'Inicio'], ['Sites para Games', 'Game Sites', 'Sitios para Juegos'], ['Bots', 'Bots', 'Bots'], ['Estilos', 'Styles', 'Estilos'],
+  ['Início', 'Home', 'Inicio'], ['Game Commerce', 'Game Commerce', 'Game Commerce'], ['Bots', 'Bots', 'Bots'], ['Estilos', 'Styles', 'Estilos'],
   ['Pedir o meu', 'Get mine', 'Pedir el mío'], ['Delivery', 'Delivery', 'Delivery'],
   /* herói */
   ['Ver os estilos ↓', 'See the styles ↓', 'Ver los estilos ↓'], ['Ver os bots em ação', 'See the bots in action', 'Ver los bots en acción'],
@@ -116,11 +116,11 @@ LH.add([
   ['← Voltar ao site principal', '← Back to the main site', '← Volver al sitio principal'],
   ['Computador', 'Desktop', 'Computadora'], ['Celular', 'Phone', 'Celular'], ['Quero este estilo', 'I want this style', 'Quiero este estilo'], ['Abrir em aba', 'Open in new tab', 'Abrir en pestaña'], ['Fechar', 'Close', 'Cerrar'],
   /* WhatsApp */
-  ['Oi! Quero o estilo {n} - {name} (Sites para Games)', 'Hi! I want style {n} - {name} (Game Sites)', '¡Hola! Quiero el estilo {n} - {name} (Sitios para Juegos)'],
-  ['Oi! Vi a aba Sites para Games e quero fazer um site para o meu projeto.', 'Hi! I saw the Game Sites tab and I want a website for my project.', '¡Hola! Vi la pestaña Sitios para Juegos y quiero un sitio para mi proyecto.']
+  ['Oi! Quero o estilo {n} - {name} (Game Commerce)', 'Hi! I want style {n} - {name} (Game Commerce)', '¡Hola! Quiero el estilo {n} - {name} (Game Commerce)'],
+  ['Oi! Vi o Game Commerce e quero uma loja ou bot para o meu projeto.', 'Hi! I saw Game Commerce and I want a store or bot for my project.', '¡Hola! Vi la pestaña Sitios para Juegos y quiero un sitio para mi proyecto.']
 ]);
 LH.meta({
-  title: { pt: 'Sites para Games — Lhart Design', en: 'Game Sites — Lhart Design', es: 'Sitios para Juegos — Lhart Design' },
+  title: { pt: 'Game Commerce — Lhart Design', en: 'Game Commerce — Lhart Design', es: 'Game Commerce — Lhart Design' },
   desc: {
     pt: 'Lojas de itens e moedas (RMT), bots de Discord para guildas e lojas, ShotCaller e automações. Veja 26 estilos ao vivo e escolha o seu.',
     en: 'Item and currency stores (RMT), Discord bots for guilds and shops, ShotCaller and automations. See 26 live styles and pick yours.',
