@@ -322,6 +322,39 @@ footer{position:relative}
 .wm{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .wm svg{position:absolute;left:44%;top:6%;width:min(980px,120vw);height:auto;opacity:.11;transform:translateY(var(--wy,0px)) rotate(var(--wr,-6deg));will-change:transform}
 @media(max-width:700px){.wm svg{left:-25%;top:20%;width:150vw;opacity:.09}}
+
+/* ---- confirmação do nick no checkout ---- */
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(3,4,10,.8);backdrop-filter:blur(6px)}
+.modal[hidden]{display:none}
+.mbox{position:relative;width:min(480px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--card);border-radius:24px;padding:28px 26px 26px;box-shadow:inset 0 0 0 2px var(--line),0 30px 80px rgba(0,0,0,.65);animation:mpop .35s cubic-bezier(.2,1.3,.4,1)}
+@keyframes mpop{from{opacity:0;transform:translateY(24px) scale(.96)}}
+.mx{position:absolute;right:14px;top:14px;width:42px;height:42px;border:0;border-radius:12px;background:var(--card2);color:var(--ink);display:grid;place-items:center}
+.mx .ico{width:20px;height:20px}
+.mbox h2{font-size:28px;padding-right:44px}
+.mbox .msub{margin:8px 0 18px;color:var(--muted);font-size:16px}
+.sum{display:flex;justify-content:space-between;gap:12px;align-items:center;background:var(--card2);border-radius:14px;padding:12px 16px;margin-bottom:18px;font-size:15px}
+.sum b{font-family:var(--display);font-size:20px;color:var(--coral);white-space:nowrap}
+.fld label{display:block;font-weight:600;margin-bottom:8px}
+.fld input{width:100%;min-height:58px;border-radius:14px;border:0;background:var(--card2);color:var(--ink);font:inherit;font-size:19px;padding:0 18px;box-shadow:inset 0 0 0 2px var(--line);outline:0}
+.fld input:focus{box-shadow:inset 0 0 0 3px var(--violet)}
+.fld.bad input{box-shadow:inset 0 0 0 3px var(--coral)}
+.help{margin:8px 0 0;font-size:14px;color:var(--muted)}
+.err{margin:10px 0 0;font-size:15px;color:#FFB59B;font-weight:500}
+.mbox .btn{width:100%;margin-top:16px}
+.who{display:flex;gap:16px;align-items:center;background:var(--card2);border-radius:18px;padding:14px;box-shadow:inset 0 0 0 2px var(--violet)}
+.who svg{width:96px;height:96px;border-radius:20px;flex:none}
+.who b{display:block;font-family:var(--display);font-size:26px;line-height:1.1;overflow-wrap:anywhere}
+.who span{display:block;color:var(--muted);font-size:15px;overflow-wrap:anywhere}
+.who em{font-style:normal;display:inline-flex;align-items:center;gap:6px;margin-top:6px;color:var(--ok);font-size:14px;font-weight:600}
+.who em .ico{width:16px;height:16px}
+.done[hidden]{display:none}
+.done{text-align:center;display:grid;gap:10px;justify-items:center}
+.done .big{width:72px;height:72px;border-radius:50%;background:var(--ok);color:#04140C;display:grid;place-items:center}
+.done .big .ico{width:38px;height:38px;stroke-width:3}
+.spin2{width:34px;height:34px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--cyan);animation:rot .8s linear infinite;margin:26px auto}
+.mnote{margin:14px 0 0;font-size:12px;color:var(--muted);text-align:center}
+@media(max-width:420px){.who{flex-direction:column;align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){.mbox,.spin2{animation:none}}
 .cart.bump{animation:bump .45s}
 @keyframes bump{40%{transform:scale(1.14) rotate(-3deg)}}
 .pack{transition:transform .12s,background .15s,box-shadow .15s}
@@ -351,6 +384,7 @@ footer{position:relative}
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.2 8 8 9 4.8-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
     <symbol id="i-pix" viewBox="0 0 24 24"><path d="M12 3 6.5 8.5a2 2 0 0 0 0 2.8L12 17"/><path d="m12 21 5.5-5.5a2 2 0 0 0 0-2.8L12 7"/><path d="M3 12h3m12 0h3"/></symbol>
     <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
     <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.5l2.2 11h10.1l2-8H6.5"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
@@ -502,6 +536,44 @@ footer{position:relative}
   <p>Loja independente de itens para jogos. Não temos ligação com a Roblox Corporation. Roblox é marca registrada dos seus donos.</p>
 </div></footer>
 
+<div class="modal" id="modal" hidden>
+  <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="mx" id="mClose" type="button" aria-label="Fechar"><svg class="ico"><use href="#i-x"/></svg></button>
+
+    <div id="st1">
+      <h2 id="mTitle">Para qual personagem vai?</h2>
+      <p class="msub">Digite seu nick do Roblox. Vamos mostrar o personagem para você confirmar antes de pagar.</p>
+      <div class="sum"><span id="sumItem">800 Robux</span><b id="sumPrice">R$ 44,90</b></div>
+      <form id="nickForm" novalidate>
+        <div class="fld" id="fld">
+          <label for="nick">Seu nick no Roblox</label>
+          <input id="nick" name="nick" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="21" placeholder="ex.: Lucas_Gamer10">
+          <p class="help">É o nome de usuário, sem o @. Nunca pedimos sua senha.</p>
+          <p class="err" id="nickErr" hidden></p>
+        </div>
+        <button class="btn btn-cyan" type="submit">Procurar meu personagem</button>
+      </form>
+    </div>
+
+    <div id="st2" hidden><div class="spin2" role="status" aria-label="Procurando"></div><p class="msub" style="text-align:center">Procurando o personagem...</p></div>
+
+    <div id="st3" hidden>
+      <h2>Este é o seu personagem?</h2>
+      <p class="msub">Confira o avatar e o nome. A entrega vai para esta conta.</p>
+      <div class="who"><div id="whoAv"></div><div><b id="whoName"></b><span id="whoNick"></span><em><svg class="ico"><use href="#i-check"/></svg>Conta encontrada</em></div></div>
+      <button class="btn btn-cyan" id="nickYes" type="button">Sim, é este</button>
+      <button class="btn btn-line" id="nickNo" type="button">Não é o meu, trocar nick</button>
+    </div>
+
+    <div id="st4" class="done" hidden>
+      <div class="big"><svg class="ico"><use href="#i-check"/></svg></div>
+      <h2 style="padding:0">Nick confirmado!</h2>
+      <p class="msub" style="margin:0" id="doneTxt"></p>
+      <button class="btn btn-cyan" id="goPay" type="button">Continuar para o pagamento</button>
+    </div>
+    <p class="mnote">Prévia: a busca do personagem é simulada. No site final ela consulta o Roblox de verdade.</p>
+  </div>
+</div>
 <div class="live" id="live" role="status" aria-live="polite"><i><svg class="ico"><use href="#i-bolt"/></svg></i><div><b id="liveT"></b><small id="liveS"></small></div></div>
 <div class="dock"><a class="btn btn-cyan" href="#robux">Comprar Robux</a><a class="btn btn-line" href="#pais">Para os pais</a></div>
 <div class="toast" id="toast" role="status"></div>
@@ -583,14 +655,14 @@ function render(){
 render();
 var te=document.getElementById('toast'),tt;
 function toast(t){te.textContent=t;te.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){te.classList.remove('on')},2200)}
-function add(name){cart++;document.getElementById('cartN').textContent=cart;toast(name+' no carrinho');var c=document.getElementById('cartBtn');c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump')}
+function add(name,price){if(price)lastItem={t:name,p:price};cart++;document.getElementById('cartN').textContent=cart;toast(name+' no carrinho');var c=document.getElementById('cartBtn');c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump')}
 var method='pix';
 document.getElementById('pay').onclick=function(e){var b=e.target.closest('.pm');if(!b)return;method=b.dataset.m;
   [].forEach.call(this.children,function(x){x.setAttribute('aria-pressed',x===b)});
   document.getElementById('payNote').textContent=method==='pix'?'Pix, confirma sozinho':'Cartão de crédito';
   document.getElementById('buyTxt').textContent=method==='pix'?'Comprar no Pix':'Comprar no cartão'};
-document.getElementById('buyNow').onclick=function(){add(packs[sel].n.toLocaleString('pt-BR')+' Robux')};
-document.getElementById('cartBtn').onclick=function(){toast(cart?cart+' item(ns) no carrinho':'Seu carrinho está vazio')};
+document.getElementById('buyNow').onclick=function(){var k=packs[sel];lastItem={t:k.n.toLocaleString('pt-BR')+' Robux',p:BRL(k.p)};openCheckout(lastItem.t,lastItem.p)};
+document.getElementById('cartBtn').onclick=function(){if(cart&&lastItem)openCheckout(lastItem.t,lastItem.p);else toast('Seu carrinho está vazio')};
 
 /* ---- produtos ---- */
 var coin='<svg viewBox="0 0 120 120"><ellipse cx="60" cy="92" rx="44" ry="14" fill="#3b2f86"/><rect x="16" y="64" width="88" height="28" fill="#3b2f86"/><ellipse cx="60" cy="64" rx="44" ry="14" fill="#8265FF"/><ellipse cx="60" cy="48" rx="44" ry="14" fill="#5B43D6"/><rect x="16" y="48" width="88" height="16" fill="#5B43D6"/><ellipse cx="60" cy="48" rx="44" ry="14" fill="#8265FF"/><ellipse cx="60" cy="30" rx="44" ry="14" fill="#A895FF"/><ellipse cx="60" cy="28" rx="26" ry="8" fill="none" stroke="#3b2f86" stroke-width="5"/></svg>';
@@ -619,7 +691,7 @@ function draw(){
   list.forEach(function(x){
     var d=document.createElement('article');d.className='prod';
     d.innerHTML='<div class="art"><span class="badge">'+x.b+'</span>'+x.a+'</div><div class="body"><span class="gn">'+x.g+'</span><h3>'+x.t+'</h3><span class="deliv"><svg class="ico"><use href="#i-bolt"/></svg>Entrega imediata</span><div class="price"><b>'+BRL(x.p)+'</b><s>'+BRL(x.o)+'</s></div><button class="btn btn-cyan" type="button">Adicionar</button></div>';
-    d.querySelector('button').onclick=function(){add(x.t)};
+    d.querySelector('button').onclick=function(){add(x.t,BRL(x.p))};
     pw.appendChild(d);
   });
 }
@@ -635,6 +707,38 @@ document.getElementById('q').oninput=function(){qs=this.value.trim().toLowerCase
 var star='<svg><use href="#i-star"/></svg>';
 var rv=[['Paguei no Pix e em poucos minutos já estava na conta. Muito fácil.','Cliente de exemplo, Blox Fruits'],['Minha mãe gostou porque dava para acompanhar o pedido no chat.','Cliente de exemplo, Adopt Me'],['Tirei uma dúvida no suporte e responderam na hora.','Cliente de exemplo, Robux']];
 document.getElementById('reviews').innerHTML=rv.map(function(r){return '<div class="rev"><div class="stars">'+star+star+star+star+star+'</div><p>'+r[0]+'</p><small>'+r[1]+'</small></div>'}).join('');
+
+
+/* ---- confirmação do nick ---- */
+var lastItem=null,found=null;
+function hashOf(t){var h=7;for(var i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))>>>0;return h}
+function avatarSvg(nick){var h=hashOf(nick.toLowerCase()),pick=function(a,k){return a[(h>>>k)%a.length]};
+  var skin=pick(['#F4C9A0','#E0A878','#B97C52','#FFD9B8','#8D5A3B'],1),shirt=pick(['#8265FF','#46D9FF','#FF7957','#4dff88','#ff4fd8','#FFB000'],3),hair=pick(['#2b2250','#5a3a1c','#15151c','#e6c04a','#c2452d'],5),bg=pick(['#2a2060','#12384a','#4a2a20','#173f2a'],7);
+  return '<svg viewBox="0 0 120 120" role="img" aria-label="Avatar de '+nick+'"><rect width="120" height="120" fill="'+bg+'"/><rect x="22" y="86" width="76" height="44" rx="16" fill="'+shirt+'"/><rect x="34" y="22" width="52" height="58" rx="13" fill="'+skin+'"/><rect x="32" y="16" width="56" height="24" rx="11" fill="'+hair+'"/><rect x="46" y="54" width="7" height="11" rx="2" fill="#06070D"/><rect x="67" y="54" width="7" height="11" rx="2" fill="#06070D"/><path d="M48 70q12 11 24 0" stroke="#06070D" stroke-width="4" fill="none" stroke-linecap="round"/></svg>'}
+/* No site final, esta função chama o servidor da loja: fetch('/api/roblox/usuario?nick='+nick) */
+function lookupNick(nick){return new Promise(function(res,rej){setTimeout(function(){
+  if(/^(naoexiste|erro|teste123)/i.test(nick))return rej(new Error('nao'));
+  var disp=nick.replace(/_+/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()}).trim()||nick;
+  res({nick:nick,display:disp,svg:avatarSvg(nick)})},900)})}
+var md=document.getElementById('modal'),steps=['st1','st2','st3','st4'];
+function showStep(n){steps.forEach(function(id,i){document.getElementById(id).hidden=(i!==n-1)})}
+function openCheckout(item,price){
+  document.getElementById('sumItem').textContent=item;document.getElementById('sumPrice').textContent=price;
+  document.getElementById('nick').value='';document.getElementById('nickErr').hidden=true;document.getElementById('fld').classList.remove('bad');
+  showStep(1);md.hidden=false;document.body.style.overflow='hidden';setTimeout(function(){document.getElementById('nick').focus()},60)}
+function closeCheckout(){md.hidden=true;document.body.style.overflow=''}
+document.getElementById('mClose').onclick=closeCheckout;
+md.addEventListener('mousedown',function(e){if(e.target===md)closeCheckout()});
+addEventListener('keydown',function(e){if(e.key==='Escape'&&!md.hidden)closeCheckout()});
+document.getElementById('nickForm').onsubmit=function(e){e.preventDefault();
+  var v=document.getElementById('nick').value.trim().replace(/^@/,''),er=document.getElementById('nickErr'),f=document.getElementById('fld');
+  if(!/^[A-Za-z0-9_]{3,20}$/.test(v)){er.textContent='O nick tem de 3 a 20 letras, números ou _. Confira se escreveu certinho.';er.hidden=false;f.classList.add('bad');return}
+  er.hidden=true;f.classList.remove('bad');showStep(2);
+  lookupNick(v).then(function(u){found=u;document.getElementById('whoAv').innerHTML=u.svg;document.getElementById('whoName').textContent=u.display;document.getElementById('whoNick').textContent='@'+u.nick;showStep(3)},
+    function(){showStep(1);er.textContent='Não achamos esse nick. Confira se escreveu certinho e tente de novo.';er.hidden=false;f.classList.add('bad');document.getElementById('nick').focus()})};
+document.getElementById('nickNo').onclick=function(){showStep(1);document.getElementById('nick').select()};
+document.getElementById('nickYes').onclick=function(){document.getElementById('doneTxt').textContent=document.getElementById('sumItem').textContent+' será entregue no personagem @'+found.nick+'.';showStep(4)};
+document.getElementById('goPay').onclick=function(){closeCheckout();toast('Aqui abre o pagamento por '+(method==='pix'?'Pix':'cartão'))};
 
 /* ---- vida na página ---- */
 var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
