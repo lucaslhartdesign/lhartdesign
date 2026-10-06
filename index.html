@@ -34,7 +34,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
 @keyframes ledHue{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.led,.led .glow,.fx i,.door::before{animation:none!important}}
 .kick{display:inline-block;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold2);border:1px solid var(--ln);border-radius:99px;padding:6px 16px;background:var(--p)}
-h1{font:500 clamp(36px,6.4vw,68px)/1.06 Inter,sans-serif;letter-spacing:-.02em;margin:22px auto 16px;max-width:16ch;color:#fff;text-shadow:0 2px 28px rgba(0,0,0,.5)}
+h1{font:500 clamp(36px,6.4vw,68px)/1.06 Inter,sans-serif;letter-spacing:-.02em;margin:20px auto 16px;max-width:22ch;text-wrap:balance;color:#fff;text-shadow:0 2px 28px rgba(0,0,0,.5)}
 .lead{color:#dfe0ee;max-width:62ch;margin:0 auto;font-size:18px;text-shadow:0 1px 18px rgba(0,0,0,.55)}
 .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 0 20px;margin-top:-64px;position:relative;z-index:4}
 .door{display:flex;flex-direction:column;background:linear-gradient(180deg,var(--p),#191b2a);border:1px solid var(--ln);border-radius:20px;padding:28px;transition:.3s;position:relative;overflow:hidden}
@@ -52,12 +52,25 @@ h1{font:500 clamp(36px,6.4vw,68px)/1.06 Inter,sans-serif;letter-spacing:-.02em;m
 .talk{text-align:center;padding:50px 0 60px}.talk h3{font:500 26px/1.2 Inter,sans-serif;margin:0 0 16px}
 footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:14px;text-align:center}
 @media(max-width:900px){.doors{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:56px 0 96px}.link{padding:22px}}
+.door{align-items:center;text-align:center}.door .tag{align-self:center}
+.door ul{justify-items:center}.door li{padding-left:0}.door li::before{position:static;margin-right:8px;vertical-align:1px}
+.link{flex-direction:column;text-align:center;justify-content:center}.link p{margin:0 auto}.link .row{justify-content:center}
+.herologo{display:block;margin:0 auto;height:76px;width:auto;filter:drop-shadow(0 0 22px rgba(230,190,50,.35))}
+/* luz passando pelos selos, pelo quadro "Tem restaurante?" e pelos botões */
+.tag,.btn,.link{position:relative;overflow:hidden}
+.tag{align-self:center}
+.door .tag{margin:0 auto}
+.tag::after,.btn::after,.link::after{content:"";position:absolute;top:-10%;left:-70%;width:45%;height:120%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.55) 50%,transparent 100%);transform:skewX(-22deg);animation:varre 3.8s ease-in-out infinite;pointer-events:none}
+.btn::after{animation-delay:.6s}.door:nth-child(2) .tag::after,.door:nth-child(2) .btn::after{animation-delay:1.2s}.door:nth-child(3) .tag::after,.door:nth-child(3) .btn::after{animation-delay:1.8s}
+.link::after{width:30%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.16) 50%,transparent 100%);animation-duration:5.2s}
+@keyframes varre{0%{left:-70%}55%,100%{left:140%}}
+@media(prefers-reduced-motion:reduce){.tag::after,.btn::after,.link::after{animation:none;display:none}}
 </style></head><body>
 <div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
 <div class="l"><a class="on" href="index.html">Início</a><a href="social.html">Social Media & Tráfego</a><a href="delivery.html">Apps de Delivery</a><a href="vitrine.html">Game Commerce</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px">Falar no WhatsApp</a></div></div></div>
 
 <div class="hero"><div class="fx" aria-hidden="true"><i class="d1"></i><i class="d2"></i></div><div class="led" aria-hidden="true"><div class="glow"></div><div class="line"></div></div><div class="wrap">
-<span class="kick">Lhart Design</span>
+<img class="herologo" src="assets/logo.png" alt="Lhart Design">
 <h1>Cada negócio no seu lugar</h1>
 <p class="lead">Fotos e vídeos que vendem, apps de pedidos próprios e lojas para o mundo dos games. Escolha a sua área e vá direto ao que importa.</p>
 </div></div>

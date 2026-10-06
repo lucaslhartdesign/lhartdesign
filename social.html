@@ -538,6 +538,24 @@ footer .contacts { display: flex; align-items: center; justify-content: center; 
 .logo-item:hover { transform: translateY(-2px); opacity: 0.95; }
 @media (prefers-reduced-motion: reduce) { .case-card, .testi, .logo-item, .tier { transition: none; } }
 </style>
+<style id="center-all">
+/* tudo centralizado: títulos de seção em coluna, textos ao centro */
+#impact .section-head, #services .section-head, #cases .section-head, #threed .section-head, #testi-head { flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; margin: 0 auto var(--leading) !important; }
+#impact .section-head > div, #services .section-head > div, #cases .section-head > div, #threed .section-head > div, #testi-head > div { align-items: center !important; text-align: center !important; }
+#impact .kicker, #impact .section-title, #services .kicker, #services .section-title, #cases .kicker, #cases .section-title, #threed .kicker, #threed .section-title, #testi-head .kicker, #testi-head .section-title { text-align: center !important; margin-left: auto !important; margin-right: auto !important; }
+#impact .section-note, #services .section-note, #cases .section-note, #threed .section-note, #testi-head .section-note { text-align: center !important; margin: 6px auto 0 !important; max-width: 52ch !important; }
+.ai-points, .ai-points > *, .impact-caption, .impact-caption:last-child { text-align: center !important; }
+.impact-caption-row { justify-content: center !important; }
+footer, footer > * { text-align: center; justify-content: center; }
+.appband-in { flex-direction: column !important; text-align: center !important; justify-content: center !important; }
+.appband-in .section-note { margin: 6px auto 0 !important; }
+:where(section, .section, .method, .appband, .plans-section, .close) :where(h1, h2, h3, h4, h5, p, li, q, blockquote, span, small, figcaption, .kicker, .m-title, .m-copy, .f-title, .f-copy, .rcase-note) { text-align: center !important; }
+:where(section, .section) :where(ul, ol) { list-style-position: inside; padding-left: 0; margin-left: auto; margin-right: auto; }
+:where(section, .section) li { padding-left: 0 !important; }
+:where(section, .section) li::before { position: static !important; display: inline-block; margin-right: 8px; }
+.feature { grid-template-columns: 1fr !important; justify-items: center; text-align: center; gap: var(--half); }
+.feature .f-copy { max-width: 62ch; margin: 0 auto; }
+</style>
 </head>
 <body>
 <div class="scroll-progress" id="scroll-progress"></div>
