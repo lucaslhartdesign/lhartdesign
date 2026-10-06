@@ -211,9 +211,13 @@ th{color:#9184d9;background:#191b2b}
 .tcol.act .fr{border-color:#9184d9;box-shadow:0 0 0 2px #9184d966,0 0 60px #9184d955,0 40px 80px #000c}
 .fr{border-color:#232532}
 .sw i{border-radius:4px}
+
+/* logo da Lhart grande ao fundo, com baixa opacidade */
+.bg-logo{position:fixed;left:50%;top:52%;width:min(92vmin,1000px);aspect-ratio:1;translate:-50% -50%;background:url(assets/logo.png) center/contain no-repeat;opacity:.05;mix-blend-mode:screen;z-index:2;pointer-events:none}
+@media(max-width:700px){.bg-logo{width:120vw;opacity:.045}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
-<div class="bg-glow"></div>
+<div class="bg-glow"></div><div class="bg-logo"></div>
 <div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
 <div class="l"><a href="index.html">Início</a><a href="vitrine.html">Sites para Games</a><a class="on" href="delivery.html">Delivery</a><a href="#estilos">Estilos</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
 
