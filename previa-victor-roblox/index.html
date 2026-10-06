@@ -63,7 +63,7 @@ nav.cats a:hover{color:var(--ink);border-color:var(--violet)}
 @media(max-width:760px){.bar{grid-template-columns:1fr auto}.search{display:none}.cart span{display:none}}
 
 /* herói */
-.hero{background:radial-gradient(800px 520px at 78% 30%,rgba(130,101,255,.30),transparent 62%),var(--night);border-bottom:1px solid var(--line)}
+.hero{background:radial-gradient(800px 520px at 78% 30%,rgba(130,101,255,.30),transparent 62%);border-bottom:1px solid var(--line)}
 .hero .wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;padding-block:64px 72px}
 .hero-copy{grid-column:1/span 6}
 .hero h1{font-size:clamp(42px,6.4vw,78px);font-weight:800;letter-spacing:-.025em;margin:18px 0 20px}
@@ -98,7 +98,7 @@ nav.cats a:hover{color:var(--ink);border-color:var(--violet)}
 }
 
 /* faixa de confiança */
-.trust{background:var(--card);border-bottom:1px solid var(--line)}
+.trust{background:rgba(16,20,33,.82);border-bottom:1px solid var(--line)}
 .trust .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
 .trust-i{display:flex;gap:14px;align-items:center;padding:22px 18px;border-left:1px solid var(--line)}
 .trust-i:first-child{border-left:0;padding-left:0}
@@ -121,7 +121,7 @@ nav.cats a:hover{color:var(--ink);border-color:var(--violet)}
 @media(max-width:420px){.game{min-height:180px;padding:14px}.game b{font-size:19px}}
 
 /* passos */
-.how{background:var(--night);border-block:1px solid var(--line)}
+.how{background:rgba(9,11,20,.6);border-block:1px solid var(--line)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;counter-reset:s}
 .step{padding:8px 36px 8px 0;position:relative}
 .step+.step{padding-left:36px;border-left:1px solid var(--line)}
@@ -154,7 +154,7 @@ nav.cats a:hover{color:var(--ink);border-color:var(--violet)}
 @media(max-width:520px){.products{grid-template-columns:1fr}}
 
 /* pais */
-.parents{background:var(--night);border-block:1px solid var(--line)}
+.parents{background:rgba(9,11,20,.6);border-block:1px solid var(--line)}
 .parents .wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center}
 .p-copy{grid-column:1/span 6}
 .p-copy ul{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:0}
@@ -317,6 +317,11 @@ footer{position:relative}
 .game small{background:none;padding:0;margin:0;font-size:13px;color:#C9CBE0;line-height:1.2}
 @media(max-width:900px){.game{min-height:270px}}
 @media(max-width:420px){.game{--cap:84px;min-height:230px}.game .cap{padding:8px 10px}.game b{font-size:15px}.game small{font-size:12px}}
+
+/* logo grande de fundo, fixa e com leve deslocamento ao rolar */
+.wm{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.wm svg{position:absolute;left:46%;top:12%;width:min(1100px,125vw);height:auto;opacity:.11;transform:translateY(var(--wy,0px)) rotate(var(--wr,-6deg));will-change:transform}
+@media(max-width:700px){.wm svg{left:-25%;top:20%;width:150vw;opacity:.09}}
 .cart.bump{animation:bump .45s}
 @keyframes bump{40%{transform:scale(1.14) rotate(-3deg)}}
 .pack{transition:transform .12s,background .15s,box-shadow .15s}
@@ -355,6 +360,7 @@ footer{position:relative}
   </defs>
 </svg>
 
+<div class="wm" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 3 35 11.5v17L20 37 5 28.5v-17z" fill="#fff"/><path d="M20 3 35 11.5 20 20 5 11.5z" fill="#fff"/><path d="M20 20v17L5 28.5v-17z" fill="#cfc6ff"/><path d="m20 20 15-8.5v17L20 37z" fill="#9d8cff"/><rect x="16.5" y="15" width="7" height="7" rx="1.5" fill="#46D9FF" transform="rotate(45 20 18.5)"/></svg></div>
 <div class="promo"><div class="wrap">
   <span><svg class="ico"><use href="#i-bolt"/></svg>Entrega imediata depois do pagamento</span>
   <span><svg class="ico"><use href="#i-card"/></svg>Pix e cartão de crédito</span>
@@ -641,6 +647,10 @@ if(GAME_IMGS.Robux){var sp=document.querySelector('.spin');sp.innerHTML='<img cl
 (function(){var names=['Robux','Blox Fruits','Adopt Me','Murder Mystery 2','Grow a Garden','Jujutsu Shenanigans','Steal a Brainrot','Entrega imediata','Pix','Cartão de crédito'];
   var one=names.map(function(n){return '<span>'+n+'</span>'}).join('');
   document.getElementById('track').innerHTML=one+one})();
+/* logo de fundo desliza devagar com a rolagem */
+(function(){if(still)return;var w=document.querySelector('.wm svg'),t=0;
+  function up(){t=0;var y=scrollY;w.style.setProperty('--wy',(-y*0.14).toFixed(1)+'px');w.style.setProperty('--wr',(-6+y*0.006).toFixed(2)+'deg')}
+  addEventListener('scroll',function(){if(!t)t=requestAnimationFrame(up)},{passive:true});up()})();
 /* luz que segue o mouse no herói */
 (function(){if(still)return;var h=document.getElementById('hero');
   h.addEventListener('pointermove',function(e){var r=h.getBoundingClientRect();h.style.setProperty('--mx',(e.clientX-r.left)+'px');h.style.setProperty('--my',(e.clientY-r.top)+'px')})})();
