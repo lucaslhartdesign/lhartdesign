@@ -13,20 +13,32 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 Inter,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative}
 a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
 .wrap{max-width:1180px;margin:auto;padding:0 24px}
-body::before{content:"";position:fixed;inset:0;z-index:-1;background:url(assets/logo.png) center 18%/min(70vw,760px) no-repeat;opacity:.06;pointer-events:none}
 .nav{position:sticky;top:0;z-index:30;background:rgba(22,24,38,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--ln)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
 .nav img{height:34px;width:auto}.nav .l{display:flex;gap:24px;color:var(--mu);font-size:14.5px;font-weight:500;align-items:center}.nav .l a:hover,.nav .l a.on{color:var(--gold2)}
 .langsw{display:flex;border:1px solid var(--ln);border-radius:99px;padding:3px;background:var(--p)}.langsw button{border:0;background:none;color:var(--mu);padding:5px 11px;border-radius:99px;font:700 12px Inter;letter-spacing:.05em}.langsw button[aria-current="true"]{background:var(--gold);color:#161826}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:var(--gold2);border:1px solid var(--gold);border-radius:8px;font-weight:500;padding:13px 24px;transition:.25s}
 .btn:hover{background:color-mix(in srgb,var(--gold) 22%,transparent);box-shadow:0 0 0 1px #b5abfc66,0 0 28px #9184d955;color:#fff}
-.hero{padding:84px 0 40px;text-align:center}
+.hero{position:relative;overflow:hidden;text-align:center;min-height:clamp(470px,72vh,640px);display:flex;align-items:center;padding:70px 0 110px;isolation:isolate}
+.hero .wrap{position:relative;z-index:3}
+.fx{position:absolute;inset:0;z-index:0;pointer-events:none}
+.fx i{position:absolute;top:46%;left:50%;width:640px;height:640px;max-width:80vw;max-height:80vw;border-radius:50%;filter:blur(70px);animation:pulsa 6s infinite alternate ease-in-out;translate:-50% -50%}
+.fx .d1{background:radial-gradient(circle,rgba(230,190,50,.5),transparent 70%)}
+.fx .d2{background:radial-gradient(circle,rgba(145,132,217,.55),transparent 70%);animation-delay:-3s}
+.fx::after{content:"";position:absolute;inset:0;opacity:.5;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.025),rgba(255,255,255,.025) 1px,transparent 1px,transparent 3px)}
+@keyframes pulsa{0%{opacity:.35;scale:.9}100%{opacity:1;scale:1.12}}
+.led{position:absolute;left:0;right:0;bottom:0;height:72%;z-index:2;pointer-events:none;animation:ledHue 10s linear infinite}
+.led .glow{position:absolute;left:0;right:0;bottom:0;height:85%;background:linear-gradient(to top,rgba(230,190,50,.85) 0%,rgba(230,190,50,.4) 45%,rgba(230,190,50,.1) 75%,transparent 100%);filter:blur(35px);animation:feixe 4s infinite alternate ease-in-out}
+.led .line{position:absolute;left:0;right:0;bottom:0;height:3px;background:#fff5c0;box-shadow:0 0 10px #e6be32,0 0 20px #e6be32,0 -5px 30px #e6be32}
+@keyframes feixe{0%{opacity:.6;transform:scaleX(.95)}100%{opacity:1;transform:scaleX(1.05)}}
+@keyframes ledHue{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.led,.led .glow,.fx i,.door::before{animation:none!important}}
 .kick{display:inline-block;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold2);border:1px solid var(--ln);border-radius:99px;padding:6px 16px;background:var(--p)}
-h1{font:500 clamp(34px,6vw,64px)/1.08 Inter,sans-serif;letter-spacing:-.02em;margin:22px auto 16px;max-width:16ch}
-.lead{color:var(--mu);max-width:62ch;margin:0 auto;font-size:18px}
-.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:36px 0 20px}
+h1{font:500 clamp(36px,6.4vw,68px)/1.06 Inter,sans-serif;letter-spacing:-.02em;margin:22px auto 16px;max-width:16ch;color:#fff;text-shadow:0 2px 28px rgba(0,0,0,.5)}
+.lead{color:#dfe0ee;max-width:62ch;margin:0 auto;font-size:18px;text-shadow:0 1px 18px rgba(0,0,0,.55)}
+.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 0 20px;margin-top:-64px;position:relative;z-index:4}
 .door{display:flex;flex-direction:column;background:linear-gradient(180deg,var(--p),#191b2a);border:1px solid var(--ln);border-radius:20px;padding:28px;transition:.3s;position:relative;overflow:hidden}
-.door::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--gold),#5a4fc0)}
+.door::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#e6be32,var(--gold),#5a4fc0);animation:ledHue 10s linear infinite}
 .door:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 24px 60px #0006,0 0 40px #9184d933}
 .tag{align-self:flex-start;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold2);background:#9184d91f;border:1px solid #9184d955;border-radius:99px;padding:4px 12px}
 .door h2{font:500 28px/1.15 Inter,sans-serif;margin:18px 0 10px;letter-spacing:-.01em}
@@ -39,12 +51,12 @@ h1{font:500 clamp(34px,6vw,64px)/1.08 Inter,sans-serif;letter-spacing:-.02em;mar
 .link .row{display:flex;gap:12px;flex-wrap:wrap}
 .talk{text-align:center;padding:50px 0 60px}.talk h3{font:500 26px/1.2 Inter,sans-serif;margin:0 0 16px}
 footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:14px;text-align:center}
-@media(max-width:900px){.doors{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:52px 0 20px}.link{padding:22px}}
+@media(max-width:900px){.doors{grid-template-columns:1fr}.nav .l a:not(.btn){display:none}.hero{padding:56px 0 96px}.link{padding:22px}}
 </style></head><body>
 <div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
 <div class="l"><a class="on" href="index.html">Início</a><a href="social.html">Social Media & Tráfego</a><a href="delivery.html">Apps de Delivery</a><a href="vitrine.html">Game Commerce</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px">Falar no WhatsApp</a></div></div></div>
 
-<div class="hero"><div class="wrap">
+<div class="hero"><div class="fx" aria-hidden="true"><i class="d1"></i><i class="d2"></i></div><div class="led" aria-hidden="true"><div class="glow"></div><div class="line"></div></div><div class="wrap">
 <span class="kick">Lhart Design</span>
 <h1>Cada negócio no seu lugar</h1>
 <p class="lead">Fotos e vídeos que vendem, apps de pedidos próprios e lojas para o mundo dos games. Escolha a sua área e vá direto ao que importa.</p>
