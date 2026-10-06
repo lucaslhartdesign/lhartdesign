@@ -163,8 +163,14 @@ h1 .g1,.sec h2 span{background:none!important;-webkit-background-clip:initial!im
 .num{background:#161826e6}
 
 /* logo da Lhart grande ao fundo, com baixa opacidade */
-.bg-logo{position:fixed;left:50%;top:52%;width:min(92vmin,1000px);aspect-ratio:1;translate:-50% -50%;background:url(assets/logo.png) center/contain no-repeat;opacity:.1;mix-blend-mode:screen;z-index:2;pointer-events:none}
+.bg-logo{position:fixed;left:50%;top:52%;width:min(92vmin,1000px);aspect-ratio:1;translate:-50% -50%;background:url(assets/logo.png) center/contain no-repeat;opacity:.1;mix-blend-mode:screen;z-index:-1;pointer-events:none}
 @media(max-width:700px){.bg-logo{width:120vw;opacity:.09}}
+
+/* faixas translúcidas para o logo de fundo aparecer atrás */
+.alt,.bots{background:linear-gradient(rgba(25,27,43,.78),rgba(27,29,45,.78))!important}
+#tutorial,#como,.how{background:radial-gradient(900px 380px at 85% 0,rgba(53,59,128,.7),transparent 70%),rgba(38,42,96,.84)!important}
+.cta{background:radial-gradient(900px 420px at 80% 0,rgba(53,59,128,.7),transparent 70%),rgba(38,42,96,.86)!important}
+.mq,.trust{background:rgba(28,30,46,.7)!important}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style><script src="i18n-pages.js"></script><script src="i18n-games.js"></script>
 </head><body>

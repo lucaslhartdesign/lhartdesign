@@ -54,7 +54,7 @@ body {
   position: relative;
 }
 /* logo da Lhart grande ao fundo, com baixa opacidade */
-.bg-logo{position:fixed;left:50%;top:52%;width:min(92vmin,1000px);aspect-ratio:1;translate:-50% -50%;background:url(assets/logo.png) center/contain no-repeat;opacity:.1;mix-blend-mode:screen;z-index:2;pointer-events:none}
+.bg-logo{position:fixed;left:50%;top:52%;width:min(92vmin,1000px);aspect-ratio:1;translate:-50% -50%;background:url(assets/logo.png) center/contain no-repeat;opacity:.1;mix-blend-mode:screen;z-index:-1;pointer-events:none}
 @media(max-width:700px){.bg-logo{width:120vw;opacity:.09}}
 .bg-glow { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
 .bg-glow::before, .bg-glow::after { content: ""; position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.55; }
@@ -168,7 +168,7 @@ body {
 /* — saturated method band — */
 .method { background:
     radial-gradient(900px 420px at 85% -40%, color-mix(in srgb, var(--color-section-glow) 70%, transparent), transparent 64%),
-    var(--color-section);
+    color-mix(in srgb, var(--color-section) 84%, transparent);
   padding: calc(2.5 * var(--leading)) 0; }
 .method .kicker { color: var(--color-text); opacity: 0.8; }
 .method .kicker::before { background: var(--color-text); opacity: 0.6; }
@@ -288,7 +288,7 @@ body {
 .aud-card li::before { content: "\2014"; position: absolute; left: 0; color: var(--color-accent-300); }
 .ai-band { position: relative; overflow: hidden; text-align: center; border: 1px solid var(--color-accent-700); border-radius: 18px;
   padding: calc(3 * var(--leading)) clamp(20px, 5vw, 56px);
-  background: radial-gradient(80% 120% at 50% 0%, color-mix(in srgb, var(--color-accent) 24%, transparent), transparent 70%), var(--color-neutral-900); }
+  background: radial-gradient(80% 120% at 50% 0%, color-mix(in srgb, var(--color-accent) 24%, transparent), transparent 70%), color-mix(in srgb, var(--color-neutral-900) 80%, transparent); }
 .ai-band .kicker { margin-bottom: var(--half); }
 .ai-body { max-width: 62ch; margin: var(--leading) auto calc(2 * var(--leading)); font-size: 16px; line-height: 1.55; color: color-mix(in srgb, var(--color-text) 82%, transparent); }
 .ai-points { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 28px); text-align: left; }
