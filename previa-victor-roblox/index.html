@@ -355,6 +355,22 @@ footer{position:relative}
 .mnote{margin:14px 0 0;font-size:12px;color:var(--muted);text-align:center}
 @media(max-width:420px){.who{flex-direction:column;align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){.mbox,.spin2{animation:none}}
+
+.who .av{width:96px;height:96px;border-radius:20px;flex:none;background:var(--card);overflow:hidden;position:relative;box-shadow:inset 0 0 0 2px var(--line)}
+.who .av img{width:100%;height:100%;object-fit:cover;display:block}
+.who .av.load::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%);animation:sweep 1.2s linear infinite}
+.who .av.fail{display:grid;place-items:center;color:var(--muted)}
+.who .av.fail .ico{width:34px;height:34px}
+.warn{display:flex;gap:12px;align-items:flex-start;margin:14px 0 0;padding:14px 16px;border-radius:14px;background:rgba(255,121,87,.12);box-shadow:inset 0 0 0 2px rgba(255,121,87,.55);font-size:15px;color:#FFD9CC}
+.warn[hidden]{display:none}
+.warn .ico{width:22px;height:22px;flex:none;color:var(--coral);margin-top:1px}
+.warn b{display:block;color:#fff}
+.mbox .btn[hidden]{display:none}
+.mbox .btn.slim{min-height:48px;font-size:16px;margin-top:10px}
+.tests{margin:14px 0 0;font-size:13px;color:var(--muted)}
+.tests span{display:block;margin-bottom:6px}
+.tests button{border:0;background:var(--card2);color:var(--ink);border-radius:99px;padding:6px 12px;margin:0 6px 6px 0;font-size:13px;font-weight:500;box-shadow:inset 0 0 0 1px var(--line)}
+.tests button:hover{box-shadow:inset 0 0 0 1px var(--violet)}
 .cart.bump{animation:bump .45s}
 @keyframes bump{40%{transform:scale(1.14) rotate(-3deg)}}
 .pack{transition:transform .12s,background .15s,box-shadow .15s}
@@ -385,6 +401,8 @@ footer{position:relative}
     <symbol id="i-pix" viewBox="0 0 24 24"><path d="M12 3 6.5 8.5a2 2 0 0 0 0 2.8L12 17"/><path d="m12 21 5.5-5.5a2 2 0 0 0 0-2.8L12 7"/><path d="M3 12h3m12 0h3"/></symbol>
     <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5M12 17.6v.1"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
     <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.5l2.2 11h10.1l2-8H6.5"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
@@ -553,6 +571,7 @@ footer{position:relative}
         </div>
         <button class="btn btn-cyan" type="submit">Procurar meu personagem</button>
       </form>
+      <div class="tests" id="tests"><span>Contas para testar a prévia:</span></div>
     </div>
 
     <div id="st2" hidden><div class="spin2" role="status" aria-label="Procurando"></div><p class="msub" style="text-align:center">Procurando o personagem...</p></div>
@@ -560,7 +579,9 @@ footer{position:relative}
     <div id="st3" hidden>
       <h2>Este é o seu personagem?</h2>
       <p class="msub">Confira o avatar e o nome. A entrega vai para esta conta.</p>
-      <div class="who"><div id="whoAv"></div><div><b id="whoName"></b><span id="whoNick"></span><em><svg class="ico"><use href="#i-check"/></svg>Conta encontrada</em></div></div>
+      <div class="who"><div class="av load" id="whoAv"></div><div><b id="whoName"></b><span id="whoNick"></span><em><svg class="ico"><use href="#i-check"/></svg>Conta encontrada</em></div></div>
+      <div class="warn" id="photoWarn" hidden><svg class="ico"><use href="#i-alert"/></svg><div><b>A foto não atualizou</b>Encontramos o nick, mas não conseguimos carregar a foto agora. Você pode tentar de novo.</div></div>
+      <button class="btn btn-line slim" id="photoRetry" type="button" hidden>Tentar buscar a foto de novo</button>
       <button class="btn btn-cyan" id="nickYes" type="button">Sim, é este</button>
       <button class="btn btn-line" id="nickNo" type="button">Não é o meu, trocar nick</button>
     </div>
@@ -571,7 +592,7 @@ footer{position:relative}
       <p class="msub" style="margin:0" id="doneTxt"></p>
       <button class="btn btn-cyan" id="goPay" type="button">Continuar para o pagamento</button>
     </div>
-    <p class="mnote">Prévia: a busca do personagem é simulada. No site final ela consulta o Roblox de verdade.</p>
+    <p class="mnote">Prévia: a busca usa contas reais de teste. No site final ela consulta qualquer nick no Roblox.</p>
   </div>
 </div>
 <div class="live" id="live" role="status" aria-live="polite"><i><svg class="ico"><use href="#i-bolt"/></svg></i><div><b id="liveT"></b><small id="liveS"></small></div></div>
@@ -715,11 +736,28 @@ function hashOf(t){var h=7;for(var i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))>>
 function avatarSvg(nick){var h=hashOf(nick.toLowerCase()),pick=function(a,k){return a[(h>>>k)%a.length]};
   var skin=pick(['#F4C9A0','#E0A878','#B97C52','#FFD9B8','#8D5A3B'],1),shirt=pick(['#8265FF','#46D9FF','#FF7957','#4dff88','#ff4fd8','#FFB000'],3),hair=pick(['#2b2250','#5a3a1c','#15151c','#e6c04a','#c2452d'],5),bg=pick(['#2a2060','#12384a','#4a2a20','#173f2a'],7);
   return '<svg viewBox="0 0 120 120" role="img" aria-label="Avatar de '+nick+'"><rect width="120" height="120" fill="'+bg+'"/><rect x="22" y="86" width="76" height="44" rx="16" fill="'+shirt+'"/><rect x="34" y="22" width="52" height="58" rx="13" fill="'+skin+'"/><rect x="32" y="16" width="56" height="24" rx="11" fill="'+hair+'"/><rect x="46" y="54" width="7" height="11" rx="2" fill="#06070D"/><rect x="67" y="54" width="7" height="11" rx="2" fill="#06070D"/><path d="M48 70q12 11 24 0" stroke="#06070D" stroke-width="4" fill="none" stroke-linecap="round"/></svg>'}
-/* No site final, esta função chama o servidor da loja: fetch('/api/roblox/usuario?nick='+nick) */
+/* Contas reais de teste. No site final, esta função chama o servidor da loja: fetch('/api/roblox/usuario?nick='+nick) */
+var DEMO={
+  roblox:{nick:'Roblox',display:'Roblox',img:'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-310966282D3529E36976BF6B07B1DC90-Png/150/150/AvatarHeadshot/Png/noFilter'},
+  builderman:{nick:'builderman',display:'builderman',img:'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-635A2AA0A87D473B6136800B5B86F761-Png/150/150/AvatarHeadshot/Png/noFilter'},
+  shedletsky:{nick:'Shedletsky',display:'Shedletsky',img:'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-3B3B81F4602EE5424673376A726F427E-Png/150/150/AvatarHeadshot/Png/noFilter'},
+  telamon:{nick:'Telamon',display:'Telamon',img:'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-5A236C18E2A030F544316F10E6E0901F-Png/150/150/AvatarHeadshot/Png/noFilter'},
+  semfoto:{nick:'semfoto',display:'Semfoto',img:null}
+};
 function lookupNick(nick){return new Promise(function(res,rej){setTimeout(function(){
-  if(/^(naoexiste|erro|teste123)/i.test(nick))return rej(new Error('nao'));
-  var disp=nick.replace(/_+/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()}).trim()||nick;
-  res({nick:nick,display:disp,svg:avatarSvg(nick)})},900)})}
+  var u=DEMO[nick.toLowerCase()];if(!u)return rej(new Error('nao'));res(u)},900)})}
+document.getElementById('tests').insertAdjacentHTML('beforeend',['Roblox','builderman','Shedletsky','Telamon','semfoto'].map(function(n){return '<button type="button" data-n="'+n+'">'+n+'</button>'}).join('')+'<span style="margin:6px 0 0">Qualquer outro nick mostra "não achamos". O nick <b>semfoto</b> mostra "a foto não atualizou".</span>');
+document.getElementById('tests').onclick=function(e){var b=e.target.closest('button');if(!b)return;document.getElementById('nick').value=b.dataset.n;document.getElementById('nick').focus()};
+function loadPhoto(u,bust){
+  var av=document.getElementById('whoAv'),warn=document.getElementById('photoWarn'),retry=document.getElementById('photoRetry');
+  warn.hidden=true;retry.hidden=true;av.className='av load';av.innerHTML='';
+  function fail(){av.className='av fail';av.innerHTML='<svg class="ico"><use href="#i-user"/></svg>';warn.hidden=false;retry.hidden=false}
+  if(!u.img){setTimeout(fail,500);return}
+  var im=new Image();im.alt='Avatar de '+u.nick;im.referrerPolicy='no-referrer';
+  var t=setTimeout(function(){im.onload=im.onerror=null;fail()},8000);
+  im.onload=function(){clearTimeout(t);av.className='av';av.innerHTML='';av.appendChild(im)};
+  im.onerror=function(){clearTimeout(t);fail()};
+  im.src=bust?u.img+'?r='+Date.now():u.img}
 var md=document.getElementById('modal'),steps=['st1','st2','st3','st4'];
 function showStep(n){steps.forEach(function(id,i){document.getElementById(id).hidden=(i!==n-1)})}
 function openCheckout(item,price){
@@ -734,8 +772,9 @@ document.getElementById('nickForm').onsubmit=function(e){e.preventDefault();
   var v=document.getElementById('nick').value.trim().replace(/^@/,''),er=document.getElementById('nickErr'),f=document.getElementById('fld');
   if(!/^[A-Za-z0-9_]{3,20}$/.test(v)){er.textContent='O nick tem de 3 a 20 letras, números ou _. Confira se escreveu certinho.';er.hidden=false;f.classList.add('bad');return}
   er.hidden=true;f.classList.remove('bad');showStep(2);
-  lookupNick(v).then(function(u){found=u;document.getElementById('whoAv').innerHTML=u.svg;document.getElementById('whoName').textContent=u.display;document.getElementById('whoNick').textContent='@'+u.nick;showStep(3)},
+  lookupNick(v).then(function(u){found=u;loadPhoto(u);document.getElementById('whoName').textContent=u.display;document.getElementById('whoNick').textContent='@'+u.nick;showStep(3)},
     function(){showStep(1);er.textContent='Não achamos esse nick. Confira se escreveu certinho e tente de novo.';er.hidden=false;f.classList.add('bad');document.getElementById('nick').focus()})};
+document.getElementById('photoRetry').onclick=function(){loadPhoto(found,true)};
 document.getElementById('nickNo').onclick=function(){showStep(1);document.getElementById('nick').select()};
 document.getElementById('nickYes').onclick=function(){document.getElementById('doneTxt').textContent=document.getElementById('sumItem').textContent+' será entregue no personagem @'+found.nick+'.';showStep(4)};
 document.getElementById('goPay').onclick=function(){closeCheckout();toast('Aqui abre o pagamento por '+(method==='pix'?'Pix':'cartão'))};
