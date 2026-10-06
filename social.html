@@ -1610,5 +1610,25 @@ footer, footer > * { text-align: center; justify-content: center; }
   }
 })();
 </script>
+<style>
+.homebtn{position:fixed;z-index:61;display:inline-flex;align-items:center;justify-content:center;padding:0 20px;min-height:46px;border-radius:99px;background:#1c1e2e;color:#d2cefd;border:1px solid #9184d9;font:600 14.5px Inter,system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 30px #0007;transition:.25s;overflow:hidden}
+.homebtn::before{content:"\2190";margin-right:8px}
+.homebtn:hover{background:#9184d9;color:#161826;box-shadow:0 0 0 1px #b5abfc66,0 0 28px #9184d977}
+.homebtn::after{content:"";position:absolute;top:-10%;left:-70%;width:40%;height:120%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-22deg);animation:homevarre 4.2s ease-in-out infinite;pointer-events:none}
+@keyframes homevarre{0%{left:-70%}55%,100%{left:140%}}
+@media(prefers-reduced-motion:reduce){.homebtn::after{display:none}}
+</style>
+<script>
+(function(){
+  var wa=document.querySelector('.wf,.wa-float'); if(!wa) return;
+  var b=document.createElement('a'); b.className='homebtn'; b.href='index.html'; b.setAttribute('aria-label','Home');
+  b.setAttribute('data-i18n','nav.home'); b.textContent='Home';
+  document.body.appendChild(b);
+  function place(){var r=wa.getBoundingClientRect(); if(!r.width) return; b.style.bottom=(innerHeight-r.bottom)+'px'; b.style.right=(innerWidth-r.left+10)+'px'; b.style.height=r.height+'px';}
+  place(); addEventListener('resize',place); addEventListener('load',place);
+  if(window.ResizeObserver) new ResizeObserver(place).observe(wa);
+  setInterval(place,1500);
+})();
+</script>
 </body>
 </html>

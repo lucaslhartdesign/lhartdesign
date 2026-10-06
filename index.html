@@ -19,7 +19,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
 .langsw{display:flex;border:1px solid var(--ln);border-radius:99px;padding:3px;background:var(--p)}.langsw button{border:0;background:none;color:var(--mu);padding:5px 11px;border-radius:99px;font:700 12px Inter;letter-spacing:.05em}.langsw button[aria-current="true"]{background:var(--gold);color:#161826}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:var(--gold2);border:1px solid var(--gold);border-radius:8px;font-weight:500;padding:13px 24px;transition:.25s}
 .btn:hover{background:color-mix(in srgb,var(--gold) 22%,transparent);box-shadow:0 0 0 1px #b5abfc66,0 0 28px #9184d955;color:#fff}
-.hero{position:relative;overflow:hidden;text-align:center;min-height:clamp(470px,72vh,640px);display:flex;align-items:center;padding:70px 0 110px;isolation:isolate}
+.hero{position:relative;overflow:hidden;text-align:center;min-height:0;display:flex;align-items:center;padding:56px 0 130px;isolation:isolate}
 .hero .wrap{position:relative;z-index:3}
 .fx{position:absolute;inset:0;z-index:0;pointer-events:none}
 .fx i{position:absolute;top:46%;left:50%;width:640px;height:640px;max-width:80vw;max-height:80vw;border-radius:50%;filter:blur(70px);animation:pulsa 6s infinite alternate ease-in-out;translate:-50% -50%}
@@ -34,7 +34,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
 @keyframes ledHue{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.led,.led .glow,.fx i,.door::before{animation:none!important}}
 .kick{display:inline-block;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold2);border:1px solid var(--ln);border-radius:99px;padding:6px 16px;background:var(--p)}
-h1{font:500 clamp(36px,6.4vw,68px)/1.06 Inter,sans-serif;letter-spacing:-.02em;margin:20px auto 16px;max-width:22ch;text-wrap:balance;color:#fff;text-shadow:0 2px 28px rgba(0,0,0,.5)}
+h1{font:500 clamp(36px,6.4vw,68px)/1.06 Inter,sans-serif;letter-spacing:-.02em;margin:6px auto 16px;max-width:22ch;text-wrap:balance;color:#fff;text-shadow:0 2px 28px rgba(0,0,0,.5)}
 .lead{color:#dfe0ee;max-width:62ch;margin:0 auto;font-size:18px;text-shadow:0 1px 18px rgba(0,0,0,.55)}
 .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 0 20px;margin-top:-64px;position:relative;z-index:4}
 .door{display:flex;flex-direction:column;background:linear-gradient(180deg,var(--p),#191b2a);border:1px solid var(--ln);border-radius:20px;padding:28px;transition:.3s;position:relative;overflow:hidden}
@@ -55,7 +55,7 @@ footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:1
 .door{align-items:center;text-align:center}.door .tag{align-self:center}
 .door ul{justify-items:center}.door li{padding-left:0}.door li::before{position:static;margin-right:8px;vertical-align:1px}
 .link{flex-direction:column;text-align:center;justify-content:center}.link p{margin:0 auto}.link .row{justify-content:center}
-.herologo{display:block;margin:0 auto;height:76px;width:auto;filter:drop-shadow(0 0 22px rgba(230,190,50,.35))}
+.herologo{display:block;margin:0 auto;height:min(380px,62vw);width:auto;max-width:100%;filter:drop-shadow(0 0 40px rgba(230,190,50,.4))}
 /* luz passando pelos selos, pelo quadro "Tem restaurante?" e pelos botões */
 .tag,.btn,.link{position:relative;overflow:hidden}
 .tag{align-self:center}

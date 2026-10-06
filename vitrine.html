@@ -163,8 +163,7 @@ h1 .g1,.sec h2 span{background:none!important;-webkit-background-clip:initial!im
 .num{background:#161826e6}
 
 /* logo da Lhart grande ao fundo, com baixa opacidade */
-.bg-logo{position:fixed;left:50%;top:52%;width:min(92vmin,1000px);aspect-ratio:1;translate:-50% -50%;background:url(assets/logo.png) center/contain no-repeat;opacity:.1;mix-blend-mode:screen;z-index:-1;pointer-events:none}
-@media(max-width:700px){.bg-logo{width:120vw;opacity:.09}}
+
 
 /* faixas translúcidas para o logo de fundo aparecer atrás */
 .alt,.bots{background:linear-gradient(rgba(25,27,43,.78),rgba(27,29,45,.78))!important}
@@ -172,13 +171,34 @@ h1 .g1,.sec h2 span{background:none!important;-webkit-background-clip:initial!im
 .cta{background:radial-gradient(900px 420px at 80% 0,rgba(53,59,128,.7),transparent 70%),rgba(38,42,96,.86)!important}
 .mq,.trust{background:rgba(28,30,46,.7)!important}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ===== centralizado + efeitos (Lhart) ===== */
+.hero .wrap{grid-template-columns:1fr!important;justify-items:center;text-align:center;gap:46px!important}
+.hero .l{margin-left:auto!important;margin-right:auto!important}
+.hero h1{max-width:18ch;margin-left:auto;margin-right:auto;text-wrap:balance}
+.row,.stats{justify-content:center}.stats{gap:60px}
+.stage{width:100%;max-width:1040px;margin-left:auto;margin-right:auto}
+.sec .wrap{text-align:center}
+.sec h2,.sec .s,.eyebrow{margin-left:auto!important;margin-right:auto!important;text-align:center!important}
+.ft,.ft *,.need div,.need div *,.faq *,.who *,.pm *,.feat *{text-align:center}
+.ft i,.feat .ft i{margin-left:auto;margin-right:auto}
+.led{position:absolute;left:0;right:0;bottom:0;height:62%;z-index:-1;pointer-events:none;animation:ledHue 10s linear infinite}
+.led .glow{position:absolute;left:0;right:0;bottom:0;height:85%;background:linear-gradient(to top,rgba(230,190,50,.7) 0%,rgba(230,190,50,.32) 45%,rgba(230,190,50,.08) 75%,transparent 100%);filter:blur(34px);animation:feixe 4s infinite alternate ease-in-out}
+.led .line{position:absolute;left:0;right:0;bottom:0;height:3px;background:#fff5c0;box-shadow:0 0 10px #e6be32,0 0 20px #e6be32,0 -5px 30px #e6be32}
+@keyframes feixe{0%{opacity:.6;transform:scaleX(.95)}100%{opacity:1;transform:scaleX(1.05)}}
+@keyframes ledHue{from{filter:hue-rotate(0)}to{filter:hue-rotate(360deg)}}
+.hero{padding-bottom:84px!important}
+.hero .kick{margin-left:auto;margin-right:auto}
+.btn,.kick{position:relative;overflow:hidden}
+.btn::after,.kick::after{content:"";position:absolute;top:-10%;left:-70%;width:45%;height:120%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.5) 50%,transparent 100%);transform:skewX(-22deg);animation:varre 3.8s ease-in-out infinite;pointer-events:none}
+.kick::after{animation-delay:1.4s}.btn+.btn::after{animation-delay:1.2s}
+@keyframes varre{0%{left:-70%}55%,100%{left:140%}}
+@media(prefers-reduced-motion:reduce){.led,.led .glow,.btn::after,.kick::after{animation:none!important}.btn::after,.kick::after{display:none}}
 </style><script src="i18n-pages.js"></script><script src="i18n-games.js"></script>
 </head><body>
-<div class="bg-glow"></div><div class="bg-logo"></div>
-<div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
+<div class="bg-glow"></div><div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
 <div class="l"><a href="index.html">Início</a><a class="on" href="vitrine.html">Game Commerce</a><a href="#bots">Bots</a><a href="#galeria">Estilos</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 18px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
 
-<div class="hero"><div class="wrap"><div><span class="kick"><i></i> Lojas · Bots · ShotCaller</span>
+<div class="hero"><div class="led" aria-hidden="true"><div class="glow"></div><div class="line"></div></div><div class="wrap"><div><span class="kick"><i></i> Lojas · Bots · ShotCaller</span>
 <h1 data-ih="g.h1">Sua loja de jogos com cara de <span class="g1">jogo</span></h1>
 <p class="l" data-ih="g.lead">Lojas de itens e moedas, bots de Discord para guilda e loja, ShotCaller e automações. A loja recebe o pedido e o bot avisa a equipe e entrega sozinho: um puxa o outro. Veja <b id="tot">26</b> estilos funcionando ao vivo e a gente monta o seu com a sua marca.</p>
 <div class="row"><a class="btn" href="#galeria">Ver os estilos ↓</a><a class="btn g" href="#bots">Ver os bots em ação</a></div>
@@ -305,4 +325,24 @@ function play(){T.forEach(clearTimeout);T=[];fd.innerHTML='';ph1.classList.remov
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!run){run=true;play()}else if(!e.isIntersecting&&run){run=false;T.forEach(clearTimeout);T=[]}}),{threshold:.35});io.observe(fl);window.__flowReplay=()=>{if(run)play()}})();
 draw();setTimeout(()=>{fit();lazy()},50);
 LH.switcher(langsw);LH.observe(document.body);LH.on(()=>{draw();links();window.__flowReplay&&window.__flowReplay()});LH.start();
-</script></body></html>
+</script><style>
+.homebtn{position:fixed;z-index:61;display:inline-flex;align-items:center;justify-content:center;padding:0 20px;min-height:46px;border-radius:99px;background:#1c1e2e;color:#d2cefd;border:1px solid #9184d9;font:600 14.5px Inter,system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 30px #0007;transition:.25s;overflow:hidden}
+.homebtn::before{content:"\2190";margin-right:8px}
+.homebtn:hover{background:#9184d9;color:#161826;box-shadow:0 0 0 1px #b5abfc66,0 0 28px #9184d977}
+.homebtn::after{content:"";position:absolute;top:-10%;left:-70%;width:40%;height:120%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-22deg);animation:homevarre 4.2s ease-in-out infinite;pointer-events:none}
+@keyframes homevarre{0%{left:-70%}55%,100%{left:140%}}
+@media(prefers-reduced-motion:reduce){.homebtn::after{display:none}}
+</style>
+<script>
+(function(){
+  var wa=document.querySelector('.wf,.wa-float'); if(!wa) return;
+  var b=document.createElement('a'); b.className='homebtn'; b.href='index.html'; b.setAttribute('aria-label','Home');
+  b.textContent=(window.LH&&LH.t)?LH.t('In\u00edcio'):'In\u00edcio'; if(window.LH&&LH.on) LH.on(function(){b.textContent=LH.t('In\u00edcio');});
+  document.body.appendChild(b);
+  function place(){var r=wa.getBoundingClientRect(); if(!r.width) return; b.style.bottom=(innerHeight-r.bottom)+'px'; b.style.right=(innerWidth-r.left+10)+'px'; b.style.height=r.height+'px';}
+  place(); addEventListener('resize',place); addEventListener('load',place);
+  if(window.ResizeObserver) new ResizeObserver(place).observe(wa);
+  setInterval(place,1500);
+})();
+</script>
+</body></html>
