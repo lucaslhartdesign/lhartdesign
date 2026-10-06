@@ -738,6 +738,7 @@ function avatarSvg(nick){var h=hashOf(nick.toLowerCase()),pick=function(a,k){ret
   return '<svg viewBox="0 0 120 120" role="img" aria-label="Avatar de '+nick+'"><rect width="120" height="120" fill="'+bg+'"/><rect x="22" y="86" width="76" height="44" rx="16" fill="'+shirt+'"/><rect x="34" y="22" width="52" height="58" rx="13" fill="'+skin+'"/><rect x="32" y="16" width="56" height="24" rx="11" fill="'+hair+'"/><rect x="46" y="54" width="7" height="11" rx="2" fill="#06070D"/><rect x="67" y="54" width="7" height="11" rx="2" fill="#06070D"/><path d="M48 70q12 11 24 0" stroke="#06070D" stroke-width="4" fill="none" stroke-linecap="round"/></svg>'}
 /* Contas reais de teste. No site final, esta função chama o servidor da loja: fetch('/api/roblox/usuario?nick='+nick) */
 var DEMO={
+  paidomigueliito:{nick:'Paidomigueliito',display:'Paidomigueliito',img:'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-3026F9807A6B9FAF451C07E92764A94F-Png/150/150/AvatarHeadshot/Png/noFilter'},
   roblox:{nick:'Roblox',display:'Roblox',img:'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-310966282D3529E36976BF6B07B1DC90-Png/150/150/AvatarHeadshot/Png/noFilter'},
   builderman:{nick:'builderman',display:'builderman',img:'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-635A2AA0A87D473B6136800B5B86F761-Png/150/150/AvatarHeadshot/Png/noFilter'},
   shedletsky:{nick:'Shedletsky',display:'Shedletsky',img:'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-3B3B81F4602EE5424673376A726F427E-Png/150/150/AvatarHeadshot/Png/noFilter'},
@@ -746,7 +747,7 @@ var DEMO={
 };
 function lookupNick(nick){return new Promise(function(res,rej){setTimeout(function(){
   var u=DEMO[nick.toLowerCase()];if(!u)return rej(new Error('nao'));res(u)},900)})}
-document.getElementById('tests').insertAdjacentHTML('beforeend',['Roblox','builderman','Shedletsky','Telamon','semfoto'].map(function(n){return '<button type="button" data-n="'+n+'">'+n+'</button>'}).join('')+'<span style="margin:6px 0 0">Qualquer outro nick mostra "não achamos". O nick <b>semfoto</b> mostra "a foto não atualizou".</span>');
+document.getElementById('tests').insertAdjacentHTML('beforeend',['Paidomigueliito','Roblox','builderman','Shedletsky','Telamon','semfoto'].map(function(n){return '<button type="button" data-n="'+n+'">'+n+'</button>'}).join('')+'<span style="margin:6px 0 0">Qualquer outro nick mostra "não achamos". O nick <b>semfoto</b> mostra "a foto não atualizou".</span>');
 document.getElementById('tests').onclick=function(e){var b=e.target.closest('button');if(!b)return;document.getElementById('nick').value=b.dataset.n;document.getElementById('nick').focus()};
 function loadPhoto(u,bust){
   var av=document.getElementById('whoAv'),warn=document.getElementById('photoWarn'),retry=document.getElementById('photoRetry');
