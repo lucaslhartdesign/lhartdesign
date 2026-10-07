@@ -263,15 +263,30 @@ th{color:#9184d9;background:#191b2b}
  .stage .cap{font-size:10px;padding:4px 11px;letter-spacing:.12em}
  .hint{display:inline-block;color:var(--gold);font-weight:700;font-size:14px;border-bottom:1px dashed #9184d980;padding-bottom:2px}
 }
+/* topo: texto à esquerda, lista à direita e os botões embaixo dos dois */
+.hero .wrap{display:grid!important;grid-template-columns:1.05fr .95fr!important;grid-template-areas:"txt chk" "row row" "stg stg"!important;column-gap:clamp(28px,5vw,72px)!important;row-gap:34px!important;justify-items:stretch!important;align-items:center!important;text-align:left!important}
+.hero .htxt{grid-area:txt;text-align:left}
+.hero .htxt .kick{margin-left:0;margin-right:0}
+.hero .htxt h1{max-width:none;margin-left:0;margin-right:0;text-align:left}
+.hero .htxt .l{margin:0!important;max-width:52ch;text-align:left}
+.hero .chk{grid-area:chk;margin:0;gap:18px;justify-self:start;text-align:left}
+.hero .chk li{font-size:clamp(16px,1.35vw,19px);line-height:1.4;text-align:left}
+.hero .row{grid-area:row;justify-content:center;margin:6px 0 0}
+.hero .stage{grid-area:stg}
+@media(max-width:900px){
+ .hero .wrap{grid-template-columns:1fr!important;grid-template-areas:"txt" "chk" "row" "stg"!important;justify-items:center!important;text-align:center!important}
+ .hero .htxt,.hero .htxt h1,.hero .htxt .l{text-align:center}
+ .hero .htxt .kick{margin-left:auto;margin-right:auto}.hero .htxt h1{margin-left:auto;margin-right:auto}.hero .htxt .l{margin:0 auto!important}
+ .hero .chk{justify-self:center;max-width:460px}
+}
 </style></head><body>
 <div class="bg-glow"></div><div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
 <div class="l"><a href="index.html">Início</a><a href="social.html">Social Media &amp; Tráfego</a><a class="on" href="delivery.html">Apps de Delivery</a><a href="#estilos">Estilos</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
 
-<div class="hero"><div class="led" aria-hidden="true"><div class="glow"></div><div class="line"></div></div><div class="wrap"><div><span class="kick"><i></i> Delivery próprio</span>
+<div class="hero"><div class="led" aria-hidden="true"><div class="glow"></div><div class="line"></div></div><div class="wrap"><div class="htxt"><span class="kick"><i></i> Delivery próprio</span>
 <h1 data-ih="d.h1">Seu delivery, <em>sem dividir</em> o lucro</h1>
 <p class="l">Site e app de pedidos com a sua marca: o cliente pede, a cozinha recebe e o motoboy entrega, tudo sincronizado e sem comissão por pedido. Os três apps abaixo estão rodando de verdade, e conversam entre si.</p>
-<div class="row"><a class="btn" href="#estilos">Ver os 6 estilos ↓</a><a class="btn g" href="#tutorial">Ver o tutorial</a></div>
-<ul class="chk"><li>Cardápio com foto, preço e cupom de desconto</li><li>Motoboy no mapa em tempo real, com aviso de “chegando”</li><li>Pix e cartão pela API do banco, dinheiro direto na sua conta</li><li>Tela da cozinha com os pedidos na ordem de chegada</li></ul></div>
+</div><ul class="chk"><li>Cardápio com foto, preço e cupom de desconto</li><li>Motoboy no mapa em tempo real, com aviso de “chegando”</li><li>Pix e cartão pela API do banco, dinheiro direto na sua conta</li><li>Tela da cozinha com os pedidos na ordem de chegada</li></ul><div class="row"><a class="btn" href="#estilos">Ver os 6 estilos ↓</a><a class="btn g" href="#tutorial">Ver o tutorial</a></div>
 <div class="stage" id="stage"><div class="hcol a"><div class="fr ph" data-v="cliente" data-w="390"><iframe data-src="demos/delivery-sabor-express.html?view=cliente" title="Cliente"></iframe></div><span class="cap">📱 Cliente</span></div><div class="hcol b"><div class="fr tb" data-v="cozinha" data-w="900" data-wm="620"><iframe data-src="demos/delivery-sabor-express.html?view=cozinha" title="Cozinha"></iframe></div><span class="cap">👨‍🍳 Cozinha</span></div><div class="hcol c"><div class="fr ph" data-v="motoboy" data-w="390"><iframe data-src="demos/delivery-sabor-express.html?view=motoboy" title="Motoboy"></iframe></div><span class="cap">🛵 Motoboy</span></div></div><a class="hint" href="#tutorial">Veja cada tela em tamanho real ↓</a></div></div>
 <div class="trust"><div class="wrap"><span>Sem comissão por pedido</span><span>Dinheiro direto na conta do restaurante</span><span>Português, inglês e espanhol</span><span>Android e iPhone</span><span>Google Maps integrado</span></div></div>
 
