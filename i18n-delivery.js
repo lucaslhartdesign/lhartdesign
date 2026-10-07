@@ -7,6 +7,7 @@ LH.html({
   'd.app': { pt: 'Entrega <em>mais rápida</em> com app web', en: '<em>Faster</em> launch with a web app', es: 'Lanzamiento <em>más rápido</em> con app web' },
   'd.rec': { pt: 'O que vem <em>no pacote</em>', en: 'What <em>comes in the package</em>', es: 'Qué <em>incluye el paquete</em>' },
   'd.est': { pt: '6 estilos para <em>cada tipo de cozinha</em>', en: '6 styles for <em>every kind of kitchen</em>', es: '6 estilos para <em>cada tipo de cocina</em>' },
+  'd.preco': { pt: 'Preço <em>fixo</em>, sem comissão', en: '<em>Fixed</em> price, no commission', es: 'Precio <em>fijo</em>, sin comisión' },
   'd.need': { pt: 'Para <em>entrar no ar</em>', en: 'To <em>go live</em>', es: 'Para <em>salir al aire</em>' }
 });
 LH.add([
@@ -156,6 +157,18 @@ LH.add([
   ['Açaí, bowls e sucos. Roxo vibrante, cantos bem redondos e cardápio em grade.', 'Açaí, bowls and juices. Vibrant purple, very rounded corners and a grid-style menu.', 'Açaí, bowls y jugos. Morado vibrante, esquinas muy redondeadas y menú en cuadrícula.'],
   ['Marmitaria e comida caseira. Tons quentes de laranja e creme, aconchegante.', 'Lunchbox and home-cooked food. Warm orange and cream tones, cozy.', 'Viandas y comida casera. Tonos cálidos de naranja y crema, acogedor.'],
   ['Ver ao vivo', 'View live', 'Ver en vivo'], ['Quero este', 'I want this', 'Quiero este'], ['Prévia', 'Preview', 'Vista previa'], ['Abrir ao vivo →', 'Open live →', 'Abrir en vivo →'],
+  /* valores */
+  ['Valores', 'Pricing', 'Valores'], ['Uma mensalidade pelo uso do app. Nenhuma porcentagem sobre os seus pedidos.', 'One monthly fee for using the app. No percentage of your orders.', 'Una mensualidad por el uso de la app. Ningún porcentaje sobre tus pedidos.'],
+  ['Meses 1 e 2', 'Months 1 and 2', 'Meses 1 y 2'], ['A partir do mês 3', 'From month 3', 'Desde el mes 3'], ['/mês', '/month', '/mes'],
+  ['Para começar e ver o app funcionando na sua operação.', 'To get started and see the app working in your operation.', 'Para empezar y ver la app funcionando en tu operación.'],
+  ['Valor fixo, que não muda com o seu movimento de pedidos.', 'A fixed amount that does not change with your order volume.', 'Un valor fijo que no cambia con tu volumen de pedidos.'],
+  ['A mensalidade cobre', 'The monthly fee covers', 'La mensualidad cubre'], ['Cobrado à parte', 'Charged separately', 'Se cobra aparte'],
+  ['Uso do app do cliente, da cozinha e do motoboy', 'Use of the customer, kitchen and courier apps', 'Uso de la app del cliente, la cocina y el repartidor'],
+  ['Hospedagem e manutenção do sistema', 'Hosting and system maintenance', 'Hosting y mantenimiento del sistema'],
+  ['Atualizações e suporte por WhatsApp', 'Updates and support via WhatsApp', 'Actualizaciones y soporte por WhatsApp'],
+  ['Implantação (cardápio, tema e treino da equipe): sob consulta', 'Setup (menu, theme and team training): on request', 'Implantación (menú, tema y capacitación del equipo): a consultar'],
+  ['Taxas do Pix e do cartão, pagas ao provedor de pagamento', 'Pix and card fees, paid to the payment provider', 'Tarifas de Pix y tarjeta, pagadas al proveedor de pago'],
+  ['Fotos, vídeos e tráfego pago, se você quiser', 'Photos, videos and paid traffic, if you want them', 'Fotos, videos y tráfico pago, si lo deseas'],
   /* entrar no ar */
   ['Próximos passos', 'Next steps', 'Próximos pasos'], ['O que precisamos de você para configurar o sistema com os dados reais do restaurante.', 'What we need from you to set up the system with the restaurant\'s real data.', 'Lo que necesitamos de ti para configurar el sistema con los datos reales del restaurante.'],
   ['Cardápio e fotos', 'Menu and photos', 'Menú y fotos'], ['Produtos, preços, categorias e fotos dos pratos', 'Products, prices, categories and photos of the dishes', 'Productos, precios, categorías y fotos de los platos'],
