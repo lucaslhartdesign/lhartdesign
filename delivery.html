@@ -228,10 +228,6 @@ th{color:#9184d9;background:#191b2b}
 .row,.stats{justify-content:center}.stats{gap:60px}
 .stage{width:100%;max-width:1040px;margin-left:auto;margin-right:auto}
 .sec .wrap{text-align:center}
-.prc .bx{text-align:center}.per{display:inline-block;font:700 12px Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
-.amt{font:600 clamp(44px,6vw,68px)/1.05 Inter,sans-serif;margin:10px 0 8px;letter-spacing:-.02em}.amt small{font:500 18px Inter,sans-serif;color:var(--mu);margin-left:4px}
-.prc .bx p{margin:0;color:#cfd3e5;font-size:15.5px}.prc .hl{border-color:#9184d9;box-shadow:0 0 0 1px #9184d966,0 18px 50px #9184d92e}
-#precos .two .bx ul{text-align:left}#precos .two .bx h3{text-align:center}
 .sec h2,.sec .s,.eyebrow{margin-left:auto!important;margin-right:auto!important;text-align:center!important}
 .ft,.ft *,.need div,.need div *,.faq *,.who *,.pm *,.feat *{text-align:center}
 .ft i,.feat .ft i{margin-left:auto;margin-right:auto}
@@ -263,22 +259,19 @@ th{color:#9184d9;background:#191b2b}
  .stage .cap{font-size:10px;padding:4px 11px;letter-spacing:.12em}
  .hint{display:inline-block;color:var(--gold);font-weight:700;font-size:14px;border-bottom:1px dashed #9184d980;padding-bottom:2px}
 }
-/* topo: texto à esquerda, lista à direita e os botões embaixo dos dois */
-.hero .wrap{display:grid!important;grid-template-columns:1.05fr .95fr!important;grid-template-areas:"txt chk" "row row" "stg stg"!important;column-gap:clamp(28px,5vw,72px)!important;row-gap:34px!important;justify-items:stretch!important;align-items:center!important;text-align:left!important}
-.hero .htxt{grid-area:txt;text-align:left}
-.hero .htxt .kick{margin-left:0;margin-right:0}
-.hero .htxt h1{max-width:none;margin-left:0;margin-right:0;text-align:left}
-.hero .htxt .l{margin:0!important;max-width:52ch;text-align:left}
-.hero .chk{grid-area:chk;margin:0;gap:18px;justify-self:start;text-align:left}
-.hero .chk li{font-size:clamp(16px,1.35vw,19px);line-height:1.4;text-align:left}
-.hero .row{grid-area:row;justify-content:center;margin:6px 0 0}
+/* topo: tudo centralizado; texto, botões, faixa com os 4 benefícios e depois os aparelhos */
+.hero .wrap{display:grid!important;grid-template-columns:1fr!important;grid-template-areas:"txt" "row" "chk" "stg"!important;row-gap:30px!important;justify-items:center!important;align-items:start!important;text-align:center!important}
+.hero .htxt{grid-area:txt;text-align:center}
+.hero .htxt .kick{margin-left:auto;margin-right:auto}
+.hero .htxt h1{max-width:18ch;margin-left:auto;margin-right:auto;text-align:center;text-wrap:balance}
+.hero .htxt .l{margin:0 auto!important;max-width:60ch;text-align:center}
+.hero .row{grid-area:row;justify-content:center;margin:0}
+.hero .chk{grid-area:chk;width:100%;max-width:1040px;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:center}
+.hero .chk li{flex-direction:column;align-items:center;justify-content:flex-start;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--ln);border-radius:14px;padding:18px 16px;font-size:15px;line-height:1.4;text-align:center}
+.hero .chk li::before{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#9184d933;color:var(--gold);font-size:15px;flex:none}
 .hero .stage{grid-area:stg}
-@media(max-width:900px){
- .hero .wrap{grid-template-columns:1fr!important;grid-template-areas:"txt" "chk" "row" "stg"!important;justify-items:center!important;text-align:center!important}
- .hero .htxt,.hero .htxt h1,.hero .htxt .l{text-align:center}
- .hero .htxt .kick{margin-left:auto;margin-right:auto}.hero .htxt h1{margin-left:auto;margin-right:auto}.hero .htxt .l{margin:0 auto!important}
- .hero .chk{justify-self:center;max-width:460px}
-}
+@media(max-width:900px){.hero .chk{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.hero .chk{gap:10px}.hero .chk li{padding:14px 10px;font-size:13.5px;gap:9px}}
 </style></head><body>
 <div class="bg-glow"></div><div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
 <div class="l"><a href="index.html">Início</a><a href="social.html">Social Media &amp; Tráfego</a><a class="on" href="delivery.html">Apps de Delivery</a><a href="#estilos">Estilos</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
@@ -352,11 +345,6 @@ th{color:#9184d9;background:#191b2b}
 <div class="ft"><i>⚡</i><h4>Pix automático</h4><p>Pagamento confirmado sozinho, com opção de cartão e dinheiro na entrega.</p></div><div class="ft"><i>🔔</i><h4>Avisos</h4><p>Alerta sonoro na cozinha e aviso de cada etapa no celular do cliente.</p></div><div class="ft"><i>📊</i><h4>Relatórios</h4><p>Vendas por dia, produtos mais pedidos e tempo médio de entrega.</p></div><div class="ft"><i>🔗</i><h4>Discord e WhatsApp</h4><p>Pedido novo e entrega avisados no canal da equipe, se você quiser.</p></div></div></div></div>
 
 <div class="sec alt" id="estilos"><div class="wrap"><span class="eyebrow">Estilos</span><h2 data-ih="d.est">6 estilos para <em>cada tipo de cozinha</em></h2><p class="s">Mexa de verdade: faça um pedido no app do cliente e veja ele aparecer na cozinha e no motoboy.</p><div class="gal" id="gal"></div></div></div>
-
-<div class="sec alt" id="precos"><div class="wrap"><span class="eyebrow">Valores</span><h2 data-ih="d.preco">Preço <em>fixo</em>, sem comissão</h2><p class="s">Uma mensalidade pelo uso do app. Nenhuma porcentagem sobre os seus pedidos.</p>
-<div class="two prc"><div class="bx"><span class="per">Meses 1 e 2</span><div class="amt">R$ 199<small>/mês</small></div><p>Para começar e ver o app funcionando na sua operação.</p></div><div class="bx hl"><span class="per">A partir do mês 3</span><div class="amt">R$ 299<small>/mês</small></div><p>Valor fixo, que não muda com o seu movimento de pedidos.</p></div></div>
-<div class="two"><div class="bx"><h3>A mensalidade cobre</h3><ul><li>Uso do app do cliente, da cozinha e do motoboy</li><li>Hospedagem e manutenção do sistema</li><li>Atualizações e suporte por WhatsApp</li></ul></div>
-<div class="bx"><h3>Cobrado à parte</h3><ul><li>Implantação (cardápio, tema e treino da equipe): sob consulta</li><li>Taxas do Pix e do cartão, pagas ao provedor de pagamento</li><li>Fotos, vídeos e tráfego pago, se você quiser</li></ul></div></div></div></div>
 
 <div class="sec"><div class="wrap"><span class="eyebrow">Próximos passos</span><h2 data-ih="d.need">Para <em>entrar no ar</em></h2><p class="s">O que precisamos de você para configurar o sistema com os dados reais do restaurante.</p>
 <div class="need"><div><b>Cardápio e fotos</b><span>Produtos, preços, categorias e fotos dos pratos</span></div><div><b>Endereço e horários</b><span>Local da loja, área e taxa de entrega</span></div><div><b>Pagamento</b><span>Conta no banco ou na plataforma de pagamento, no nome do restaurante</span></div><div><b>Google Maps</b><span>Chave do Google para mapa e rotas (criada na conta do restaurante)</span></div><div><b>Marca</b><span>Logo, cores e nome do restaurante</span></div><div><b>Equipe</b><span>Quem usa a cozinha e quem são os motoboys</span></div></div>
