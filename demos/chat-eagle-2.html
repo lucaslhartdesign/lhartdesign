@@ -199,6 +199,94 @@ body{margin:0;font-family:"Segoe UI",system-ui,Arial,sans-serif;font-size:13px;l
 .nota-linha b{color:var(--txt)}
 .rodape{bottom:3.2mm}
 
+
+.cz,.cd{position:relative;height:167mm;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--bg2)}
+.cz{display:flex;flex-direction:column}
+.cz .topbar{display:flex;align-items:center;gap:14px;padding:15px 24px;background:var(--panel);border-bottom:1px solid var(--line)}
+.solto{display:inline-flex;gap:9px;align-items:center;padding:10px 16px;border-radius:99px;border:1px solid var(--line);background:var(--panel2);font-size:13.5px;color:var(--txt);white-space:nowrap}
+.solto .badge{background:var(--acc);color:#fff}
+.cz .quem{display:flex;gap:13px;align-items:center;margin:0 auto}
+.cz .quem b{font-size:17px;display:block}
+.cz .quem small{color:var(--txt2);font-size:13px}
+.cz .proxima{display:flex;align-items:center;gap:12px;margin:14px auto 0;width:min(760px,calc(100% - 48px));padding:10px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:13px;color:var(--txt2)}
+.cz .proxima b{color:var(--txt)}
+.cz .fio{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 0 4px;min-height:0}
+.cz .coluna{width:min(760px,100%);margin:0 auto;display:flex;flex-direction:column;gap:17px;padding:0 24px}
+.cz .bolha{font-size:15.2px;padding:13px 19px;max-width:78%;line-height:1.5}
+.cz .avatar.p{width:34px;height:34px;font-size:13px}
+.cz .chips{width:min(760px,100%);margin:6px auto 12px;padding:0 24px;display:flex;gap:9px;flex-wrap:wrap}
+.cz .chips span{font-size:13px;border:1px solid var(--line);background:var(--panel);color:var(--txt2);border-radius:99px;padding:6px 15px;cursor:pointer}
+.compg{display:flex;gap:11px;align-items:center}
+.cz .compg{width:min(760px,100%);margin:0 auto 22px;padding:0 24px}
+.compg .campo{flex:1;padding:15px 22px;font-size:15px;border:1px solid var(--line);background:var(--panel);border-radius:99px;color:var(--txt3)}
+.compg .ic{width:46px;height:46px;font-size:18px}
+.compg .btn{padding:14px 26px;font-size:14.5px}
+.cz .veu{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:2;display:none}
+.cz .gl,.cz .gr{position:absolute;top:0;bottom:0;width:372px;background:var(--panel);z-index:3;display:none;flex-direction:column;box-shadow:var(--shadow)}
+.cz .gl{left:0;border-right:1px solid var(--line)}
+.cz .gr{right:0;border-left:1px solid var(--line);padding:24px;gap:15px}
+.cz.fila .gl,.cz.ped .gr{display:flex}
+.cz.fila .veu,.cz.ped .veu{display:block}
+.cz .gl-topo{padding:22px 22px 8px;display:flex;justify-content:space-between;align-items:center}
+.cz .gl-topo h3,.cz .gr h3{margin:0;font-size:19px}
+.cz .gl .busca{margin:8px 22px 12px;padding:12px 18px;font-size:14px}
+.cz .gl .filtros{padding:0 22px 12px;gap:8px}
+.cz .gl .filtros span{font-size:12.8px;padding:6px 14px}
+.cz .gl .linha-inbox{padding:17px 22px;gap:14px}
+.cz .gl .linha-inbox b{font-size:14.8px}
+.cz .gl .linha-inbox p{font-size:13.4px;max-width:210px}
+.cz .gl .avatar{width:46px;height:46px;font-size:17px}
+.cz .gr .box{padding:16px 18px}
+.cz .gr .box h5{font-size:11.5px;margin-bottom:10px}
+.cz .gr .kv{font-size:14.2px;padding:4px 0}
+.cz .gr .sel-st{font-size:13.5px;padding:9px 12px}
+
+.cd{display:grid;grid-template-columns:318px minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.cd .fila{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.cd .fila-topo{padding:22px 22px 12px;display:flex;justify-content:space-between;align-items:center}
+.cd .fila-topo h3{margin:0;font-size:20px}
+.cd .seg{display:flex;gap:4px;padding:4px;background:var(--panel2);border-radius:99px;margin:0 18px 12px}
+.cd .seg span{flex:1;text-align:center;padding:7px 8px;font-size:13px;border-radius:99px;color:var(--txt2);white-space:nowrap}
+.cd .seg span.on{background:var(--acc);color:#04101f;font-weight:700}
+.v4 .cd .seg span.on{color:#fff}
+.cd .lin{display:flex;gap:14px;padding:17px 22px;border-top:1px solid var(--line);cursor:pointer}
+.cd .lin.sel{background:var(--acc-soft)}
+.cd .lin .avatar{width:46px;height:46px;font-size:17px}
+.cd .lin b{font-size:15px;display:flex;justify-content:space-between;gap:8px}
+.cd .lin b small{font-weight:400;color:var(--txt3);font-size:12px}
+.cd .lin p{margin:3px 0 0;color:var(--txt2);font-size:13.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+.cd .pto{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.cd .lin .badge{align-self:center}
+.cd .principal{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative}
+.cd .topo-c{display:flex;align-items:center;gap:15px;padding:17px 28px;background:var(--panel);border-bottom:1px solid var(--line)}
+.cd .topo-c b{font-size:18px;display:block}
+.cd .topo-c small{color:var(--txt2);font-size:13.4px}
+.cd .seg2{margin-left:auto;display:flex;gap:4px;padding:4px;background:var(--panel2);border-radius:99px}
+.cd .seg2 span{padding:8px 20px;border-radius:99px;font-size:13.5px;color:var(--txt2);cursor:pointer}
+.cd .seg2 span.on{background:var(--acc);color:#04101f;font-weight:700}
+.v4 .cd .seg2 span.on{color:#fff}
+.cd .fio{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 0 4px;min-height:0}
+.cd .coluna{display:flex;flex-direction:column;gap:17px;padding:0 34px}
+.cd .bolha{font-size:15.2px;padding:13px 19px;max-width:76%}
+.cd .avatar.p{width:34px;height:34px;font-size:13px}
+.cd .compg{margin:12px 28px 24px}
+.cd .compg .solto{cursor:pointer}
+.cd .pop-resp{position:absolute;left:28px;bottom:92px;width:400px;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:10px;z-index:4;display:none}
+.cd.pop .pop-resp{display:block}
+.cd .pop-resp h4{margin:6px 10px 8px;font-size:12.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px}
+.cd .pop-resp div.i{padding:11px 14px;border-radius:10px;font-size:14px;color:var(--txt);cursor:pointer}
+.cd .pop-resp div.i:hover,.cd .pop-resp div.i.f{background:var(--acc-soft)}
+.cd .pop-resp div.i small{display:block;color:var(--txt3);font-size:12.2px;margin-top:2px}
+.cd .pedido-aba{padding:24px 30px;display:grid;grid-template-columns:1fr 1fr;gap:18px;align-content:start;flex:1;overflow:hidden}
+.cd .pedido-aba .box{padding:18px 20px}
+.cd .pedido-aba .box h5{font-size:11.5px;margin-bottom:10px}
+.cd .pedido-aba .kv{font-size:14.4px;padding:4px 0}
+.cd .pedido-aba .sel-st{font-size:14px;padding:10px 14px;margin-top:10px}
+.cd .acoes-ped{padding:0 30px 24px;gap:12px;display:flex}
+.cd .acoes-ped .btn{padding:13px 24px;font-size:14px}
+.cd .so-pedido,.cd .so-conversa{display:flex;flex-direction:column;flex:1;min-height:0}
+.cd.aba-pedido .so-conversa,.cd:not(.aba-pedido) .so-pedido{display:none}
+
 .v4 .janela{border:1px solid var(--line)}
 .v4 .bolha.me{border-bottom-right-radius:5px}
 .v4 .bolha.them{border-bottom-left-radius:5px}
@@ -251,29 +339,22 @@ button.btn{display:inline-block}
 }
 
 
-.c2{width:1100px}
-.cx .fila-aberta,.cx .sombra-fila{display:none}
-.cx.aberta .fila-aberta{display:flex}
-.cx.aberta .sombra-fila{display:block}
-.rail .it,.rail .ic{cursor:pointer}
-.abas-int span{cursor:pointer}
+.c2{width:980px}
+.cz [data-abrir],.cd [data-aba-c],.cd [data-resp],.cz .chips span,.cd .lin{cursor:pointer}
 .tema.v4 .so-v5{display:none}
 .tema.v5 .so-v4{display:none}
-.so-v5[data-aba=pedido] .v5a{display:none}
-.so-v5[data-aba=conversa] .v5b{display:none}
-
 .v4 .grupo button.on{background:#3b8cff}
 .v5 .grupo button.on{background:linear-gradient(135deg,#1e7bff,#1db0d8)}
 </style></head><body>
     <div class="tema v4" id="tema">
       <div class="topo-demo">
         <div class="tag">Redesenho do chat · Nova rodada</div>
-        <h1>Duas opções escuras, com a Central mais espaçosa</h1>
+        <h1>Duas opções escuras, com a Central bem mais espaçosa</h1>
         <p>O chat do cliente mantém o desenho aprovado; mudam as cores e a Central de atendimento. Escolha a opção e a tela. O chat funciona: digite uma mensagem e veja a resposta. Nomes e valores são de exemplo.</p>
         <div class="seletores">
           <div class="grupo">
-            <button data-tema="v4" class="on" data-lema="Um escuro neutro, sem tom de azul no fundo, para o azul da marca aparecer só onde importa. A Central ganha uma faixa de conversas e muito mais espaço.">Opção 4 · Grafite e Azul</button>
-            <button data-tema="v5" data-lema="O azul profundo da loja com o ciano que já aparece no site. A Central fica em duas colunas, e o pedido ganha uma aba só dele.">Opção 5 · Azul Noite e Ciano</button>
+            <button data-tema="v4" class="on" data-lema="Um escuro neutro, sem tom de azul no fundo, para o azul da marca aparecer só onde importa. A Central vira uma tela de foco: só a conversa, com a fila e o pedido abrindo quando você chama.">Opção 4 · Grafite e Azul</button>
+            <button data-tema="v5" data-lema="O azul profundo da loja com o ciano que já aparece no site. A Central fica em duas colunas largas, com muito menos informação em cada linha, e o pedido numa aba própria.">Opção 5 · Azul Noite e Ciano</button>
           </div>
           <div class="grupo">
             <button data-aba="c1" class="on">Chat do cliente</button>
@@ -281,7 +362,7 @@ button.btn{display:inline-block}
             <button data-aba="c3">Chat da equipe</button>
           </div>
         </div>
-        <div class="lema" id="lema">Um escuro neutro, sem tom de azul no fundo, para o azul da marca aparecer só onde importa. A Central ganha uma faixa de conversas e muito mais espaço.</div>
+        <div class="lema" id="lema">Um escuro neutro, sem tom de azul no fundo, para o azul da marca aparecer só onde importa. A Central vira uma tela de foco: só a conversa, com a fila e o pedido abrindo quando você chama.</div>
       </div>
       <div class="palco"><div id="vitrine" class="vitrine">
         <div class="canvas c1 on" id="c1">
@@ -321,73 +402,48 @@ button.btn{display:inline-block}
       <div class="composer"><span class="ic">+</span><input class="campo" style="padding:7px 11px" placeholder="Mensagem…"><button type="button" class="ic" data-enviar style="background:var(--acc);color:#fff;border:0">➤</button></div>
     </div></div></div>
         <div class="canvas c2" id="c2">
-      <div class="so-v4"><div class="cx g4"><div class="rail"><span class="ic" title="Buscar">⌕</span><div class="sep"></div><div class="it sel"><span class="avatar  on" style="background:#0ea5e9">L</span><span class="badge">2</span></div><div class="it"><span class="avatar  on" style="background:#f472b6">M</span><span class="badge">1</span></div><div class="it"><span class="avatar " style="background:#22c55e">R</span></div><div class="it"><span class="avatar " style="background:#f59e0b">A</span><span class="badge">1</span></div><div class="it"><span class="avatar " style="background:#a78bfa">D</span></div><div class="sep"></div><span class="ic">☰</span></div>
-      <div class="col-chat"><div class="cab" style="background:var(--panel)"><span class="avatar g on" style="background:#0ea5e9">L</span>
-      <div><b>Lucas M. · #0290</b><small>Path of Exile 2 · cliente desde 2025</small></div>
-      <span class="chip warn" style="margin-left:auto">Em entrega</span>
-      <span class="btn q" style="background:var(--panel2);color:var(--txt2);border:1px solid var(--line)">Encerrar</span></div><div class="conversa">
-  <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">Oi, tudo bem? Fiz o pagamento agora há pouco.<span class="hora">10:38</span></div></div>
-  <div class="sistema">Pagamento confirmado ✓ 10:41</div>
-  <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Oi, Lucas! Já estou separando seus Divine Orb. Qual o nome do seu personagem?<span class="hora">10:42 <span class=visto>✓✓ visto</span></span></div></div>
-  <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">É o ExileBR_Lucas<span class="hora">10:43</span></div></div>
-  <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Perfeito! Enviei o trade, é só aceitar.<span class="hora">10:46 <span class=visto>✓✓ visto</span></span></div></div>
-</div><div class="resp"><span>Pagamento confirmado</span><span>Enviando agora</span><span>Entregue, confere aí</span><span>Pedir nome do personagem</span><span>+ Código entregue</span></div><div class="composer"><span class="ic">+</span><input class="campo" placeholder="Mensagem para o cliente…"><button type="button" class="btn" data-enviar>Enviar ao cliente</button></div></div>
-      <div class="col-pedido">
-      <div class="box"><h5>Pedido #0290</h5>
-        <div class="kv"><span>Pagamento</span><b>Pix · pago</b></div>
-        <div class="kv"><span>Total</span><b>R$ 24,50</b></div>
-        <div class="sel-st"><span>Em entrega</span><span>▾</span></div></div>
-      <div class="box"><h5>Cliente</h5>
-        <div class="kv"><span>Nome</span><b>Lucas M.</b></div>
-        <div class="kv"><span>WhatsApp</span><b>(11) 9•••-1234</b></div></div>
-      <div class="box"><h5>Itens</h5>
-        <div class="kv"><span>50× Divine Orb</span><b>R$ 24,50</b></div>
-        <div class="kv"><span>Liga</span><b>Standard</b></div></div>
-      <div class="box"><h5>Andamento</h5><ul class="tl"><li>Em entrega · Camila</li><li>Pago · Pix automático</li></ul></div></div><div class="sombra-fila"></div><div class="fila-aberta">
-          <div class="busca">Buscar conversa</div>
-          <div class="filtros"><span class="on2">Todas 12</span><span>Não lidas 3</span><span>Com problema 1</span><span>Finalizadas</span></div>
-          <div class="linha-inbox sel"><span class="avatar  on" style="background:#0ea5e9">L</span><div style="flex:1;min-width:0"><b><span>Lucas M. <small>#0290</small></span><small>10:46</small></b><p>Enviei o trade, é só aceitar</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip warn" style="font-size:10.5px">Em entrega</span><span class="badge">2</span></div><span class="espera">espera 3 min</span></div></div><div class="linha-inbox"><span class="avatar  on" style="background:#f472b6">M</span><div style="flex:1;min-width:0"><b><span>Marina S. <small>Suporte</small></span><small>10:31</small></b><p>Vocês entregam Kinah no Siel?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip mut" style="font-size:10.5px">Suporte</span><span class="badge">1</span></div><span class="espera">espera 16 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#22c55e">R</span><div style="flex:1;min-width:0"><b><span>Rafael T. <small>#0288</small></span><small>10:12</small></b><p>Chegou certinho, obrigado!</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip ok" style="font-size:10.5px">Entregue</span></div></div></div><div class="linha-inbox"><span class="avatar " style="background:#f59e0b">A</span><div style="flex:1;min-width:0"><b><span>Ana P. <small>#0287</small></span><small>09:58</small></b><p>Paguei mas não apareceu</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip bad" style="font-size:10.5px">Problema</span><span class="badge">1</span></div><span class="espera">espera 49 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#a78bfa">D</span><div style="flex:1;min-width:0"><b><span>Diego F. <small>#0285</small></span><small>09:20</small></b><p>Pode ser às 20h?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip chip" style="font-size:10.5px">Pago</span></div></div></div></div></div></div>
-      <div class="so-v5" data-aba="conversa">
-        <div class="v5a"><div class="cx g5"><div class="col-in"><div class="busca">Buscar conversa</div>
-      <div class="filtros"><span class="on2">Todas 12</span><span>Não lidas 3</span><span>Com problema 1</span></div><div class="linha-inbox sel"><span class="avatar  on" style="background:#0ea5e9">L</span><div style="flex:1;min-width:0"><b><span>Lucas M. <small>#0290</small></span><small>10:46</small></b><p>Enviei o trade, é só aceitar</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip warn" style="font-size:10.5px">Em entrega</span><span class="badge">2</span></div><span class="espera">espera 3 min</span></div></div><div class="linha-inbox"><span class="avatar  on" style="background:#f472b6">M</span><div style="flex:1;min-width:0"><b><span>Marina S. <small>Suporte</small></span><small>10:31</small></b><p>Vocês entregam Kinah no Siel?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip mut" style="font-size:10.5px">Suporte</span><span class="badge">1</span></div><span class="espera">espera 16 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#22c55e">R</span><div style="flex:1;min-width:0"><b><span>Rafael T. <small>#0288</small></span><small>10:12</small></b><p>Chegou certinho, obrigado!</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip ok" style="font-size:10.5px">Entregue</span></div></div></div><div class="linha-inbox"><span class="avatar " style="background:#f59e0b">A</span><div style="flex:1;min-width:0"><b><span>Ana P. <small>#0287</small></span><small>09:58</small></b><p>Paguei mas não apareceu</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip bad" style="font-size:10.5px">Problema</span><span class="badge">1</span></div><span class="espera">espera 49 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#a78bfa">D</span><div style="flex:1;min-width:0"><b><span>Diego F. <small>#0285</small></span><small>09:20</small></b><p>Pode ser às 20h?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip chip" style="font-size:10.5px">Pago</span></div></div></div></div><div class="col-chat"><div class="cab" style="background:var(--panel)"><span class="avatar g on" style="background:#0ea5e9">L</span>
-      <div><b>Lucas M. · #0290</b><small>Path of Exile 2 · cliente desde 2025</small></div>
-      <span class="chip warn" style="margin-left:auto">Em entrega</span>
-      <span class="btn q" style="background:var(--panel2);color:var(--txt2);border:1px solid var(--line)">Encerrar</span></div><div class="resumo"><span>Pedido <b>#0290</b></span><span class="chip warn">Em entrega</span>
-      <span>Total <b>R$ 24,50</b></span><span>50× Divine Orb · Standard</span></div><div class="abas-int"><span class="on4">Conversa</span>
-      <span class="">Pedido</span><span>Histórico</span></div><div class="conversa">
-  <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">Oi, tudo bem? Fiz o pagamento agora há pouco.<span class="hora">10:38</span></div></div>
-  <div class="sistema">Pagamento confirmado ✓ 10:41</div>
-  <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Oi, Lucas! Já estou separando seus Divine Orb. Qual o nome do seu personagem?<span class="hora">10:42 <span class=visto>✓✓ visto</span></span></div></div>
-  <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">É o ExileBR_Lucas<span class="hora">10:43</span></div></div>
-  <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Perfeito! Enviei o trade, é só aceitar.<span class="hora">10:46 <span class=visto>✓✓ visto</span></span></div></div>
-</div><div class="resp"><span>Pagamento confirmado</span><span>Enviando agora</span><span>Entregue, confere aí</span><span>Pedir nome do personagem</span><span>+ Código entregue</span></div><div class="composer"><span class="ic">+</span><input class="campo" placeholder="Mensagem para o cliente…"><button type="button" class="btn" data-enviar>Enviar ao cliente</button></div></div></div></div>
-        <div class="v5b"><div class="cx g5"><div class="col-in"><div class="busca">Buscar conversa</div>
-      <div class="filtros"><span class="on2">Todas 12</span><span>Não lidas 3</span><span>Com problema 1</span></div><div class="linha-inbox sel"><span class="avatar  on" style="background:#0ea5e9">L</span><div style="flex:1;min-width:0"><b><span>Lucas M. <small>#0290</small></span><small>10:46</small></b><p>Enviei o trade, é só aceitar</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip warn" style="font-size:10.5px">Em entrega</span><span class="badge">2</span></div><span class="espera">espera 3 min</span></div></div><div class="linha-inbox"><span class="avatar  on" style="background:#f472b6">M</span><div style="flex:1;min-width:0"><b><span>Marina S. <small>Suporte</small></span><small>10:31</small></b><p>Vocês entregam Kinah no Siel?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip mut" style="font-size:10.5px">Suporte</span><span class="badge">1</span></div><span class="espera">espera 16 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#22c55e">R</span><div style="flex:1;min-width:0"><b><span>Rafael T. <small>#0288</small></span><small>10:12</small></b><p>Chegou certinho, obrigado!</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip ok" style="font-size:10.5px">Entregue</span></div></div></div><div class="linha-inbox"><span class="avatar " style="background:#f59e0b">A</span><div style="flex:1;min-width:0"><b><span>Ana P. <small>#0287</small></span><small>09:58</small></b><p>Paguei mas não apareceu</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip bad" style="font-size:10.5px">Problema</span><span class="badge">1</span></div><span class="espera">espera 49 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#a78bfa">D</span><div style="flex:1;min-width:0"><b><span>Diego F. <small>#0285</small></span><small>09:20</small></b><p>Pode ser às 20h?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip chip" style="font-size:10.5px">Pago</span></div></div></div></div><div class="col-chat"><div class="cab" style="background:var(--panel)"><span class="avatar g on" style="background:#0ea5e9">L</span>
-      <div><b>Lucas M. · #0290</b><small>Path of Exile 2 · cliente desde 2025</small></div>
-      <span class="chip warn" style="margin-left:auto">Em entrega</span>
-      <span class="btn q" style="background:var(--panel2);color:var(--txt2);border:1px solid var(--line)">Encerrar</span></div><div class="resumo"><span>Pedido <b>#0290</b></span><span class="chip warn">Em entrega</span>
-      <span>Total <b>R$ 24,50</b></span><span>50× Divine Orb · Standard</span></div><div class="abas-int"><span class="">Conversa</span>
-      <span class="on4">Pedido</span><span>Histórico</span></div><div class="grid2">
-          <div class="box"><h5>Situação do pedido</h5>
-            <div class="kv"><span>Pagamento</span><b>Pix · pago</b></div>
-            <div class="kv"><span>Total</span><b>R$ 24,50</b></div>
-            <div class="kv"><span>Feito em</span><b>08/10 10:38</b></div>
-            <div class="sel-st" style="margin-top:9px"><span>Em entrega</span><span>▾</span></div></div>
-          <div class="box"><h5>Itens</h5>
-            <div class="kv"><span>50× Divine Orb</span><b>R$ 24,50</b></div>
-            <div class="kv"><span>Jogo</span><b>Path of Exile 2</b></div>
-            <div class="kv"><span>Liga</span><b>Standard</b></div></div>
-          <div class="box"><h5>Cliente</h5>
-            <div class="kv"><span>Nome</span><b>Lucas M.</b></div>
-            <div class="kv"><span>E-mail</span><b>lucas@exemplo.com</b></div>
-            <div class="kv"><span>WhatsApp</span><b>(11) 9•••-1234</b></div>
-            <div class="kv"><span>Personagem</span><b>ExileBR_Lucas</b></div></div>
-          <div class="box"><h5>Andamento</h5><ul class="tl"><li>Em entrega · Camila · 10:42</li><li>Pago · Pix automático · 10:41</li><li>Pedido criado · 10:38</li></ul></div>
-        </div>
+      <div class="so-v4"><div class="cz">
+      <div class="topbar"><span class="solto" data-abrir="fila">☰ Conversas <span class="badge">3</span></span>
+        <div class="quem"><span class="avatar g on" style="background:#0ea5e9">L</span><div><b>Lucas M. · #0290</b><small>Path of Exile 2 · Em entrega · R$ 24,50</small></div></div>
+        <span class="solto" data-abrir="ped">Pedido ▸</span></div>
+      <div class="proxima"><span class="avatar p on" style="background:#f472b6">M</span><span><b>Próxima na fila:</b> Marina S. espera há 16 min</span><span class="mini-btn" style="margin-left:auto;font-size:12px;padding:4px 12px">Atender</span></div>
+      <div class="fio"><div class="coluna">
+      <div class="sistema">Pagamento confirmado ✓ 10:41</div>
+      <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Oi, Lucas! Já estou separando seus Divine Orb. Qual o nome do seu personagem?<span class="hora">10:42 <span class=visto>✓✓ visto</span></span></div></div>
+      <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">É o ExileBR_Lucas<span class="hora">10:43</span></div></div>
+      <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Perfeito! Enviei o trade, é só aceitar.<span class="hora">10:46 <span class=visto>✓✓ visto</span></span></div></div></div></div>
+      <div class="chips"><span>Enviando agora</span><span>Entregue, confere aí</span><span>Pedir nome do personagem</span><span>Mais respostas…</span></div>
+      <div class="compg"><span class="ic">+</span><input class="campo" placeholder="Escreva para o cliente…"><button type="button" class="btn" data-enviar>Enviar</button></div>
+      <div class="veu" data-fechar></div><div class="gl"><div class="gl-topo"><h3>Conversas</h3><span class="chip">12</span></div>
+        <div class="busca">Buscar conversa</div>
+        <div class="filtros"><span class="on2">Todas</span><span>Não lidas 3</span><span>Com problema 1</span><span>Finalizadas</span></div>
+        <div class="linha-inbox sel"><span class="avatar  on" style="background:#0ea5e9">L</span><div style="flex:1;min-width:0"><b><span>Lucas M. <small>#0290</small></span><small>10:46</small></b><p>Enviei o trade, é só aceitar</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip warn" style="font-size:11px">Em entrega</span><span class="badge">2</span></div><span class="espera">espera 3 min</span></div></div><div class="linha-inbox"><span class="avatar  on" style="background:#f472b6">M</span><div style="flex:1;min-width:0"><b><span>Marina S. <small>Suporte</small></span><small>10:31</small></b><p>Vocês entregam Kinah no Siel?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip mut" style="font-size:11px">Suporte</span><span class="badge">1</span></div><span class="espera">espera 16 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#f59e0b">A</span><div style="flex:1;min-width:0"><b><span>Ana P. <small>#0287</small></span><small>09:58</small></b><p>Paguei mas não apareceu</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip bad" style="font-size:11px">Problema</span><span class="badge">1</span></div><span class="espera">espera 49 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#22c55e">R</span><div style="flex:1;min-width:0"><b><span>Rafael T. <small>#0288</small></span><small>10:12</small></b><p>Chegou certinho, obrigado!</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip ok" style="font-size:11px">Entregue</span></div></div></div></div><div class="gr"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Pedido #0290</h3><span class="chip warn">Em entrega</span></div>
+        <div class="box"><h5>Situação</h5><div class="kv"><span>Pagamento</span><b>Pix · pago</b></div>
+          <div class="kv"><span>Total</span><b>R$ 24,50</b></div><div class="sel-st"><span>Em entrega</span><span>▾</span></div></div>
+        <div class="box"><h5>Itens</h5><div class="kv"><span>50× Divine Orb</span><b>R$ 24,50</b></div><div class="kv"><span>Liga</span><b>Standard</b></div></div>
+        <div class="box"><h5>Cliente</h5><div class="kv"><span>Nome</span><b>Lucas M.</b></div><div class="kv"><span>WhatsApp</span><b>(11) 9•••-1234</b></div></div>
+        <span class="btn" style="text-align:center">Marcar como entregue</span></div></div></div>
+      <div class="so-v5"><div class="cd"><div class="fila"><div class="fila-topo"><h3>Conversas</h3><span class="chip">12</span></div><div class="seg"><span class="on">Todas</span><span>Não lidas</span><span>Problema</span></div><div class="lin sel"><span class="avatar  on" style="background:#0ea5e9">L</span><div style="flex:1;min-width:0"><b><span><i class="pto" style="background:var(--warn)"></i>Lucas M.</span><small>10:46</small></b><p>Enviei o trade, é só aceitar</p><small style="color:var(--txt3);font-size:12px">#0290 · <span class="espera">3 min</span></small></div><span class="badge">2</span></div><div class="lin"><span class="avatar  on" style="background:#f472b6">M</span><div style="flex:1;min-width:0"><b><span><i class="pto" style="background:var(--txt3)"></i>Marina S.</span><small>10:31</small></b><p>Vocês entregam Kinah no Siel?</p><small style="color:var(--txt3);font-size:12px">Suporte · <span class="espera">16 min</span></small></div><span class="badge">1</span></div><div class="lin"><span class="avatar " style="background:#f59e0b">A</span><div style="flex:1;min-width:0"><b><span><i class="pto" style="background:var(--bad)"></i>Ana P.</span><small>09:58</small></b><p>Paguei mas não apareceu</p><small style="color:var(--txt3);font-size:12px">#0287 · <span class="espera">49 min</span></small></div><span class="badge">1</span></div><div class="lin"><span class="avatar " style="background:#22c55e">R</span><div style="flex:1;min-width:0"><b><span><i class="pto" style="background:var(--ok)"></i>Rafael T.</span><small>10:12</small></b><p>Chegou certinho, obrigado!</p><small style="color:var(--txt3);font-size:12px">#0288</small></div></div><div class="lin"><span class="avatar " style="background:#a78bfa">D</span><div style="flex:1;min-width:0"><b><span><i class="pto" style="background:var(--acc2)"></i>Diego F.</span><small>09:20</small></b><p>Pode ser às 20h?</p><small style="color:var(--txt3);font-size:12px">#0285</small></div></div></div><div class="principal"><div class="topo-c"><span class="avatar g on" style="background:#0ea5e9">L</span><div><b>Lucas M. · #0290</b><small>Path of Exile 2 · Em entrega · R$ 24,50</small></div>
+        <div class="seg2"><span class="on" data-aba-c="conversa">Conversa</span><span class="" data-aba-c="pedido">Pedido</span></div></div><div class="so-conversa"><div class="fio"><div class="coluna">
+      <div class="sistema">Pagamento confirmado ✓ 10:41</div>
+      <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Oi, Lucas! Já estou separando seus Divine Orb. Qual o nome do seu personagem?<span class="hora">10:42 <span class=visto>✓✓ visto</span></span></div></div>
+      <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">É o ExileBR_Lucas<span class="hora">10:43</span></div></div>
+      <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Perfeito! Enviei o trade, é só aceitar.<span class="hora">10:46 <span class=visto>✓✓ visto</span></span></div></div></div></div>
+        <div class="compg"><span class="ic">+</span><span class="solto" data-resp>Respostas ▾</span><input class="campo" placeholder="Escreva para o cliente…"><button type="button" class="btn" data-enviar>Enviar</button></div></div><div class="so-pedido"><div class="pedido-aba">
+          <div class="box"><h5>Situação</h5><div class="kv"><span>Pagamento</span><b>Pix · pago</b></div><div class="kv"><span>Total</span><b>R$ 24,50</b></div>
+            <div class="kv"><span>Feito em</span><b>08/10 10:38</b></div><div class="sel-st"><span>Em entrega</span><span>▾</span></div></div>
+          <div class="box"><h5>Itens</h5><div class="kv"><span>50× Divine Orb</span><b>R$ 24,50</b></div><div class="kv"><span>Jogo</span><b>Path of Exile 2</b></div><div class="kv"><span>Liga</span><b>Standard</b></div></div>
+          <div class="box"><h5>Cliente</h5><div class="kv"><span>Nome</span><b>Lucas M.</b></div><div class="kv"><span>E-mail</span><b>lucas@exemplo.com</b></div>
+            <div class="kv"><span>WhatsApp</span><b>(11) 9•••-1234</b></div><div class="kv"><span>Personagem</span><b>ExileBR_Lucas</b></div></div>
+          <div class="box"><h5>Andamento</h5><ul class="tl"><li>Em entrega · Camila · 10:42</li><li>Pago · Pix automático · 10:41</li><li>Pedido criado · 10:38</li></ul></div></div>
         <div class="acoes-ped"><span class="btn">Marcar como entregue</span>
           <span class="btn" style="background:var(--panel2);color:var(--txt2);border:1px solid var(--line)">Abrir pedido completo</span>
-          <span class="btn" style="background:transparent;color:var(--bad);border:1px solid var(--line)">Reembolsar</span></div></div></div></div>
-      </div></div>
+          <span class="btn" style="background:transparent;color:var(--bad);border:1px solid var(--line)">Reembolsar</span></div></div><div class="pop-resp"><h4>Respostas prontas</h4>
+          <div class="i f">Enviando agora<small>"Já estou enviando o trade, é só aceitar."</small></div>
+          <div class="i">Pagamento confirmado<small>"Pagamento confirmado! Já estou separando."</small></div>
+          <div class="i">Pedir nome do personagem<small>"Qual o nome do seu personagem?"</small></div>
+          <div class="i">Entregue, confere aí<small>"Pedido entregue! Confere aí e me avisa."</small></div>
+          <div class="i">+ Código entregue<small>Insere o código do pedido na mensagem</small></div></div></div></div></div></div>
         <div class="canvas c3" id="c3">
       <div class="painel-fundo"><div class="kpis"><div class="kpi"></div><div class="kpi"></div><div class="kpi"></div><div class="kpi"></div></div>
         <div class="kpis" style="padding-top:0"><div class="kpi" style="grid-column:span 2;height:120px"></div><div class="kpi" style="grid-column:span 2;height:120px"></div></div></div>
@@ -414,7 +470,7 @@ button.btn{display:inline-block}
         <div class="composer" style="padding:8px 10px"><span class="ic">+</span><input class="campo" style="padding:7px 12px" placeholder="Responder…"><button type="button" class="btn q" data-enviar>Enviar</button></div></div>
     </div></div>
       </div>
-      <p class="dica">Na Central: na opção 4, toque numa conversa da faixa para abrir a fila; na opção 5, alterne entre Conversa e Pedido. No celular, deite o aparelho.</p></div>
+      <p class="dica">Na Central da opção 4, toque em <b>Conversas</b> ou em <b>Pedido</b> para abrir as gavetas. Na opção 5, alterne entre <b>Conversa</b> e <b>Pedido</b> e abra <b>Respostas</b>. No celular, deite o aparelho.</p></div>
       <div class="rodape-demo">Lhart Design · proposta visual</div>
     </div><script>
 (function(){
@@ -450,7 +506,7 @@ button.btn{display:inline-block}
   function esc(t){return t.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
   function enviar(comp){
     var campo=comp.querySelector('input.campo'); var txt=campo.value.trim(); if(!txt) return;
-    var raiz=comp.closest('.janela,.cel,.col-chat,.conv'); var conv=raiz.querySelector('.conversa');
+    var raiz=comp.closest('.janela,.cel,.col-chat,.conv,.cz,.principal'); var conv=(raiz.querySelector('.conversa')||raiz.querySelector('.coluna'));
     var canvas=comp.closest('.canvas');
     var cliente=canvas.id==='c1';
     conv.insertAdjacentHTML('beforeend','<div class="linha me"><div class="bolha me">'+esc(txt)+'<span class="hora">'+hora()+' <span class="visto">✓✓ visto</span></span></div></div>');
@@ -462,14 +518,14 @@ button.btn{display:inline-block}
     },1100);
   }
   document.addEventListener('click',function(e){
-    var b=e.target.closest('[data-enviar]'); if(b){enviar(b.closest('.composer')); return;}
+    var b=e.target.closest('[data-enviar]'); if(b){enviar(b.closest('.composer,.compg')); return;}
     var r=e.target.closest('.resp span'); if(r){
       var col=r.closest('.col-chat,.conv'); var campo=col.querySelector('input.campo'); campo.value=r.textContent.replace('+ ','').trim(); campo.focus();
     }
     var li=e.target.closest('.linha-inbox'); if(li){li.parentNode.querySelectorAll('.linha-inbox').forEach(function(x){x.classList.remove('sel')}); li.classList.add('sel');}
   });
   document.addEventListener('keydown',function(e){
-    if(e.key==='Enter'&&e.target.matches('input.campo')){e.preventDefault();enviar(e.target.closest('.composer'))}
+    if(e.key==='Enter'&&e.target.matches('input.campo')){e.preventDefault();enviar(e.target.closest('.composer,.compg'))}
   });
   var inicial=location.hash==='#v5'?'v5':'v4';
   document.querySelector('[data-tema="'+inicial+'"]').click();
@@ -479,14 +535,24 @@ button.btn{display:inline-block}
 </script><script>
 (function(){
   document.addEventListener('click',function(e){
-    var r=e.target.closest('.rail .it, .rail .ic');
-    if(r){var cx=r.closest('.cx'); cx.classList.toggle('aberta'); return;}
-    var sombra=e.target.closest('.sombra-fila'); if(sombra){sombra.closest('.cx').classList.remove('aberta'); return;}
-    var aba=e.target.closest('.abas-int span');
-    if(aba){
-      var raiz=aba.closest('.so-v5'); var t=aba.textContent.trim().toLowerCase();
-      if(t==='pedido'||t==='conversa'){raiz.setAttribute('data-aba',t);}
+    var ab=e.target.closest('[data-abrir]');
+    if(ab){var cz=ab.closest('.cz'); cz.classList.remove('fila','ped'); cz.classList.add(ab.dataset.abrir); return;}
+    if(e.target.closest('.cz .veu')){e.target.closest('.cz').classList.remove('fila','ped'); return;}
+    var at=e.target.closest('[data-aba-c]');
+    if(at){
+      var cd=at.closest('.cd'); var ped=at.dataset.abaC==='pedido';
+      cd.classList.toggle('aba-pedido',ped); cd.classList.remove('pop');
+      cd.querySelectorAll('.seg2 span').forEach(function(s){s.classList.toggle('on',s===at)}); return;
     }
+    var rs=e.target.closest('[data-resp]');
+    if(rs){rs.closest('.cd').classList.toggle('pop'); return;}
+    var it=e.target.closest('.pop-resp .i, .cz .chips span');
+    if(it){
+      var raiz=it.closest('.cd,.cz'); var campo=raiz.querySelector('input.campo');
+      campo.value=(it.querySelector('small')?it.firstChild.textContent:it.textContent).replace('+ ','').replace('…','').trim();
+      raiz.classList.remove('pop'); campo.focus(); return;
+    }
+    var li=e.target.closest('.cd .lin'); if(li){li.parentNode.querySelectorAll('.lin').forEach(function(x){x.classList.remove('sel')}); li.classList.add('sel');}
   });
 })();
 </script></body></html>
