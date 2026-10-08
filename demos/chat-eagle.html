@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Chat · exemplo de visual</title>
+<style>.v1{
+          --bg:#070b14; --bg2:#0a1020; --panel:#0d1526; --panel2:#111c33; --line:#1a2744; --txt:#e8eefb; --txt2:#93a4c4; --txt3:#5d6f93;
+          --acc:#3b8cff; --acc2:#3b8cff; --acc-soft:rgba(59,140,255,.14); --ok:#25d07d; --warn:#f3b13c; --bad:#f2556a;
+          --me:#1f6feb; --me-txt:#ffffff; --them:#121d35; --them-txt:#e8eefb; --r:14px; --rb:16px; --shadow:none;
+        } .v2{
+          --bg:#0b0a1a; --bg2:#100d26; --panel:#15122e; --panel2:#1c1840; --line:#2a2557; --txt:#f1eeff; --txt2:#a9a2d6; --txt3:#6e68a3;
+          --acc:#7c5cff; --acc2:#3b8cff; --acc-soft:rgba(124,92,255,.18); --ok:#3ddc97; --warn:#ffc15a; --bad:#ff6b8a;
+          --me:linear-gradient(135deg,#7c5cff,#3b8cff); --me-txt:#ffffff; --them:#1d1943; --them-txt:#f1eeff; --r:20px; --rb:22px;
+          --shadow:0 10px 30px rgba(8,5,30,.55);
+        }
+
+
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,Arial,sans-serif;font-size:13px;line-height:1.45;color:var(--txt);background:var(--bg)}
+.pag{width:297mm;height:210mm;position:relative;overflow:hidden;page-break-after:always;padding:12mm 13mm;background:var(--bg)}
+.pag:last-child{page-break-after:auto}
+.topo{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:9px}
+.topo h1{font-size:22px;margin:0}
+.topo .sub{color:var(--txt2);font-size:12.5px}
+.tag{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--acc)}
+.rodape{position:absolute;left:13mm;right:13mm;bottom:6mm;display:flex;justify-content:space-between;font-size:10px;color:var(--txt3)}
+.avatar{width:34px;height:34px;border-radius:50%;display:inline-grid;place-items:center;font-weight:700;font-size:13px;color:#fff;flex:none;position:relative}
+.avatar img{width:100%;height:100%;border-radius:50%;object-fit:contain;background:#0a1020;padding:1px}
+.avatar.g{width:42px;height:42px;font-size:16px}
+.avatar.p{width:26px;height:26px;font-size:11px}
+.avatar.on::after{content:"";position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:50%;background:var(--ok);border:2px solid var(--panel)}
+.janela{background:var(--panel);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.cab{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.cab b{display:block;font-size:14px}
+.cab small{color:var(--txt2);font-size:11.5px}
+.cab .acoes{margin-left:auto;display:flex;gap:8px;color:var(--txt3)}
+.chip{white-space:nowrap;display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600;background:var(--acc-soft);color:var(--acc)}
+.chip.ok{background:rgba(37,208,125,.14);color:var(--ok)}
+.chip.warn{background:rgba(243,177,60,.16);color:var(--warn)}
+.chip.bad{background:rgba(242,85,106,.15);color:var(--bad)}
+.chip.mut{background:rgba(120,135,170,.15);color:var(--txt2)}
+.v3 .chip.ok{background:rgba(18,184,134,.12)} .v3 .chip.warn{background:rgba(240,140,0,.12)} .v3 .chip.bad{background:rgba(232,72,106,.12)}
+.etapas{display:flex;align-items:center;gap:0;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.etapa{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt3);flex:1}
+.etapa i{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);display:inline-block;flex:none}
+.etapa.feito{color:var(--txt2)} .etapa.feito i{background:var(--ok);border-color:var(--ok)}
+.etapa.agora{color:var(--txt);font-weight:600} .etapa.agora i{border-color:var(--acc);background:var(--acc-soft)}
+.etapa:not(:last-child)::after{content:"";height:2px;background:var(--line);flex:1;margin-left:4px}
+.etapa.feito:not(:last-child)::after{background:var(--ok)}
+.conversa{padding:14px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;flex:1;overflow:hidden;background:var(--bg2)}
+.linha{display:flex;gap:8px;align-items:flex-end}
+.linha.me{flex-direction:row-reverse}
+.bolha{max-width:78%;padding:9px 12px;border-radius:var(--rb);font-size:12.6px}
+.bolha.me{background:var(--me);color:var(--me-txt)}
+.bolha.them{background:var(--them);color:var(--them-txt)}
+.hora{display:block;font-size:10px;opacity:.65;margin-top:3px}
+.hora .visto{color:var(--ok);opacity:1;font-weight:700}
+.v3 .hora .visto{color:var(--acc)}
+.sistema{align-self:center;font-size:11px;color:var(--txt2);background:var(--acc-soft);padding:3px 11px;border-radius:99px}
+.cartao-chat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;max-width:86%}
+.cartao-chat h4{margin:0 0 5px;font-size:12.6px}
+.cartao-chat ul{margin:0;padding-left:16px;color:var(--txt2);font-size:12px}
+.cartao-chat .tot{margin-top:6px;display:flex;justify-content:space-between;font-weight:700;font-size:12.6px}
+.codigo{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:7px 10px;margin-top:6px;font-family:Consolas,monospace;font-size:12px}
+.mini-btn{font-family:"Segoe UI";font-size:10.5px;background:var(--acc-soft);color:var(--acc);padding:2px 8px;border-radius:7px;font-weight:600}
+.anexo{width:200px;height:54px;border-radius:12px;background:repeating-linear-gradient(135deg,var(--panel2),var(--panel2) 10px,var(--panel) 10px,var(--panel) 20px);border:1px solid var(--line);display:grid;place-items:center;color:var(--txt3);font-size:11px;margin-bottom:5px}
+.digitando{color:var(--txt3);font-size:11px;padding-left:44px}
+.resp{display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px 0;background:var(--panel)}
+.resp span{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:3px 10px;color:var(--txt2);background:var(--panel2)}
+.composer{display:flex;gap:8px;align-items:center;padding:11px 14px;background:var(--panel)}
+.composer .campo{flex:1;border:1px solid var(--line);background:var(--panel2);border-radius:99px;padding:9px 14px;color:var(--txt3);font-size:12.5px}
+.ic{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line);color:var(--txt2);font-size:15px;flex:none}
+.btn{border-radius:99px;padding:9px 16px;font-weight:700;font-size:12.5px;display:inline-block}
+.btn.q{padding:6px 12px;font-size:11.5px}
+.nota{font-size:11px;color:var(--txt2);margin-top:8px;display:flex;gap:6px}
+.notas{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.nota-c{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;font-size:11.8px;color:var(--txt2)}
+.nota-c b{display:block;color:var(--txt);margin-bottom:2px;font-size:12.4px}
+
+/* fundo do site atras do chat flutuante */
+.site-fundo{position:absolute;inset:0;background:var(--bg2);opacity:.55}
+.site-cards{position:absolute;left:13mm;right:13mm;top:34mm;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;opacity:.55}
+.site-cards div{height:110px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
+
+/* celular */
+.cel{width:262px;height:548px;border-radius:34px;border:8px solid #0b1020;background:var(--panel);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.v3 .cel{border-color:#18233a}
+.cel .cab{padding:10px 11px} .cel .conversa{padding:10px;gap:8px} .cel .bolha{font-size:11.6px;padding:7px 10px}
+.cel .etapas{padding:7px 10px} .cel .etapa{font-size:9.5px}
+.cel .composer{padding:8px 10px}
+.cel .cartao-chat{padding:8px 10px;max-width:92%} .cel .cartao-chat ul{font-size:11px}
+.cel .status-bar{display:flex;justify-content:space-between;font-size:10px;padding:6px 16px 0;color:var(--txt2);background:var(--panel)}
+
+/* central */
+.central{display:grid;grid-template-columns:262px 1fr 238px;gap:0;height:150mm;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+.central.v2g{grid-template-columns:262px 1fr}
+.col-in{border-right:1px solid var(--line);display:flex;flex-direction:column;background:var(--panel)}
+.busca{margin:10px;border:1px solid var(--line);background:var(--panel2);border-radius:99px;padding:7px 13px;color:var(--txt3);font-size:12px}
+.filtros{display:flex;gap:5px;padding:0 10px 8px;flex-wrap:wrap}
+.filtros span{font-size:10.8px;border:1px solid var(--line);border-radius:99px;padding:2px 9px;color:var(--txt2)}
+.filtros span.on2{background:var(--acc);border-color:var(--acc);color:#fff}
+.linha-inbox{display:flex;gap:9px;padding:9px 11px;border-top:1px solid var(--line);position:relative}
+.linha-inbox.sel{background:var(--acc-soft)}
+.linha-inbox b{font-size:12.4px;display:flex;justify-content:space-between;gap:6px}
+.linha-inbox small{color:var(--txt3);font-size:10.5px;font-weight:400}
+.linha-inbox p{margin:1px 0 3px;color:var(--txt2);font-size:11.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:158px}
+.badge{background:var(--acc);color:#fff;border-radius:99px;font-size:10px;font-weight:700;min-width:18px;height:18px;display:inline-grid;place-items:center;padding:0 5px}
+.espera{color:var(--warn);font-size:10.5px;font-weight:600}
+.col-chat{display:flex;flex-direction:column;background:var(--bg2);min-width:0}
+.abas{display:flex;gap:6px;padding:8px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+.aba{font-size:11.4px;padding:4px 11px;border-radius:9px;color:var(--txt2);border:1px solid var(--line);background:var(--panel2)}
+.aba.on3{background:var(--acc-soft);color:var(--acc);border-color:transparent;font-weight:600}
+.col-pedido{border-left:1px solid var(--line);background:var(--panel);padding:11px;display:flex;flex-direction:column;gap:9px;overflow:hidden}
+.box{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:var(--panel2)}
+.box h5{margin:0 0 5px;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--txt3)}
+.kv{display:flex;justify-content:space-between;gap:8px;font-size:11.8px;padding:1.5px 0;color:var(--txt2)}
+.kv b{color:var(--txt);font-weight:600}
+.sel-st{margin-top:5px;border:1px solid var(--line);border-radius:9px;padding:5px 9px;font-size:11.5px;display:flex;justify-content:space-between;color:var(--txt)}
+.tl{margin:0;padding:0;list-style:none;font-size:11px;color:var(--txt2)}
+.tl li{padding-left:14px;position:relative;margin-bottom:4px}
+.tl li::before{content:"";position:absolute;left:2px;top:5px;width:6px;height:6px;border-radius:50%;background:var(--acc)}
+.v2 .col-pedido{background:var(--bg);border-left:0;padding:10px}.v2 .col-pedido .box{background:var(--panel)}.gaveta{position:absolute;right:0;top:0;bottom:0;width:236px;background:var(--panel);border-left:1px solid var(--line);padding:11px;display:flex;flex-direction:column;gap:9px;box-shadow:-10px 0 30px rgba(8,5,30,.4)}
+.col-chat{position:relative}
+
+/* chat flutuante da equipe */
+.painel-fundo{position:absolute;left:13mm;right:13mm;top:34mm;bottom:12mm;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);opacity:.8}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:14px}
+.kpi{height:64px;border-radius:12px;background:var(--panel2);border:1px solid var(--line)}
+.flut{position:absolute;right:15mm;bottom:11mm;width:520px;height:372px;display:grid;grid-template-columns:176px 1fr}
+.flut .lista{border-right:1px solid var(--line);background:var(--panel)}
+.flut .lista .linha-inbox{padding:8px 10px}
+.flut .lista .linha-inbox p{max-width:110px}
+.flut .conv{display:flex;flex-direction:column;background:var(--bg2);min-width:0}
+.flut .conversa{padding:10px;gap:8px}
+.flut .bolha{font-size:11.8px;padding:7px 10px}
+.sino{position:absolute;right:17mm;top:40mm;width:300px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);padding:11px}
+.sino h5{margin:0 0 6px;font-size:12.5px;display:flex;justify-content:space-between}
+.sino .it{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:11.8px}
+.sino .it small{color:var(--txt3)} .sino .it .chip,.sino .it .espera{align-self:flex-start}
+.toast{position:absolute;left:17mm;top:40mm;width:300px;border-radius:var(--r);background:var(--panel);border:1px solid var(--acc);box-shadow:var(--shadow);padding:10px 12px;display:flex;gap:10px;align-items:center}
+.toast b{display:block;font-size:12.5px}
+.toast small{color:var(--txt2)}
+.som{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--txt2);margin-top:6px;padding-top:6px;border-top:1px solid var(--line)}
+
+/* capa */
+.capa{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;height:calc(210mm - 24mm)}
+.capa h1{font-size:40px;line-height:1.08;margin:6px 0 10px}
+.capa .lema{font-size:16px;color:var(--txt2);max-width:520px}
+.paleta{display:flex;gap:10px;margin:22px 0 4px}
+.sw{width:78px}
+.sw i{display:block;height:54px;border-radius:12px;border:1px solid var(--line)}
+.sw b{display:block;font-size:11px;margin-top:5px}
+.sw small{color:var(--txt3);font-size:10.5px}
+.princ{margin:14px 0 0;padding:0;list-style:none}
+.princ li{padding:7px 0 7px 22px;position:relative;border-bottom:1px solid var(--line);color:var(--txt2);font-size:13px}
+.princ li::before{content:"✓";position:absolute;left:0;color:var(--acc);font-weight:700}
+.capa-dir{display:flex;align-items:center;justify-content:center;position:relative}
+.capa-dir .janela{width:420px}
+.lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--txt3)}
+
+.v1 .bolha.me{border-bottom-right-radius:5px}
+.v1 .bolha.them{border-bottom-left-radius:5px}
+.v1 .janela{border:1px solid var(--line)}
+.v1 .acento{color:var(--acc)}
+.v1 .btn{background:var(--acc);color:#fff}
+.v2 .janela{border:1px solid #2f2a63;box-shadow:var(--shadow)}
+.v2 .avatar{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--acc)}
+.v2 .bolha.me{border-bottom-right-radius:6px}
+.v2 .bolha.them{border-bottom-left-radius:6px}
+.v2 .cartao-chat,.v2 .linha-inbox,.v2 .box{box-shadow:0 6px 18px rgba(8,5,30,.35)}
+.v2 .btn{background:linear-gradient(135deg,#7c5cff,#3b8cff);color:#fff}
+.v2 .acento{color:#a894ff}
+
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#05070d;font-family:"Segoe UI",system-ui,Arial,sans-serif}
+.tema{min-height:100vh;background:var(--bg);color:var(--txt);transition:background .25s}
+.topo-demo{max-width:1100px;margin:0 auto;padding:22px 16px 10px}
+.topo-demo h1{font-size:26px;margin:0 0 4px}
+.topo-demo p{margin:0;color:var(--txt2);font-size:14px;max-width:700px}
+.seletores{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.grupo{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:4px}
+.grupo button{border:0;background:transparent;color:var(--txt2);font:inherit;font-size:13px;padding:7px 14px;border-radius:99px;cursor:pointer}
+.grupo button.on{background:var(--acc);color:#fff;font-weight:600}
+.v2 .grupo button.on{background:linear-gradient(135deg,#7c5cff,#3b8cff)}
+.lema{color:var(--txt2);font-size:13px;margin-top:10px}
+.palco{max-width:1100px;margin:0 auto;padding:10px 16px 40px}
+.vitrine{position:relative;overflow:hidden}
+.canvas{position:absolute;left:0;top:0;transform-origin:0 0;display:none}
+.canvas.on{display:block}
+.c1{width:1000px;gap:44px;align-items:flex-start;justify-content:center}
+.c1.on{display:flex}
+.c2{width:1000px}
+.c3{width:1000px;height:600px}
+.c3 .painel-fundo{left:0;right:0;top:0;bottom:0}
+.c3 .toast{left:24px;top:24px}
+.c3 .sino{right:24px;top:24px}
+.c3 .flut{right:24px;bottom:24px}
+.c2 .central{height:570px}
+.dica{color:var(--txt3);font-size:12px;margin:12px 0 0}
+.rodape-demo{max-width:1100px;margin:0 auto;padding:0 16px 30px;color:var(--txt3);font-size:12px}
+input.campo{font:inherit;outline:none;color:var(--txt)}
+input.campo::placeholder{color:var(--txt3)}
+button.btn,button.ic{font-family:inherit;cursor:pointer;border:0}
+button.btn{display:inline-block}
+.resp span{cursor:pointer}
+.linha-inbox{cursor:pointer}
+.so-celular{display:none}
+@media (max-width:760px){
+  .so-desktop{display:none !important}
+  .c1{width:262px}
+  .topo-demo h1{font-size:21px}
+}
+</style></head><body>
+    <div class="tema v1" id="tema">
+      <div class="topo-demo">
+        <div class="tag">Redesenho do chat · Exemplo para escolher</div>
+        <h1>Como o chat pode ficar</h1>
+        <p>Escolha a versão e a tela. O chat funciona: digite uma mensagem e veja a resposta. Nomes e valores são de exemplo.</p>
+        <div class="seletores">
+          <div class="grupo">
+            <button data-tema="v1" class="on" data-lema="O mesmo azul da loja, mais limpo: menos bordas, mais respiro, conversa em primeiro plano.">Versão 1 · Azul Gelo</button>
+            <button data-tema="v2" data-lema="Um toque de violeta no azul da marca: degradê discreto, cartões flutuantes e avatares com anel.">Versão 2 · Violeta Noturno</button>
+          </div>
+          <div class="grupo">
+            <button data-aba="c1" class="on">Chat do cliente</button>
+            <button data-aba="c2">Central de atendimento</button>
+            <button data-aba="c3">Chat da equipe</button>
+          </div>
+        </div>
+        <div class="lema" id="lema">O mesmo azul da loja, mais limpo: menos bordas, mais respiro, conversa em primeiro plano.</div>
+      </div>
+      <div class="palco"><div id="vitrine" class="vitrine">
+        <div class="canvas c1 on" id="c1">
+      <div class="so-desktop">
+    <div class="janela" style="width:640px;height:548px">
+      <div class="cab"><span class="avatar g on" style="background:#8b5cf6">C</span>
+        <div><b>Camila · Atendimento</b><small>online agora · Pedido #0290</small></div>
+        <span class="chip warn" style="margin-left:auto">Em entrega</span>
+        <span class="acoes">—&nbsp;&nbsp;✕</span></div>
+      <div class="etapas"><div class="etapa feito"><i></i>Pedido</div><div class="etapa feito"><i></i>Pago</div><div class="etapa agora"><i></i>Em entrega</div><div class="etapa "><i></i>Entregue</div></div>
+      <div class="conversa">
+      <div class="linha them"><span class="avatar p"><img src="data:image/png;base64,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" alt=""></span>
+        <div class="cartao-chat"><h4>Olá, Lucas! Pedido #0290 <span class="chip ok">Pago ✓</span></h4><ul><li>50× Divine Orb · Liga Standard</li></ul>
+          <div class="tot"><span>Total</span><span>R$ 24,50</span></div></div></div>
+      <div class="linha them"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha them">Oi, Lucas! Já estou separando seus Divine Orb. Qual o nome do seu personagem?<span class="hora">10:42</span></div></div>
+      <div class="linha me"><div class="bolha me">É o ExileBR_Lucas<span class="hora">10:43 <span class=visto>✓✓ visto</span></span></div></div>
+      <div class="linha them"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha them"><div class="anexo">print-da-troca.png</div>
+        Enviei o trade, é só aceitar. <span class="hora">10:46</span></div></div>
+    </div>
+      <div class="composer"><span class="ic">+</span><input class="campo" placeholder="Escreva sua mensagem…"><button type="button" class="btn" data-enviar>Enviar</button></div>
+    </div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div class="lbl">No celular</div>
+    <div class="cel">
+      <div class="status-bar"><span>10:47</span><span>▂▄▆ 5G</span></div>
+      <div class="cab"><span class="avatar  on" style="background:#8b5cf6">C</span><div><b style="font-size:13px">Camila</b><small>online · #0290</small></div>
+        <span class="chip warn" style="margin-left:auto">Em entrega</span></div>
+      <div class="etapas"><div class="etapa feito"><i></i>Pedido</div><div class="etapa feito"><i></i>Pago</div><div class="etapa agora"><i></i>Em entrega</div><div class="etapa "><i></i>Entregue</div></div>
+      <div class="conversa">
+      <div class="linha them"><span class="avatar p"><img src="data:image/png;base64,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" alt=""></span>
+        <div class="cartao-chat"><h4>Olá, Lucas! Pedido #0290 <span class="chip ok">Pago ✓</span></h4><ul><li>50× Divine Orb</li></ul>
+          <div class="tot"><span>Total</span><span>R$ 24,50</span></div></div></div>
+      <div class="linha them"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha them">Oi, Lucas! Já estou separando seus Divine Orb. Qual o nome do seu personagem?<span class="hora">10:42</span></div></div>
+      <div class="linha me"><div class="bolha me">É o ExileBR_Lucas<span class="hora">10:43 <span class=visto>✓✓ visto</span></span></div></div>
+      <div class="linha them"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha them">
+        Enviei o trade, é só aceitar. <span class="hora">10:46</span></div></div>
+    </div>
+      <div class="composer"><span class="ic">+</span><input class="campo" style="padding:7px 11px" placeholder="Mensagem…"><button type="button" class="ic" data-enviar style="background:var(--acc);color:#fff;border:0">➤</button></div>
+    </div></div></div>
+        <div class="canvas c2" id="c2"><div class="central">
+          <div class="col-in"><div class="busca">Buscar conversa</div>
+            <div class="filtros"><span class="on2">Todas 12</span><span>Não lidas 3</span><span>Com problema 1</span><span>Finalizadas</span></div><div class="linha-inbox sel"><span class="avatar  on" style="background:#0ea5e9">L</span><div style="flex:1;min-width:0"><b><span>Lucas M. <small>#0290</small></span><small>10:46</small></b><p>Enviei o trade, é só aceitar</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip warn" style="font-size:10px">Em entrega</span><span class="badge">2</span></div><span class=espera>espera 3 min</span></div></div><div class="linha-inbox"><span class="avatar  on" style="background:#f472b6">M</span><div style="flex:1;min-width:0"><b><span>Marina S. <small>Suporte</small></span><small>10:31</small></b><p>Vocês entregam Kinah no Siel?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip mut" style="font-size:10px">Suporte</span><span class="badge">1</span></div><span class=espera>espera 16 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#22c55e">R</span><div style="flex:1;min-width:0"><b><span>Rafael T. <small>#0288</small></span><small>10:12</small></b><p>Chegou certinho, obrigado!</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip ok" style="font-size:10px">Entregue</span></div></div></div><div class="linha-inbox"><span class="avatar " style="background:#f59e0b">A</span><div style="flex:1;min-width:0"><b><span>Ana P. <small>#0287</small></span><small>09:58</small></b><p>Paguei mas não apareceu</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip bad" style="font-size:10px">Problema</span><span class="badge">1</span></div><span class=espera>espera 49 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#a78bfa">D</span><div style="flex:1;min-width:0"><b><span>Diego F. <small>#0285</small></span><small>09:20</small></b><p>Pode ser às 20h?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip chip" style="font-size:10px">Pago</span></div></div></div></div>
+          <div class="col-chat"><div class="abas"><span class="aba on3">#0290 · Lucas ✕</span><span class="aba">Suporte · Marina ✕</span><span class="aba">#0288 · Rafael ✕</span><span class="aba" style="margin-left:auto">Respostas prontas</span></div><div class="cab" style="background:var(--panel)"><span class="avatar g on" style="background:#0ea5e9">L</span>
+        <div><b>Lucas M. · #0290</b><small>Path of Exile 2 · cliente desde 2025</small></div>
+        <span class="chip warn" style="margin-left:auto">Em entrega</span>
+        <span class="btn q" style="background:var(--panel2);color:var(--txt2);border:1px solid var(--line)">Abrir pedido</span>
+        <span class="btn q" style="background:var(--panel2);color:var(--txt2);border:1px solid var(--line)">Encerrar</span></div><div class="conversa">
+      <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">Oi, tudo bem? Fiz o pagamento agora há pouco.<span class="hora">10:38</span></div></div>
+      <div class="sistema">Pagamento confirmado ✓ 10:41</div>
+      <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Oi, Lucas! Já estou separando seus Divine Orb. Qual o nome do seu personagem?<span class="hora">10:42 <span class=visto>✓✓ visto</span></span></div></div>
+      <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">É o ExileBR_Lucas<span class="hora">10:43</span></div></div>
+      <div class="linha me"><span class="avatar p" style="background:#8b5cf6">C</span><div class="bolha me">Perfeito! Enviei o trade, é só aceitar.<span class="hora">10:46 <span class=visto>✓✓ visto</span></span></div></div>
+    </div><div class="resp"><span>Pagamento confirmado</span><span>Enviando agora</span><span>Entregue, confere aí</span><span>Pedir nome do personagem</span><span>+ Código entregue</span></div><div class="composer"><span class="ic">+</span><input class="campo" placeholder="Mensagem para o cliente…"><button type="button" class="btn" data-enviar>Enviar ao cliente</button></div></div>
+          <div class="col-pedido">
+      <div class="box"><h5>Pedido #0290</h5>
+        <div class="kv"><span>Pagamento</span><b>Pix · pago</b></div>
+        <div class="kv"><span>Total</span><b>R$ 24,50</b></div>
+        <div class="kv"><span>Feito em</span><b>08/10 10:38</b></div>
+        <div class="sel-st"><span>Em entrega</span><span>▾</span></div></div>
+      <div class="box"><h5>Cliente</h5>
+        <div class="kv"><span>Nome</span><b>Lucas M.</b></div>
+        <div class="kv"><span>E-mail</span><b>lucas@exemplo.com</b></div>
+        <div class="kv"><span>WhatsApp</span><b>(11) 9•••-1234</b></div></div>
+      <div class="box"><h5>Itens</h5>
+        <div class="kv"><span>50× Divine Orb</span><b>R$ 24,50</b></div>
+        <div class="kv"><span>Liga</span><b>Standard</b></div></div>
+      <div class="box"><h5>Andamento</h5><ul class="tl"><li>Em entrega · Camila</li><li>Pago · Pix automático</li><li>Pedido criado</li></ul></div>
+    </div></div></div>
+        <div class="canvas c3" id="c3">
+      <div class="painel-fundo"><div class="kpis"><div class="kpi"></div><div class="kpi"></div><div class="kpi"></div><div class="kpi"></div></div>
+        <div class="kpis" style="padding-top:0"><div class="kpi" style="grid-column:span 2;height:120px"></div><div class="kpi" style="grid-column:span 2;height:120px"></div></div></div>
+      <div class="toast"><span class="avatar  on" style="background:#0ea5e9">L</span><div><b>Cliente esperando resposta</b><small>#0290 · Lucas M. · "Enviei o trade…"</small></div></div>
+      <div class="sino"><h5><span>Esperando você</span><span class="chip warn">3</span></h5>
+        <div class="it"><span><b>#0290</b> Lucas M.<br><small>2 msg · 3 min</small></span><span class="espera">1º</span></div>
+        <div class="it"><span><b>Suporte</b> Marina S.<br><small>1 msg · 16 min</small></span><span class="espera">2º</span></div>
+        <div class="it"><span><b>#0287</b> Ana P.<br><small>1 msg · 49 min · problema</small></span><span class="chip bad">3º</span></div>
+        <div class="som"><span>🔔 Som ligado</span><span>Volume 100%</span><span class="mini-btn">Ouvir</span></div></div>
+      
+    <div class="janela flut">
+      <div class="lista"><div class="cab" style="padding:10px"><b style="font-size:12.5px">Conversas</b><span class="badge" style="margin-left:auto">3</span></div>
+        <div class="filtros" style="padding:8px 8px 4px"><span class="on2">Todas</span><span>Não lidas</span></div>
+        <div class="linha-inbox sel"><span class="avatar  on" style="background:#0ea5e9">L</span><div style="flex:1;min-width:0"><b><span>Lucas M. <small>#0290</small></span><small>10:46</small></b><p>Enviei o trade, é só aceitar</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip warn" style="font-size:10px">Em entrega</span><span class="badge">2</span></div><span class=espera>espera 3 min</span></div></div><div class="linha-inbox"><span class="avatar  on" style="background:#f472b6">M</span><div style="flex:1;min-width:0"><b><span>Marina S. <small>Suporte</small></span><small>10:31</small></b><p>Vocês entregam Kinah no Siel?</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip mut" style="font-size:10px">Suporte</span><span class="badge">1</span></div><span class=espera>espera 16 min</span></div></div><div class="linha-inbox"><span class="avatar " style="background:#22c55e">R</span><div style="flex:1;min-width:0"><b><span>Rafael T. <small>#0288</small></span><small>10:12</small></b><p>Chegou certinho, obrigado!</p><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip ok" style="font-size:10px">Entregue</span></div></div></div>
+      </div>
+      <div class="conv"><div class="cab" style="padding:9px 11px"><span class="avatar  on" style="background:#0ea5e9">L</span><div><b style="font-size:12.6px">Lucas M. · #0290</b><small>Em entrega</small></div>
+        <span class="acoes">—&nbsp;&nbsp;⤢&nbsp;&nbsp;✕</span></div>
+        <div class="conversa">
+      <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">Oi, tudo bem? Fiz o pagamento agora há pouco.<span class="hora">10:38</span></div></div>
+      <div class="linha me"><div class="bolha me">Já estou separando, Lucas. Qual o nome do personagem?<span class="hora">10:42 <span class=visto>✓✓ visto</span></span></div></div>
+      <div class="linha them"><span class="avatar p" style="background:#0ea5e9">L</span><div class="bolha them">É o ExileBR_Lucas<span class="hora">10:43</span></div></div>
+    </div>
+        <div class="resp" style="padding:6px 10px 0"><span>Enviando agora</span><span>Entregue</span><span>+ Código</span></div>
+        <div class="composer" style="padding:8px 10px"><span class="ic">+</span><input class="campo" style="padding:7px 12px" placeholder="Responder…"><button type="button" class="btn q" data-enviar>Enviar</button></div></div>
+    </div></div>
+      </div>
+      <p class="dica">Dica: no celular, a Central e o chat da equipe ficam melhores com o aparelho deitado.</p></div>
+      <div class="rodape-demo">Lhart Design · proposta visual</div>
+    </div><script>
+(function(){
+  var tema=document.getElementById('tema'), cv=document.querySelectorAll('.canvas'), vit=document.getElementById('vitrine');
+  var aba='c1';
+  function ajustar(){
+    var atual=document.querySelector('.canvas.on'); if(!atual) return;
+    var larg=atual.offsetWidth, alt=atual.offsetHeight;
+    var disp=vit.parentNode.clientWidth-32; if(disp<200) disp=window.innerWidth-32;
+    var s=Math.min(1,disp/larg);
+    atual.style.transform='scale('+s+')';
+    vit.style.height=(alt*s)+'px';
+    vit.style.width=(larg*s)+'px';
+    vit.style.margin='0 auto';
+  }
+  function mostrar(id){
+    aba=id;
+    cv.forEach(function(c){c.classList.toggle('on',c.id===id)});
+    document.querySelectorAll('[data-aba]').forEach(function(b){b.classList.toggle('on',b.dataset.aba===id)});
+    ajustar();
+  }
+  document.querySelectorAll('[data-aba]').forEach(function(b){b.addEventListener('click',function(){mostrar(b.dataset.aba)})});
+  document.querySelectorAll('[data-tema]').forEach(function(b){b.addEventListener('click',function(){
+    tema.className='tema '+b.dataset.tema;
+    document.querySelectorAll('[data-tema]').forEach(function(x){x.classList.toggle('on',x===b)});
+    document.getElementById('lema').textContent=b.dataset.lema;
+    try{history.replaceState(null,'','#'+b.dataset.tema)}catch(e){}
+  })});
+  window.addEventListener('resize',ajustar);
+
+  // Conversa de verdade: o que a pessoa digita aparece, e o outro lado responde.
+  function hora(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+  function esc(t){return t.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+  function enviar(comp){
+    var campo=comp.querySelector('input.campo'); var txt=campo.value.trim(); if(!txt) return;
+    var raiz=comp.closest('.janela,.cel,.col-chat,.conv'); var conv=raiz.querySelector('.conversa');
+    var canvas=comp.closest('.canvas');
+    var cliente=canvas.id==='c1';
+    conv.insertAdjacentHTML('beforeend','<div class="linha me"><div class="bolha me">'+esc(txt)+'<span class="hora">'+hora()+' <span class="visto">✓✓ visto</span></span></div></div>');
+    campo.value='';
+    var resp=cliente?'Recebi! Já estou conferindo aqui e te aviso em instantes.':'Perfeito, muito obrigado!';
+    var avatar=cliente?'<span class="avatar p" style="background:#8b5cf6">C</span>':'<span class="avatar p" style="background:#0ea5e9">L</span>';
+    setTimeout(function(){
+      conv.insertAdjacentHTML('beforeend','<div class="linha them">'+avatar+'<div class="bolha them">'+resp+'<span class="hora">'+hora()+'</span></div></div>');
+    },1100);
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-enviar]'); if(b){enviar(b.closest('.composer')); return;}
+    var r=e.target.closest('.resp span'); if(r){
+      var col=r.closest('.col-chat,.conv'); var campo=col.querySelector('input.campo'); campo.value=r.textContent.replace('+ ','').trim(); campo.focus();
+    }
+    var li=e.target.closest('.linha-inbox'); if(li){li.parentNode.querySelectorAll('.linha-inbox').forEach(function(x){x.classList.remove('sel')}); li.classList.add('sel');}
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&e.target.matches('input.campo')){e.preventDefault();enviar(e.target.closest('.composer'))}
+  });
+  var inicial=location.hash==='#v2'?'v2':'v1';
+  document.querySelector('[data-tema="'+inicial+'"]').click();
+  mostrar('c1');
+  setTimeout(ajustar,60);
+})();
+</script></body></html>
