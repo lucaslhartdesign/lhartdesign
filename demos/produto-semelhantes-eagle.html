@@ -13,6 +13,7 @@
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
+  body{overflow-x:hidden}
   body{margin:0;background:radial-gradient(900px 420px at 18% -4%,rgba(30,123,255,.16),transparent 62%),
        radial-gradient(700px 360px at 92% 6%,rgba(56,214,224,.10),transparent 60%),var(--fundo);
        color:var(--txt);font-family:"Segoe UI",system-ui,-apple-system,sans-serif;line-height:1.5;min-height:100vh}
@@ -174,15 +175,46 @@
     .semelhantes{position:static}
   }
   @media (max-width:760px){
-    .grade{grid-template-columns:1fr}
-    .col-esq{order:2} .semelhantes{order:3} .col-dir{order:1}
-    .foto-principal{max-height:340px}
+    .pagina{padding:12px 12px 96px}
+    .grade{grid-template-columns:minmax(0,1fr);gap:14px}
+    .grade > *{min-width:0}
+    .col-esq{display:contents}               /* foto e descricao viram itens da grade, para reordenar */
+    .foto-principal{order:1;max-height:none;aspect-ratio:1/1;border-radius:14px}
+    .col-dir{order:2}
+    .semelhantes{order:3;padding:14px}
+    .descricao{order:4;margin-top:0}
     .busca-topo{display:none}
-    .item{grid-template-columns:54px minmax(0,1fr)}
-    .mini{width:54px;height:54px}
-    .acoes{grid-column:1/-1;flex-direction:row}
-    .acoes button{flex:1}
-    .lista{max-height:none}
+    .marca span{font-size:16px}
+    .titulo h1{font-size:16.5px}
+    .preco-box .grande{font-size:34px}
+    .b-carrinho,.b-comprar{padding:16px;font-size:16px;min-height:52px}
+    .lista{max-height:none;overflow:visible;padding-right:0}
+    .item{grid-template-columns:58px minmax(0,1fr);gap:11px;padding:11px}
+    .mini{width:58px;height:58px}
+    .acoes{grid-column:1/-1;flex-direction:row;gap:8px}
+    .acoes button{flex:1;min-height:44px;font-size:13.5px}
+    .chips{flex-wrap:nowrap;overflow-x:auto;margin-inline:-14px;padding:2px 14px 6px;scrollbar-width:none}
+    .chips::-webkit-scrollbar{display:none}
+    .chip{flex:none;padding:8px 15px;font-size:13.5px}
+    .buscar{padding:13px 18px;font-size:16px}   /* 16px: o iPhone nao da zoom ao tocar */
+    .junto li button{padding:6px 10px;font-size:20px}
+    .toast{bottom:84px}
+  }
+  /* barra fixa de compra: so no celular, e so quando os botoes grandes sairam da tela */
+  .barra-compra{display:none}
+  @media (max-width:760px){
+    .barra-compra{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;gap:12px;
+      padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(7,11,20,.96);
+      border-top:1px solid var(--borda-viva);backdrop-filter:blur(8px);
+      transform:translateY(110%);transition:transform .25s}
+    .barra-compra.on{transform:translateY(0)}
+    .barra-compra .valor{flex:1;min-width:0}
+    .barra-compra .valor b{display:block;color:var(--verde);font-size:20px;line-height:1.1}
+    .barra-compra .valor small{display:block;color:var(--txt-3);font-size:12px;white-space:nowrap;overflow:hidden;
+      text-overflow:ellipsis}
+    .barra-compra button{border:0;border-radius:12px;min-height:48px;padding:0 18px;font-weight:800;font-size:15px}
+    .barra-compra .bc-car{background:var(--azul);color:#fff}
+    .barra-compra .bc-comp{background:var(--verde);color:#04210f}
   }
 </style>
 </head>
@@ -248,6 +280,11 @@
     </aside>
   </div>
 </main>
+<div class="barra-compra" id="barra-compra">
+  <div class="valor"><b id="bc-preco"></b><small id="bc-sub"></small></div>
+  <button class="bc-car" id="bc-car">Carrinho</button>
+  <button class="bc-comp" id="bc-comp">Comprar</button>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -331,7 +368,14 @@ var DADOS = {"produtos": [{"id": 1, "nome": "Leveling 0-70 + Kill T12 Lilith e T
     el('junto-total').textContent = moeda(total);
   }
 
-  function tudo() { pintarPrincipal(); pintarChips(); pintarLista(); pintarJunto(); }
+  function pintarBarra() {
+    var total = principal.preco;
+    junto.forEach(function (id) { total += porId(id).preco; });
+    el('bc-preco').textContent = moeda(total);
+    el('bc-sub').textContent = junto.length ? (junto.length + 1) + ' itens juntos' : principal.nome;
+  }
+
+  function tudo() { pintarBarra(); pintarPrincipal(); pintarChips(); pintarLista(); pintarJunto(); }
 
   document.addEventListener('click', function (e) {
     var ver = e.target.closest('[data-ver]');
@@ -348,10 +392,10 @@ var DADOS = {"produtos": [{"id": 1, "nome": "Leveling 0-70 + Kill T12 Lilith e T
     if (mais) {
       var id = parseInt(mais.dataset.junto, 10), i = junto.indexOf(id);
       if (i >= 0) junto.splice(i, 1); else { junto.push(id); toast('"' + porId(id).nome + '" vai junto no pedido'); }
-      pintarLista(); pintarJunto(); return;
+      pintarLista(); pintarJunto(); pintarBarra(); return;
     }
     var tirar = e.target.closest('[data-tirar]');
-    if (tirar) { junto.splice(junto.indexOf(parseInt(tirar.dataset.tirar, 10)), 1); pintarLista(); pintarJunto(); return; }
+    if (tirar) { junto.splice(junto.indexOf(parseInt(tirar.dataset.tirar, 10)), 1); pintarLista(); pintarJunto(); pintarBarra(); return; }
     var chip = e.target.closest('.chip');
     if (chip) { categoria = chip.dataset.cat; pintarChips(); pintarLista(); return; }
   });
@@ -367,7 +411,24 @@ var DADOS = {"produtos": [{"id": 1, "nome": "Leveling 0-70 + Kill T12 Lilith e T
   el('b-comprar').addEventListener('click', function () { toast('Prévia: aqui abriria o pagamento no Pix'); });
   el('b-junto').addEventListener('click', function () { toast('Prévia: levaria os ' + (1 + junto.length) + ' itens para o pagamento'); });
 
+  el('bc-car').addEventListener('click', function () { el('b-carrinho').click(); });
+  // tocar no valor leva ao resumo "Levando junto" (que fica la em cima, junto do preco)
+  document.querySelector('.barra-compra .valor').addEventListener('click', function () {
+    var alvo = junto.length ? el('junto') : document.querySelector('.col-dir');
+    alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  el('bc-comp').addEventListener('click', function () { el('b-comprar').click(); });
+  // A barra fixa aparece quando os botoes grandes saem da tela (so vale no celular, por CSS).
+  function atualizarBarra() {
+    var r = el('b-comprar').getBoundingClientRect();
+    el('barra-compra').classList.toggle('on', r.bottom < 0 || r.top > window.innerHeight);
+  }
+  window.addEventListener('scroll', atualizarBarra, { passive: true });
+  window.addEventListener('resize', atualizarBarra);
+  setInterval(atualizarBarra, 600);   // rede de seguranca: conteudo que muda de altura sem rolar
+
   tudo();
+  atualizarBarra();
 })();
 </script>
 </body>
