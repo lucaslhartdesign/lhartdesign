@@ -136,6 +136,15 @@
   </div>
 
   <div class="tab-panel" id="tab-chat">
+    <div class="card" id="av-card">
+      <h2>Avisos no celular</h2>
+      <div class="lst" style="margin-bottom:8px">
+        <div><span>WhatsApp</span><b id="av-wa">…</b></div>
+        <div><span>Telegram</span><b id="av-tg">…</b></div>
+      </div>
+      <div class="row" id="av-btns"></div>
+      <p class="muted" id="av-msg" style="margin:10px 0 0"></p>
+    </div>
     <div class="chat-wrap">
       <div class="card c-list" id="c-list"><p class="muted" style="padding:10px">Nenhuma conversa ainda.</p></div>
       <div class="card c-view" id="c-view">
@@ -679,7 +688,39 @@ async function chatEnvia() {
 }
 document.getElementById('c-form').addEventListener('submit', e => { e.preventDefault(); chatEnvia(); });
 document.getElementById('c-text').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatEnvia(); } });
+
+/* ===================== Avisos no celular (WhatsApp e Telegram) ===================== */
+let AV_POLL = null;
+async function avisosCarrega() {
+  const res = await api('/api/admin/telegram');
+  if (!res.ok) return;
+  const d = await res.json();
+  document.getElementById('av-wa').textContent = d.whatsapp ? '✅ ligado' : '⚠️ faltam CALLMEBOT_PHONE e CALLMEBOT_KEY na Vercel';
+  const tgEl = document.getElementById('av-tg'), btns = document.getElementById('av-btns');
+  btns.innerHTML = '';
+  const botao = (txt, fn, perigo) => { const b = document.createElement('button'); b.className = 'btn' + (perigo ? ' btn-danger' : ''); b.type = 'button'; b.textContent = txt; b.onclick = fn; btns.appendChild(b); };
+  if (!d.token) { tgEl.textContent = '⚪ falta o TELEGRAM_BOT_TOKEN na Vercel'; return; }
+  if (d.erro) { tgEl.textContent = '⚠️ ' + d.erro; return; }
+  if (d.ligado) {
+    tgEl.textContent = '✅ ligado (@' + d.bot + ')';
+    botao('Enviar teste', async () => { const r = await api('/api/admin/telegram', { method: 'POST', body: JSON.stringify({ a: 'testar' }) }); const j = await r.json(); document.getElementById('av-msg').textContent = r.ok ? 'Teste enviado. Confira o Telegram.' : j.error; });
+    botao('Desligar', async () => { if (!confirm('Parar de receber avisos no Telegram?')) return; await api('/api/admin/telegram', { method: 'POST', body: JSON.stringify({ a: 'desligar' }) }); avisosCarrega(); }, true);
+  } else {
+    tgEl.textContent = '⚪ desligado (@' + d.bot + ')';
+    botao('Ligar Telegram', async () => {
+      const r = await api('/api/admin/telegram', { method: 'POST', body: JSON.stringify({ a: 'ligar' }) });
+      const j = await r.json();
+      const msg = document.getElementById('av-msg');
+      if (!r.ok) { msg.textContent = j.error; return; }
+      window.open(j.link, '_blank', 'noopener');
+      msg.innerHTML = 'Abri o Telegram. Toque em <b>Iniciar</b> no bot @' + esc(j.bot) + ' (o código vale 10 minutos). Se não abriu, <a href="' + esc(j.link) + '" target="_blank" rel="noopener">toque aqui</a>.';
+      clearInterval(AV_POLL); let n = 0;
+      AV_POLL = setInterval(async () => { n++; const rr = await api('/api/admin/telegram'); const dd = rr.ok ? await rr.json() : {}; if (dd.ligado || n > 60) { clearInterval(AV_POLL); avisosCarrega(); } }, 3000);
+    });
+  }
+}
 function chatStart() {
+  avisosCarrega();
   clearInterval(CHAT_TIMER);
   chatLista();
   CHAT_TIMER = setInterval(() => {

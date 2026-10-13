@@ -3,10 +3,11 @@
 //   GET  /api/chat?a=poll&vid=...&after=<ts>                         -> mensagens novas e se ele está online
 const { getRedis } = require('./_lib/redis');
 const { bodyOf, clean, validVid, parse, geo, BOT, device, limited, ipHash } = require('./_lib/util');
+const { token: tgToken, tg, chatId: tgChatId } = require('./_lib/telegram');
 
 // Avisos para o Lucas. Cada um só liga se as variáveis do ambiente (Vercel) existirem:
 //   Discord:  LH_DISCORD_WEBHOOK
-//   Telegram: TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID
+//   Telegram: TELEGRAM_BOT_TOKEN (e liga o destino pelo painel: Acesso → Conversas → Ligar Telegram)
 //   WhatsApp (CallMeBot, grátis): CALLMEBOT_PHONE (ex.: 5511999999999) + CALLMEBOT_KEY
 // O WhatsApp avisa no máximo 1 vez a cada 5 min por conversa e 20 por hora no total, para não encher o celular.
 async function chamar(url, opts) {
@@ -32,11 +33,9 @@ async function avisa(redis, meta, text) {
 
   const resumo = '💬 Site Lhart: ' + quem + (onde ? ' (' + onde + ')' : '') + (meta.contact ? ' · ' + meta.contact : '') + '\n' + text.slice(0, 500) + '\nResponder: ' + link;
 
-  if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
-    tarefas.push(chamar('https://api.telegram.org/bot' + process.env.TELEGRAM_BOT_TOKEN + '/sendMessage', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: process.env.TELEGRAM_CHAT_ID, text: resumo, disable_web_page_preview: true }),
-    }));
+  if (tgToken()) {
+    const dest = await tgChatId(redis);
+    if (dest) tarefas.push(tg('sendMessage', { chat_id: dest, text: resumo, disable_web_page_preview: true }));
   }
 
   if (process.env.CALLMEBOT_PHONE && process.env.CALLMEBOT_KEY) {
