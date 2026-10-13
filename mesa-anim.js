@@ -45,30 +45,54 @@
       ['4', 'Garçom serve', 'O garçom leva o prato <b>direto à mesa certa</b> e marca “servido”. A conta da mesa fecha no caixa.']
     ];
   }
+  var PESSOA = '<i class="lh"></i><i class="cq"></i><i class="ar l"></i><i class="ar r"></i><i class="sh"></i><i class="hn l"></i><i class="hn r"></i><i class="ea l"></i><i class="ea r"></i><i class="hd"></i><i class="hat"></i>';
   function pessoa(x, y, rot, cor, pele, cabelo, extra) {
-    return '<div class="mz-pp ' + (extra || '') + '" style="transform:translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg);--c:' + cor + ';--h:' + pele + ';--hair:' + cabelo + '">' +
-      '<i class="sh"></i><i class="ar l"></i><i class="ar r"></i><i class="hd"></i></div>';
+    return '<div class="mz-pp ' + (extra || '') + '" style="transform:translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg);--c:' + cor + ';--h:' + pele + ';--hair:' + cabelo + '">' + PESSOA + '</div>';
   }
   function cadeira(x, y, rot) { return '<i class="mz-ch" style="left:' + x + 'px;top:' + y + 'px;margin:-12px 0 0 -15px;transform:rotate(' + rot + 'deg)"></i>'; }
-  function prato(x, y, cor) { return '<i class="mz-pt" style="left:' + (x - 13) + 'px;top:' + (y - 13) + 'px;--f:' + cor + '"></i>'; }
-  function mesa(x, y, r, n) { return '<div class="mz-tbl" style="left:' + (x - r) + 'px;top:' + (y - r) + 'px;width:' + (2 * r) + 'px;height:' + (2 * r) + 'px"><span class="nb">' + n + '</span></div>'; }
+  function prato(x, y, cor) { return '<i class="mz-pt" style="left:' + (x - 12) + 'px;top:' + (y - 12) + 'px;--f:' + cor + '"></i>'; }
+  function copo(x, y) { return '<i class="mz-cup" style="left:' + (x - 5) + 'px;top:' + (y - 5) + 'px"></i>'; }
+  function vaso(x, y) { return '<i class="mz-vaso" style="left:' + (x - 13) + 'px;top:' + (y - 13) + 'px"></i>'; }
+  function mesaR(x, y, r, n, foco) { return '<div class="mz-tbl rd' + (foco ? ' foco' : '') + '" style="left:' + (x - r) + 'px;top:' + (y - r) + 'px;width:' + (2 * r) + 'px;height:' + (2 * r) + 'px"><span class="nb">' + n + '</span></div>'; }
+  function mesaC(x, y, w, h, n) { return '<div class="mz-tbl rc" style="left:' + (x - w / 2) + 'px;top:' + (y - h / 2) + 'px;width:' + w + 'px;height:' + h + 'px"><span class="nb">' + n + '</span></div>'; }
+  // um lugar ocupado: cadeira + pessoa + prato (n/s/l/o = lado da mesa onde está a pessoa)
+  function lugar(cx, cy, lado, d, cor, pele, cab, est, pc) {
+    var x = cx, y = cy, rot = 0, px = cx, py = cy;
+    if (lado === 'n') { y = cy - d; rot = 0; py = cy - d + 26; }
+    else if (lado === 's') { y = cy + d; rot = 180; py = cy + d - 26; }
+    else if (lado === 'o') { x = cx - d; rot = 270; px = cx - d + 26; }
+    else { x = cx + d; rot = 90; px = cx + d - 26; }
+    return cadeira(x, y, lado === 'n' || lado === 's' ? 0 : 90) + pessoa(x, y, rot, cor, pele, cab, 'eat ' + (est || '')) + prato(px, py, pc);
+  }
   function html(ls) {
     var ch = ls.map(function (l, i) { return '<button type="button" data-i="' + i + '"><b>' + l[0] + '</b><span>' + T(l[1]) + '</span></button>'; }).join('');
     var salao =
-      '<div class="mz-kroom"></div><div class="mz-pan" style="left:500px"></div><div class="mz-pan" style="left:566px"></div><div class="mz-ctr"></div>' +
+      '<div class="mz-kroom"></div><div class="mz-stove"><i class="mz-pan" style="left:12px"></i><i class="mz-pan" style="left:62px"></i><i class="mz-pan" style="left:98px;width:30px;height:30px;top:11px"></i></div><div class="mz-ctr"></div>' +
       '<div class="mz-floor"></div><div class="mz-wall"><i></i></div><div class="mz-door"></div>' +
-      // mesas 2, 4 e 9 (ocupadas, gente comendo) e a mesa 7 (a do cliente)
-      mesa(255, 250, 42, '2') + mesa(385, 240, 40, '4') + mesa(565, 330, 42, '9') + mesa(330, 370, 46, '7') +
-      cadeira(255, 194, 0) + cadeira(198, 250, 90) + cadeira(385, 186, 0) + cadeira(385, 296, 0) + cadeira(565, 274, 0) + cadeira(565, 386, 0) + cadeira(278, 370, 90) + cadeira(330, 432, 0) +
-      prato(255, 222, '#c94b2c') + prato(227, 250, '#e0a63a') + prato(385, 214, '#6dbb3a') + prato(385, 268, '#c94b2c') + prato(565, 303, '#e0a63a') + prato(565, 358, '#6dbb3a') +
-      '<i class="mz-cup" style="left:280px;top:240px"></i><i class="mz-cup" style="left:372px;top:246px"></i><i class="mz-cup" style="left:586px;top:326px"></i>' +
-      pessoa(255, 194, 0, '#4b7bd9', '#e9b88f', '#3a2418', 'eat') + pessoa(198, 250, 270, '#8e5bd1', '#c98f68', '#1c1210', 'eat') +
-      pessoa(385, 186, 0, '#2fa884', '#f0c9a4', '#7a4a1e', 'eat') + pessoa(385, 296, 180, '#d1456b', '#d9a37a', '#2c1b10', 'eat') +
-      pessoa(565, 274, 0, '#e0a63a', '#b57a52', '#150d09', 'eat') + pessoa(565, 386, 180, '#4b7bd9', '#e9b88f', '#8a5a2b', 'eat') +
-      '<span class="mz-lbl" style="left:292px;top:300px">' + T('MESA 7') + '</span>' +
+      '<div class="mz-rug"></div><div class="mz-spot"></div>' +
+      // fileira de cima
+      mesaR(256, 212, 30, '1') + mesaC(340, 212, 72, 44, '2') + mesaR(480, 212, 30, '3') + mesaC(588, 212, 56, 44, '4') +
+      lugar(256, 212, 'n', 46, '#4b7bd9', '#e9b88f', '#3a2418', '', '#c94b2c') + lugar(256, 212, 's', 46, '#d1456b', '#d9a37a', '#2c1b10', 'longo', '#e0a63a') +
+      lugar(322, 212, 'n', 46, '#2fa884', '#f0c9a4', '#7a4a1e', '', '#6dbb3a') + lugar(322, 212, 's', 46, '#8e5bd1', '#c98f68', '#1c1210', 'coque', '#c94b2c') + lugar(358, 212, 's', 46, '#e0a63a', '#b57a52', '#150d09', '', '#e0a63a') +
+      lugar(480, 212, 'n', 46, '#e0a63a', '#d9a37a', '#7a3a1e', 'longo', '#c94b2c') + lugar(480, 212, 's', 46, '#4b7bd9', '#e9b88f', '#8a5a2b', '', '#6dbb3a') +
+      lugar(588, 212, 'n', 46, '#d1456b', '#f0c9a4', '#2c1b10', 'coque', '#e0a63a') + lugar(588, 212, 's', 46, '#2fa884', '#b57a52', '#150d09', '', '#c94b2c') +
+      // fileira do meio
+      mesaR(256, 330, 30, '5') + mesaC(500, 330, 72, 44, '6') +
+      lugar(256, 330, 'n', 46, '#8e5bd1', '#e9b88f', '#8a5a2b', 'longo', '#6dbb3a') + lugar(256, 330, 's', 46, '#4b7bd9', '#c98f68', '#150d09', '', '#c94b2c') +
+      lugar(482, 330, 'n', 46, '#e8683c', '#f0c9a4', '#3a2418', '', '#e0a63a') + lugar(518, 330, 'n', 46, '#2fa884', '#d9a37a', '#2c1b10', 'coque', '#6dbb3a') + lugar(482, 330, 's', 46, '#d1456b', '#e9b88f', '#7a4a1e', 'longo', '#c94b2c') +
+      // canto de baixo
+      mesaR(590, 424, 30, '8') + mesaR(484, 450, 30, '9') +
+      lugar(590, 424, 'o', 46, '#4b7bd9', '#d9a37a', '#2c1b10', '', '#e0a63a') + lugar(590, 424, 'l', 46, '#e0a63a', '#b57a52', '#150d09', 'longo', '#c94b2c') +
+      cadeira(484, 404, 0) + cadeira(484, 496, 0) +
+      // a mesa do cliente (mesa 7), no foco
+      mesaR(330, 402, 38, '', true) + cadeira(330, 460, 0) + cadeira(274, 402, 90) +
+      copo(300, 392) + copo(364, 412) +
+      vaso(206, 172) + vaso(630, 172) + vaso(206, 500) + vaso(630, 496) +
+      '<span class="mz-lbl" style="left:296px;top:342px">' + T('MESA 7') + '</span>' +
       '<div class="mz-stand">' + qr(7) + '</div><div class="mz-food"><div class="pt"></div>' + burger(false) + '</div>' +
-      '<div class="mz-pp mz-cu">' + '<i class="sh"></i><i class="ar l"></i><i class="ar r"></i><i class="hd"></i></div>' +
-      '<div class="mz-pp wt mz-wp" style="z-index:5"><i class="sh"></i><i class="ar l"></i><i class="ar r"></i><i class="hd"></i><div class="mz-tray">' + burger(false) + '</div></div>' +
+      '<div class="mz-pp mz-cu">' + PESSOA + '</div>' +
+      '<div class="mz-pp wt mz-wp" style="z-index:5">' + PESSOA + '<div class="mz-tray">' + burger(false) + '</div></div>' +
+      pessoa(556, 84, 180, '#f6f6f8', '#d9a37a', '#2c1b10', 'chef') +
       '<div class="mz-ok">✓ ' + T('Servido na mesa') + '</div>';
     return DEFS +
       '<div class="mz-steps" id="mzchips">' + ch + '</div>' +
