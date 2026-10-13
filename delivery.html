@@ -5,8 +5,8 @@
 <meta name="description" content="Site e app de delivery próprio para restaurantes: cardápio com fotos, cupom, rota no Google Maps, app do motoboy e tela da cozinha sincronizados. Sem comissão por pedido.">
 <meta property="og:title" content="Delivery para Restaurantes — Lhart Design"><meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="mesa-anim.css?v=5">
-<script src="i18n-pages.js"></script><script src="i18n-delivery.js"></script><script src="i18n-delivery-extra.js"></script><script src="i18n-delivery-mesa.js?v=4"></script>
+<link rel="stylesheet" href="apps-escolha.css?v=2">
+<script src="i18n-pages.js"></script><script src="i18n-delivery.js"></script><script src="i18n-delivery-extra.js"></script><script src="i18n-delivery-mesa.js?v=5"></script>
 <style>
 :root{--bg:#161826;--p:#1c1e2e;--p2:#232532;--ln:#34374a;--gold:#9184d9;--gold2:#d2cefd;--ac:#b5abfc;--pk:#b5abfc;--gr:#4be39a;--ink:#e9e9ed;--mu:#9397ab;color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -275,26 +275,19 @@ th{color:#9184d9;background:#191b2b}
 @media(max-width:480px){.hero .chk{gap:10px}.hero .chk li{padding:14px 10px;font-size:13.5px;gap:9px}}
 </style></head><body>
 <div class="bg-glow"></div><div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
-<div class="l"><a href="index.html">Início</a><a href="social.html">Social Media &amp; Tráfego</a><a class="on" href="delivery.html">Apps de Delivery</a><a href="#estilos">Estilos</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
+<div class="l"><a href="index.html">Início</a><a href="social.html">Social Media &amp; Tráfego</a><a class="on" href="delivery.html">Apps de Delivery</a><a href="mesa.html">Pedido na Mesa</a><a href="#estilos">Estilos</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px;box-shadow:none">Pedir o meu</a></div></div></div>
+<div class="ap" id="escolha"><div class="wrap"><div class="ap-t"><span>Como contratar</span><b>Comece pelo cardápio online e adicione o que o seu restaurante precisa</b></div>
+<div class="ap-g"><div class="ap-c base"><i>📱</i><b>Cardápio online</b><span>Base: cardápio com fotos, pedidos e painel do dono</span></div><span class="ap-p">+</span>
+<a class="ap-c on" href="delivery.html"><i>🛵</i><b>Delivery</b><span>Motoboy, mapa e Pix</span><em>Adicional</em></a><span class="ap-p">e/ou</span>
+<a class="ap-c" href="mesa.html"><i>🪑</i><b>Pedido na mesa</b><span>QR Code, cozinha e conta por mesa</span><em>Adicional</em></a></div>
+<p class="ap-n">Você pode contratar só o cardápio, um adicional ou os dois. Valores sob consulta.</p></div></div>
 
 <div class="hero"><div class="led" aria-hidden="true"><div class="glow"></div><div class="line"></div></div><div class="wrap"><div class="htxt"><span class="kick"><i></i> Delivery próprio</span>
 <h1 data-ih="d.h1">Seu delivery, <em>sem dividir</em> o lucro</h1>
 <p class="l">Site e app de pedidos com a sua marca: o cliente pede, a cozinha recebe e o motoboy entrega, tudo sincronizado e sem comissão por pedido. Os três apps abaixo estão rodando de verdade, e conversam entre si.</p>
-</div><ul class="chk"><li>Cardápio com foto, preço e cupom de desconto</li><li>Motoboy no mapa em tempo real, com aviso de “chegando”</li><li>Pix e cartão pela API do banco, dinheiro direto na sua conta</li><li>Tela da cozinha com os pedidos na ordem de chegada</li></ul><div class="row"><a class="btn" href="#estilos">Ver os 6 estilos ↓</a><a class="btn g" href="#mesa">Novo: pedido na mesa</a><a class="btn g" href="#tutorial">Ver o tutorial</a></div>
+</div><ul class="chk"><li>Cardápio com foto, preço e cupom de desconto</li><li>Motoboy no mapa em tempo real, com aviso de “chegando”</li><li>Pix e cartão pela API do banco, dinheiro direto na sua conta</li><li>Tela da cozinha com os pedidos na ordem de chegada</li></ul><div class="row"><a class="btn" href="#estilos">Ver os 6 estilos ↓</a><a class="btn g" href="mesa.html">Pedido na mesa →</a><a class="btn g" href="#tutorial">Ver o tutorial</a></div>
 <div class="stage" id="stage"><div class="hcol a"><div class="fr ph" data-v="cliente" data-w="390"><iframe data-src="demos/delivery-sabor-express.html?view=cliente" title="Cliente"></iframe></div><span class="cap">📱 Cliente</span></div><div class="hcol b"><div class="fr tb" data-v="cozinha" data-w="900" data-wm="620"><iframe data-src="demos/delivery-sabor-express.html?view=cozinha" title="Cozinha"></iframe></div><span class="cap">👨‍🍳 Cozinha</span></div><div class="hcol c"><div class="fr ph" data-v="motoboy" data-w="390"><iframe data-src="demos/delivery-sabor-express.html?view=motoboy" title="Motoboy"></iframe></div><span class="cap">🛵 Motoboy</span></div></div><a class="hint" href="#tutorial">Veja cada tela em tamanho real ↓</a></div></div>
 <div class="trust"><div class="wrap"><span>Sem comissão por pedido</span><span>Dinheiro direto na conta do restaurante</span><span>Português, inglês e espanhol</span><span>Android e iPhone</span><span>Google Maps integrado</span></div></div>
-
-<div class="sec mz-sec" id="mesa"><div class="wrap"><span class="eyebrow mz-new">Novo · Pedido na mesa</span>
-<h2 data-ih="d.mesa">O cliente pede da mesa. <em>O prato chega sem chamar ninguém.</em></h2>
-<p class="s">Cada mesa tem um QR Code. O cliente aponta a câmera, pede pelo celular e a cozinha recebe direto, com o número da mesa. Sem fila para o garçom, sem erro de anotação e sem baixar aplicativo.</p>
-<div class="mz-grid"><div class="mz-info"><ul class="mz-list">
-<li><i>1</i><span><b>Cada mesa com seu código</b>O QR leva um código secreto: quem não está na mesa não consegue pedir por ela.</span></li>
-<li><i>2</i><span><b>Pedido direto na cozinha</b>Aparece como “Mesa 7”, sem digitar endereço e sem telefone.</span></li>
-<li><i>3</i><span><b>Conta por mesa</b>Vários pedidos da mesma mesa somam numa conta, que o caixa fecha com “Conta paga”.</span></li>
-<li><i>4</i><span><b>QR para imprimir</b>O painel gera a folha com o QR de todas as mesas, pronta para plastificar.</span></li></ul>
-<div class="row"><a class="btn" id="mzlive" target="_blank" rel="noopener" href="https://delivery.lhartdesign.com/c/demo-brasa-ponto?mesa=7&amp;k=cb9970df91">Abrir o cardápio ao vivo</a><a class="btn g" id="mzwa" href="#">Quero no meu restaurante</a></div>
-<p class="mz-note">Demonstração de uma hamburgueria fictícia (Brasa &amp; Ponto). Você pode pedir de verdade na demo: nada é cobrado.</p></div>
-<div class="mz-scene" id="mzscene"></div></div></div></div>
 
 <div class="sec" id="tutorial"><div class="wrap"><span class="eyebrow">Tutorial</span><h2 data-ih="d.tut">Veja o delivery <em>funcionando em 7 passos</em></h2><p class="s">É o aplicativo de verdade, rodando ao lado. Aperte “Próximo passo” e acompanhe o pedido passar pelo cliente, pela cozinha e pelo motoboy. Em cada passo mostramos como isso ajuda o faturamento.</p>
 <div class="tut"><div><div class="tl" id="tl"></div><div class="tc"><button class="go" id="tnext">Próximo passo ▶</button><button id="tprev">◀ Voltar</button><button id="tauto">▶▶ Rodar tudo</button><button id="trst">↺ Reiniciar</button></div>
@@ -361,6 +354,7 @@ th{color:#9184d9;background:#191b2b}
 <div class="sec"><div class="wrap"><span class="eyebrow">Próximos passos</span><h2 data-ih="d.need">Para <em>entrar no ar</em></h2><p class="s">O que precisamos de você para configurar o sistema com os dados reais do restaurante.</p>
 <div class="need"><div><b>Cardápio e fotos</b><span>Produtos, preços, categorias e fotos dos pratos</span></div><div><b>Endereço e horários</b><span>Local da loja, área e taxa de entrega</span></div><div><b>Pagamento</b><span>Conta no banco ou na plataforma de pagamento, no nome do restaurante</span></div><div><b>Google Maps</b><span>Chave do Google para mapa e rotas (criada na conta do restaurante)</span></div><div><b>Marca</b><span>Logo, cores e nome do restaurante</span></div><div><b>Equipe</b><span>Quem usa a cozinha e quem são os motoboys</span></div></div>
 <div class="cta" style="margin-top:40px;background:linear-gradient(135deg,#9184d926,#262a60);border:1px solid #9184d955"><h2>Quer vender mais, além de receber pedidos?</h2><p>Também fazemos fotos do cardápio, vídeos, vídeos de drone e tráfego pago para o seu restaurante aparecer para quem está com fome.</p><a class="btn" href="social.html">Ver foto, vídeo e tráfego</a></div>
+<div class="cta" style="margin-top:40px;background:linear-gradient(135deg,#ff6a1322,#262a60);border:1px solid #ff6a1355"><h2>Tem salão? Adicione o pedido na mesa</h2><p>O cliente escaneia o QR Code da mesa, pede pelo celular e a cozinha recebe direto. É um adicional, no mesmo cardápio e no mesmo painel.</p><a class="btn" href="mesa.html">Ver o pedido na mesa</a></div>
 <div class="cta" style="margin-top:70px"><h2>Quer o delivery do seu restaurante?</h2><p>Escolha o estilo, mande o cardápio e a gente responde com prazo e valor.</p><a class="btn" id="ctawa" href="#">Chamar no WhatsApp</a></div></div></div>
 <footer><div class="wrap"><span>© Lhart Design — demonstrações com dados fictícios. O mapa real, o Pix e as notificações são ativados na instalação, com as contas do restaurante.</span><a href="index.html">← Voltar ao início</a><a href="admin.html" rel="nofollow">Acesso</a></div></footer>
 <a class="wf" id="wf" href="#">💬 <span>Falar no WhatsApp</span></a>
@@ -384,7 +378,7 @@ function open_(i){const s=S[i];mt.textContent=num(i)+' · '+s.n;mb.innerHTML='<i
 gal.onclick=e=>{const o=e.target.closest('[data-o]')||e.target.closest('.pv');if(o)open_(+(o.dataset.o??o.dataset.i))};
 function close_(){md.classList.remove('on');mb.innerHTML='';document.body.style.overflow=''}
 mx.onclick=close_;addEventListener('keydown',e=>{if(e.key=='Escape')close_()});[mwa,mo].forEach(a=>{a.target='_blank';a.rel='noopener'});
-function links(){const g=wa(LH.t('Oi! Vi a aba Delivery e quero um sistema de pedidos para o meu restaurante.'));[navwa,ctawa,wf,mzwa].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'})}links();
+function links(){const g=wa(LH.t('Oi! Vi a aba Delivery e quero um sistema de pedidos para o meu restaurante.'));[navwa,ctawa,wf].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'})}links();
 /* logística: etapas clicáveis */
 const ST=[
  ['Pedido pago','O banco avisa por webhook','A cozinha recebe só o que já está pago. O cliente vê “pedido recebido” e o horário na linha do tempo.','Vê o status e a linha do tempo','Recebe o pedido e o alerta sonoro','—','Webhook da API do banco ou da plataforma de pagamento'],
@@ -492,6 +486,5 @@ LH.start();
   setInterval(place,1500);
 })();
 </script>
-<script src="mesa-anim.js?v=6" defer></script>
 <script src="lh-site.js?v=1" defer></script>
 </body></html>
