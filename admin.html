@@ -706,7 +706,7 @@ async function avisosCarrega() {
   if (!d.ligado && d.webhook) { dg.textContent = d.webhook.erro ? '⚠️ O Telegram não consegue entregar ao site: ' + d.webhook.erro : d.webhook.url ? 'Conexão com o Telegram ok (' + d.webhook.pendentes + ' pendente).' : 'Ainda não liguei o bot ao site: toque em Ligar Telegram.'; }
   if (d.ligado) {
     tgEl.textContent = '✅ ligado (@' + d.bot + ')';
-    botao('Enviar teste', async () => { const r = await api('/api/admin/telegram', { method: 'POST', body: JSON.stringify({ a: 'testar' }) }); const j = await r.json(); document.getElementById('av-msg').textContent = r.ok ? 'Teste enviado. Confira o Telegram.' : j.error; });
+    botao('Enviar teste', async () => { const r = await api('/api/admin/telegram', { method: 'POST', body: JSON.stringify({ a: 'testar' }) }); const j = await r.json(); document.getElementById('av-msg').textContent = r.ok ? 'Teste: Telegram ' + j.telegram + ' · WhatsApp ' + j.whatsapp + '.' : j.error; });
     botao('Desligar', async () => { if (!confirm('Parar de receber avisos no Telegram?')) return; await api('/api/admin/telegram', { method: 'POST', body: JSON.stringify({ a: 'desligar' }) }); avisosCarrega(); }, true);
   } else {
     tgEl.textContent = '⚪ desligado (@' + d.bot + ')';

@@ -42,9 +42,24 @@ module.exports = async (req, res) => {
     }
     if (a === 'testar') {
       const chat = await chatId(redis);
-      if (!chat) { res.status(400).json({ error: 'O Telegram ainda não está ligado.' }); return; }
-      const r = await tg('sendMessage', { chat_id: chat, text: '🔔 Teste: os avisos do site da Lhart Design estão chegando aqui.' });
-      res.status(r.ok ? 200 : 400).json(r.ok ? { ok: true } : { error: 'O Telegram recusou: ' + (r.description || 'erro') });
+      const out = {};
+      if (chat) {
+        const r = await tg('sendMessage', { chat_id: chat, text: '🔔 Teste: os avisos do site da Lhart Design estão chegando aqui.' });
+        out.telegram = r.ok ? 'enviado' : 'recusado: ' + (r.description || 'erro');
+      } else out.telegram = 'não ligado';
+      if (whatsapp) {
+        try {
+          const ctl = new AbortController();
+          const t = setTimeout(() => ctl.abort(), 8000);
+          const u = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(String(process.env.CALLMEBOT_PHONE).replace(/\D/g, '')) +
+            '&text=' + encodeURIComponent('🔔 Teste: os avisos do site da Lhart Design estão chegando aqui.') + '&apikey=' + encodeURIComponent(process.env.CALLMEBOT_KEY);
+          const r = await fetch(u, { signal: ctl.signal });
+          clearTimeout(t);
+          out.whatsapp = r.ok ? 'enviado' : 'recusado (' + r.status + ')';
+        } catch { out.whatsapp = 'sem resposta do CallMeBot'; }
+      } else out.whatsapp = 'não configurado';
+      const ok = out.telegram === 'enviado' || out.whatsapp === 'enviado';
+      res.status(ok ? 200 : 400).json(ok ? { ok: true, ...out } : { error: 'Telegram: ' + out.telegram + ' · WhatsApp: ' + out.whatsapp });
       return;
     }
     if (a === 'desligar') {
