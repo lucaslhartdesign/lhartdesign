@@ -5,7 +5,7 @@
   if (!host) return;
   var T = function (s) { return (window.LH && LH.t) ? LH.t(s) : s; };
   var reduzido = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var INI = [0, 3200, 8600, 12400], FIM = 18200;
+  var INI = [0, 4900, 13300, 17100], FIM = 22800;
   var tm = [], step = -1, vis = false, st, box, cap, chips, k = 1;
 
   function qr(seed) {
@@ -90,7 +90,7 @@
       vaso(206, 172) + vaso(630, 172) + vaso(206, 500) + vaso(630, 496) +
       '<span class="mz-lbl" style="left:296px;top:342px">' + T('MESA 7') + '</span>' +
       '<div class="mz-stand">' + qr(7) + '</div><div class="mz-food"><div class="pt"></div>' + burger(false) + '</div>' +
-      '<div class="mz-pp mz-cu">' + PESSOA + '</div>' +
+      '<div class="mz-pp mz-cu">' + PESSOA + '<i class="ph"></i></div><i class="mz-flash"></i>' +
       '<div class="mz-pp wt mz-wp" style="z-index:5">' + PESSOA + '<div class="mz-tray">' + burger(false) + '</div></div>' +
       pessoa(556, 84, 180, '#f6f6f8', '#d9a37a', '#2c1b10', 'chef') +
       '<div class="mz-ok">✓ ' + T('Servido na mesa') + '</div>';
@@ -100,20 +100,36 @@
         '<div class="mz-kit"><div class="mz-kh"><span>' + T('Cozinha') + '</span><i>● ' + T('ao vivo') + '</i></div><div class="mz-tk"><b>🪑 ' + T('MESA 7') + '</b><small>1× Brasa Clássico</small>' +
           '<div class="mz-pls"><span>' + T('Novo') + '</span><span>' + T('Preparando') + '</span><span>' + T('Pronto') + '</span><span>' + T('Servido') + '</span></div></div></div>' +
         '<div class="mz-phone"><div class="mz-cam"><div class="mz-camt">' + T('Aponte para o QR da mesa') + '</div><div class="mz-vf">' + qr(7) + '<i class="mz-scan"></i></div><span class="mz-hit">✓ ' + T('Mesa 7') + '</span></div>' +
-          '<div class="mz-menu"><div class="mz-mh"><span>BRASA &amp; PONTO</span><i>' + T('MESA 7') + '</i></div><div class="mz-art">' + burger(true) + '</div>' +
+                    '<div class="mz-menu"><div class="mz-sc"><div class="mz-art">' + burger(true) + '</div>' +
           '<div class="mz-nm">BRASA CLÁSSICO</div><div class="mz-ds">' + T('Pão brioche, burger na brasa, cheddar e molho da casa') + '</div><div class="mz-pr">R$ 32,90</div><div class="mz-add">+</div>' +
-          '<div class="mz-bag"><span><b>1</b>' + T('VER SACOLA') + '</span><span>R$ 32,90</span></div>' +
+          '<div class="mz-sec2">' + T('PORÇÕES') + '</div>' +
+          '<div class="mz-row r2" style="top:392px"><i class="th">🍟</i><div class="tx"><b>' + T('BATATA RÚSTICA') + '</b><span>R$ 22,90</span></div><i class="ad2">+</i></div>' +
+          '<div class="mz-row" style="top:476px"><i class="th">🧅</i><div class="tx"><b>' + T('ANÉIS DE CEBOLA') + '</b><span>R$ 24,90</span></div><i class="ad2">+</i></div>' +
+          '<div class="mz-row" style="top:560px"><i class="th">🥤</i><div class="tx"><b>' + T('REFRIGERANTE') + '</b><span>R$ 6,50</span></div><i class="ad2">+</i></div></div>' +
+          '<div class="mz-mh"><span>BRASA &amp; PONTO</span><i>' + T('MESA 7') + '</i></div>' +
+          '<div class="mz-bag"><span class="l b1"><b>1</b>' + T('VER SACOLA') + '</span><span class="l b2"><b>2</b>' + T('FINALIZAR') + '</span><span class="r p1">R$ 32,90</span><span class="r p2">R$ 55,80</span></div>' +
           '<div class="mz-sent"><b>✓ ' + T('PEDIDO ENVIADO') + '</b><small>' + T('A cozinha já recebeu') + '</small></div></div></div>' +
         '<div class="mz-finger">👆</div><div class="mz-pk"></div>' +
       '</div></div><p class="mz-cap" id="mzcap" aria-live="polite"></p>';
   }
 
-  function fit() { if (!box) return; k = Math.min(1, box.clientWidth / 640); st.style.transform = 'scale(' + k + ')'; box.style.height = Math.round(520 * k) + 'px'; }
+  var mob = false;
+  function enquadra() { // celular: a cena é cortada e a "câmera" acompanha a ação (celular+mesa 7, depois cozinha+mesa 7)
+    var x = (mob && step >= 2) ? 200 : 0;
+    st.style.transform = mob ? 'translateX(' + (-x * k) + 'px) scale(' + k + ')' : 'scale(' + k + ')';
+  }
+  function fit() {
+    if (!box) return;
+    mob = box.clientWidth < 440;
+    k = mob ? box.clientWidth / 430 : Math.min(1, box.clientWidth / 640);
+    box.style.height = Math.round(520 * k) + 'px';
+    enquadra();
+  }
   function clear() { tm.forEach(clearTimeout); tm = []; }
   function legenda(n) { var l = legendas()[n]; cap.innerHTML = '<b>' + l[0] + '. ' + T(l[1]) + '</b> ' + T(l[2]); }
   function marca(n) { [].forEach.call(chips.children, function (b, i) { b.classList.toggle('on', i === n); b.classList.toggle('done', i < n); }); }
-  function reset() { for (var i = 0; i < 4; i++) st.classList.remove('on' + i); void st.offsetWidth; }
-  function ir(n) { step = n; st.classList.add('on' + n); marca(n); legenda(n); }
+  function reset() { for (var i = 0; i < 4; i++) st.classList.remove('on' + i); step = -1; enquadra(); void st.offsetWidth; }
+  function ir(n) { step = n; st.classList.add('on' + n); marca(n); legenda(n); enquadra(); }
   function roda() {
     clear(); reset(); ir(0);
     INI.slice(1).forEach(function (t, i) { tm.push(setTimeout(function () { ir(i + 1); }, t)); });
