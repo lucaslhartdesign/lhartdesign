@@ -10,6 +10,7 @@ LH.html({
   'g.como': { pt: 'Do estilo ao ar em <span>4 passos</span>', en: 'From style to live in <span>4 steps</span>', es: 'Del estilo al aire en <span>4 pasos</span>' }
 });
 LH.add([
+  ['Acesso', 'Access', 'Acceso'],
   ['Robux e gamepass, feita para o celular', 'Robux and gamepass, built for the phone', 'Robux y gamepass, hecha para el celular'],
   ['Calculador de Robux', 'Robux calculator', 'Calculadora de Robux'], ['Conferência do personagem', 'Character check', 'Verificación del personaje'], ['Entrega pelo chat', 'Delivery in the chat', 'Entrega por el chat'],
   ['Robux', 'Robux', 'Robux'], ['Compra e venda', 'Buy and sell', 'Compra y venta'],

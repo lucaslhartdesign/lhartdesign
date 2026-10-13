@@ -15,8 +15,8 @@ module.exports = async (req, res) => {
       redis.get('content:plans'),
       redis.get('content:videos'),
       redis.get('content:results'),
-      redis.lrange('visits', 0, 199),
-      redis.lrange('whatsapp', 0, 199),
+      redis.lrange('visits', 0, 1499),
+      redis.lrange('whatsapp', 0, 499),
       redis.llen('visits'),
       redis.llen('whatsapp'),
     ]);

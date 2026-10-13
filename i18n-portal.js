@@ -1,5 +1,6 @@
 /* Dicionário do portal (index.html): ["português", "inglês", "espanhol"] */
 LH.add([
+  ['Acesso', 'Access', 'Acceso'],
   ['Início', 'Home', 'Inicio'],
   ['Social Media & Tráfego', 'Social Media & Traffic', 'Social Media y Tráfico'],
   ['Apps de Delivery', 'Delivery Apps', 'Apps de Delivery'],

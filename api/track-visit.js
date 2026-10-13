@@ -1,20 +1,26 @@
 const { getRedis } = require('./_lib/redis');
+const { bodyOf, clean, validVid, geo, BOT, device } = require('./_lib/util');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') { res.status(405).end(); return; }
-  let body = req.body;
-  if (!body || typeof body === 'string') {
-    try { body = JSON.parse(body || '{}'); } catch { body = {}; }
-  }
+  const body = bodyOf(req);
+  const ua = String(req.headers['user-agent'] || '');
+  if (BOT.test(ua)) { res.status(204).end(); return; } // robôs e prévias não contam como visita
   const entry = {
     ts: Date.now(),
-    path: String((body && body.path) || '').slice(0, 200),
-    ref: String((body && body.ref) || '').slice(0, 300),
-    lang: String((body && body.lang) || '').slice(0, 10),
-    country: req.headers['x-vercel-ip-country'] || 'unknown',
-    region: req.headers['x-vercel-ip-country-region'] || '',
-    city: req.headers['x-vercel-ip-city'] ? decodeURIComponent(req.headers['x-vercel-ip-city']) : '',
-    ua: String(req.headers['user-agent'] || '').slice(0, 200),
+    path: clean(body.path, 200),
+    ref: clean(body.ref, 300),
+    lang: clean(body.lang, 10),
+    vid: validVid(body.vid),
+    sid: validVid(body.sid),
+    us: clean(body.us, 60), // utm_source (ou o)
+    um: clean(body.um, 60), // utm_medium
+    uc: clean(body.uc, 80), // utm_campaign
+    tz: clean(body.tz, 40),
+    w: Math.max(0, Math.min(10000, parseInt(body.w, 10) || 0)),
+    ...device(ua),
+    ...geo(req),
+    ua: ua.slice(0, 200),
   };
   try {
     const redis = getRedis();

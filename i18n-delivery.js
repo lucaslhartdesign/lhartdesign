@@ -10,6 +10,7 @@ LH.html({
   'd.need': { pt: 'Para <em>entrar no ar</em>', en: 'To <em>go live</em>', es: 'Para <em>salir al aire</em>' }
 });
 LH.add([
+  ['Acesso', 'Access', 'Acceso'],
   /* menu e herói */
   ['Início', 'Home', 'Inicio'], ['Social Media & Tráfego', 'Social Media & Traffic', 'Social Media y Tráfico'], ['Apps de Delivery', 'Delivery Apps', 'Apps de Delivery'], ['Quer vender mais, além de receber pedidos?', 'Want to sell more, not just take orders?', '¿Quieres vender más, no solo recibir pedidos?'], ['Também fazemos fotos do cardápio, vídeos, vídeos de drone e tráfego pago para o seu restaurante aparecer para quem está com fome.', 'We also do menu photos, videos, drone footage and paid traffic so your restaurant shows up for hungry people.', 'También hacemos fotos del menú, videos, videos de dron y tráfico pago para que tu restaurante aparezca ante quien tiene hambre.'], ['Ver foto, vídeo e tráfego', 'See photo, video and traffic', 'Ver foto, video y tráfico'], ['Estilos', 'Styles', 'Estilos'], ['Pedir o meu', 'Get mine', 'Pedir el mío'],
   ['Delivery próprio', 'Your own delivery', 'Delivery propio'],

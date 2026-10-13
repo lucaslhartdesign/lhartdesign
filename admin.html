@@ -45,6 +45,38 @@
   .msg.err { color: var(--danger); }
   .msg.ok { color: #7fd68a; }
   .scroll-x { overflow-x: auto; }
+  .badge { display:inline-block; min-width:18px; padding:0 6px; margin-left:4px; border-radius:99px; background:#ff5d6c; color:#fff; font-size:11.5px; line-height:18px; text-align:center; font-weight:700; }
+  .grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 8px; }
+  @media (max-width: 900px) { .grid3 { grid-template-columns: 1fr; } }
+  .lst { display:grid; gap:6px; }
+  .lst div { display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:6px 10px; background: var(--surface2); border-radius:8px; }
+  .lst div span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lst b { color: var(--accent); font-weight:600; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; }
+  .chip { font-size:11.5px; padding:2px 8px; border-radius:99px; background: var(--surface2); border:1px solid var(--border); color: var(--muted); }
+  .chip.ok { color:#7fd68a; border-color:#2f6b3a; }
+  .chip.wa { color:#7ef0b6; border-color:#1d6b4a; }
+  .chip.chat { color:#b5abfc; border-color:#5a4fa0; }
+  .rng { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+  .rng button { background: var(--surface2); border:1px solid var(--border); color: var(--muted); padding:6px 14px; border-radius:99px; cursor:pointer; font-size:13px; }
+  .rng button.on { color: var(--text); border-color: var(--accent); }
+  .chat-wrap { display:grid; grid-template-columns: 300px 1fr; gap: 16px; align-items:start; }
+  @media (max-width: 800px) { .chat-wrap { grid-template-columns: 1fr; } }
+  .c-list { padding:8px; max-height:70vh; overflow:auto; }
+  .c-item { padding:10px 12px; border-radius:10px; cursor:pointer; border:1px solid transparent; }
+  .c-item:hover { background: var(--surface2); }
+  .c-item.on { background: color-mix(in srgb, var(--accent) 14%, transparent); border-color: var(--accent); }
+  .c-item b { display:flex; justify-content:space-between; gap:8px; font-size:14px; }
+  .c-item small { display:block; color: var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .c-item .dot { background:#ff5d6c; color:#fff; border-radius:99px; font-size:11px; padding:0 7px; }
+  .c-view { display:flex; flex-direction:column; min-height: 420px; }
+  .c-msgs { flex:1; overflow:auto; max-height:52vh; display:flex; flex-direction:column; gap:8px; padding:6px 2px 12px; }
+  .cm { max-width:80%; padding:9px 12px; border-radius:14px; font-size:14px; white-space:pre-wrap; word-wrap:break-word; }
+  .cm.v { background: var(--surface2); border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:4px; }
+  .cm.a { background: linear-gradient(135deg,#9184d9,#796cbf); color:#161826; font-weight:600; align-self:flex-end; border-bottom-right-radius:4px; }
+  .cm small { display:block; opacity:.65; font-size:11px; margin-top:3px; font-weight:400; }
+  .c-form { display:flex; gap:10px; align-items:flex-end; }
+  .c-form textarea { min-height: 52px; }
 </style>
 </head>
 <body>
@@ -70,7 +102,9 @@
   </div>
 
   <div class="tabs">
-    <button class="tab-btn is-active" data-tab="visits">Visitas</button>
+    <button class="tab-btn is-active" data-tab="visitors">Visitantes</button>
+    <button class="tab-btn" data-tab="chat">Conversas <span class="badge" id="chat-badge" hidden>0</span></button>
+    <button class="tab-btn" data-tab="visits">Visitas</button>
     <button class="tab-btn" data-tab="whatsapp">WhatsApp</button>
     <button class="tab-btn" data-tab="testimonials">Depoimentos</button>
     <button class="tab-btn" data-tab="results">Resultados</button>
@@ -78,7 +112,44 @@
     <button class="tab-btn" data-tab="videos">Vídeos</button>
   </div>
 
-  <div class="tab-panel is-active" id="tab-visits">
+  <div class="tab-panel is-active" id="tab-visitors">
+    <div class="card">
+      <div class="rng" id="v-rng"><button data-d="1">Hoje</button><button data-d="7" class="on">7 dias</button><button data-d="30">30 dias</button><button data-d="0">Tudo</button></div>
+      <div class="stat-row">
+        <div class="stat"><b id="vs-vis">0</b><span class="muted">visitantes</span></div>
+        <div class="stat"><b id="vs-pv">0</b><span class="muted">páginas vistas</span></div>
+        <div class="stat"><b id="vs-on">0</b><span class="muted">online agora</span></div>
+        <div class="stat"><b id="vs-wa">0</b><span class="muted">cliques no WhatsApp</span></div>
+        <div class="stat"><b id="vs-chat">0</b><span class="muted">conversas no chat</span></div>
+      </div>
+      <div class="grid3">
+        <div><h2>De onde vieram</h2><div class="lst" id="v-orig"></div></div>
+        <div><h2>Páginas mais vistas</h2><div class="lst" id="v-pag"></div></div>
+        <div><h2>Países e cidades</h2><div class="lst" id="v-loc"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Quem visitou</h2>
+      <p class="muted">Cada linha é um visitante, identificado por um código anônimo (o site não guarda nome nem IP). Quando a pessoa chama no chat ou clica no WhatsApp, a marca aparece aqui. País e cidade vêm da localização por IP detectada pela Vercel.</p>
+      <div class="scroll-x"><table id="v-table"><thead><tr><th>Visitante</th><th>Local</th><th>Veio de</th><th>Aparelho</th><th>Páginas</th><th>Primeira e última</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-chat">
+    <div class="chat-wrap">
+      <div class="card c-list" id="c-list"><p class="muted" style="padding:10px">Nenhuma conversa ainda.</p></div>
+      <div class="card c-view" id="c-view">
+        <div id="c-head" class="muted">Escolha uma conversa à esquerda.</div>
+        <div class="c-msgs" id="c-msgs"></div>
+        <form class="c-form" id="c-form" hidden>
+          <textarea id="c-text" maxlength="1000" placeholder="Responder… (Enter envia, Shift+Enter pula linha)"></textarea>
+          <button class="btn" type="submit">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-visits">
     <div class="card">
       <div class="stat-row">
         <div class="stat"><b id="visits-total">0</b><span class="muted">visitas registradas</span></div>
@@ -217,7 +288,10 @@ function showDashboard(data) {
   CURRENT.plans = data.plans || JSON.parse(JSON.stringify(DEFAULT_PLANS));
   CURRENT.videos = normalizeVideos(data.videos);
   CURRENT.results = (Array.isArray(data.results) && data.results.length) ? data.results : JSON.parse(JSON.stringify(DEFAULT_RESULTS));
+  DATA = data;
   renderVisits(data.visits || [], data.visitsTotal || 0);
+  renderVisitors();
+  chatStart();
   renderWhatsapp(data.whatsapp || [], data.whatsappTotal || 0);
   renderTestimonials();
   renderResults();
@@ -225,15 +299,16 @@ function showDashboard(data) {
   renderVideos();
 }
 
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function renderVisits(visits, total) {
   document.getElementById('visits-total').textContent = total;
   const tbody = document.querySelector('#visits-table tbody');
-  tbody.innerHTML = visits.map(v => `<tr><td>${fmtDate(v.ts)}</td><td>${[v.city, v.region, v.country].filter(Boolean).join(', ') || '—'}</td><td>${v.path || '—'}</td><td>${v.ref || 'direto'}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sem visitas registradas ainda.</td></tr>';
+  tbody.innerHTML = visits.slice(0, 200).map(v => `<tr><td>${esc(fmtDate(v.ts))}</td><td>${esc([v.city, v.region, v.country].filter(Boolean).join(', ') || '—')}</td><td>${esc(v.path || '—')}</td><td>${esc(v.ref || 'direto')}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sem visitas registradas ainda.</td></tr>';
 }
 function renderWhatsapp(list, total) {
   document.getElementById('wa-total').textContent = total;
   const tbody = document.querySelector('#wa-table tbody');
-  tbody.innerHTML = list.map(v => `<tr><td>${fmtDate(v.ts)}</td><td>${[v.city, v.country].filter(Boolean).join(', ') || '—'}</td><td>${v.source || '—'}</td><td>${v.path || '—'}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sem cliques registrados ainda.</td></tr>';
+  tbody.innerHTML = list.slice(0, 200).map(v => `<tr><td>${esc(fmtDate(v.ts))}</td><td>${esc([v.city, v.country].filter(Boolean).join(', ') || '—')}</td><td>${esc(v.source || '—')}</td><td>${esc(v.path || '—')}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sem cliques registrados ainda.</td></tr>';
 }
 
 function renderTestimonials() {
@@ -493,6 +568,126 @@ document.querySelectorAll('.btn-reset').forEach((btn) => btn.addEventListener('c
   const res = await api('/api/admin/save', { method: 'POST', body: JSON.stringify({ key, reset: true }) });
   if (res.ok) { await load(); alert('Restaurado! O site já está usando o padrão.'); } else { alert('Erro ao restaurar.'); }
 }));
+
+
+/* ===================== Visitantes ===================== */
+let DATA = null, RANGE = 7, CHATLIST = [];
+const FLAG = c => (c && /^[A-Z]{2}$/.test(c)) ? String.fromCodePoint(...[...c].map(ch => 127397 + ch.charCodeAt(0))) : '🌐';
+const NOME_PAIS = { BR: 'Brasil', US: 'Estados Unidos', PT: 'Portugal', AR: 'Argentina', ES: 'Espanha', MX: 'México', CO: 'Colômbia', CL: 'Chile', UY: 'Uruguai', PY: 'Paraguai', PE: 'Peru', DO: 'Rep. Dominicana', SX: 'Sint Maarten', PR: 'Porto Rico', CA: 'Canadá', GB: 'Reino Unido', DE: 'Alemanha', FR: 'França', IT: 'Itália', JP: 'Japão' };
+function origemDe(v) {
+  if (v.us) return v.us + (v.um ? ' / ' + v.um : '') + (v.uc ? ' · ' + v.uc : '');
+  if (v.ref) { try { const h = new URL(v.ref).hostname.replace(/^www\./, ''); return /lhartdesign\.com$/.test(h) ? 'direto' : h; } catch { return v.ref.slice(0, 40); } }
+  return 'direto';
+}
+function agrupaVisitas() {
+  const lim = RANGE ? Date.now() - RANGE * 86400000 : 0;
+  const visitas = (DATA.visits || []).filter(v => v.ts >= lim).sort((x, y) => x.ts - y.ts);
+  const g = new Map();
+  visitas.forEach((v, i) => {
+    const k = v.vid || ('x' + i);
+    if (!g.has(k)) g.set(k, { vid: v.vid || '', primeira: v, ultima: v, n: 0, paginas: new Map() });
+    const o = g.get(k); o.ultima = v; o.n++;
+    const pg = (v.path || '/').split('#')[0] || '/';
+    o.paginas.set(pg, (o.paginas.get(pg) || 0) + 1);
+  });
+  return { grupos: [...g.values()].sort((a, b) => b.ultima.ts - a.ultima.ts), visitas };
+}
+function topo(mapa, n = 7) { return [...mapa.entries()].sort((a, b) => b[1] - a[1]).slice(0, n); }
+function lista(el, itens, vazio) {
+  document.getElementById(el).innerHTML = itens.length ? itens.map(([k, v]) => `<div><span title="${esc(k)}">${esc(k)}</span><b>${v}</b></div>`).join('') : `<div><span class="muted">${vazio}</span></div>`;
+}
+function renderVisitors() {
+  if (!DATA) return;
+  const { grupos, visitas } = agrupaVisitas();
+  const lim = RANGE ? Date.now() - RANGE * 86400000 : 0;
+  const waVids = new Set((DATA.whatsapp || []).filter(w => w.vid).map(w => w.vid));
+  const waN = (DATA.whatsapp || []).filter(w => w.ts >= lim).length;
+  const chatVids = new Set(CHATLIST.map(c => c.vid));
+  const on = grupos.filter(g => Date.now() - g.ultima.ts < 5 * 60000).length;
+  document.getElementById('vs-vis').textContent = grupos.length;
+  document.getElementById('vs-pv').textContent = visitas.length;
+  document.getElementById('vs-on').textContent = on;
+  document.getElementById('vs-wa').textContent = waN;
+  document.getElementById('vs-chat').textContent = CHATLIST.filter(c => (c.last || 0) >= lim).length;
+  const orig = new Map(), pag = new Map(), loc = new Map();
+  grupos.forEach(g => {
+    const o = origemDe(g.primeira); orig.set(o, (orig.get(o) || 0) + 1);
+    const l = [g.primeira.city, NOME_PAIS[g.primeira.country] || g.primeira.country].filter(x => x && x !== 'unknown').join(', ') || 'não identificado';
+    loc.set(l, (loc.get(l) || 0) + 1);
+  });
+  visitas.forEach(v => { const k = (v.path || '/').split('#')[0] || '/'; pag.set(k, (pag.get(k) || 0) + 1); });
+  lista('v-orig', topo(orig), 'Sem dados ainda');
+  lista('v-pag', topo(pag), 'Sem dados ainda');
+  lista('v-loc', topo(loc), 'Sem dados ainda');
+  const tb = document.querySelector('#v-table tbody');
+  tb.innerHTML = grupos.slice(0, 150).map(g => {
+    const f = g.primeira, online = Date.now() - g.ultima.ts < 5 * 60000;
+    const cod = g.vid ? 'V-' + g.vid.slice(0, 5).toUpperCase() : 'sem código';
+    const local = [f.city, f.region, NOME_PAIS[f.country] || (f.country !== 'unknown' ? f.country : '')].filter(Boolean).join(', ') || '—';
+    const marcas = (online ? '<span class="chip ok">online</span>' : '') + (g.vid && waVids.has(g.vid) ? '<span class="chip wa">clicou no WhatsApp</span>' : '') + (g.vid && chatVids.has(g.vid) ? '<span class="chip chat">chamou no chat</span>' : '');
+    const pgs = topo(g.paginas, 5).map(([k, n]) => `<span class="chip">${esc(k)}${n > 1 ? ' ×' + n : ''}</span>`).join(' ');
+    return `<tr><td><b>${esc(cod)}</b><div class="chips" style="margin-top:4px">${marcas}</div></td><td>${FLAG(f.country)} ${esc(local)}</td><td>${esc(origemDe(f))}</td><td>${esc([f.dev, f.nav].filter(Boolean).join(' · ') || '—')}</td><td><div class="chips">${pgs}</div><span class="muted">${g.n} ${g.n === 1 ? 'visita' : 'visitas'}</span></td><td>${esc(fmtDate(f.ts))}<br><span class="muted">${esc(fmtDate(g.ultima.ts))}</span></td></tr>`;
+  }).join('') || '<tr><td colspan="6" class="muted">Ainda não há visitas neste período.</td></tr>';
+}
+document.getElementById('v-rng').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  RANGE = +b.dataset.d; document.querySelectorAll('#v-rng button').forEach(x => x.classList.toggle('on', x === b)); renderVisitors();
+});
+
+/* ===================== Conversas ===================== */
+let CHAT_VID = '', CHAT_TIMER = null, CHAT_LAST_UNREAD = 0, TITLE0 = document.title, ULTIMA_MSG = 0;
+const horaCurta = ts => { try { return new Date(ts).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); } catch { return ''; } };
+function bip() { try { const C = window.AudioContext || window.webkitAudioContext, c = new C(), o = c.createOscillator(), g = c.createGain(); o.frequency.value = 780; o.connect(g); g.connect(c.destination); g.gain.setValueAtTime(.15, c.currentTime); g.gain.exponentialRampToValueAtTime(.001, c.currentTime + .3); o.start(); o.stop(c.currentTime + .31); } catch (e) {} }
+async function chatLista() {
+  const res = await api('/api/admin/chat');
+  if (!res.ok) return;
+  const d = await res.json();
+  CHATLIST = d.list || [];
+  const badge = document.getElementById('chat-badge');
+  badge.hidden = !d.unread; badge.textContent = d.unread;
+  if (d.unread > CHAT_LAST_UNREAD) { bip(); document.title = '💬 (' + d.unread + ') ' + TITLE0; setTimeout(() => { document.title = TITLE0; }, 6000); }
+  CHAT_LAST_UNREAD = d.unread;
+  const el = document.getElementById('c-list');
+  el.innerHTML = CHATLIST.length ? CHATLIST.map(c => `<div class="c-item ${c.vid === CHAT_VID ? 'on' : ''}" data-v="${esc(c.vid)}"><b><span>${esc(c.name || 'Visitante')}</span>${c.unread ? `<span class="dot">${c.unread}</span>` : ''}</b><small>${esc((c.lastFrom === 'a' ? 'Você: ' : '') + (c.lastText || ''))}</small><small>${esc(horaCurta(c.last))} · ${esc([c.city, c.country !== 'unknown' ? c.country : ''].filter(Boolean).join(', '))}</small></div>`).join('') : '<p class="muted" style="padding:10px">Nenhuma conversa ainda.</p>';
+  renderVisitors();
+}
+async function chatAbre(vid) {
+  CHAT_VID = vid;
+  const res = await api('/api/admin/chat?vid=' + encodeURIComponent(vid));
+  if (!res.ok) return;
+  const d = await res.json(), m = d.meta || {};
+  const contato = m.contact || '';
+  const tel = contato.replace(/\D/g, '');
+  const link = /@/.test(contato) ? `<a href="mailto:${esc(contato)}">${esc(contato)}</a>` : tel.length >= 10 ? `<a href="https://wa.me/${tel.length <= 11 ? '55' + tel : tel}" target="_blank" rel="noopener">${esc(contato)} (WhatsApp)</a>` : esc(contato);
+  document.getElementById('c-head').innerHTML = `<div class="row" style="justify-content:space-between"><div><b style="color:var(--text);font-size:16px">${esc(m.name || 'Visitante')}</b><br><span class="muted">${[link, esc([m.city, NOME_PAIS[m.country] || m.country].filter(x => x && x !== 'unknown').join(', ')), esc([m.dev, m.nav].filter(Boolean).join(' · ')), 'página ' + esc(m.page || '—')].filter(Boolean).join(' · ')}</span></div><button class="btn btn-danger" id="c-del" type="button">Apagar</button></div>`;
+  document.getElementById('c-del').onclick = async () => { if (!confirm('Apagar esta conversa?')) return; await api('/api/admin/chat', { method: 'POST', body: JSON.stringify({ a: 'delete', vid }) }); CHAT_VID = ''; document.getElementById('c-msgs').innerHTML = ''; document.getElementById('c-head').textContent = 'Escolha uma conversa à esquerda.'; document.getElementById('c-form').hidden = true; chatLista(); };
+  const box = document.getElementById('c-msgs');
+  const fim = box.scrollTop + box.clientHeight >= box.scrollHeight - 40;
+  box.innerHTML = (d.msgs || []).map(x => `<div class="cm ${x.f === 'a' ? 'a' : 'v'}">${esc(x.x)}<small>${esc(horaCurta(x.t))}</small></div>`).join('');
+  const ultima = (d.msgs || []).length ? d.msgs[d.msgs.length - 1].t : 0;
+  if (fim || ultima !== ULTIMA_MSG) box.scrollTop = box.scrollHeight;
+  ULTIMA_MSG = ultima;
+  document.getElementById('c-form').hidden = false;
+}
+document.getElementById('c-list').addEventListener('click', e => { const it = e.target.closest('.c-item'); if (!it) return; ULTIMA_MSG = 0; chatAbre(it.dataset.v).then(chatLista); });
+async function chatEnvia() {
+  const ta = document.getElementById('c-text'), text = ta.value.trim();
+  if (!text || !CHAT_VID) return;
+  ta.value = '';
+  await api('/api/admin/chat', { method: 'POST', body: JSON.stringify({ a: 'reply', vid: CHAT_VID, text }) });
+  ULTIMA_MSG = 0; await chatAbre(CHAT_VID); chatLista();
+}
+document.getElementById('c-form').addEventListener('submit', e => { e.preventDefault(); chatEnvia(); });
+document.getElementById('c-text').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatEnvia(); } });
+function chatStart() {
+  clearInterval(CHAT_TIMER);
+  chatLista();
+  CHAT_TIMER = setInterval(() => {
+    if (document.hidden && !document.getElementById('chat-badge')) return;
+    chatLista();
+    if (CHAT_VID && document.getElementById('tab-chat').classList.contains('is-active')) chatAbre(CHAT_VID);
+  }, 5000);
+}
 
 async function load() {
   const res = await api('/api/admin/data');
