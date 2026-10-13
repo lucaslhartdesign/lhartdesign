@@ -9,14 +9,21 @@ const { token: tgToken, tg, chatId: tgChatId } = require('./_lib/telegram');
 //   Discord:  LH_DISCORD_WEBHOOK
 //   Telegram: TELEGRAM_BOT_TOKEN (e liga o destino pelo painel: Acesso → Conversas → Ligar Telegram)
 //   WhatsApp (CallMeBot, grátis): CALLMEBOT_PHONE (ex.: 5511999999999) + CALLMEBOT_KEY
-// O WhatsApp avisa no máximo 1 vez a cada 5 min por conversa e 20 por hora no total, para não encher o celular.
+// Para não encher o celular: cada conversa (mesmo visitante) gera no máximo 1 aviso a cada 3 minutos, em todos os canais,
+// e o WhatsApp ainda tem teto de 20 por hora. As demais mensagens aparecem normalmente no painel.
 async function chamar(url, opts) {
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), 3000);
   try { return await fetch(url, { ...(opts || {}), signal: ctl.signal }); } catch { return null; } finally { clearTimeout(t); }
 }
 
+const JANELA_AVISO = 180; // segundos
+
 async function avisa(redis, meta, text) {
+  try {
+    const primeira = await redis.set('chat:aviso:' + meta.vid, '1', { ex: JANELA_AVISO, nx: true });
+    if (!primeira) return; // já avisamos sobre esta conversa nos últimos 3 min
+  } catch { /* sem Redis: melhor avisar de mais do que perder o aviso */ }
   const quem = meta.name || 'Visitante';
   const onde = [meta.city, meta.country && meta.country !== 'unknown' ? meta.country : ''].filter(Boolean).join(', ');
   const link = 'https://www.lhartdesign.com/admin.html';
@@ -40,10 +47,7 @@ async function avisa(redis, meta, text) {
 
   if (process.env.CALLMEBOT_PHONE && process.env.CALLMEBOT_KEY) {
     let pode = false;
-    try {
-      const primeira = await redis.set('chat:wa:' + meta.vid, '1', { ex: 300, nx: true });
-      pode = !!primeira && !(await limited(redis, 'rl:wa:hora', 20, 3600));
-    } catch { pode = false; }
+    try { pode = !(await limited(redis, 'rl:wa:hora', 20, 3600)); } catch { pode = false; }
     if (pode) {
       const u = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(String(process.env.CALLMEBOT_PHONE).replace(/\D/g, '')) +
         '&text=' + encodeURIComponent(resumo) + '&apikey=' + encodeURIComponent(process.env.CALLMEBOT_KEY);
