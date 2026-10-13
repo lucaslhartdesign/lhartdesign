@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nimbus — Robux e gamepass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e22;--p:#121838;--p2:#1a2250;--ln:#2a3470;--a:#ff6b8b;--b:#ffb86b;--tx:#fff4f0;--mu:#a9b0d8;--ink:#1d0a12}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(700px 420px at 100% 0,#3a1a4a66,transparent 60%),radial-gradient(600px 400px at 0 20%,#14308a55,transparent 60%),var(--bg);color:var(--tx);font:500 16px/1.5 Nunito,system-ui,sans-serif;min-height:100vh}
+button,input{font:inherit;color:inherit}button{cursor:pointer}
+.top{display:flex;align-items:center;gap:12px;padding:14px 20px;max-width:1040px;margin:auto}
+.logo{font:900 24px Nunito;letter-spacing:-.02em}.logo span{background:linear-gradient(135deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{margin-left:auto;display:flex;gap:8px}.pill span{font:800 12px Nunito;padding:6px 12px;border-radius:99px;background:var(--p);border:1px solid var(--ln);color:var(--mu)}.pill span b{color:var(--b)}
+.wrap{max-width:1040px;margin:auto;padding:6px 20px 70px;display:grid;grid-template-columns:1fr 420px;gap:34px;align-items:start}
+h1{margin:14px 0 12px;font:900 clamp(34px,5vw,56px)/1.02 Nunito;letter-spacing:-.025em}h1 em{font-style:normal;background:linear-gradient(135deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mu);font-size:18px;max-width:44ch;margin:0 0 22px}
+.tag{display:inline-flex;gap:8px;align-items:center;font:800 12px Nunito;letter-spacing:.08em;text-transform:uppercase;color:var(--b);background:#ffb86b14;border:1px solid #ffb86b40;border-radius:99px;padding:6px 14px}
+.passos{display:grid;gap:12px;margin:26px 0 0}
+.ps{display:flex;gap:14px;align-items:flex-start;background:var(--p);border:1px solid var(--ln);border-radius:16px;padding:14px 16px}
+.ps b{flex:none;width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--b));color:var(--ink);font-weight:900}
+.ps strong{display:block}.ps span{color:var(--mu);font-size:14.5px}
+.calc{position:sticky;top:14px;background:linear-gradient(170deg,var(--p2),var(--p));border:1px solid var(--ln);border-radius:26px;padding:22px;box-shadow:0 30px 70px #000a,0 0 60px #ff6b8b1f}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg);border-radius:14px;padding:4px;margin-bottom:18px}
+.seg button{border:0;background:none;border-radius:11px;padding:10px;font-weight:800;color:var(--mu);transition:.2s}.seg button.on{background:linear-gradient(135deg,var(--a),var(--b));color:var(--ink)}
+.qtd{text-align:center}.qtd small{color:var(--mu);font-weight:700}.qtd b{display:block;font:900 46px/1.1 Nunito;letter-spacing:-.02em}
+input[type=range]{width:100%;margin:14px 0 8px;accent-color:var(--a);height:28px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.chips button{border:1px solid var(--ln);background:var(--bg);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px;color:var(--mu)}.chips button.on{border-color:var(--a);color:var(--tx)}
+.gp{display:none;margin-bottom:14px}.gp label{display:block;font-weight:800;font-size:14px;color:var(--mu);margin-bottom:6px}.gp input{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--ln);background:var(--bg);font-size:18px;font-weight:800;outline:0}.gp input:focus{border-color:var(--a)}
+.calc.m2 .gp{display:block}.calc.m2 .m1{display:none}
+.res{display:grid;gap:8px;margin:6px 0 16px}
+.rl{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:11px 14px;font-weight:700}.rl small{color:var(--mu);font-weight:600;display:block;font-size:12.5px}.rl strong{font-size:18px}
+.rl.pix strong{font:900 26px Nunito;color:var(--b)}
+.av{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.av input{flex:1;padding:12px 14px;border-radius:14px;border:1px solid var(--ln);background:var(--bg);font-weight:700;outline:0;min-width:0}.av input:focus{border-color:var(--a)}
+.avi{flex:none;width:46px;height:46px;border-radius:50%;background:var(--bg);border:2px dashed var(--ln);display:grid;place-items:center;font-weight:900;color:var(--mu);transition:.3s}.avi.ok{border:2px solid var(--a);background:linear-gradient(135deg,#ff6b8b,#6a5cff);color:#fff}
+.go{width:100%;border:0;border-radius:16px;padding:16px;font:900 18px Nunito;background:linear-gradient(135deg,var(--a),var(--b));color:var(--ink);position:relative;overflow:hidden;transition:.2s}.go:disabled{opacity:.45;cursor:not-allowed}
+.go:not(:disabled)::after{content:"";position:absolute;top:-10%;left:-70%;width:40%;height:120%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-22deg);animation:v 3.4s ease-in-out infinite}@keyframes v{0%{left:-70%}55%,100%{left:140%}}
+.fn{margin:10px 0 0;text-align:center;color:var(--mu);font-size:12.5px}
+.jg{grid-column:1/-1;margin-top:10px}.jg h2{font:900 24px Nunito;margin:0 0 12px}
+.hs{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}.hs::-webkit-scrollbar{display:none}
+.jc{flex:none;width:170px;background:var(--p);border:1px solid var(--ln);border-radius:18px;overflow:hidden;transition:.2s}.jc:hover{transform:translateY(-3px);border-color:var(--a)}
+.jc i{display:grid;place-items:center;height:96px;font-size:44px;font-style:normal}.jc div{padding:10px 12px 12px}.jc b{display:block;font-size:15px}.jc small{color:var(--mu)}
+/* bottom sheet */
+.veu{position:fixed;inset:0;background:#000b;opacity:0;pointer-events:none;transition:.3s;z-index:40}.veu.on{opacity:1;pointer-events:auto}
+.sh{position:fixed;left:0;right:0;bottom:0;z-index:50;margin:auto;max-width:480px;background:var(--p);border:1px solid var(--ln);border-radius:26px 26px 0 0;padding:20px 20px 24px;transform:translateY(105%);transition:.38s;max-height:92vh;overflow:auto}
+.sh.on{transform:none}
+.sh h3{margin:0 0 4px;font:900 22px Nunito;display:flex;justify-content:space-between;align-items:center}.sh h3 button{border:0;background:var(--p2);border-radius:10px;width:34px;height:34px}
+.sh .sb{color:var(--mu);margin:0 0 12px}
+.qr{width:168px;height:168px;margin:6px auto;background:#fff;padding:10px;border-radius:16px;display:grid;grid-template-columns:repeat(17,1fr)}.qr i{background:#111}.qr i.o{background:transparent}
+.cp{display:flex;gap:8px;align-items:center;border:1px dashed var(--ln);border-radius:12px;padding:9px 12px;font-size:12px;color:var(--mu);margin:8px 0}.cp span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cp button{border:0;background:var(--a);color:var(--ink);font-weight:900;border-radius:8px;padding:6px 12px}
+.st{display:flex;gap:9px;align-items:center;justify-content:center;padding:12px;border-radius:14px;background:var(--bg);border:1px solid var(--ln);font-weight:800;transition:.35s}.st::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--b);animation:b 1s infinite}@keyframes b{50%{opacity:.3}}
+.st.ok{background:#064e3b88;border-color:#10b981;color:#6ee7b7}.st.ok::before{background:#34d399;animation:none}
+.todo{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:8px}.todo li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--mu)}.todo li b{flex:none;width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:var(--p2);color:var(--tx);font-size:13px}
+.sim{width:100%;margin-top:12px;border:1px solid var(--ln);background:transparent;border-radius:12px;padding:10px;color:var(--mu);font-weight:800}
+@media(max-width:900px){.wrap{grid-template-columns:1fr;gap:22px;padding-bottom:50px}.calc{position:static;order:-1}.sub{font-size:16px}.pill{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="logo">☁ <span>Nimbus</span></div><div class="pill"><span><b>Pix</b> na hora</span><span>Entrega pelo chat</span></div></header>
+<div class="wrap">
+  <section>
+    <span class="tag">Loja de Robux</span>
+    <h1>Robux na sua conta, <em>sem enrolação</em></h1>
+    <p class="sub">Escolha quanto quer receber. Mostramos o preço da gamepass e o valor no Pix antes de você pagar.</p>
+    <div class="passos">
+      <div class="ps"><b>1</b><div><strong>Diga quanto quer</strong><span>O cálculo já considera a taxa do Roblox, para você receber o valor certo.</span></div></div>
+      <div class="ps"><b>2</b><div><strong>Confirme o seu personagem</strong><span>Assim o pedido não vai para a conta errada.</span></div></div>
+      <div class="ps"><b>3</b><div><strong>Pague no Pix e acompanhe</strong><span>O pedido é confirmado sozinho e a entrega aparece no chat.</span></div></div>
+    </div>
+  </section>
+
+  <aside class="calc" id="calc">
+    <div class="seg" role="tablist"><button type="button" class="on" data-m="1">Quero receber</button><button type="button" data-m="2">Tenho uma gamepass</button></div>
+    <div class="m1">
+      <div class="qtd"><small>Você recebe</small><b id="rq">1.000 Robux</b></div>
+      <input type="range" id="sl" min="100" max="20000" step="100" value="1000" aria-label="Quantidade de Robux">
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="gp"><label for="gpv">Preço da sua gamepass (em Robux)</label><input id="gpv" type="number" min="10" max="30000" value="1429" inputmode="numeric"></div>
+    <div class="res">
+      <div class="rl m1"><span>Crie a gamepass por<small>O Roblox fica com 30%</small></span><strong id="rg">1.429</strong></div>
+      <div class="rl m2x" id="recRow" style="display:none"><span>Você recebe<small>Depois da taxa de 30%</small></span><strong id="rr">1.000</strong></div>
+      <div class="rl pix"><span>Pague no Pix<small id="rpk">R$ 0,055 por Robux</small></span><strong id="rp">R$ 54,90</strong></div>
+    </div>
+    <div class="av"><div class="avi" id="avi">?</div><input id="nick" placeholder="Seu usuário do Roblox" autocomplete="off" maxlength="24" aria-label="Seu usuário"></div>
+    <button class="go" id="go" type="button" disabled>Digite seu usuário para continuar</button>
+    <p class="fn">Estilo de demonstração da Lhart Design · valores de exemplo</p>
+  </aside>
+
+  <section class="jg"><h2>Gamepass dos jogos mais jogados</h2>
+    <div class="hs">
+      <div class="jc"><i style="background:linear-gradient(135deg,#ff6b8b55,#ffb86b33)">🏙️</i><div><b>Cidade Alta</b><small>38 gamepass</small></div></div>
+      <div class="jc"><i style="background:linear-gradient(135deg,#6a5cff55,#22d3ee33)">🐾</i><div><b>Ilha dos Pets</b><small>24 gamepass</small></div></div>
+      <div class="jc"><i style="background:linear-gradient(135deg,#34d39955,#fbbf2433)">🏎️</i><div><b>Corrida Total</b><small>17 gamepass</small></div></div>
+      <div class="jc"><i style="background:linear-gradient(135deg,#f9731655,#ef444433)">⚔️</i><div><b>Reino das Lâminas</b><small>29 gamepass</small></div></div>
+      <div class="jc"><i style="background:linear-gradient(135deg,#a78bfa55,#f472b633)">🧟</i><div><b>Sobreviventes</b><small>21 gamepass</small></div></div>
+    </div>
+  </section>
+</div>
+
+<div class="veu" id="veu"></div>
+<section class="sh" id="sh" aria-label="Pagamento por Pix">
+  <h3><span>Pague no Pix</span><button type="button" id="fecha" aria-label="Fechar">✕</button></h3>
+  <p class="sb" id="sb"></p>
+  <div class="qr" id="qr"></div>
+  <div class="cp"><span>00020126580014br.gov.bcb.pix0136…</span><button type="button" id="copia">Copiar</button></div>
+  <div class="st" id="st">Aguardando pagamento</div>
+  <ul class="todo" id="todo"></ul>
+  <button class="sim" type="button" id="sim">Simular pagamento (demonstração)</button>
+</section>
+
+<script>
+const $=s=>document.querySelector(s);
+const F=n=>n.toLocaleString('pt-BR'),R=n=>'R$ '+n.toFixed(2).replace('.',',');
+const PRECO=0.0549;let modo=1,pixT;
+function dados(){
+  if(modo===1){const q=+$('#sl').value;return{rec:q,gp:Math.ceil(q/0.7)}}
+  const g=Math.max(10,Math.min(30000,+$('#gpv').value||0));const q=Math.floor(g*0.7);return{rec:q,gp:g}
+}
+function atualiza(){
+  const d=dados(),pix=d.rec*PRECO;
+  $('#rq').textContent=F(+$('#sl').value)+' Robux';$('#rg').textContent=F(d.gp);$('#rr').textContent=F(d.rec);$('#rp').textContent=R(pix);
+  $('#recRow').style.display=modo===2?'flex':'none';
+  document.querySelectorAll('.rl.m1').forEach(e=>e.style.display=modo===1?'flex':'none');
+  document.querySelectorAll('#chips button').forEach(b=>b.classList.toggle('on',+b.dataset.v===+$('#sl').value));
+  botao();
+}
+function botao(){const ok=$('#nick').value.trim().length>=3;$('#go').disabled=!ok;$('#go').textContent=ok?'Pagar no Pix · '+$('#rp').textContent:'Digite seu usuário para continuar';
+  const a=$('#avi');a.classList.toggle('ok',ok);a.textContent=ok?$('#nick').value.trim()[0].toUpperCase():'?'}
+$('#chips').innerHTML=[500,1000,2000,5000,10000].map(v=>`<button type="button" data-v="${v}">${F(v)}</button>`).join('');
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#sl').value=b.dataset.v;atualiza()});
+$('#sl').addEventListener('input',atualiza);$('#gpv').addEventListener('input',atualiza);$('#nick').addEventListener('input',botao);
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{modo=+b.dataset.m;document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));$('#calc').classList.toggle('m2',modo===2);atualiza()}));
+function confirma(){const s=$('#st');s.className='st ok';s.textContent='✓ Pagamento confirmado · entrega pelo chat'}
+$('#go').addEventListener('click',()=>{
+  const d=dados();$('#sb').textContent=F(d.rec)+' Robux para '+$('#nick').value.trim()+' · '+$('#rp').textContent;
+  $('#todo').innerHTML=`<li><b>1</b><span>Crie uma gamepass de <b style="display:inline;background:none;color:var(--b)">${F(d.gp)} Robux</b> na sua conta.</span></li><li><b>2</b><span>Cole o link dela no chat do pedido.</span></li><li><b>3</b><span>Conferimos o preço e entregamos em minutos.</span></li>`;
+  $('#st').className='st';$('#st').textContent='Aguardando pagamento';
+  $('#sh').classList.add('on');$('#veu').classList.add('on');clearTimeout(pixT);pixT=setTimeout(confirma,4500)});
+function fecha(){$('#sh').classList.remove('on');$('#veu').classList.remove('on');clearTimeout(pixT)}
+$('#fecha').addEventListener('click',fecha);$('#veu').addEventListener('click',fecha);
+$('#sim').addEventListener('click',()=>{clearTimeout(pixT);confirma()});
+$('#copia').addEventListener('click',e=>{const b=e.target;b.textContent='✓ Copiado';setTimeout(()=>b.textContent='Copiar',1500)});
+(function(){const q=$('#qr'),N=17;let h='',s=23;const r=()=>(s=(s*1103515245+12345)&0x7fffffff)/0x7fffffff;const eye=(x,y)=>(x<7&&y<7)||(x>N-8&&y<7)||(x<7&&y>N-8);
+for(let y=0;y<N;y++)for(let x=0;x<N;x++){let on;if(eye(x,y)){const ex=x<7?x:x-(N-7),ey=y<7?y:y-(N-7);on=(ex==0||ex==6||ey==0||ey==6)||(ex>=2&&ex<=4&&ey>=2&&ey<=4)}else on=r()>.5;h+='<i class="'+(on?'':'o')+'"></i>'}q.innerHTML=h})();
+atualiza();
+</script>
+</body>
+</html>
