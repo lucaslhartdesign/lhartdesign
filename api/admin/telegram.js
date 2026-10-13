@@ -18,8 +18,12 @@ module.exports = async (req, res) => {
   try {
     if (req.method === 'GET') {
       if (!token()) { res.status(200).json({ token: false, ligado: false, whatsapp }); return; }
-      const [me, chat] = await Promise.all([tg('getMe'), chatId(redis)]);
-      res.status(200).json({ token: true, ligado: !!chat, bot: me && me.ok ? me.result.username : '', erro: me && me.ok ? '' : (me && me.description) || 'token recusado', whatsapp });
+      const [me, chat, wh] = await Promise.all([tg('getMe'), chatId(redis), tg('getWebhookInfo')]);
+      const w = wh && wh.ok ? wh.result : {};
+      res.status(200).json({
+        token: true, ligado: !!chat, bot: me && me.ok ? me.result.username : '', erro: me && me.ok ? '' : (me && me.description) || 'token recusado', whatsapp,
+        webhook: { url: w.url || '', erro: w.last_error_message || '', quando: w.last_error_date ? w.last_error_date * 1000 : 0, pendentes: w.pending_update_count || 0 },
+      });
       return;
     }
     if (req.method !== 'POST') { res.status(405).json({ error: 'metodo' }); return; }
@@ -33,7 +37,7 @@ module.exports = async (req, res) => {
       if (!w.ok) { res.status(400).json({ error: 'Não consegui ligar o bot: ' + (w.description || 'erro') }); return; }
       const code = crypto.randomBytes(8).toString('hex');
       await redis.set('telegram:code', code, { ex: 600 });
-      res.status(200).json({ ok: true, bot: me.result.username, link: 'https://t.me/' + me.result.username + '?start=' + code });
+      res.status(200).json({ ok: true, bot: me.result.username, code, link: 'https://t.me/' + me.result.username + '?start=' + code });
       return;
     }
     if (a === 'testar') {

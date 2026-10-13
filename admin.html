@@ -144,6 +144,7 @@
       </div>
       <div class="row" id="av-btns"></div>
       <p class="muted" id="av-msg" style="margin:10px 0 0"></p>
+      <p class="muted" id="av-diag" style="margin:6px 0 0"></p>
     </div>
     <div class="chat-wrap">
       <div class="card c-list" id="c-list"><p class="muted" style="padding:10px">Nenhuma conversa ainda.</p></div>
@@ -701,6 +702,8 @@ async function avisosCarrega() {
   const botao = (txt, fn, perigo) => { const b = document.createElement('button'); b.className = 'btn' + (perigo ? ' btn-danger' : ''); b.type = 'button'; b.textContent = txt; b.onclick = fn; btns.appendChild(b); };
   if (!d.token) { tgEl.textContent = '⚪ falta o TELEGRAM_BOT_TOKEN na Vercel'; return; }
   if (d.erro) { tgEl.textContent = '⚠️ ' + d.erro; return; }
+  const dg = document.getElementById('av-diag'); dg.textContent = '';
+  if (!d.ligado && d.webhook) { dg.textContent = d.webhook.erro ? '⚠️ O Telegram não consegue entregar ao site: ' + d.webhook.erro : d.webhook.url ? 'Conexão com o Telegram ok (' + d.webhook.pendentes + ' pendente).' : 'Ainda não liguei o bot ao site: toque em Ligar Telegram.'; }
   if (d.ligado) {
     tgEl.textContent = '✅ ligado (@' + d.bot + ')';
     botao('Enviar teste', async () => { const r = await api('/api/admin/telegram', { method: 'POST', body: JSON.stringify({ a: 'testar' }) }); const j = await r.json(); document.getElementById('av-msg').textContent = r.ok ? 'Teste enviado. Confira o Telegram.' : j.error; });
@@ -713,7 +716,7 @@ async function avisosCarrega() {
       const msg = document.getElementById('av-msg');
       if (!r.ok) { msg.textContent = j.error; return; }
       window.open(j.link, '_blank', 'noopener');
-      msg.innerHTML = 'Abri o Telegram. Toque em <b>Iniciar</b> no bot @' + esc(j.bot) + ' (o código vale 10 minutos). Se não abriu, <a href="' + esc(j.link) + '" target="_blank" rel="noopener">toque aqui</a>.';
+      msg.innerHTML = 'Abri o Telegram. Toque em <b>Iniciar</b> no bot @' + esc(j.bot) + ' (o código vale 10 minutos). Se não abriu, <a href="' + esc(j.link) + '" target="_blank" rel="noopener">toque aqui</a>.<br><b>Se o botão Iniciar não funcionar</b>, escreva no chat do bot exatamente este código e envie: <code style="background:var(--surface2);padding:2px 8px;border-radius:6px;user-select:all">' + esc(j.code) + '</code>';
       clearInterval(AV_POLL); let n = 0;
       AV_POLL = setInterval(async () => { n++; const rr = await api('/api/admin/telegram'); const dd = rr.ok ? await rr.json() : {}; if (dd.ligado || n > 60) { clearInterval(AV_POLL); avisosCarrega(); } }, 3000);
     });
