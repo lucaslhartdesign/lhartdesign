@@ -62,6 +62,9 @@ window.LHD = (() => {
     ovo: [13, (y) => `<g filter="${F.sh}"><path d="M34 ${y + 9} Q28 ${y + 2} 60 ${y + 3} Q100 ${y - 1} 130 ${y + 3} Q190 ${y - 1} 216 ${y + 5} Q236 ${y + 8} 220 ${y + 12.5} Q130 ${y + 17} 40 ${y + 13.5} Z" fill="#fffdf5" stroke="#e6dcc2"/>
       <ellipse cx="130" cy="${y + 4}" rx="22" ry="11.5" fill="url(#gY)"/><ellipse cx="123" cy="${y + 0.5}" rx="6.5" ry="3.6" fill="#fff" fill-opacity=".65"/></g>`],
     picles: [7, (y) => `<g filter="${F.sh}">${[62, 106, 154, 198].map(x => `<ellipse cx="${x}" cy="${y + 4}" rx="21" ry="4.8" fill="#6f8f27"/><ellipse cx="${x}" cy="${y + 3.4}" rx="17" ry="3" fill="#a5c05a"/>${[-9, -2, 6, 12].map(o => `<circle cx="${x + o}" cy="${y + 3.2}" r=".9" fill="#d9e8a0" fill-opacity=".8"/>`).join('')}`).join('')}</g>`],
+    presunto: [8, (y) => `<g filter="${F.sh}"><path d="${onda(30, y + 4.5, 9, 22, 5)}" fill="none" stroke="#c9706f" stroke-width="7" stroke-linecap="round"/>
+      <path d="${onda(30, y + 3.9, 9, 22, 5)}" fill="none" stroke="#f1a2a0" stroke-width="4.4" stroke-linecap="round"/>
+      <path d="${onda(34, y + 2.8, 9, 22, 5)}" fill="none" stroke="#ffd9d5" stroke-opacity=".7" stroke-width="1.4" stroke-linecap="round"/></g>`],
     molho: [8, (y) => `<g filter="${F.sh}"><path d="${onda(34, y + 5, 8, 24, 7)}" fill="none" stroke="#a82a14" stroke-width="7.4" stroke-linecap="round"/>
       <path d="${onda(34, y + 4.4, 8, 24, 7)}" fill="none" stroke="#e8532e" stroke-width="4.6" stroke-linecap="round"/>
       <path d="${onda(34, y + 3.4, 8, 24, 7)}" fill="none" stroke="#ffc9a8" stroke-opacity=".8" stroke-width="1.6" stroke-linecap="round"/></g>`],
@@ -72,17 +75,27 @@ window.LHD = (() => {
       </g>${Array.from({ length: 30 }, (_, i) => { const u = (((i * 0.618034) % 1) * 1.6 - 0.8), v = ((i * 0.381966 + 0.2) % 1), x = 130 + u * 100, o = 9 + (1 - Math.sqrt(1 - u * u)) * 34 + v * 15, ang = ((i * 47) % 70) - 35 + u * 40;
         return `<g transform="translate(${x.toFixed(1)} ${(y + o).toFixed(1)}) rotate(${ang.toFixed(0)})"><ellipse cx=".5" cy="1" rx="3.7" ry="1.9" fill="#5c320c" fill-opacity=".4"/><ellipse rx="3.4" ry="1.7" fill="url(#gS)"/></g>`; }).join('')}`],
   };
-  const ORDEM = ['pao', 'molho', 'picles', 'alface', 'tomate', 'cebola', 'carne', 'grao', 'queijo', 'bacon', 'ovo', 'topo'];
+  /* Ordem de baixo para cima, no estilo das lanchonetes brasileiras: pão, molho, carne (o queijo vai logo em cima dela, para derreter),
+     frios e bacon, ovo, e por último as coisas frescas: picles, cebola, tomate e alface embaixo da tampa. */
+  const ORDEM = ['pao', 'molho', 'carne', 'grao', 'queijo', 'presunto', 'bacon', 'ovo', 'picles', 'cebola', 'tomate', 'alface', 'topo'];
   const RX_CAMADA = [
     ['carne', /carne|hamburguer|burger|patty|duplo|dobro/], ['queijo', /queijo|cheddar|cheese|mussarela|mucarela|gouda|brie/], ['bacon', /bacon/],
     ['alface', /alface|salada|rucula/], ['tomate', /tomate/], ['cebola', /cebola|onion/], ['picles', /picles|pepino/],
-    ['ovo', /\bovo\b|egg/], ['molho', /molho|maionese|barbecue|bbq|ketchup|mostarda/], ['grao', /grao|vegetal|veggie/],
+    ['presunto', /presunto|peru|ham\b/], ['ovo', /\bovo\b|egg/], ['molho', /molho|maionese|barbecue|bbq|ketchup|mostarda/], ['grao', /grao|vegetal|veggie/],
   ];
   const camadaDe = nome => { const n = norm(nome); for (const [k, rx] of RX_CAMADA) if (rx.test(n)) return k; return null; };
   const empilha = (base, extras) => {
     const cont = {}; [...(base || []), ...extras].forEach(k => { cont[k] = (cont[k] || 0) + 1; });
     cont.pao = 1; cont.topo = 1;
-    return ORDEM.flatMap(k => Array(Math.min(cont[k] || 0, 3)).fill(k));
+    const n = k => Math.min(cont[k] || 0, 3);
+    return ORDEM.flatMap(k => {
+      if (k === 'grao' || k === 'queijo') return [];  // entram junto da carne
+      if (k !== 'carne') return Array(n(k)).fill(k);
+      /* hambúrguer duplo: carne, queijo, carne, queijo (cada queijo derrete na carne de baixo) */
+      const carnes = [...Array(n('carne')).fill('carne'), ...Array(n('grao')).fill('grao')], out = [];
+      for (let i = 0; i < Math.max(carnes.length, n('queijo')); i++) { if (carnes[i]) out.push(carnes[i]); if (i < n('queijo')) out.push('queijo'); }
+      return out;
+    });
   };
 
   /* gradientes e filtros de luz de cada desenho (ids únicos: #fTX vira #<id>TX etc.) */
@@ -171,6 +184,8 @@ window.LHD = (() => {
       <path d="M0 -9 V9 M0 -3 l5 -3 M0 -3 l-5 -3 M0 2 l5 -3 M0 2 l-5 -3" stroke="#b6e592" stroke-opacity=".75" stroke-width=".9" fill="none"/></g>`,
     pimentao: (r) => `<g transform="rotate(${(r() * 360) | 0})"><path d="M-9 3 Q0 -10 9 3" fill="none" stroke="#3f8f2c" stroke-width="5.4" stroke-linecap="round"/>
       <path d="M-9 3 Q0 -10 9 3" fill="none" stroke="#6cc24a" stroke-width="3.2" stroke-linecap="round"/><path d="M-6 -1.6 Q-1 -6 4 -4.4" fill="none" stroke="#e7ffd6" stroke-opacity=".7" stroke-width="1" stroke-linecap="round"/></g>`,
+    rucula: (r) => `<g transform="rotate(${(r() * 360) | 0})"><path d="M0 -12 q4 2 3 5 q4 1 2 4 q3 2 0 5 q-2 3 -5 4 q-3 -1 -5 -4 q-3 -3 0 -5 q-2 -3 2 -4 q-1 -3 3 -5z" fill="url(#gBL)" stroke="#2a6e24" stroke-width=".8"/>
+      <path d="M0 -10 V10" stroke="#b6e592" stroke-opacity=".7" stroke-width=".9"/></g>`,
     cebola: () => `<circle r="8" fill="none" stroke="#d6aee0" stroke-width="3" stroke-dasharray="38 7"/><circle r="8" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1" stroke-dasharray="38 7"/>`,
     tomate: () => `<circle r="9" fill="#cf3a2f"/><circle r="9" fill="none" stroke="#a02219" stroke-width="1"/><circle r="6.4" fill="#ee6a56"/>${[0, 1, 2, 3, 4].map(i => `<ellipse cx="${(Math.cos(i * 1.26) * 3.6).toFixed(1)}" cy="${(Math.sin(i * 1.26) * 3.6).toFixed(1)}" rx="1.5" ry=".9" transform="rotate(${i * 72})" fill="#ffe9a8"/>`).join('')}
       <ellipse cx="-3" cy="-3.4" rx="3" ry="1.5" transform="rotate(-35)" fill="#fff" fill-opacity=".4"/>`,
@@ -179,12 +194,16 @@ window.LHD = (() => {
     bacon: (r) => `<g transform="rotate(${(r() * 360) | 0})"><path d="M-11 0 q2.7 -5 5.4 0 t5.4 0 t5.4 0 t5.4 0" fill="none" stroke="#8e2412" stroke-width="5.2" stroke-linecap="round"/>
       <path d="M-11 0 q2.7 -5 5.4 0 t5.4 0 t5.4 0 t5.4 0" fill="none" stroke="#d24d32" stroke-width="3" stroke-linecap="round"/><path d="M-11 -.6 q2.7 -5 5.4 0 t5.4 0 t5.4 0 t5.4 0" fill="none" stroke="#f6cdb8" stroke-width="1" stroke-linecap="round"/></g>`,
   };
-  const QTD = { mussarela: 13, pepperoni: 9, cogumelo: 8, azeitona: 10, manjericao: 6, pimentao: 8, cebola: 9, tomate: 8, presunto: 8, milho: 18, bacon: 8 };
+  const QTD = { rucula: 7, mussarela: 13, pepperoni: 9, cogumelo: 8, azeitona: 10, manjericao: 6, pimentao: 8, cebola: 9, tomate: 8, presunto: 8, milho: 18, bacon: 8 };
   const RX_TOPPING = [
-    ['mussarela', /mussarela|mucarela|queijo|catupiry|parmesao/], ['pepperoni', /pepperoni|calabresa|salame/], ['cogumelo', /cogumelo|champignon/],
+    ['rucula', /rucula|arugula/], ['mussarela', /mussarela|mucarela|queijo|catupiry|parmesao/], ['pepperoni', /pepperoni|calabresa|salame/], ['cogumelo', /cogumelo|champignon/],
     ['azeitona', /azeitona/], ['manjericao', /manjeric/], ['pimentao', /pimentao|pimentoes/], ['cebola', /cebola/], ['tomate', /tomate/],
     ['presunto', /presunto|peru/], ['milho', /milho/], ['bacon', /bacon/],
   ];
+  /* ordem de aplicação (de baixo para cima): queijo primeiro, legumes, carnes secas por cima para tostar e, depois de assada, as folhas */
+  const RANK_P = ['mussarela', 'cebola', 'pimentao', 'tomate', 'milho', 'azeitona', 'cogumelo', 'presunto', 'bacon', 'pepperoni', 'rucula', 'manjericao'];
+  const RANK_B = ['banana', 'morango', 'granola', 'ninho', 'pacoca', 'condensado'];
+  const poe = (cob, g, k, rank) => { const r = rank.indexOf(k), prox = [...cob.children].find(c => rank.indexOf(c.getAttribute('data-k')) > r); prox ? cob.insertBefore(g, prox) : cob.append(g); };
   const toppingDe = nome => { const n = norm(nome); for (const [k, rx] of RX_TOPPING) if (rx.test(n)) return k; return null; };
 
   /** Pizza viva: set(['mussarela','pepperoni', ...]); cada ingrediente aparece espalhado pela massa, sempre no mesmo lugar. */
@@ -229,7 +248,74 @@ window.LHD = (() => {
       Object.keys(atuais).forEach(k => { if (!alvo.has(k)) { const g = atuais[k]; g.classList.remove('on'); setTimeout(() => g.remove(), 380); delete atuais[k]; } });
       alvo.forEach(k => {
         if (atuais[k]) return;
-        const g = monta(k); cob.append(g); atuais[k] = g;
+        const g = monta(k); poe(cob, g, k, RANK_P); atuais[k] = g;
+        requestAnimationFrame(() => requestAnimationFrame(() => g.classList.add('on')));
+      });
+    }
+    return { el: svg, set };
+  }
+
+  /* ---------- Bowl de açaí (vista de cima) ---------- */
+  const PECA_B = {
+    banana: () => `<circle r="10" fill="#e6c76a"/><circle r="8.6" fill="url(#gBN)"/><circle r="3.4" fill="#d9b657" fill-opacity=".8"/>${[0, 1, 2, 3, 4, 5].map(i => `<circle cx="${(Math.cos(i * 1.05) * 5.4).toFixed(1)}" cy="${(Math.sin(i * 1.05) * 5.4).toFixed(1)}" r=".7" fill="#b9953a" fill-opacity=".6"/>`).join('')}
+      <path d="M-6.6 -3.6 q2.6 -4 7 -4.4" stroke="#fff" stroke-opacity=".6" stroke-width="1.4" fill="none" stroke-linecap="round"/>`,
+    morango: (r) => `<g transform="rotate(${(r() * 360) | 0})"><path d="M0 -10 C11 -10 13 3 0 12 C-13 3 -11 -10 0 -10Z" fill="url(#gMO)" stroke="#9c1626" stroke-width="1"/>
+      <path d="M0 -6 C6 -6 7 2 0 8 C-7 2 -6 -6 0 -6Z" fill="#ff8d93" fill-opacity=".55"/>${[[-4, -4], [3, -5], [-6, 1], [5, 1], [-2, 4], [1, 7], [-3, -1], [3, -1]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx=".9" ry="1.5" fill="#ffe9a0"/>`).join('')}
+      <path d="M-5 -9.5 l2 -3 l2 2 l2 -3 l2 3 l2 -2 l1 3z" fill="#3f9a2a" stroke="#2a6e1b" stroke-width=".6"/><ellipse cx="-4" cy="-4" rx="2.6" ry="1.2" transform="rotate(-40)" fill="#fff" fill-opacity=".4"/></g>`,
+    granola: (r) => `<g transform="rotate(${(r() * 360) | 0})">${Array.from({ length: 6 }, (_, i) => { const x = (r() - .5) * 20, y = (r() - .5) * 20; return `<path d="${blob(x, y, 3.8 + r() * 2.4, 2.8 + r() * 1.8, 7, .5, 'gr' + i + r(), .8)}" fill="${i % 2 ? '#c98f3d' : '#a96f26'}" stroke="#7a4c14" stroke-width=".6"/>`; }).join('')}
+      <circle cx="2" cy="-3" r="1" fill="#f0cf8a"/><circle cx="-5" cy="4" r="1" fill="#f0cf8a"/></g>`,
+    ninho: (r) => `<path d="${blob(0, 0, 13 + r() * 3, 10 + r() * 2, 10, .4, 'ni' + r(), .8)}" fill="#fbf7ec" stroke="#e6dcc3" stroke-width="1"/><ellipse cx="-3" cy="-3" rx="6" ry="3" fill="#fff"/>
+      ${[[4, 3], [-5, 4], [6, -3], [0, 6]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.1" fill="#e9dfc6"/>`).join('')}`,
+    condensado: (r) => `<g transform="rotate(${(r() * 360) | 0})"><path d="M-14 0 q3.5 -7 7 0 t7 0 t7 0 t7 0" fill="none" stroke="#c9b48a" stroke-opacity=".6" stroke-width="4.4" stroke-linecap="round" transform="translate(0 1)"/>
+      <path d="M-14 0 q3.5 -7 7 0 t7 0 t7 0 t7 0" fill="none" stroke="#fff4d2" stroke-width="3.4" stroke-linecap="round"/><path d="M-13 -.8 q3.5 -7 7 0 t7 0" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.1" stroke-linecap="round"/></g>`,
+    pacoca: (r) => `${Array.from({ length: 6 }, (_, i) => { const x = (r() - .5) * 22, y = (r() - .5) * 22; return `<path d="${blob(x, y, 2.6 + r() * 1.8, 2 + r() * 1.4, 6, .5, 'pa' + i + r(), .8)}" fill="${i % 2 ? '#d1a263' : '#b98543'}" stroke="#8a5a22" stroke-width=".5"/>`; }).join('')}`,
+  };
+  const QTD_B = { banana: 7, morango: 6, granola: 10, ninho: 4, condensado: 6, pacoca: 9 };
+  const RX_BOWL = [
+    ['banana', /banana/], ['morango', /morango|strawberr|fresa/], ['granola', /granola|cereal|aveia/],
+    ['ninho', /ninho|leite em po|milk powder|leche en polvo/], ['condensado', /condensado|calda|mel\b|nutella|chocolate/], ['pacoca', /pacoca|amendoim|paçoca|peanut|mani/],
+  ];
+  const bowlDe = nome => { const n = norm(nome); for (const [k, rx] of RX_BOWL) if (rx.test(n)) return k; return null; };
+
+  /** Bowl de açaí vivo: set(['banana','morango', ...]); cada ingrediente aparece espalhado sobre o açaí. */
+  function bowlViva() {
+    const id = 'b' + (++uid), r0 = semente('acai');
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 260 260'); svg.setAttribute('class', 'bowl vivo'); svg.setAttribute('aria-hidden', 'true');
+    const textura = Array.from({ length: 40 }, () => `<ellipse cx="${(130 + (r0() - .5) * 190).toFixed(1)}" cy="${(130 + (r0() - .5) * 190).toFixed(1)}" rx="${3 + r0() * 8}" ry="${2 + r0() * 4}" fill="${r0() > .5 ? '#8a3fa0' : '#1d0626'}" fill-opacity=".28"/>`).join('');
+    svg.innerHTML = `${defs(id)}<defs>
+      <radialGradient id="${id}AC" cx=".42" cy=".36" r=".8"><stop offset="0" stop-color="#7a2f95"/><stop offset=".65" stop-color="#4b1664"/><stop offset="1" stop-color="#2b0a3b"/></radialGradient>
+      <linearGradient id="${id}CR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4eee2"/><stop offset=".55" stop-color="#d8cdb8"/><stop offset="1" stop-color="#a89a82"/></linearGradient>
+      <radialGradient id="${id}BN" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fdf1bd"/><stop offset="1" stop-color="#f0d77c"/></radialGradient>
+      <radialGradient id="${id}MO" cx=".4" cy=".3" r=".9"><stop offset="0" stop-color="#f0484f"/><stop offset="1" stop-color="#c01a2b"/></radialGradient></defs>
+      <ellipse cx="134" cy="142" rx="122" ry="116" fill="#000" fill-opacity=".4" filter="url(#${id}SH)"/>
+      <circle cx="130" cy="130" r="120" fill="url(#${id}CR)"/><circle cx="130" cy="130" r="120" fill="none" stroke="#7d705a" stroke-width="1.6"/>
+      <circle cx="130" cy="130" r="108" fill="#8d806a" fill-opacity=".35"/>
+      <circle cx="130" cy="130" r="104" fill="url(#${id}AC)"/><g filter="url(#${id}TX2)" opacity=".85">${textura}</g>
+      <circle cx="130" cy="130" r="104" fill="none" stroke="#16041f" stroke-opacity=".5" stroke-width="3"/>
+      <path d="M52 64 A100 100 0 0 1 150 30" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="5" stroke-linecap="round"/>
+      <path d="M40 76 A112 112 0 0 1 96 28" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/><g class="cob"></g>`;
+    const cob = svg.querySelector('.cob');
+    let atuais = {};
+    function monta(k) {
+      const g = document.createElementNS(NS, 'g'); const r = semente(k + '|bowl'); const n = QTD_B[k] || 6;
+      const off = (Object.keys(QTD_B).indexOf(k) * 1.1) % 6.28;
+      let html = '';
+      for (let i = 0; i < n; i++) {
+        const ang = i * 2.399963 + off, rad = 78 * Math.sqrt((i + 0.6) / (n + 0.4));
+        const x = 130 + rad * Math.cos(ang), y = 130 + rad * Math.sin(ang);
+        html += `<g class="pc" style="transform:translate(${x.toFixed(1)}px,${y.toFixed(1)}px)"><g class="pi" style="transition-delay:${i * 40}ms">${PECA_B[k](r)}</g></g>`;
+      }
+      g.innerHTML = unico(html, id);
+      g.setAttribute('data-k', k); g.setAttribute('filter', `url(#${id}PT)`);
+      return g;
+    }
+    function set(lista) {
+      const alvo = new Set(lista.filter(k => PECA_B[k]));
+      Object.keys(atuais).forEach(k => { if (!alvo.has(k)) { const g = atuais[k]; g.classList.remove('on'); setTimeout(() => g.remove(), 380); delete atuais[k]; } });
+      alvo.forEach(k => {
+        if (atuais[k]) return;
+        const g = monta(k); poe(cob, g, k, RANK_B); atuais[k] = g;
         requestAnimationFrame(() => requestAnimationFrame(() => g.classList.add('on')));
       });
     }
@@ -237,6 +323,17 @@ window.LHD = (() => {
   }
 
   const ICONES = { carne: '🥩', queijo: '🧀', bacon: '🥓', alface: '🥬', tomate: '🍅', cebola: '🧅', picles: '🥒', ovo: '🍳', molho: '🥫', grao: '🫘',
-                   mussarela: '🧀', pepperoni: '🍕', cogumelo: '🍄', azeitona: '🫒', manjericao: '🌿', pimentao: '🫑', presunto: '🍖', milho: '🌽' };
-  return { lancheViva, pizzaViva, camadaDe, toppingDe, empilha, ICONES, fotos: {} };
+                   mussarela: '🧀', pepperoni: '🍕', cogumelo: '🍄', azeitona: '🫒', manjericao: '🌿', pimentao: '🫑', presunto: '🍖', milho: '🌽', banana: '🍌', morango: '🍓', granola: '🌾', ninho: '🥛', condensado: '🍯', pacoca: '🥜' };
+  /** Ingrediente novo sem mexer no resto: registra('burger', 'chave', { rx, altura, desenho: y => '<g>...</g>', depoisDe: 'queijo', icone: '🥓' });
+      registra('pizza' | 'acai', 'chave', { rx, peca: r => '<g>...</g>', qtd: 8, depoisDe: 'bacon', icone: '🌿' }).
+      rx é a expressão que reconhece o nome da opção no cardápio (sem acento, minúsculas). */
+  function registra(tipo, chave, o) {
+    const ins = (arr, depois) => { const i = arr.indexOf(depois); arr.splice(i < 0 ? (arr === ORDEM ? arr.length - 1 : arr.length) : i + 1, 0, chave); };
+    if (tipo === 'burger') { CAM[chave] = [o.altura || 10, o.desenho]; ins(ORDEM, o.depoisDe); RX_CAMADA.unshift([chave, o.rx]); }
+    else if (tipo === 'pizza') { PECA[chave] = o.peca; QTD[chave] = o.qtd || 8; ins(RANK_P, o.depoisDe); RX_TOPPING.unshift([chave, o.rx]); }
+    else if (tipo === 'acai') { PECA_B[chave] = o.peca; QTD_B[chave] = o.qtd || 8; ins(RANK_B, o.depoisDe); RX_BOWL.unshift([chave, o.rx]); }
+    if (o.icone) ICONES[chave] = o.icone;
+  }
+  ICONES.rucula = '🥬';
+  return { lancheViva, pizzaViva, bowlViva, camadaDe, toppingDe, bowlDe, empilha, registra, ICONES, fotos: {} };
 })();

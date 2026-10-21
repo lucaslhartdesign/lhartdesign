@@ -3,7 +3,7 @@
 <meta name="theme-color" content="#ff2bd6">
 <title>Burger Neon — Delivery próprio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<script src="../i18n-pages.js"></script><script src="../i18n-delivery-demo.js"></script>
+<script src="../i18n-pages.js"></script><script src="../i18n-delivery-demo.js"></script><script src="../i18n-montador.js?v=2"></script><script src="../desenho.js?v=2"></script><script src="../montador-demo.js?v=1"></script>
 <style>
 :root{--page:#07060f;--pcard:#15142a;--pink:#f4f2ff;--pmu:#9a97c4;--pline:#2a2850;--bg:#0c0b16;--card:#16152a;--ink:#f4f2ff;--mu:#9a97c4;--line:#2a2850;--ac:#ff2bd6;--ac2:#7a3dff;--acink:#fff;--price:#35e6ff;--rad:14px;--f1:Orbitron,sans-serif;--f2:Rajdhani,sans-serif;--ease:cubic-bezier(.2,.8,.2,1)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -139,7 +139,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const hm=ts=>new Date(ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 const STAT={pgto:['Aguardando pagamento','💳','#94a3b8'],novo:['Pedido recebido','🧾','#3b82f6'],preparando:['Em preparo','👨‍🍳','#f59e0b'],pronto:['Pronto','✅','#10b981'],rota:['Saiu para entrega','🛵','#8b5cf6'],entregue:['Entregue','🎉','#64748b']};
 const ALL=CFG.menu.flatMap(c=>c.items.map(i=>Object.assign({cat:c.name},i)));
-const byId=id=>ALL.find(i=>i.id===id);
+const byId=id=>ALL.find(i=>i.id===id)||MD.get(id);
 const NAMES=['Marcos','Larissa','Thor','Kaique','Bia','Dante','Mel','Rafa','Júlia','Pedro'],ADDR=['Rua das Flores, 120','Av. Brasil, 455','Rua do Sol, 78 ap 32','Praça Central, 9','Rua Verde, 301','Av. das Palmeiras, 1500'];
 const bc=window.BroadcastChannel?new BroadcastChannel(KEY):null;
 let S=load();

@@ -10,7 +10,9 @@
     burger: { rotulo: 'Hambúrguer', prato: 'Monte o seu burger', base: 22.9, extra: 'Pão brioche e burger de 160 g',
       itens: [['Cheddar', 4], ['Bacon crocante', 5], ['Alface', 2], ['Tomate', 2], ['Cebola caramelizada', 3], ['Picles', 2], ['Ovo frito', 3], ['Carne extra', 9]] },
     pizza: { rotulo: 'Pizza', prato: 'Monte sua pizza', base: 39.9, extra: 'Massa fina e molho de tomate',
-      itens: [['Mussarela', 5], ['Pepperoni', 6], ['Cogumelos', 5], ['Azeitonas', 4], ['Manjericão', 3], ['Pimentão', 3], ['Cebola', 2], ['Tomate', 3]] }
+      itens: [['Mussarela', 5], ['Pepperoni', 6], ['Cogumelos', 5], ['Azeitonas', 4], ['Manjericão', 3], ['Pimentão', 3], ['Cebola', 2], ['Tomate', 3]] },
+    acai: { rotulo: 'Açaí', prato: 'Monte o seu açaí', base: 18.9, extra: 'Açaí 300 ml e o creme',
+      itens: [['Banana', 3], ['Morango', 4], ['Granola', 3], ['Leite em pó', 4], ['Leite condensado', 3], ['Paçoca', 3]] }
   };
   var modo = 'burger', marcados = {}, vivo = null, preco, wa, prev;
 
@@ -20,6 +22,7 @@
     var d = D[modo], nomes = Object.keys(marcados).filter(function (k) { return marcados[k]; });
     var L = window.LHD;
     if (modo === 'pizza') vivo.set(nomes.map(L.toppingDe).filter(Boolean));
+    else if (modo === 'acai') vivo.set(nomes.map(L.bowlDe).filter(Boolean));
     else vivo.set(L.empilha(['pao', 'carne', 'topo'], nomes.map(L.camadaDe).filter(Boolean)));
     var total = d.base + nomes.reduce(function (s, n) { return s + d.itens.filter(function (i) { return i[0] === n; })[0][1]; }, 0);
     preco.textContent = R(total);
@@ -37,11 +40,11 @@
       abas.append(b);
     });
     prev = el('div', 'mt-prev');
-    vivo = modo === 'pizza' ? window.LHD.pizzaViva() : window.LHD.lancheViva();
+    vivo = modo === 'pizza' ? window.LHD.pizzaViva() : modo === 'acai' ? window.LHD.bowlViva() : window.LHD.lancheViva();
     prev.append(vivo.el, el('p', 'mt-dica', T('Toque nos ingredientes para montar')));
     var chips = el('div', 'mt-chips');
     d.itens.forEach(function (it) {
-      var k = modo === 'pizza' ? window.LHD.toppingDe(it[0]) : window.LHD.camadaDe(it[0]);
+      var k = modo === 'pizza' ? window.LHD.toppingDe(it[0]) : modo === 'acai' ? window.LHD.bowlDe(it[0]) : window.LHD.camadaDe(it[0]);
       var b = el('button', 'mt-chip'); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
       var ic = el('i', null, (k && window.LHD.ICONES[k]) || '•'); ic.setAttribute('aria-hidden', 'true');
       b.append(ic, el('span', null, T(it[0])), el('small', null, '+ ' + R(it[1])));

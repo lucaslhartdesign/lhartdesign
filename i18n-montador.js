@@ -7,10 +7,11 @@ LH.html({
   }
 });
 LH.add([
-  ['Novo · Cliente monta o prato', 'New · Customers build the dish', 'Nuevo · El cliente arma el plato'],
-  ['Em hamburgueria e pizzaria o cliente escolhe cada ingrediente e vê o prato se formar. Funciona com as opções do cardápio: a gente liga no app do seu restaurante, e o preço é conferido no servidor.',
-   'In burger and pizza places the customer picks each ingredient and watches the dish come together. It works with your menu options: we switch it on in your restaurant’s app, and the price is always checked on the server.',
-   'En hamburgueserías y pizzerías el cliente elige cada ingrediente y ve el plato formarse. Funciona con las opciones del menú: lo activamos en la app de tu restaurante y el precio siempre se verifica en el servidor.'],
+  ['Novo · Adicionais que o cliente vê se formar', 'New · Extras the customer watches come together', 'Nuevo · Adicionales que el cliente ve formarse'],
+  ['Seus adicionais deixam de ser uma lista chata: em hamburgueria, pizzaria e açaí o cliente toca em cada ingrediente e vê o prato se formar, com o preço subindo na hora. Funciona com as opções do cardápio: a gente liga no app do seu restaurante, e o preço é conferido no servidor. O cardápio tradicional (lista de adicionais) continua disponível: você escolhe, produto por produto.',
+   'Your extras stop being a boring list: in burger, pizza and açaí places the customer taps each ingredient and watches the dish come together, with the price rising instantly. It works with your menu options: we switch it on in your restaurant’s app, and the price is checked on the server. The classic menu (a plain list of extras) is still there: you choose, product by product.',
+   'Tus adicionales dejan de ser una lista aburrida: en hamburgueserías, pizzerías y açaí el cliente toca cada ingrediente y ve el plato formarse, con el precio subiendo al instante. Funciona con las opciones del menú: lo activamos en la app de tu restaurante y el precio se verifica en el servidor. El menú clásico (lista de adicionales) sigue disponible: tú eliges, producto por producto.'],
+  ['Teste ao vivo nas demos:', 'Try it live in the demos:', 'Pruébalo en vivo en las demos:'],
   ['Mais vontade de pedir', 'More reasons to order', 'Más ganas de pedir'],
   ['Ver o prato se formar convida a escolher mais um ingrediente.', 'Watching the dish come together invites one more topping.', 'Ver el plato formarse invita a elegir un ingrediente más.'],
   ['Preço sempre à vista', 'Price always visible', 'Precio siempre a la vista'],
@@ -33,5 +34,11 @@ LH.add([
   ['Cebola caramelizada', 'Caramelized onion', 'Cebolla caramelizada'], ['Picles', 'Pickles', 'Pepinillos'], ['Ovo frito', 'Fried egg', 'Huevo frito'],
   ['Carne extra', 'Extra patty', 'Carne extra'], ['Mussarela', 'Mozzarella', 'Mozzarella'], ['Pepperoni', 'Pepperoni', 'Pepperoni'],
   ['Cogumelos', 'Mushrooms', 'Champiñones'], ['Azeitonas', 'Olives', 'Aceitunas'], ['Manjericão', 'Basil', 'Albahaca'],
-  ['Pimentão', 'Bell pepper', 'Pimiento'], ['Cebola', 'Onion', 'Cebolla']
+  ['Pimentão', 'Bell pepper', 'Pimiento'], ['Cebola', 'Onion', 'Cebolla'],
+  ['Açaí', 'Açaí bowl', 'Açaí'], ['Monte o seu açaí', 'Build your açaí', 'Arma tu açaí'], ['Açaí 300 ml e o creme', 'Açaí 300 ml and the base', 'Açaí 300 ml y la base'],
+  ['Banana', 'Banana', 'Plátano'], ['Morango', 'Strawberry', 'Fresa'], ['Granola', 'Granola', 'Granola'], ['Leite em pó', 'Milk powder', 'Leche en polvo'],
+  ['Leite condensado', 'Condensed milk', 'Leche condensada'], ['Paçoca', 'Peanut candy', 'Paçoca'], ['Calabresa', 'Calabresa sausage', 'Chorizo calabresa'],
+  ['Monte ao seu gosto', 'Build it your way', 'Arma a tu gusto'], ['Adicionar', 'Add', 'Agregar'], ['Adicionar sem personalizar', 'Add as it is', 'Agregar sin personalizar'], ['Fechar', 'Close', 'Cerrar'],
+  ['Também funciona no cardápio tradicional: lista de adicionais, como sempre.', 'It also works the classic way: a plain list of extras.', 'También funciona de la forma clásica: una lista de adicionales.'],
+  ['Teste ao vivo nas demos', 'Try it live in the demos', 'Pruébalo en vivo en las demos'], ['Montador de adicionais', 'Extras builder', 'Armador de adicionales']
 ]);

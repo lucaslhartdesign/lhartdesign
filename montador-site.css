@@ -25,9 +25,11 @@
 .mt-list li i{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#9184d933;color:var(--gold2);font:800 15px Inter;font-style:normal}
 .mt-list b{display:block;color:var(--ink);font-weight:700}
 .mt-info2{text-align:left!important}
-.pizza .pi{transform:scale(0);opacity:0;transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .2s}
-.pizza g.on .pi{transform:scale(1);opacity:1}
-.pizza .cob>g{transition:opacity .3s}.pizza .cob>g:not(.on){opacity:.001}
+.pizza .pi,.bowl .pi{transform:scale(0);opacity:0;transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.pizza g.on .pi,.bowl g.on .pi{transform:scale(1);opacity:1}
+.pizza .cob>g,.bowl .cob>g{transition:opacity .3s}.pizza .cob>g:not(.on),.bowl .cob>g:not(.on){opacity:.001}
 @media(max-width:900px){.mt-grid{grid-template-columns:1fr;gap:28px}}
 @media(max-width:520px){.mt-chips{grid-template-columns:repeat(2,1fr)}.mt-prev{min-height:250px}}
-@media(prefers-reduced-motion:reduce){.pizza .pi,.mt-chip,.mt-chip i{transition:none}}
+@media(prefers-reduced-motion:reduce){.pizza .pi,.bowl .pi,.mt-chip,.mt-chip i{transition:none}}
+
+.mt-demos{margin:10px 0 0;font-size:14.5px;color:var(--mu)}.mt-demos b{color:var(--ink)}.mt-demos a{color:var(--gold2);text-decoration:underline;text-underline-offset:3px;margin:0 2px}
