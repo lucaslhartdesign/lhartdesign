@@ -5,7 +5,7 @@
   var arq = location.pathname.split('/').pop().replace(/\.html$/, '');
   var BURGER = [['Cheddar', 4], ['Bacon crocante', 5], ['Alface', 2], ['Tomate', 2], ['Cebola caramelizada', 3], ['Picles', 2], ['Ovo frito', 3], ['Carne extra', 9]];
   var PIZZA = [['Mussarela', 5], ['Pepperoni', 6], ['Cogumelos', 5], ['Azeitonas', 4], ['Manjericão', 3], ['Pimentão', 3], ['Cebola', 2], ['Bacon', 6]];
-  var BOWL = [['Banana', 3], ['Morango', 4], ['Granola', 3], ['Leite em pó', 4], ['Leite condensado', 3], ['Paçoca', 3]];
+  var BOWL = [['Sorvete', 5], ['Banana', 3], ['Morango', 4], ['Granola', 3], ['Leite em pó', 4], ['Leite condensado', 3], ['Paçoca', 3]];
   var CFG = {
     'delivery-burger-neon': { tipo: 'burger', extras: BURGER, itens: {
       bn1: { ini: ['Cheddar', 'Cheddar', 'Picles'] }, bn2: { ini: ['Carne extra', 'Bacon crocante'] },
@@ -19,7 +19,7 @@
     'delivery-forno-a-lenha': { tipo: 'pizza', extras: PIZZA, itens: {
       fl1: { ini: ['Mussarela', 'Tomate', 'Manjericão'] }, fl2: { ini: ['Calabresa', 'Cebola', 'Mussarela'] }, fl3: { ini: ['Mussarela'] },
       fl4: { ini: ['Mussarela', 'Manjericão'] }, fl5: { ini: ['Mussarela', 'Pepperoni'] } } },
-    'delivery-acai-tropical': { tipo: 'acai', extras: BOWL, itens: { at1: { ini: [] }, at2: { ini: [] }, at3: { ini: [] }, at4: { ini: ['Banana', 'Morango', 'Granola'] } } }
+    'delivery-acai-tropical': { tipo: 'acai', extras: BOWL, itens: { at1: { ini: ['Açaí'] }, at2: { ini: ['Açaí'] }, at3: { ini: ['Açaí'] }, at4: { ini: ['Açaí', 'Banana', 'Morango', 'Granola'] } } }
   };
   var C = CFG[arq];
   var KEY = 'md-itens-' + arq;
@@ -55,9 +55,9 @@
     '.mdr{display:flex;align-items:center;gap:12px}.mdr strong{font:800 22px var(--f1,inherit);color:var(--price)}' +
     '.mdr .ok{flex:1;border:0;border-radius:14px;padding:14px;background:var(--ac);color:var(--acink);font-weight:800;font-size:15px}' +
     '.mdq{display:block;width:100%;margin-top:10px;border:0;background:none;color:var(--mu);font:600 12.5px var(--f2,inherit);text-decoration:underline}' +
-    '.mdp svg .pizza .pi,.mdp .pizza .pi,.mdp .bowl .pi{transform:scale(0);opacity:0;transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .2s}' +
-    '.mdp .pizza g.on .pi,.mdp .bowl g.on .pi{transform:scale(1);opacity:1}' +
-    '.mdp .pizza .cob>g,.mdp .bowl .cob>g{transition:opacity .3s}.mdp .pizza .cob>g:not(.on),.mdp .bowl .cob>g:not(.on){opacity:.001}' +
+    '.mdp .pizza .pi{transform:scale(0);opacity:0;transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .2s}' +
+    '.mdp .pizza g.on .pi{transform:scale(1);opacity:1}' +
+    '.mdp .pizza .cob>g{transition:opacity .3s}.mdp .pizza .cob>g:not(.on){opacity:.001}' +
     '@keyframes mdf{from{opacity:0}}@keyframes mdu{from{transform:translateY(40px);opacity:.4}}';
   document.head.appendChild(css);
 
@@ -72,7 +72,7 @@
   function abre(id) {
     var base = ALL.filter(function (x) { return x.id === id; })[0]; if (!base) return;
     var c = conf(id), L = window.LHD;
-    var marcados = {}, vivo = null;
+    var marcados = {}, vivo = null, ordem = c.ini.slice(), ord = null;
     var chave = c.tipo === 'pizza' ? L && L.toppingDe : c.tipo === 'acai' ? L && L.bowlDe : L && L.camadaDe;
     var iniKeys = c.ini.map(function (n) { return chave && chave(n); }).filter(Boolean);
     var extras = c.extras.filter(function (x) { return c.tipo === 'burger' || iniKeys.indexOf(chave && chave(x[0])) < 0; });
@@ -83,7 +83,7 @@
     fx.addEventListener('click', fecha); h.append(b, fx);
     var prev = el('div', 'mdp');
     if (L) {
-      vivo = c.tipo === 'pizza' ? L.pizzaViva() : c.tipo === 'acai' ? L.bowlViva() : L.lancheViva();
+      vivo = c.tipo === 'pizza' ? L.pizzaViva() : c.tipo === 'acai' ? L.copoViva() : L.lancheViva();
       prev.append(vivo.el, el('p', null, T('Toque nos ingredientes para montar')));
     }
     var chips = el('div', 'mdc'), preco = el('strong'), rod = el('div', 'mdr'), ok = el('button', 'ok'); ok.type = 'button';
@@ -93,7 +93,13 @@
     function desenha() {
       if (L && vivo) {
         var todos = c.ini.concat(nomes());
-        if (c.tipo === 'burger') vivo.set(L.empilha(c.base || ['pao', 'carne', 'topo'], todos.map(L.camadaDe).filter(Boolean)));
+        if (c.tipo === 'acai') {
+          /* o copo enche de baixo para cima na ordem dos toques; as setas trocam a ordem das camadas */
+          var n = nomes();
+          ordem.splice(0, ordem.length, ...ordem.filter(function (x) { return c.ini.indexOf(x) >= 0 || n.indexOf(x) >= 0; }), ...n.filter(function (x) { return ordem.indexOf(x) < 0; }));
+          if (ord) ord.desenha();
+          vivo.set(ordem.map(chave).filter(Boolean));
+        } else if (c.tipo === 'burger') vivo.set(L.empilha(c.base || ['pao', 'carne', 'topo'], todos.map(L.camadaDe).filter(Boolean)));
         else vivo.set(todos.map(chave).filter(Boolean));
       }
       preco.textContent = R(total());
@@ -110,14 +116,16 @@
     ok.addEventListener('click', function () {
       var n = nomes();
       if (!n.length) { poeNaSacola(base.id); fecha(); return; }
-      var nid = base.id + '~' + extras.map(function (e, i) { return marcados[e[0]] ? i : ''; }).join('');
-      guardados[nid] = Object.assign({}, base, { id: nid, name: base.name + ' + ' + n.map(T).join(', '), price: total() });
+      var nid = base.id + '~' + extras.map(function (e, i) { return marcados[e[0]] ? i : ''; }).join('') + (c.tipo === 'acai' ? '~' + ordem.map(function (x) { return (chave && chave(x)) || x; }).join('.') : '');
+      var nome = c.tipo === 'acai' ? base.name + ' · ' + T('camadas de baixo para cima') + ': ' + ordem.map(T).join(' › ') : base.name + ' + ' + n.map(T).join(', ');
+      guardados[nid] = Object.assign({}, base, { id: nid, name: nome, price: total() });
       try { localStorage.setItem(KEY, JSON.stringify(guardados)); } catch (e) { /* sem armazenamento: o item só vale nesta visita */ }
       poeNaSacola(nid); fecha();
     });
     var q = el('button', 'mdq', T('Adicionar sem personalizar')); q.type = 'button';
     q.addEventListener('click', function () { poeNaSacola(base.id); fecha(); });
     rod.append(preco, ok);
+    if (c.tipo === 'acai' && L) { ord = L.ordenador(ordem, function () { vivo.set(ordem.map(chave).filter(Boolean)); }); prev.append(ord.el); }
     s.append(h, prev, chips, rod, q);
     fecha(); folha = x; $('cliente').appendChild(x); desenha();
   }

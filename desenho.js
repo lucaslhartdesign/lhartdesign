@@ -202,7 +202,6 @@ window.LHD = (() => {
   ];
   /* ordem de aplicação (de baixo para cima): queijo primeiro, legumes, carnes secas por cima para tostar e, depois de assada, as folhas */
   const RANK_P = ['mussarela', 'cebola', 'pimentao', 'tomate', 'milho', 'azeitona', 'cogumelo', 'presunto', 'bacon', 'pepperoni', 'rucula', 'manjericao'];
-  const RANK_B = ['banana', 'morango', 'granola', 'ninho', 'pacoca', 'condensado'];
   const poe = (cob, g, k, rank) => { const r = rank.indexOf(k), prox = [...cob.children].find(c => rank.indexOf(c.getAttribute('data-k')) > r); prox ? cob.insertBefore(g, prox) : cob.append(g); };
   const toppingDe = nome => { const n = norm(nome); for (const [k, rx] of RX_TOPPING) if (rx.test(n)) return k; return null; };
 
@@ -255,85 +254,112 @@ window.LHD = (() => {
     return { el: svg, set };
   }
 
-  /* ---------- Bowl de açaí (vista de cima) ---------- */
-  const PECA_B = {
-    banana: () => `<circle r="10" fill="#e6c76a"/><circle r="8.6" fill="url(#gBN)"/><circle r="3.4" fill="#d9b657" fill-opacity=".8"/>${[0, 1, 2, 3, 4, 5].map(i => `<circle cx="${(Math.cos(i * 1.05) * 5.4).toFixed(1)}" cy="${(Math.sin(i * 1.05) * 5.4).toFixed(1)}" r=".7" fill="#b9953a" fill-opacity=".6"/>`).join('')}
-      <path d="M-6.6 -3.6 q2.6 -4 7 -4.4" stroke="#fff" stroke-opacity=".6" stroke-width="1.4" fill="none" stroke-linecap="round"/>`,
-    morango: (r) => `<g transform="rotate(${(r() * 360) | 0})"><path d="M0 -10 C11 -10 13 3 0 12 C-13 3 -11 -10 0 -10Z" fill="url(#gMO)" stroke="#9c1626" stroke-width="1"/>
-      <path d="M0 -6 C6 -6 7 2 0 8 C-7 2 -6 -6 0 -6Z" fill="#ff8d93" fill-opacity=".55"/>${[[-4, -4], [3, -5], [-6, 1], [5, 1], [-2, 4], [1, 7], [-3, -1], [3, -1]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx=".9" ry="1.5" fill="#ffe9a0"/>`).join('')}
-      <path d="M-5 -9.5 l2 -3 l2 2 l2 -3 l2 3 l2 -2 l1 3z" fill="#3f9a2a" stroke="#2a6e1b" stroke-width=".6"/><ellipse cx="-4" cy="-4" rx="2.6" ry="1.2" transform="rotate(-40)" fill="#fff" fill-opacity=".4"/></g>`,
-    granola: (r) => `<g transform="rotate(${(r() * 360) | 0})">${Array.from({ length: 6 }, (_, i) => { const x = (r() - .5) * 20, y = (r() - .5) * 20; return `<path d="${blob(x, y, 3.8 + r() * 2.4, 2.8 + r() * 1.8, 7, .5, 'gr' + i + r(), .8)}" fill="${i % 2 ? '#c98f3d' : '#a96f26'}" stroke="#7a4c14" stroke-width=".6"/>`; }).join('')}
-      <circle cx="2" cy="-3" r="1" fill="#f0cf8a"/><circle cx="-5" cy="4" r="1" fill="#f0cf8a"/></g>`,
-    ninho: (r) => `<path d="${blob(0, 0, 13 + r() * 3, 10 + r() * 2, 10, .4, 'ni' + r(), .8)}" fill="#fbf7ec" stroke="#e6dcc3" stroke-width="1"/><ellipse cx="-3" cy="-3" rx="6" ry="3" fill="#fff"/>
-      ${[[4, 3], [-5, 4], [6, -3], [0, 6]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.1" fill="#e9dfc6"/>`).join('')}`,
-    condensado: (r) => `<g transform="rotate(${(r() * 360) | 0})"><path d="M-14 0 q3.5 -7 7 0 t7 0 t7 0 t7 0" fill="none" stroke="#c9b48a" stroke-opacity=".6" stroke-width="4.4" stroke-linecap="round" transform="translate(0 1)"/>
-      <path d="M-14 0 q3.5 -7 7 0 t7 0 t7 0 t7 0" fill="none" stroke="#fff4d2" stroke-width="3.4" stroke-linecap="round"/><path d="M-13 -.8 q3.5 -7 7 0 t7 0" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.1" stroke-linecap="round"/></g>`,
-    pacoca: (r) => `${Array.from({ length: 6 }, (_, i) => { const x = (r() - .5) * 22, y = (r() - .5) * 22; return `<path d="${blob(x, y, 2.6 + r() * 1.8, 2 + r() * 1.4, 6, .5, 'pa' + i + r(), .8)}" fill="${i % 2 ? '#d1a263' : '#b98543'}" stroke="#8a5a22" stroke-width=".5"/>`; }).join('')}`,
+  /* ---------- Copo de açaí visto de lado: as camadas enchem de baixo para cima, na ordem que o cliente escolher ---------- */
+  const COPO_FUNDO = 270, COPO_TOPO = 54;
+  const CAM_C = {
+    acai: [56, (h) => `<rect x="20" width="220" height="${h}" fill="url(#gAC)"/>${[[60, 14, 22, 6], [120, 30, 30, 8], [185, 18, 26, 6], [90, 40, 20, 5], [160, 42, 24, 6]].map(([x, y, rx, ry]) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#8a3fa0" fill-opacity=".35"/>`).join('')}
+      <path d="M20 3 Q75 -3 130 3 T240 3" fill="none" stroke="#c48ad8" stroke-opacity=".55" stroke-width="3"/>`],
+    sorvete: [44, (h) => `<rect x="20" width="220" height="${h}" fill="url(#gSO)"/><path d="M20 8 q14 -11 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 V0 H20z" fill="#fffaf0"/>
+      ${[[50, 22], [96, 30], [140, 18], [190, 28], [214, 14], [70, 36]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.2" fill="#e6d7b4" fill-opacity=".8"/>`).join('')}`],
+    ninho: [20, (h) => `<rect x="20" width="220" height="${h}" fill="#fbf8ef"/><path d="M20 4 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 V0 H20z" fill="#fff"/>
+      ${Array.from({ length: 34 }, (_, i) => `<circle cx="${24 + (i * 37) % 210}" cy="${3 + (i * 7) % (h - 4)}" r="${.8 + (i % 3) * .5}" fill="#e7dfcb"/>`).join('')}`],
+    granola: [22, (h) => `<rect x="20" width="220" height="${h}" fill="#b9822f"/>${Array.from({ length: 36 }, (_, i) => `<ellipse cx="${24 + (i * 53) % 212}" cy="${3 + (i * 11) % (h - 3)}" rx="${3.4 + (i % 4)}" ry="${2.4 + (i % 3)}" transform="rotate(${(i * 41) % 180} ${24 + (i * 53) % 212} ${3 + (i * 11) % (h - 3)})" fill="${['#8c5a1c', '#d9a45a', '#6e4412', '#c98f3d'][i % 4]}"/>`).join('')}`],
+    banana: [28, (h) => `<rect x="20" width="220" height="${h}" fill="#f1d77c"/>${Array.from({ length: 9 }, (_, i) => `<ellipse cx="${34 + i * 24}" cy="${h / 2 + (i % 2 ? 3 : -3)}" rx="13" ry="${h / 2 - 2}" fill="#faedb0" stroke="#d3b457" stroke-width="1.2"/><circle cx="${34 + i * 24}" cy="${h / 2 + (i % 2 ? 3 : -3)}" r="2.2" fill="#cda94a" fill-opacity=".7"/>`).join('')}`],
+    morango: [28, (h) => `<rect x="20" width="220" height="${h}" fill="#c9283a"/>${Array.from({ length: 8 }, (_, i) => { const x = 36 + i * 27, y = h / 2 + (i % 2 ? 3 : -2); return `<path d="M${x} ${y - 11} C${x + 13} ${y - 11} ${x + 14} ${y + 4} ${x} ${y + 12} C${x - 14} ${y + 4} ${x - 13} ${y - 11} ${x} ${y - 11}Z" fill="#ec4455" stroke="#9c1626" stroke-width="1"/><ellipse cx="${x}" cy="${y}" rx="4" ry="6" fill="#ff9aa0" fill-opacity=".55"/>`; }).join('')}`],
+    pacoca: [16, (h) => `<rect x="20" width="220" height="${h}" fill="#cf9e5f"/>${Array.from({ length: 40 }, (_, i) => `<circle cx="${22 + (i * 47) % 214}" cy="${2 + (i * 5) % (h - 2)}" r="${1.2 + (i % 3) * .7}" fill="${i % 2 ? '#a9763a' : '#e8c48a'}"/>`).join('')}`],
+    condensado: [10, (h) => `<rect x="20" width="220" height="${h}" fill="#fff0c6"/><path d="M20 2 H240" stroke="#fff" stroke-opacity=".9" stroke-width="2.4"/><path d="M20 ${h - 1} H240" stroke="#e8cf8c" stroke-opacity=".7" stroke-width="2"/>`],
   };
-  const QTD_B = { banana: 7, morango: 6, granola: 10, ninho: 4, condensado: 6, pacoca: 9 };
   const RX_BOWL = [
-    ['banana', /banana/], ['morango', /morango|strawberr|fresa/], ['granola', /granola|cereal|aveia/],
-    ['ninho', /ninho|leite em po|milk powder|leche en polvo/], ['condensado', /condensado|calda|mel\b|nutella|chocolate/], ['pacoca', /pacoca|amendoim|paçoca|peanut|mani/],
+    ['acai', /acai/], ['banana', /banana/], ['morango', /morango|strawberr|fresa/], ['granola', /granola|cereal|aveia/],
+    ['ninho', /ninho|leite em po|milk powder|leche en polvo/], ['sorvete', /sorvete|creme de|gelato|ice cream|helado/],
+    ['condensado', /condensado|calda|nutella|chocolate/], ['pacoca', /pacoca|amendoim|peanut|mani/],
   ];
   const bowlDe = nome => { const n = norm(nome); for (const [k, rx] of RX_BOWL) if (rx.test(n)) return k; return null; };
 
-  /** Bowl de açaí vivo: set(['banana','morango', ...]); cada ingrediente aparece espalhado sobre o açaí. */
-  function bowlViva() {
-    const id = 'b' + (++uid), r0 = semente('acai');
+  /** Copo vivo: set(['acai','sorvete','ninho', ...]) na ordem de baixo para cima; trocar a ordem faz as camadas deslizarem. */
+  function copoViva() {
+    const id = 'c' + (++uid);
     const svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('viewBox', '0 0 260 260'); svg.setAttribute('class', 'bowl vivo'); svg.setAttribute('aria-hidden', 'true');
-    const textura = Array.from({ length: 40 }, () => `<ellipse cx="${(130 + (r0() - .5) * 190).toFixed(1)}" cy="${(130 + (r0() - .5) * 190).toFixed(1)}" rx="${3 + r0() * 8}" ry="${2 + r0() * 4}" fill="${r0() > .5 ? '#8a3fa0' : '#1d0626'}" fill-opacity=".28"/>`).join('');
-    svg.innerHTML = `${defs(id)}<defs>
-      <radialGradient id="${id}AC" cx=".42" cy=".36" r=".8"><stop offset="0" stop-color="#7a2f95"/><stop offset=".65" stop-color="#4b1664"/><stop offset="1" stop-color="#2b0a3b"/></radialGradient>
-      <linearGradient id="${id}CR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4eee2"/><stop offset=".55" stop-color="#d8cdb8"/><stop offset="1" stop-color="#a89a82"/></linearGradient>
-      <radialGradient id="${id}BN" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fdf1bd"/><stop offset="1" stop-color="#f0d77c"/></radialGradient>
-      <radialGradient id="${id}MO" cx=".4" cy=".3" r=".9"><stop offset="0" stop-color="#f0484f"/><stop offset="1" stop-color="#c01a2b"/></radialGradient></defs>
-      <ellipse cx="134" cy="142" rx="122" ry="116" fill="#000" fill-opacity=".4" filter="url(#${id}SH)"/>
-      <circle cx="130" cy="130" r="120" fill="url(#${id}CR)"/><circle cx="130" cy="130" r="120" fill="none" stroke="#7d705a" stroke-width="1.6"/>
-      <circle cx="130" cy="130" r="108" fill="#8d806a" fill-opacity=".35"/>
-      <circle cx="130" cy="130" r="104" fill="url(#${id}AC)"/><g filter="url(#${id}TX2)" opacity=".85">${textura}</g>
-      <circle cx="130" cy="130" r="104" fill="none" stroke="#16041f" stroke-opacity=".5" stroke-width="3"/>
-      <path d="M52 64 A100 100 0 0 1 150 30" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="5" stroke-linecap="round"/>
-      <path d="M40 76 A112 112 0 0 1 96 28" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/><g class="cob"></g>`;
-    const cob = svg.querySelector('.cob');
+    svg.setAttribute('viewBox', '0 0 260 300'); svg.setAttribute('class', 'copo vivo'); svg.setAttribute('aria-hidden', 'true');
+    svg.innerHTML = `<defs>
+      <linearGradient id="${id}AC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b2a85"/><stop offset=".6" stop-color="#4a1563"/><stop offset="1" stop-color="#2b0a3b"/></linearGradient>
+      <linearGradient id="${id}SO" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffaf0"/><stop offset="1" stop-color="#efe2c4"/></linearGradient>
+      <linearGradient id="${id}GL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset=".18" stop-color="#fff" stop-opacity=".04"/><stop offset=".8" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>
+      <clipPath id="${id}CP"><path d="M38 54 L222 54 L190 266 Q189 270 184 270 L76 270 Q71 270 70 266 Z"/></clipPath></defs>
+      <ellipse cx="130" cy="287" rx="86" ry="9" fill="#000" fill-opacity=".4"/>
+      <path d="M38 54 L222 54 L190 266 Q189 270 184 270 L76 270 Q71 270 70 266 Z" fill="#ffffff" fill-opacity=".07"/>
+      <g clip-path="url(#${id}CP)"><g class="camadas"></g></g>
+      <path d="M38 54 L222 54 L190 266 Q189 270 184 270 L76 270 Q71 270 70 266 Z" fill="url(#${id}GL)"/>
+      <path d="M30 46 L230 46 L196 270 Q195 280 186 280 L74 280 Q65 280 64 270 Z" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M46 62 L66 258" stroke="#fff" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/><path d="M214 70 L198 200" stroke="#fff" stroke-opacity=".16" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="130" cy="46" rx="100" ry="8" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/>`;
+    const camadas = svg.querySelector('.camadas');
     let atuais = {};
-    function monta(k) {
-      const g = document.createElementNS(NS, 'g'); const r = semente(k + '|bowl'); const n = QTD_B[k] || 6;
-      const off = (Object.keys(QTD_B).indexOf(k) * 1.1) % 6.28;
-      let html = '';
-      for (let i = 0; i < n; i++) {
-        const ang = i * 2.399963 + off, rad = 78 * Math.sqrt((i + 0.6) / (n + 0.4));
-        const x = 130 + rad * Math.cos(ang), y = 130 + rad * Math.sin(ang);
-        html += `<g class="pc" style="transform:translate(${x.toFixed(1)}px,${y.toFixed(1)}px)"><g class="pi" style="transition-delay:${i * 40}ms">${PECA_B[k](r)}</g></g>`;
-      }
-      g.innerHTML = unico(html, id);
-      g.setAttribute('data-k', k); g.setAttribute('filter', `url(#${id}PT)`);
-      return g;
-    }
     function set(lista) {
-      const alvo = new Set(lista.filter(k => PECA_B[k]));
-      Object.keys(atuais).forEach(k => { if (!alvo.has(k)) { const g = atuais[k]; g.classList.remove('on'); setTimeout(() => g.remove(), 380); delete atuais[k]; } });
+      const alvo = [...new Set(lista.filter(k => CAM_C[k]))];
+      Object.keys(atuais).forEach(k => { if (!alvo.includes(k)) { const g = atuais[k]; g.style.opacity = 0; setTimeout(() => g.remove(), 380); delete atuais[k]; } });
+      let y = COPO_FUNDO;
       alvo.forEach(k => {
-        if (atuais[k]) return;
-        const g = monta(k); poe(cob, g, k, RANK_B); atuais[k] = g;
-        requestAnimationFrame(() => requestAnimationFrame(() => g.classList.add('on')));
+        const h = CAM_C[k][0]; y -= h;
+        let g = atuais[k];
+        if (!g) {
+          g = document.createElementNS(NS, 'g'); g.innerHTML = unico(CAM_C[k][1](h), id);
+          g.style.transition = 'transform .55s cubic-bezier(.34,1.3,.5,1), opacity .35s';
+          g.style.transform = `translateY(${y - 90}px)`; g.style.opacity = 0;
+          camadas.append(g); atuais[k] = g;
+          const alvoY = y; requestAnimationFrame(() => requestAnimationFrame(() => { g.style.transform = `translateY(${alvoY}px)`; g.style.opacity = 1; }));
+        } else g.style.transform = `translateY(${y}px)`;
       });
     }
     return { el: svg, set };
   }
 
+  /** Lista de camadas com ↑ ↓: o cliente escolhe a ordem (de baixo para cima no copo). `lista` é a lista de nomes (de baixo para cima)
+      e é alterada aqui mesmo; aoMudar() é chamado depois de cada troca. Devolve { el, desenha }. */
+  function ordenador(lista, aoMudar) {
+    const T = s => (window.LH && window.LH.t) ? window.LH.t(s) : s;
+    if (!document.getElementById('lhd-ord-css')) {
+      const st = document.createElement('style'); st.id = 'lhd-ord-css';
+      st.textContent = '.ord{display:grid;gap:6px;margin:10px 0 0}.ord-t{margin:0;font-size:12px;color:var(--mu,#9a9a9a)}' +
+        '.ord-l{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line,#ffffff33);border-radius:12px;background:var(--card,#ffffff0d);color:var(--ink,inherit);font-size:13px}' +
+        '.ord-l i{font-style:normal;font-size:16px}.ord-l span{flex:1}' +
+        '.ord-l button{width:30px;height:30px;border-radius:9px;border:1px solid var(--line,#ffffff33);background:transparent;color:inherit;font-size:15px;line-height:1}.ord-l button[disabled]{opacity:.25}';
+      document.head.append(st);
+    }
+    const el = document.createElement('div'); el.className = 'ord';
+    function troca(i, j) { const t = lista[i]; lista[i] = lista[j]; lista[j] = t; desenha(); aoMudar(); }
+    function desenha() {
+      el.textContent = ''; el.hidden = lista.length < 2; if (el.hidden) return;
+      const t = document.createElement('p'); t.className = 'ord-t'; t.textContent = T('Camadas do copo, de cima para baixo. Use as setas para mudar a ordem.'); el.append(t);
+      for (let i = lista.length - 1; i >= 0; i--) {
+        const row = document.createElement('div'); row.className = 'ord-l';
+        const k = bowlDe(lista[i]), ic = document.createElement('i'); ic.textContent = (k && ICONES[k]) || '•'; ic.setAttribute('aria-hidden', 'true');
+        const nm = document.createElement('span'); nm.textContent = T(lista[i]);
+        const sobe = document.createElement('button'), desce = document.createElement('button');
+        sobe.type = desce.type = 'button'; sobe.textContent = '↑'; desce.textContent = '↓';
+        sobe.setAttribute('aria-label', T('Subir camada')); desce.setAttribute('aria-label', T('Descer camada'));
+        sobe.disabled = i === lista.length - 1; desce.disabled = i === 0;
+        sobe.addEventListener('click', () => troca(i, i + 1)); desce.addEventListener('click', () => troca(i, i - 1));
+        row.append(ic, nm, sobe, desce); el.append(row);
+      }
+    }
+    desenha();
+    return { el, desenha };
+  }
+
   const ICONES = { carne: '🥩', queijo: '🧀', bacon: '🥓', alface: '🥬', tomate: '🍅', cebola: '🧅', picles: '🥒', ovo: '🍳', molho: '🥫', grao: '🫘',
-                   mussarela: '🧀', pepperoni: '🍕', cogumelo: '🍄', azeitona: '🫒', manjericao: '🌿', pimentao: '🫑', presunto: '🍖', milho: '🌽', banana: '🍌', morango: '🍓', granola: '🌾', ninho: '🥛', condensado: '🍯', pacoca: '🥜' };
+                   mussarela: '🧀', pepperoni: '🍕', cogumelo: '🍄', azeitona: '🫒', manjericao: '🌿', pimentao: '🫑', presunto: '🍖', milho: '🌽', banana: '🍌', morango: '🍓', granola: '🌾', ninho: '🥛', condensado: '🍯', pacoca: '🥜', acai: '🫐', sorvete: '🍨' };
   /** Ingrediente novo sem mexer no resto: registra('burger', 'chave', { rx, altura, desenho: y => '<g>...</g>', depoisDe: 'queijo', icone: '🥓' });
-      registra('pizza' | 'acai', 'chave', { rx, peca: r => '<g>...</g>', qtd: 8, depoisDe: 'bacon', icone: '🌿' }).
+      registra('pizza', 'chave', { rx, peca: r => '<g>...</g>', qtd: 8, depoisDe: 'bacon', icone: '🌿' });
+      registra('acai', 'chave', { rx, altura: 20, desenho: h => '<rect x="20" width="220" height="' + h + '" fill="#fc0"/>' }) (copo: camada de altura h, desenhada de 0 a h).
       rx é a expressão que reconhece o nome da opção no cardápio (sem acento, minúsculas). */
   function registra(tipo, chave, o) {
     const ins = (arr, depois) => { const i = arr.indexOf(depois); arr.splice(i < 0 ? (arr === ORDEM ? arr.length - 1 : arr.length) : i + 1, 0, chave); };
     if (tipo === 'burger') { CAM[chave] = [o.altura || 10, o.desenho]; ins(ORDEM, o.depoisDe); RX_CAMADA.unshift([chave, o.rx]); }
     else if (tipo === 'pizza') { PECA[chave] = o.peca; QTD[chave] = o.qtd || 8; ins(RANK_P, o.depoisDe); RX_TOPPING.unshift([chave, o.rx]); }
-    else if (tipo === 'acai') { PECA_B[chave] = o.peca; QTD_B[chave] = o.qtd || 8; ins(RANK_B, o.depoisDe); RX_BOWL.unshift([chave, o.rx]); }
+    else if (tipo === 'acai') { CAM_C[chave] = [o.altura || 20, o.desenho]; RX_BOWL.unshift([chave, o.rx]); }
     if (o.icone) ICONES[chave] = o.icone;
   }
   ICONES.rucula = '🥬';
-  return { lancheViva, pizzaViva, bowlViva, camadaDe, toppingDe, bowlDe, empilha, registra, ICONES, fotos: {} };
+  return { lancheViva, pizzaViva, copoViva, ordenador, camadaDe, toppingDe, bowlDe, empilha, registra, ICONES, fotos: {} };
 })();
