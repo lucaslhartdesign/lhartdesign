@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="apps-escolha.css?v=2">
 <link rel="stylesheet" href="montador-site.css?v=3">
+<link rel="stylesheet" href="fluxo-site.css?v=1">
 <script src="i18n-pages.js"></script><script src="i18n-delivery.js"></script><script src="i18n-delivery-extra.js"></script><script src="i18n-delivery-mesa.js?v=5"></script><script src="i18n-montador.js?v=3"></script>
 <style>
 :root{--bg:#161826;--p:#1c1e2e;--p2:#232532;--ln:#34374a;--gold:#9184d9;--gold2:#d2cefd;--ac:#b5abfc;--pk:#b5abfc;--gr:#4be39a;--ink:#e9e9ed;--mu:#9397ab;color-scheme:dark}
@@ -301,10 +302,7 @@ th{color:#9184d9;background:#191b2b}
 <li><i>3</i><span><b>Sem erro de pedido</b>A cozinha recebe a lista exata do que foi montado.</span></li>
 <li><i>4</i><span><b>Você controla</b>Ingredientes, preços e qual produto é montável: tudo pelo painel do dono.</span></li></ul></div></div></div>
 
-<div class="sec" id="tutorial"><div class="wrap"><span class="eyebrow">Tutorial</span><h2 data-ih="d.tut">Veja o delivery <em>funcionando em 7 passos</em></h2><p class="s">É o aplicativo de verdade, rodando ao lado. Aperte “Próximo passo” e acompanhe o pedido passar pelo cliente, pela cozinha e pelo motoboy. Em cada passo mostramos como isso ajuda o faturamento.</p>
-<div class="tut"><div><div class="tl" id="tl"></div><div class="tc"><button class="go" id="tnext">Próximo passo ▶</button><button id="tprev">◀ Voltar</button><button id="tauto">▶▶ Rodar tudo</button><button id="trst">↺ Reiniciar</button></div>
-<div class="tmode"><label><input type="checkbox" id="tlive"> Quero mexer eu mesmo no app (modo livre)</label></div><div class="tip" id="ttip"></div></div>
-<div><div class="ttabs" id="ttabs"><button data-v="cliente" class="on">📱 Cliente</button><button data-v="cozinha">👨‍🍳 Cozinha</button><button data-v="motoboy">🛵 Motoboy</button></div><div id="tstage" data-show="cliente"><div class="tcol a" data-v="cliente"><span class="cap">📱 Cliente</span><div class="fr ph" data-v="cliente" data-w="390"><iframe data-src="demos/delivery-forno-a-lenha.html?view=cliente" title="Cliente"></iframe></div></div><div class="tcol c" data-v="motoboy"><span class="cap">🛵 Motoboy</span><div class="fr ph" data-v="motoboy" data-w="390"><iframe data-src="demos/delivery-forno-a-lenha.html?view=motoboy" title="Motoboy"></iframe></div></div><div class="tcol b" data-v="cozinha"><span class="cap">👨‍🍳 Cozinha</span><div class="fr tb" data-v="cozinha" data-w="900" data-wm="640"><iframe data-src="demos/delivery-forno-a-lenha.html?view=cozinha" title="Cozinha"></iframe></div></div></div></div></div></div></div>
+<div class="sec fx" id="fluxo"><div class="wrap" id="fxroot"></div></div>
 
 <div class="sec alt" id="faturamento"><div class="wrap"><span class="eyebrow">Resultado</span><h2 data-ih="d.fat">Como isso ajuda a <em>aumentar o faturamento</em></h2><p class="s">O delivery próprio não cria cliente do nada: ele faz você ficar com mais do que vende, vender mais por pedido e fazer o cliente voltar. Veja onde está o ganho.</p>
 <div class="gain"><div class="gc"><i>💰</i><h3>Você fica com a margem</h3><p>No canal próprio não há comissão por pedido para o marketplace. Você paga apenas a taxa do meio de pagamento, que costuma ser bem menor.</p><span class="k">Mais lucro por pedido</span></div>
@@ -431,41 +429,6 @@ steps_.onclick=e=>{const b=e.target.closest('.stp');if(b){cur=+b.dataset.i;steps
  fr.forEach(f=>{const i=f.querySelector('iframe');i.addEventListener('load',()=>{if(!i.dataset.on)return;W[f.dataset.v]=i.contentWindow;loaded[f.dataset.v]=true;start()})});
  new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis){fr.forEach(f=>{const i=f.querySelector('iframe');if(i.dataset.on!=='1'){i.dataset.on='1';i.src=i.dataset.src}});start()}else{run=false;T.forEach(clearTimeout);T=[];fr.forEach(f=>{const i=f.querySelector('iframe');i.dataset.on='';loaded[f.dataset.v]=false;i.src='about:blank'})}},{threshold:.15,rootMargin:'100px'}).observe(document.getElementById('stage'))})();
 
-/* tutorial guiado: cada passo executa a ação de verdade dentro do app */
-(function(){const fr=[...document.querySelectorAll('#tstage .fr')],W={},loaded={};let cur=-1,busy=false,vis=false,auto=false,gen=0;
- const ev=(k,code)=>{try{return W[k].eval(code)}catch(e){return null}};
- const clk=(k,sel)=>ev(k,'(function(){var e=document.querySelector('+JSON.stringify(sel)+');if(e){e.click();return 1}return 0})()');
- const sl=ms=>new Promise(r=>setTimeout(r,ms));
- const DEV=['cliente','cliente','cozinha','cozinha','motoboy','cliente','motoboy'];
- const showDev=v=>{document.getElementById('tstage').dataset.show=v;document.querySelectorAll('#ttabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));document.querySelectorAll('.tcol').forEach(c=>c.classList.toggle('act',c.dataset.v===v));requestAnimationFrame(()=>{window.__fit&&window.__fit()})};
- const clk2=async(k,sel)=>{for(let i=0;i<24;i++){if(clk(k,sel))return true;await sl(150)}return false};
- const TS=[
-  ['O cliente escolhe os pratos','Abre o link, vê as fotos e monta a sacola','Cardápio com foto e “mais pedido”','Foto boa e destaque no que mais sai fazem o cliente pedir mais. Combos e adicionais aumentam o valor de cada pedido.',async()=>{for(const id of['fl1','fl3','fl3']){await clk2('cliente','[data-a="add"][data-id="'+id+'"]');await sl(650)}}],
-  ['Cupom e pagamento no Pix','Aplica o cupom e paga dentro do app','Cupom e Pix sem sair do app','O cupom traz a primeira compra e a recompra. O Pix tem QR e confirmação automática, sem o cliente mandar comprovante.',async()=>{await clk2('cliente','[data-a="cart"]');await sl(900);ev('cliente',"document.getElementById('cup').value='BEMVINDO10'");await clk2('cliente','[data-a="coupon"]');await sl(900);await clk2('cliente','[data-a="order"]');await sl(700)}],
-  ['O banco confirma e a cozinha recebe','O pedido pago cai na tela da cozinha','Webhook do banco, pedido na fila','Só entra pedido pago, na ordem de chegada. Acabou o pedido anotado errado ou perdido, e o dinheiro cai direto na sua conta.',async()=>{await clk2('cliente','[data-a="paynow"]');await sl(900)}],
-  ['A cozinha prepara e marca “pronto”','Um toque atualiza o cliente e o motoboy','Status automático para todos','Cozinha organizada atende mais pedidos no horário de pico. O cliente acompanha sem precisar ligar para a loja.',async()=>{await clk2('cozinha','[data-a="k"][data-s="preparando"][data-o="4821"]');await sl(1500);await clk2('cozinha','[data-a="k"][data-s="pronto"][data-o="4821"]');await sl(700)}],
-  ['O motoboy aceita e sai para entregar','Libera o GPS, aceita a corrida e retira','GPS ao vivo só durante a corrida','Entrega rápida e bem organizada. O motoboy sabe a rota e o cliente sabe onde ele está, sem ligação nem WhatsApp.',async()=>{await clk2('motoboy','[data-a="gps"]');await sl(800);await clk2('motoboy','[data-a="maccept"][data-o="4821"]');await sl(1000);await clk2('motoboy','[data-a="mpick"]');ev('motoboy',"var o=find(4821);if(o){o.t.routeStart=Date.now()-ROUTE_MS*.3;save();renderAll()}");await sl(600)}],
-  ['O cliente acompanha e recebe “chegando”','Mapa ao vivo, tempo estimado e aviso automático','Rastreio no mapa e notificação','Menos “cadê meu pedido?” e menos reclamação. Cliente tranquilo avalia melhor, e avaliação boa traz mais pedidos.',async()=>{ev('motoboy',"var o=find(4821);if(o){o.t.routeStart=Date.now()-ROUTE_MS*.8;save();renderAll()}");await sl(1800)}],
-  ['Entrega confirmada com o código','O motoboy avisa que chegou e confirma o código','Código de 4 dígitos e avaliação','Entrega confirmada sem disputa e pedido encerrado. O cliente avalia e você ganha um cliente que volta a comprar.',async()=>{ev('motoboy',"var o=find(4821);if(o){o.t.routeStart=Date.now()-ROUTE_MS-500;save();renderAll()}");await sl(1500);await clk2('motoboy','[data-a="march"]');await sl(900);ev('motoboy',"var o=find(4821);var i=document.getElementById('mcode');if(i&&o)i.value=o.code");await clk2('motoboy','[data-a="mdone"]');await sl(600)}]];
- const tl=document.getElementById('tl'),tip=document.getElementById('ttip'),nx=document.getElementById('tnext'),pv=document.getElementById('tprev'),au=document.getElementById('tauto'),rs=document.getElementById('trst');
- function draw(){tl.innerHTML=TS.map((s,i)=>`<button class="ts ${i<cur?'done':''} ${i===cur?'on':''}" data-i="${i}" style="--w:${i===cur?100:0}%"><b>${i<cur?'✓':i+1}</b><div><span>${s[0]}</span><small>${s[1]}</small></div></button>`).join('');
-  {const on=tl.querySelector('.on');if(on&&tl.scrollWidth>tl.clientWidth)tl.scrollLeft=Math.max(0,on.offsetLeft-16)}
-  tip.innerHTML=cur<0?`<small>Como usar</small><p>Aperte “Próximo passo” para ver o pedido percorrer o sistema, ou “Rodar tudo” para ver o caminho completo.</p>`:`<small>Como isso ajuda o faturamento</small><h4>${TS[cur][2]}</h4><p>${TS[cur][3]}</p>`;
-  nx.disabled=busy||cur>=TS.length-1;pv.disabled=busy||cur<0;au.disabled=busy;rs.disabled=busy}
- const loadedAll=()=>fr.every(f=>loaded[f.dataset.v]);
- function reset(){ev('cliente',"S=seed();save();L.my=null;L.screen='menu';L.cart={};L.seen=null;L.coupon=null;L.cmsg='';localStorage.removeItem(KEY+'-my');renderAll()")}
- async function step(i){showDev(DEV[i]);busy=true;draw();await TS[i][4]();cur=i;busy=false;draw()}
- async function toStep(n){const my=++gen;busy=true;draw();reset();cur=-1;await sl(400);for(let i=0;i<=n;i++){if(my!==gen)return;showDev(DEV[i]);await TS[i][4]();cur=i;draw()}busy=false;draw()}
- nx.onclick=()=>{if(!loadedAll()||busy)return;if(cur<0)reset();step(cur+1)};
- pv.onclick=()=>{if(!loadedAll()||busy)return;if(cur<=0){gen++;reset();cur=-1;draw()}else toStep(cur-1)};
- rs.onclick=()=>{if(!loadedAll())return;gen++;busy=false;reset();cur=-1;draw()};
- au.onclick=async()=>{if(!loadedAll()||busy)return;const my=++gen;busy=true;draw();reset();cur=-1;await sl(500);for(let i=0;i<TS.length;i++){if(my!==gen)return;cur=i;showDev(DEV[i]);draw();await TS[i][4]();await sl(1300)}busy=false;draw()};
- tl.onclick=e=>{const b=e.target.closest('.ts');if(b&&loadedAll()&&!busy)toStep(+b.dataset.i)};
- document.getElementById('ttabs').onclick=e=>{const b=e.target.closest('button');if(b)showDev(b.dataset.v)};
- document.getElementById('tlive').onchange=e=>document.getElementById('tstage').classList.toggle('live',e.target.checked);
- fr.forEach(f=>{const i=f.querySelector('iframe');i.addEventListener('load',()=>{if(!i.dataset.on)return;W[f.dataset.v]=i.contentWindow;loaded[f.dataset.v]=true;if(loadedAll()){reset();cur=-1;draw()}})});
- new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis){fr.forEach(f=>{const i=f.querySelector('iframe');if(i.dataset.on!=='1'){i.dataset.on='1';i.src=i.dataset.src}})}else{gen++;busy=false;fr.forEach(f=>{const i=f.querySelector('iframe');i.dataset.on='';loaded[f.dataset.v]=false;i.src='about:blank'})}},{threshold:.1,rootMargin:'150px'}).observe(document.getElementById('tstage'));
- window.__tutDraw=draw;showDev('cliente');draw()})();
 /* calculadora de economia */
 (function(){const g=id=>document.getElementById(id);const ids=['c1','c2','c3','c4','c5','c6'];
  const cur=()=>({pt:'R$',en:'$',es:'$'}[LH.lang]||'R$');
@@ -500,5 +463,6 @@ LH.start();
 </script>
 <script src="desenho.js?v=3" defer></script>
 <script src="montador-site.js?v=3" defer></script>
+<script src="fluxo-site.js?v=1" defer></script>
 <script src="lh-site.js?v=1" defer></script>
 </body></html>
