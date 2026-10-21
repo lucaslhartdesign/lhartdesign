@@ -42,5 +42,9 @@ LH.add([
   ['Também funciona no cardápio tradicional: lista de adicionais, como sempre.', 'It also works the classic way: a plain list of extras.', 'También funciona de la forma clásica: una lista de adicionales.'],
   ['Sorvete', 'Ice cream', 'Helado'], ['Camadas do copo, de cima para baixo. Use as setas para mudar a ordem.', 'Cup layers, top to bottom. Use the arrows to change the order.', 'Capas del vaso, de arriba abajo. Usa las flechas para cambiar el orden.'],
   ['camadas de baixo para cima', 'layers from bottom to top', 'capas de abajo hacia arriba'], ['Subir camada', 'Move layer up', 'Subir capa'], ['Descer camada', 'Move layer down', 'Bajar capa'],
-  ['Teste ao vivo nas demos', 'Try it live in the demos', 'Pruébalo en vivo en las demos'], ['Montador de adicionais', 'Extras builder', 'Armador de adicionales']
+  ['Teste ao vivo nas demos', 'Try it live in the demos', 'Pruébalo en vivo en las demos'], ['Montador de adicionais', 'Extras builder', 'Armador de adicionales'],
+  ['Ver como o cliente pede', 'See how customers order', 'Ver cómo pide el cliente'],
+  ['Site e app de pedidos com a sua marca: o cliente pede, a cozinha recebe e o motoboy entrega, tudo sincronizado e sem comissão por pedido.',
+   'Ordering site and app with your brand: the customer orders, the kitchen receives and the courier delivers, all in sync and with no commission per order.',
+   'Sitio y app de pedidos con tu marca: el cliente pide, la cocina recibe y el motoboy entrega, todo sincronizado y sin comisión por pedido.']
 ]);

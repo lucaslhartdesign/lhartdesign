@@ -1,0 +1,35 @@
+/* Delivery no celular (até 820 px): reordena a página (o que vende vem primeiro) e fecha as seções longas com "Ver mais". */
+(function () {
+  if (!window.matchMedia || !matchMedia('(max-width:820px)').matches) return;
+  var TXT = { mais: ['Ver mais', 'Show more', 'Ver más'], menos: ['Ver menos', 'Show less', 'Ver menos'] };
+  function idioma() { var l = window.LH && LH.lang; return l === 'en' ? 1 : l === 'es' ? 2 : 0; }
+
+  function roda() {
+    var esc = document.getElementById('escolha'), trust = document.querySelector('.trust'), fx = document.getElementById('fluxo'), mt = document.getElementById('monte');
+    // 1) o título e o passo a passo vêm antes; a escolha de pacote desce para depois do topo
+    if (esc && trust) trust.after(esc);
+    if (fx && mt) mt.before(fx);
+
+    // 2) seções longas: título e primeira frase ficam; o resto abre com "Ver mais"
+    var botoes = [];
+    document.querySelectorAll('.sec').forEach(function (sec) {
+      if (sec.id === 'monte' || sec.id === 'fluxo') return;
+      var wrap = sec.querySelector('.wrap'); if (!wrap) return;
+      var resto = [].slice.call(wrap.children).filter(function (k) { return !k.matches('.eyebrow,h2,.s'); });
+      if (!resto.length) return;
+      var caixa = document.createElement('div'); caixa.className = 'mx-box';
+      resto.forEach(function (k) { caixa.appendChild(k); });
+      wrap.appendChild(caixa);
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'mx-mais'; b.setAttribute('aria-expanded', 'false');
+      function rotulo() { b.textContent = TXT[caixa.classList.contains('open') ? 'menos' : 'mais'][idioma()]; }
+      b.addEventListener('click', function () {
+        var abre = !caixa.classList.contains('open');
+        caixa.classList.toggle('open', abre); b.setAttribute('aria-expanded', abre ? 'true' : 'false'); rotulo();
+        if (!abre) sec.scrollIntoView({ block: 'start' });
+      });
+      rotulo(); wrap.appendChild(b); botoes.push(rotulo);
+    });
+    if (window.LH && LH.on) LH.on(function () { botoes.forEach(function (f) { f(); }); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', roda); else roda();
+})();

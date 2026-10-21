@@ -59,7 +59,7 @@
     wa: ['Oi! Vi o fluxo do cliente (mesa, balcão e delivery) na página Delivery e quero isso no meu restaurante.', 'Hi! I saw the customer flow (table, counter and delivery) on the Delivery page and I want this for my restaurant.', 'Hola. Vi el flujo del cliente (mesa, mostrador y delivery) en la página Delivery y quiero esto en mi restaurante.']
   };
   S.tk_loc_mesa = S.loc_mesa; S.tk_loc_delivery = S.loc_delivery;
-  var modo = 'mesa', passo = 0, timer = null, pausaAte = 0, visivel = false, burger = null, tFichas = [];
+  var modo = 'mesa', passo = 0, timer = null, pausaAte = 0, burger = null, tFichas = [];
   var N = 5;
   var reduz = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -161,7 +161,12 @@
   function vai(n, manual) {
     passo = n; limpaFichas();
     var cenas = host.querySelectorAll('.fx-cena'), passos = host.querySelectorAll('.fx-passo'), pontos = host.querySelectorAll('.fx-dots i');
-    cenas.forEach(function (c, i) { c.classList.toggle('on', i === n); });
+    var antes = host.querySelector('.fx-cena.on');
+    cenas.forEach(function (c, i) {
+      if (i === n) { c.classList.remove('sai'); c.classList.add('on'); }
+      else if (c === antes) { c.classList.remove('on'); c.classList.add('sai'); setTimeout(function () { c.classList.remove('sai'); }, 650); }
+      else c.classList.remove('on');
+    });
     passos.forEach(function (b, i) { b.classList.toggle('on', i === n); b.setAttribute('aria-current', i === n ? 'step' : 'false'); });
     pontos.forEach(function (d, i) { d.classList.toggle('on', i === n); });
     var c4 = host.querySelector('.fx-c4'); if (c4) { c4.classList.remove('pago'); if (n === 3) tFichas.push(setTimeout(function () { c4.classList.add('pago'); }, reduz ? 100 : 1900)); }
@@ -185,16 +190,16 @@
     });
   }
 
+  /* o celular está na tela? (a seção inteira é mais alta que o celular do cliente, então não dá para medir a seção) */
+  function naTela() { var f = host.querySelector('.fx-tel'); if (!f) return false; var r = f.getBoundingClientRect(); return r.bottom > 80 && r.top < (window.innerHeight || 700) - 80; }
   function pausa() { pausaAte = Date.now() + 14000; }
   function roda() {
     clearInterval(timer);
     if (reduz) return;
-    timer = setInterval(function () { if (visivel && Date.now() > pausaAte) vai((passo + 1) % N); }, 5200);
+    timer = setInterval(function () { if (naTela() && Date.now() > pausaAte) vai((passo + 1) % N); }, 5200);
   }
 
   monta(); vai(0);
-  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; }, { threshold: .25 }).observe(host);
-  else visivel = true;
   roda();
   if (window.LH && LH.on) LH.on(function () { textos(); });
 })();
