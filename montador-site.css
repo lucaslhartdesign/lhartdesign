@@ -1,0 +1,33 @@
+/* Seção "O cliente monta o prato" (página Delivery). Prefixo mt-. */
+.mt-sec{position:relative;background:radial-gradient(640px 360px at 15% 30%,#ff6a1314,transparent 70%),radial-gradient(600px 340px at 90% 70%,#9184d922,transparent 70%)}
+.mt-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:center;margin-top:8px}
+.mt-demo{border:1px solid #9184d955;border-radius:26px;background:linear-gradient(180deg,#171526,#0e0c18);box-shadow:0 40px 90px #000a,0 0 80px #9184d91f;padding:16px;max-width:560px;width:100%;justify-self:center}
+.mt-abas{display:flex;gap:8px;margin-bottom:10px}
+.mt-abas button{flex:1;border:1px solid var(--ln);background:#ffffff08;color:var(--mu);border-radius:12px;padding:9px 12px;font:700 14px Inter;transition:.2s}
+.mt-abas button.on{color:#1a0d03;background:linear-gradient(135deg,#ff6a13,#ffb020);border-color:transparent}
+.mt-prev{position:relative;display:grid;justify-items:center;padding:10px 0 4px;border-radius:18px;background:radial-gradient(60% 70% at 50% 58%,#ff6a1330,transparent 72%),#120e0c;min-height:290px;align-content:center}
+.mt-prev svg{width:min(330px,82%);height:auto;max-height:300px;overflow:visible;filter:drop-shadow(0 14px 14px #0007)}
+.mt-dica{margin:2px 0 6px;font-size:12.5px;color:var(--mu);text-align:center}
+.mt-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.mt-chip{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;border:1.5px solid var(--ln);border-radius:16px;background:#ffffff08;color:var(--ink);transition:.2s}
+.mt-chip i{font-style:normal;font-size:24px;line-height:1.1;filter:grayscale(.6);opacity:.7;transition:.2s}
+.mt-chip span{font:700 12px/1.15 Inter;text-align:center}.mt-chip small{font:500 10.5px Inter;color:var(--mu)}
+.mt-chip.on{border-color:#ff8a2b;background:#ff6a1318;box-shadow:0 6px 16px #ff6a1330}
+.mt-chip.on i{filter:none;opacity:1;transform:scale(1.12)}
+.mt-chip.on::after{content:"✓";position:absolute;right:5px;top:4px;width:16px;height:16px;border-radius:50%;background:#ff8a2b;color:#1a0d03;font:800 10px Inter;display:grid;place-items:center}
+.mt-chip:focus-visible,.mt-abas button:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+.mt-rod{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:4px}
+.mt-info{flex:1 1 150px;display:flex;flex-direction:column;line-height:1.25}.mt-info b{font:700 15px Inter}.mt-info small{color:var(--mu);font-size:12.5px}
+.mt-preco{font:800 26px Inter;color:#ffb020;letter-spacing:-.01em}
+.mt-rod .btn{padding:12px 20px;font-size:14px;white-space:nowrap}
+.mt-list{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:14px}
+.mt-list li{display:flex;gap:14px;align-items:flex-start;color:#cfd3e5;font-size:16px;line-height:1.45;text-align:left}
+.mt-list li i{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#9184d933;color:var(--gold2);font:800 15px Inter;font-style:normal}
+.mt-list b{display:block;color:var(--ink);font-weight:700}
+.mt-info2{text-align:left!important}
+.pizza .pi{transform:scale(0);opacity:0;transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.pizza g.on .pi{transform:scale(1);opacity:1}
+.pizza .cob>g{transition:opacity .3s}.pizza .cob>g:not(.on){opacity:.001}
+@media(max-width:900px){.mt-grid{grid-template-columns:1fr;gap:28px}}
+@media(max-width:520px){.mt-chips{grid-template-columns:repeat(2,1fr)}.mt-prev{min-height:250px}}
+@media(prefers-reduced-motion:reduce){.pizza .pi,.mt-chip,.mt-chip i{transition:none}}

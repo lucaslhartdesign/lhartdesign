@@ -6,7 +6,8 @@
 <meta property="og:title" content="Delivery para Restaurantes — Lhart Design"><meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="apps-escolha.css?v=2">
-<script src="i18n-pages.js"></script><script src="i18n-delivery.js"></script><script src="i18n-delivery-extra.js"></script><script src="i18n-delivery-mesa.js?v=5"></script>
+<link rel="stylesheet" href="montador-site.css?v=1">
+<script src="i18n-pages.js"></script><script src="i18n-delivery.js"></script><script src="i18n-delivery-extra.js"></script><script src="i18n-delivery-mesa.js?v=5"></script><script src="i18n-montador.js?v=1"></script>
 <style>
 :root{--bg:#161826;--p:#1c1e2e;--p2:#232532;--ln:#34374a;--gold:#9184d9;--gold2:#d2cefd;--ac:#b5abfc;--pk:#b5abfc;--gr:#4be39a;--ink:#e9e9ed;--mu:#9397ab;color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -289,6 +290,16 @@ th{color:#9184d9;background:#191b2b}
 <div class="stage" id="stage"><div class="hcol a"><div class="fr ph" data-v="cliente" data-w="390"><iframe data-src="demos/delivery-sabor-express.html?view=cliente" title="Cliente"></iframe></div><span class="cap">📱 Cliente</span></div><div class="hcol b"><div class="fr tb" data-v="cozinha" data-w="900" data-wm="620"><iframe data-src="demos/delivery-sabor-express.html?view=cozinha" title="Cozinha"></iframe></div><span class="cap">👨‍🍳 Cozinha</span></div><div class="hcol c"><div class="fr ph" data-v="motoboy" data-w="390"><iframe data-src="demos/delivery-sabor-express.html?view=motoboy" title="Motoboy"></iframe></div><span class="cap">🛵 Motoboy</span></div></div><a class="hint" href="#tutorial">Veja cada tela em tamanho real ↓</a></div></div>
 <div class="trust"><div class="wrap"><span>Sem comissão por pedido</span><span>Dinheiro direto na conta do restaurante</span><span>Português, inglês e espanhol</span><span>Android e iPhone</span><span>Google Maps integrado</span></div></div>
 
+<div class="sec mt-sec" id="monte"><div class="wrap"><span class="eyebrow">Novo · Cliente monta o prato</span>
+<h2 data-ih="d.monte">O cliente <em>monta o prato</em> e vê o preço na hora</h2>
+<p class="s">Em hamburgueria e pizzaria o cliente escolhe cada ingrediente e vê o prato se formar. Funciona com as opções do cardápio: a gente liga no app do seu restaurante, e o preço é conferido no servidor.</p>
+<div class="mt-grid"><div class="mt-demo" id="mtdemo"></div>
+<ul class="mt-list mt-info2">
+<li><i>1</i><span><b>Mais vontade de pedir</b>Ver o prato se formar convida a escolher mais um ingrediente.</span></li>
+<li><i>2</i><span><b>Preço sempre à vista</b>O valor sobe a cada ingrediente, sem surpresa na hora de pagar.</span></li>
+<li><i>3</i><span><b>Sem erro de pedido</b>A cozinha recebe a lista exata do que foi montado.</span></li>
+<li><i>4</i><span><b>Você controla</b>Ingredientes, preços e qual produto é montável: tudo pelo painel do dono.</span></li></ul></div></div></div>
+
 <div class="sec" id="tutorial"><div class="wrap"><span class="eyebrow">Tutorial</span><h2 data-ih="d.tut">Veja o delivery <em>funcionando em 7 passos</em></h2><p class="s">É o aplicativo de verdade, rodando ao lado. Aperte “Próximo passo” e acompanhe o pedido passar pelo cliente, pela cozinha e pelo motoboy. Em cada passo mostramos como isso ajuda o faturamento.</p>
 <div class="tut"><div><div class="tl" id="tl"></div><div class="tc"><button class="go" id="tnext">Próximo passo ▶</button><button id="tprev">◀ Voltar</button><button id="tauto">▶▶ Rodar tudo</button><button id="trst">↺ Reiniciar</button></div>
 <div class="tmode"><label><input type="checkbox" id="tlive"> Quero mexer eu mesmo no app (modo livre)</label></div><div class="tip" id="ttip"></div></div>
@@ -486,5 +497,7 @@ LH.start();
   setInterval(place,1500);
 })();
 </script>
+<script src="desenho.js?v=1" defer></script>
+<script src="montador-site.js?v=1" defer></script>
 <script src="lh-site.js?v=1" defer></script>
 </body></html>
