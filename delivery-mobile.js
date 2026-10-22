@@ -1,6 +1,6 @@
 /* Delivery no celular (até 820 px): reordena a página (o que vende vem primeiro) e fecha as seções longas com "Ver mais". */
 (function () {
-  if (!window.matchMedia || !matchMedia('(max-width:820px)').matches) return;
+  if (!window.matchMedia || !matchMedia('(max-width:1024px)').matches) return;
   var TXT = { mais: ['Ver mais', 'Show more', 'Ver más'], menos: ['Ver menos', 'Show less', 'Ver menos'] };
   function idioma() { var l = window.LH && LH.lang; return l === 'en' ? 1 : l === 'es' ? 2 : 0; }
 

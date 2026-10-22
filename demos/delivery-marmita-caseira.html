@@ -120,7 +120,21 @@ body.single .dev{height:100vh;border:0;border-radius:0;max-width:520px;margin:au
 .shr{display:flex;gap:8px;align-items:center;background:#2fd77a14;border:1px solid #2fd77a40;color:#7dffb4;border-radius:12px;padding:8px 12px;font-size:12.5px;font-weight:700;margin-bottom:10px}
 .mdev ul.it2{margin:10px 0 0;padding-left:18px;font-size:13.5px;color:#d5d8e6}
 .cat::after{content:"";display:block;width:34px;height:4px;border-radius:2px;background:var(--ac2);margin-top:4px}
-</style></head>
+</style><style id="lh-mobile">
+/* celular: o app ocupa a tela inteira (sem moldura de aparelho) e a barra de baixo troca entre Cliente, Cozinha e Motoboy */
+@media(max-width:1200px){.stage{grid-template-columns:minmax(0,1fr)}.col{min-width:0}.dev{min-width:0}}
+@media(max-width:640px){
+  .demo{padding:10px 14px 6px;gap:8px}.demo h1{font-size:17px;margin:0}.demo>div>p{display:none}
+  .dbt{gap:6px}.dbt a{display:none}.dbt button{padding:8px 12px;font-size:13px}
+  .stage{padding:0 0 78px}
+  .col>.lb{display:none}
+  .dev{border:0;border-radius:0;max-width:none;width:100%;height:calc(100dvh - 142px);min-height:480px;box-shadow:none}
+  .dev::before{display:none}
+  .dev.tab{max-width:none;height:calc(100dvh - 142px)}
+  .kb{grid-template-columns:1fr!important;padding:10px}
+}
+</style>
+</head>
 <body class="lay-list">
 <div class="demo"><div><h1 class="f1">Dona Rita · delivery próprio</h1><p>Demonstração ao vivo: o pedido feito no app do cliente cai na cozinha e vai para o motoboy, tudo sincronizado.</p></div>
 <div class="dbt"><div id="langsw"></div><button class="go" data-a="fake">＋ Pedido de outro cliente</button><button data-a="reset">↺ Reiniciar demo</button><a href="?view=cliente" target="_blank">App do cliente ↗</a><a href="?view=cozinha" target="_blank">Cozinha ↗</a><a href="?view=motoboy" target="_blank">Motoboy ↗</a></div></div>
@@ -288,4 +302,4 @@ setInterval(()=>{const now=Date.now();qa('[data-since]').forEach(s=>{const ms=no
 LH.switcher($('langsw'));LH.observe(document.body);
 LH.meta({title:{pt:'Dona Rita — Delivery próprio',en:'Dona Rita — Your own delivery',es:'Dona Rita — Delivery propio'}});
 LH.start();
-</script></body></html>
+</script><script src="../i18n-demo-auto.js?v=2"></script><script src="../demo-auto.js?v=1"></script></body></html>
