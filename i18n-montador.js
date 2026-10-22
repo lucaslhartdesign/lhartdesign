@@ -40,7 +40,7 @@ LH.add([
   ['Leite condensado', 'Condensed milk', 'Leche condensada'], ['Paçoca', 'Peanut candy', 'Paçoca'], ['Calabresa', 'Calabresa sausage', 'Chorizo calabresa'],
   ['Monte ao seu gosto', 'Build it your way', 'Arma a tu gusto'], ['Adicionar', 'Add', 'Agregar'], ['Adicionar sem personalizar', 'Add as it is', 'Agregar sin personalizar'], ['Fechar', 'Close', 'Cerrar'],
   ['Também funciona no cardápio tradicional: lista de adicionais, como sempre.', 'It also works the classic way: a plain list of extras.', 'También funciona de la forma clásica: una lista de adicionales.'],
-  ['Sorvete', 'Ice cream', 'Helado'], ['Camadas do copo, de cima para baixo. Use as setas para mudar a ordem.', 'Cup layers, top to bottom. Use the arrows to change the order.', 'Capas del vaso, de arriba abajo. Usa las flechas para cambiar el orden.'],
+  ['Já vem no prato', 'Already included', 'Ya viene en el plato'], ['Sorvete', 'Ice cream', 'Helado'], ['Camadas do copo, de cima para baixo. Use as setas para mudar a ordem.', 'Cup layers, top to bottom. Use the arrows to change the order.', 'Capas del vaso, de arriba abajo. Usa las flechas para cambiar el orden.'],
   ['camadas de baixo para cima', 'layers from bottom to top', 'capas de abajo hacia arriba'], ['Subir camada', 'Move layer up', 'Subir capa'], ['Descer camada', 'Move layer down', 'Bajar capa'],
   ['Teste ao vivo nas demos', 'Try it live in the demos', 'Pruébalo en vivo en las demos'], ['Montador de adicionais', 'Extras builder', 'Armador de adicionales'],
   ['Ver como o cliente pede', 'See how customers order', 'Ver cómo pide el cliente'],

@@ -412,7 +412,7 @@ steps_.onclick=e=>{const b=e.target.closest('.stp');if(b){cur=+b.dataset.i;steps
  function play(){T.forEach(clearTimeout);T=[];
   ev('cliente',"S=seed();save();L.my=null;L.screen='menu';L.cart={};L.seen=null;L.coupon=null;L.cmsg='';localStorage.removeItem(KEY+'-my');renderAll()");
   L(()=>clk('motoboy','[data-a="gps"]'),2600);
-  L(()=>clk('cliente','[data-a="add"][data-id="se1"]'),1200);L(()=>clk('cliente','[data-a="add"][data-id="se1"]'),2000);L(()=>clk('cliente','[data-a="add"][data-id="se4"]'),2800);
+  L(()=>clk('cliente','[data-a="add"][data-id="se1"] .ad'),1200);L(()=>clk('cliente','[data-a="add"][data-id="se1"] .ad'),2000);L(()=>clk('cliente','[data-a="add"][data-id="se4"] .ad'),2800);
   L(()=>clk('cliente','[data-a="cart"]'),3800);
   L(()=>{ev('cliente',"document.getElementById('cup').value='BEMVINDO10'");clk('cliente','[data-a="coupon"]')},5200);
   L(()=>clk('cliente','[data-a="order"]'),6800);

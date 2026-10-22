@@ -46,6 +46,7 @@
     '.mdp{display:grid;justify-items:center;border-radius:18px;background:radial-gradient(60% 70% at 50% 58%,color-mix(in srgb,var(--ac) 22%,transparent),transparent 72%),var(--card);padding:8px 0 2px}' +
     '.mdp svg{width:min(210px,62%);height:auto;max-height:230px;overflow:visible;filter:drop-shadow(0 12px 12px #0006)}' +
     '.mdp p{margin:2px 0 6px;font-size:12px;color:var(--mu);text-align:center}' +
+    '.mdi{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 0}.mdi small{flex:1 0 100%;color:var(--mu);font:700 11.5px var(--f2,inherit);letter-spacing:.04em;text-transform:uppercase}.mdi span{padding:5px 10px;border-radius:99px;background:var(--card);border:1px solid var(--line);font:600 12px var(--f2,inherit)}' +
     '.mdc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}' +
     '.mdc button{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px 7px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);transition:.2s}' +
     '.mdc i{font-style:normal;font-size:22px;line-height:1.1;filter:grayscale(.6);opacity:.7;transition:.2s}' +
@@ -86,13 +87,25 @@
       vivo = c.tipo === 'pizza' ? L.pizzaViva() : c.tipo === 'acai' ? L.copoViva() : L.lancheViva();
       prev.append(vivo.el, el('p', null, T('Toque nos ingredientes para montar')));
     }
+    var tms = [];
+    function paraRevela() { tms.forEach(clearTimeout); tms = []; }
+    /* o que já vem no prato entra um por um (e não tudo de uma vez), e aparece listado para o cliente entender o que é dele */
+    var inclui = null;
+    if (c.ini.length && c.tipo !== 'acai') {
+      var vistos = {}; inclui = el('div', 'mdi'); inclui.append(el('small', null, T('Já vem no prato')));
+      c.ini.forEach(function (n) {
+        if (vistos[n]) return; vistos[n] = 1;
+        var k = chave && chave(n), ic = (k && L && L.ICONES[k]) || '•';
+        inclui.append(el('span', null, ic + ' ' + T(n)));
+      });
+    }
     var chips = el('div', 'mdc'), preco = el('strong'), rod = el('div', 'mdr'), ok = el('button', 'ok'); ok.type = 'button';
 
     function nomes() { return extras.map(function (e) { return e[0]; }).filter(function (n) { return marcados[n]; }); }
     function total() { return base.price + extras.reduce(function (t, e) { return t + (marcados[e[0]] ? e[1] : 0); }, 0); }
-    function desenha() {
+    function desenha(parcial) {
       if (L && vivo) {
-        var todos = c.ini.concat(nomes());
+        var todos = (parcial || c.ini).concat(nomes());
         if (c.tipo === 'acai') {
           /* o copo enche de baixo para cima na ordem dos toques; as setas trocam a ordem das camadas */
           var n = nomes();
@@ -110,7 +123,7 @@
       var bt = el('button'); bt.type = 'button'; bt.setAttribute('aria-pressed', 'false');
       var ic = el('i', null, (k && L && L.ICONES[k]) || '•'); ic.setAttribute('aria-hidden', 'true');
       bt.append(ic, el('span', null, T(e[0])), el('small', null, '+ ' + R(e[1])));
-      bt.addEventListener('click', function () { marcados[e[0]] = !marcados[e[0]]; bt.classList.toggle('on', !!marcados[e[0]]); bt.setAttribute('aria-pressed', marcados[e[0]] ? 'true' : 'false'); desenha(); });
+      bt.addEventListener('click', function () { paraRevela(); marcados[e[0]] = !marcados[e[0]]; bt.classList.toggle('on', !!marcados[e[0]]); bt.setAttribute('aria-pressed', marcados[e[0]] ? 'true' : 'false'); desenha(); });
       chips.appendChild(bt);
     });
     ok.addEventListener('click', function () {
@@ -126,8 +139,12 @@
     q.addEventListener('click', function () { poeNaSacola(base.id); fecha(); });
     rod.append(preco, ok);
     if (c.tipo === 'acai' && L) { ord = L.ordenador(ordem, function () { vivo.set(ordem.map(chave).filter(Boolean)); }); prev.append(ord.el); }
-    s.append(h, prev, chips, rod, q);
-    fecha(); folha = x; $('cliente').appendChild(x); desenha();
+    s.append.apply(s, [h, prev, inclui, chips, rod, q].filter(Boolean));
+    fecha(); folha = x; $('cliente').appendChild(x);
+    if (L && vivo && c.ini.length && c.tipo !== 'acai') {
+      desenha([]);
+      c.ini.forEach(function (n, i) { tms.push(setTimeout(function () { if (folha === x) desenha(c.ini.slice(0, i + 1)); }, 500 + i * 450)); });
+    } else desenha();
   }
   /* L (estado) e cliente() são globais da própria demo */
   function poeNaSacola(id) { L.cart[id] = (L.cart[id] || 0) + 1; cliente(); }
