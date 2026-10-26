@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Área do cliente | Lhart Design</title>
+<meta name="description" content="Acompanhe os resultados do seu restaurante com a Lhart Design: o que já fizemos, os números do mês e o que vem agora.">
+<link rel="icon" href="assets/logo.png">
+<style>
+:root{--bg:#161826;--p:#1c1e2e;--p2:#232532;--ln:#34374a;--gold:#9184d9;--gold2:#d2cefd;--gr:#4be39a;--ink:#e9e9ed;--mu:#9397ab;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;background:radial-gradient(700px 420px at 15% 0,#b5abfc26,transparent 70%),radial-gradient(640px 420px at 100% 60%,#9184d91f,transparent 70%),var(--bg);color:var(--ink);font:400 17px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.nav{border-bottom:1px solid var(--ln);background:rgba(22,24,38,.82)}
+.nav .w{max-width:1080px;margin:auto;padding:0 22px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav img{height:32px;width:auto;display:block}.nav a.v{color:var(--mu);text-decoration:none;font-size:15px;font-weight:600}.nav a.v:hover{color:var(--gold2)}
+main{flex:1;display:grid;place-items:center;padding:44px 22px}
+.cx{width:100%;max-width:520px}
+h1{margin:0 0 12px;font:600 clamp(34px,8vw,48px)/1.04 Inter,sans-serif;letter-spacing:-.025em}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin:0 0 28px;color:#c5c8dc}
+form{display:grid;gap:10px}
+label{font-weight:700;font-size:15px}
+input{width:100%;min-height:56px;padding:0 18px;border:1.5px solid var(--ln);border-radius:14px;background:var(--p);color:var(--ink);font:500 18px Inter,sans-serif;letter-spacing:.01em}
+input::placeholder{color:#6d7090}
+input:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-color:transparent}
+input[aria-invalid=true]{border-color:#e0736a}
+button{min-height:56px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#161826;font:800 17px Inter,sans-serif;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 14px 34px -14px #9184d9aa}
+button:hover{transform:translateY(-2px)}button:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}button[disabled]{opacity:.7;cursor:wait;transform:none}
+.erro{margin:0;min-height:1.5em;color:#ffb3ab;font-size:15.5px}
+.aj{margin:24px 0 0;padding-top:20px;border-top:1px solid var(--ln);color:var(--mu);font-size:15.5px}
+.aj a{color:var(--gold2);text-underline-offset:3px}
+footer{padding:20px;text-align:center;color:var(--mu);font-size:14px}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+</style>
+</head>
+<body>
+<div class="nav"><div class="w"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a><a class="v" href="index.html">Voltar ao início</a></div></div>
+<main>
+  <div class="cx">
+    <h1>Seus resultados, <em>sem complicação</em></h1>
+    <p class="sub">Aqui você vê o que já fizemos pelo seu restaurante, os números do mês e o que vem agora. Digite o código que a Lhart enviou para você.</p>
+    <form id="f" novalidate>
+      <label for="c">Código de acesso</label>
+      <input id="c" name="c" type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="exemplo: meu-restaurante-k7m2" aria-describedby="e" required>
+      <p class="erro" id="e" role="alert"></p>
+      <button type="submit" id="b">Ver meus resultados</button>
+    </form>
+    <p class="aj">Não encontrou o código? <a id="zap" href="#" target="_blank" rel="noopener">Chame a Lhart no WhatsApp</a> e a gente manda de novo.<br>Quer ver como é antes? <a href="resultados/modelo/">Veja uma página de exemplo</a>.</p>
+  </div>
+</main>
+<footer>© 2026 Lhart Design</footer>
+<script>
+(function () {
+  var f = document.getElementById('f'), c = document.getElementById('c'), e = document.getElementById('e'), b = document.getElementById('b');
+  document.getElementById('zap').href = 'https://wa.me/5511989304239?text=' + encodeURIComponent('Oi! Preciso do código de acesso para ver os resultados do meu restaurante.');
+  if (location.hash.length > 1) c.value = decodeURIComponent(location.hash.slice(1));
+  /* "Meu Restaurante K7M2 " vira "meu-restaurante-k7m2": sem acento, sem espaço, tudo minúsculo */
+  function limpa(v) { return v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+  function erro(t) { e.textContent = t; c.setAttribute('aria-invalid', t ? 'true' : 'false'); }
+  f.addEventListener('submit', function (ev) {
+    ev.preventDefault(); erro('');
+    var cod = limpa(c.value);
+    if (cod.length < 3) { erro('Digite o código que enviamos. Ele tem letras e números, como meu-restaurante-k7m2.'); c.focus(); return; }
+    b.disabled = true; b.textContent = 'Procurando…';
+    fetch('resultados/' + cod + '/dados.js', { cache: 'no-store' }).then(function (r) {
+      if (r.ok) { location.href = 'resultados/' + cod + '/'; return; }
+      throw new Error('nao achou');
+    }).catch(function () {
+      b.disabled = false; b.textContent = 'Ver meus resultados';
+      erro('Não encontramos esse código. Confira se está igual ao que enviamos, ou chame a gente no WhatsApp.'); c.focus();
+    });
+  });
+})();
+</script>
+</body>
+</html>

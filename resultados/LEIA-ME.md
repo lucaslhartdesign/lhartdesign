@@ -21,6 +21,10 @@ resultados/
 4. Confira abrindo o `index.html` direto no navegador (funciona sem servidor) e no tamanho de celular (390 px).
 5. Publicar só com **OK explícito do Lucas**: `git add resultados/<pasta>` e `git push origin main` no repositório do site (`lhart-design-deploy`). A página fica em `https://lhartdesign.com/resultados/<pasta>/`.
 
+## Como o cliente entra pelo site
+
+O site tem a **Área do cliente** (`cliente.html`, link no rodapé de todas as páginas). O cliente digita o **código de acesso** e vai direto para a página dele. **O código é o nome da pasta** (ex.: `brasa-ponto-k7m2`); letras maiúsculas, acentos e espaços digitados a mais são corrigidos sozinhos. Se a pasta não existir, aparece uma mensagem simples e o botão de WhatsApp. Para dar acesso a um cliente, mande a ele o código (ou o link direto `lhartdesign.com/resultados/<pasta>/`). Para tirar o acesso, apague ou renomeie a pasta. Não existe senha: a proteção é o código difícil de adivinhar, então não coloque nesta página nada que o cliente não possa ver.
+
 ## Regras de conteúdo
 
 - **Tom:** calmo, direto, em português simples. Fale com o dono do restaurante, não com um técnico. Troque termos por explicações: "cliques", "alcance" e "custo por clique" precisam de uma frase dizendo o que significam ("quantas vezes alguém clicou no anúncio").
