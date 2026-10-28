@@ -13,6 +13,16 @@ resultados/
   <cliente-xxxx>/     uma pasta por cliente (copie a "modelo")
 ```
 
+## Páginas que já existem
+
+| Pasta (código de acesso) | Para quê | Situação |
+|---|---|---|
+| `modelo` | Exemplo para mostrar a clientes | Dados inventados |
+| `app-delivery` | Resultados do **app** (Delivery, mesa, montador) | Modelo com exemplos, falta preencher com dados reais |
+| `redes-google-ads` | **Redes sociais e Google Ads** | Modelo com exemplos, falta preencher com dados reais |
+| `jogos-discord` | **Sites de jogos, anúncios e bot do Discord** | Modelo com exemplos, falta preencher com dados reais |
+| `eagleseller` | Loja EagleSeller (Rafael) | **Dados reais**, preenchidos pela conversa do EagleSeller. Não apague nem sobrescreva o `dados.js` dela |
+
 ## Como criar a página de um cliente novo
 
 1. Copie a pasta `modelo` para `resultados/<nome-do-cliente>-<4 letras ou números aleatórios>` (ex.: `brasa-ponto-k7m2`). O sufixo aleatório serve para o endereço não ser adivinhado: a página não aparece em buscadores (`noindex`), mas quem tem o link vê.

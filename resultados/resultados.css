@@ -134,3 +134,69 @@ a{color:inherit}
   .r-recado{background:#fff;color:var(--tinta);padding:20pt 0;border-top:1px solid var(--linha)}.r-recado cite{color:var(--suave)}.r-rodape{background:#fff;color:var(--suave)}
   .r-item,.r-feito,.r-canal,.r-num{break-inside:avoid}
 }
+
+/* abas dos canais e "ver tudo": só aparecem no celular (veja o bloco @media abaixo) */
+.r-abas{display:none}
+.r-vermais{display:none}
+.r-item[aria-expanded]{cursor:default}
+
+/* CELULAR: mais informação por tela e menos rolagem */
+@media(max-width:560px){
+  body{font-size:16px;line-height:1.5}
+  .r-col{padding:0 16px}
+  .r-topo{padding-top:24px}
+  .r-ola{font-size:18px}
+  .r-grande{font-size:clamp(54px,17vw,92px)}
+  .r-frase{font-size:21px;max-width:24ch}
+  .r-resumo{font-size:16px;margin-top:14px}
+  .r-selo{margin-top:14px;font-size:14px}
+  .r-curva{margin:16px -16px 0}
+  .r-sec{padding-top:38px}
+  .r-sec>.r-col>h2{font-size:27px}
+  .r-sec>.r-col>.r-sub{font-size:15px;margin-top:6px}
+
+  /* números do mês: quadros lado a lado, o primeiro ocupa a linha toda */
+  .r-nums{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;border-top:0}
+  .r-num{display:flex;flex-direction:column-reverse;justify-content:flex-end;align-items:stretch;gap:6px;padding:14px;border:1px solid var(--linha);border-radius:16px;background:var(--papel)}
+  .r-num:first-child{grid-column:1/-1}
+  .r-num h3{font-size:15px;line-height:1.25}
+  .r-num p{font-size:13.5px;line-height:1.35;margin:3px 0 0}
+  .r-num .r-lado{flex-direction:column;align-items:flex-start;gap:6px}
+  .r-num .r-valor{text-align:left;font-size:29px}
+  .r-num .r-lado>span{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .r-num .r-spark{width:70px;height:28px}
+
+  /* canais: abas em vez de uma lista longa */
+  .r-abas{display:flex;gap:8px;margin:18px -16px 0;padding:2px 16px 6px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none}
+  .r-abas::-webkit-scrollbar{display:none}
+  .r-abas button{flex:none;scroll-snap-align:center;min-height:42px;padding:0 16px;border:1.5px solid var(--linha);border-radius:99px;background:var(--papel);color:var(--suave);font:700 14.5px var(--texto);white-space:nowrap;cursor:pointer}
+  .r-abas button[aria-selected=true]{background:var(--tinta);border-color:var(--tinta);color:#fff;box-shadow:0 8px 18px -10px var(--cor,var(--lavanda))}
+  .em-abas .r-canal{display:none}
+  .em-abas .r-canal.on{display:block}
+  .r-canal{margin-top:20px;padding-top:0;border-top:0}
+  .r-canal h3{font-size:22px}
+  .r-canal>p{font-size:15.5px;margin-top:8px}
+  .r-mets{grid-template-columns:1fr 1fr;gap:14px 14px;margin-top:16px}
+  .r-met b{font-size:25px}.r-met>span{font-size:13.5px}
+  .r-graf{margin-top:20px}.r-graf h4,.r-rank h4{font-size:15.5px}
+  .r-rank{margin-top:20px}
+  .r-significa{margin-top:18px;padding:14px 16px}.r-significa b{font-size:15.5px}.r-significa p{font-size:15.5px}
+
+  /* o que já fizemos: três mais recentes e "ver tudo" */
+  .r-linha{margin-top:20px}
+  .r-feito{padding-bottom:16px}.r-feito h3{font-size:17px}.r-feito p{font-size:15px;margin-top:2px}
+  #feito.compacto:not(.todos) .r-feito:nth-child(n+4){display:none}
+  .r-vermais{display:block;width:100%;min-height:46px;margin-top:6px;border:1.5px solid var(--lavanda);border-radius:14px;background:var(--lavanda-clara);color:#41359b;font:700 15px var(--texto);cursor:pointer}
+
+  /* o que vem agora: compacto, abre ao tocar */
+  .r-prox{gap:10px;margin-top:20px}
+  .r-item{padding:14px 16px;border-radius:16px}
+  .r-item h3{font-size:16.5px}
+  .r-item p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:6px;font-size:15px}
+  .r-item.aberto p{-webkit-line-clamp:unset;overflow:visible}
+  .r-item[aria-expanded]{cursor:pointer}
+  .r-item[aria-expanded]::after{content:"Toque para ler tudo";display:block;margin-top:6px;color:var(--suave);font-size:13px}
+  .r-item.aberto::after{content:"Toque para fechar"}
+  .r-barra-prog{margin-top:10px}
+  .r-recado{margin-top:44px;padding:36px 0 44px}.r-recado q{font-size:24px}
+}

@@ -153,6 +153,46 @@
   raiz.innerHTML = h;
   document.title = (cl.nome ? cl.nome + ': ' : '') + 'resultados' + (periodoCurto ? ' de ' + periodoCurto : '') + ' | Lhart Design';
 
+  /* celular: menos rolagem. Canais viram abas (um de cada vez, trocando com um toque), o que já fizemos mostra os 3 mais recentes
+     e cada próximo passo fica compacto e abre ao tocar. No computador nada disso muda. */
+  var cel = window.matchMedia('(max-width:560px)');
+  var secC = raiz.querySelector('#canais'), cans = secC ? [].slice.call(secC.querySelectorAll('.r-canal')) : [], abas = null;
+  if (cans.length > 1) {
+    abas = document.createElement('div'); abas.className = 'r-abas'; abas.setAttribute('role', 'tablist'); abas.setAttribute('aria-label', 'Canais');
+    cans.forEach(function (c, i) {
+      var nome = (c.querySelector('h3').textContent || '').replace(/\s*\(.*$/, ''), b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = nome; b.style.setProperty('--cor', c.style.getPropertyValue('--cor') || 'var(--lavanda)');
+      b.addEventListener('click', function () { escolhe(i); b.scrollIntoView({ block: 'nearest', inline: 'center' }); });
+      abas.appendChild(b);
+    });
+    cans[0].parentNode.insertBefore(abas, cans[0]);
+  }
+  function escolhe(n) {
+    cans.forEach(function (c, i) { c.classList.toggle('on', i === n); });
+    if (abas) [].forEach.call(abas.children, function (b, i) { b.setAttribute('aria-selected', i === n ? 'true' : 'false'); });
+  }
+  var feitos = [].slice.call(raiz.querySelectorAll('.r-feito')), verTudo = null;
+  if (feitos.length > 3) {
+    verTudo = document.createElement('button'); verTudo.type = 'button'; verTudo.className = 'r-vermais'; verTudo.textContent = 'Ver tudo (' + feitos.length + ')';
+    verTudo.addEventListener('click', function () { var ab = raiz.querySelector('#feito').classList.toggle('todos'); verTudo.textContent = ab ? 'Ver só os mais recentes' : 'Ver tudo (' + feitos.length + ')'; });
+    raiz.querySelector('.r-linha').after(verTudo);
+  }
+  raiz.querySelectorAll('.r-item').forEach(function (it) {
+    if (!it.querySelector('p')) return;
+    it.tabIndex = 0; it.setAttribute('aria-expanded', 'false');
+    function alterna() { var ab = it.classList.toggle('aberto'); it.setAttribute('aria-expanded', ab ? 'true' : 'false'); }
+    it.addEventListener('click', function () { if (cel.matches) alterna(); });
+    it.addEventListener('keydown', function (ev) { if (cel.matches && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); alterna(); } });
+  });
+  function aplicaCelular() {
+    var on = cel.matches;
+    if (secC) secC.classList.toggle('em-abas', on && cans.length > 1);
+    if (on && cans.length > 1 && !cans.some(function (c) { return c.classList.contains('on'); })) escolhe(0);
+    var f = raiz.querySelector('#feito'); if (f) f.classList.toggle('compacto', on && feitos.length > 3);
+  }
+  aplicaCelular();
+  if (cel.addEventListener) cel.addEventListener('change', aplicaCelular); else if (cel.addListener) cel.addListener(aplicaCelular);
+
   /* movimento: a curva se desenha e o número grande sobe uma vez; tudo fica no lugar se a pessoa prefere menos movimento */
   if (reduz) return;
   var tr = raiz.querySelector('.r-curva .r-tr'), n = raiz.querySelector('.r-grande');
