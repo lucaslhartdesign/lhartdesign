@@ -43,9 +43,10 @@
   .mt-grid{gap:0}
 
   /* seções longas começam fechadas */
-  .mx-box{position:relative;max-height:470px;overflow:hidden}
-  .mx-box::after{content:"";position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
-  .mx-box.open{max-height:none;overflow:visible}.mx-box.open::after{display:none}
+  .mx-box{position:relative}
+  .mx-box.limite:not(.open){max-height:620px;overflow:hidden}
+  .mx-box.limite:not(.open)::after{content:"";position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
+  .mx-mais[hidden]{display:none}
   .mx-mais{display:block;width:100%;min-height:50px;margin-top:6px;border:1.5px solid #9184d9;border-radius:14px;background:#9184d91a;color:#d2cefd;font:700 15.5px Inter}
   .mx-mais:focus-visible{outline:3px solid #d2cefd;outline-offset:2px}
 
@@ -54,4 +55,40 @@
 
   /* botões flutuantes: fica só o do WhatsApp (o chat do site sai daqui para não cobrir o conteúdo) */
   #lhc-btn,#lhc{display:none!important}
+}
+
+/* CELULAR (até 560 px): mais informação por tela. Cartões em 2 colunas ou em carrossel (deslizar para o lado); perguntas abrem ao tocar */
+@media(max-width:560px){
+  /* 2 colunas, textos menores */
+  .gain,.feat,.need,.flow,.steps{grid-template-columns:1fr 1fr!important;gap:10px!important}
+  .gain .gc,.feat .ft,.need>div,.flow .fl{padding:13px 12px!important;border-radius:16px!important;min-width:0}
+  .gain .gc,.feat .ft,.need>div,.flow .fl{text-align:left!important;align-items:flex-start!important}
+  .gc .k{display:inline-block;padding:4px 9px!important}
+  .gc i,.ft i{font-size:24px!important}
+  .gc h3,.ft h4{font-size:15px!important;line-height:1.2!important;margin:6px 0 4px!important}
+  .gc p,.ft p{font-size:13px!important;line-height:1.4!important;margin:0 0 8px!important}
+  .gc .k{font-size:10.5px!important;letter-spacing:.06em!important}
+  .need>div b{font-size:14.5px!important;line-height:1.25}.need>div span{font-size:12.5px!important;line-height:1.35}
+  .flow .fl{border-radius:16px!important;border:1px solid var(--ln)!important}.flow .fl b{font-size:14px!important}.flow .fl span{font-size:12.5px!important}
+  .steps .stp{padding:10px!important;gap:8px!important;min-width:0}.steps .stp b{width:26px!important;height:26px!important;font-size:13px!important}.steps .stp span{font-size:13px!important}.steps .stp small{display:none}
+
+  /* carrossel: o próximo cartão aparece pela metade, avisando que dá para deslizar */
+  .three,.gal,.who,.pm{display:flex!important;gap:12px!important;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 18px;margin:0 -18px!important;padding:0 18px 12px!important;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .three::-webkit-scrollbar,.gal::-webkit-scrollbar,.who::-webkit-scrollbar,.pm::-webkit-scrollbar{display:none}
+  .three>*,.gal>*,.who>*,.pm>*{flex:0 0 80%!important;scroll-snap-align:start;min-width:0}
+  .who>*{flex-basis:62%!important}
+  .three .ap{padding:20px 18px!important}.three .ap h3{font-size:22px!important}.three .ap ul{font-size:14.5px!important;gap:7px!important}
+
+  /* perguntas frequentes: lista curta, abre ao tocar */
+  .faq{gap:8px!important}
+  .faq .q{padding:14px 16px!important;cursor:pointer;border-radius:16px!important}
+  .faq .q h3{font-size:16.5px!important;line-height:1.25!important;margin:4px 0 0!important;padding-right:26px;position:relative}
+  .faq .q h3::after{content:"+";position:absolute;right:0;top:-2px;font:400 24px/1 Inter,sans-serif;color:#9184d9}
+  .faq .q.aberto h3::after{content:"−"}
+  .faq .q>p,.faq .q>ul{display:none}
+  .faq .q.aberto>p,.faq .q.aberto>ul{display:block}
+  .faq .q,.three .ap,.pm .pc{text-align:left!important}
+  .faq .q>p,.faq .q>ul{font-size:15px!important;line-height:1.5!important}
+  .faq .q ul{padding-left:18px!important;text-align:left!important}
+  .faq .q:focus-visible{outline:3px solid #d2cefd;outline-offset:2px}
 }

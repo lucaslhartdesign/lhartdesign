@@ -11,7 +11,7 @@
     if (fx && mt) mt.before(fx);
 
     // 2) seções longas: título e primeira frase ficam; o resto abre com "Ver mais"
-    var botoes = [];
+    var botoes = [], caixas = [];
     document.querySelectorAll('.sec').forEach(function (sec) {
       if (sec.id === 'monte' || sec.id === 'fluxo') return;
       var wrap = sec.querySelector('.wrap'); if (!wrap) return;
@@ -28,8 +28,32 @@
         if (!abre) sec.scrollIntoView({ block: 'start' });
       });
       rotulo(); wrap.appendChild(b); botoes.push(rotulo);
+      caixas.push({ caixa: caixa, botao: b });
     });
     if (window.LH && LH.on) LH.on(function () { botoes.forEach(function (f) { f(); }); });
+
+    // 3) o "Ver mais" só aparece nas seções que, mesmo com os cartões compactos, ainda ficam enormes
+    function avalia() {
+      caixas.forEach(function (c) {
+        var aberta = c.caixa.classList.contains('open');
+        c.caixa.classList.remove('limite');
+        var longa = c.caixa.scrollHeight > 1250;
+        c.botao.hidden = !longa;
+        if (longa && !aberta) c.caixa.classList.add('limite');
+      });
+    }
+    avalia(); setTimeout(avalia, 600); setTimeout(avalia, 2000);
+    window.addEventListener('load', avalia); window.addEventListener('resize', avalia);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(avalia);
+
+    // 4) perguntas frequentes: abrem ao tocar (só no celular estreito)
+    var estreito = matchMedia('(max-width:560px)');
+    document.querySelectorAll('.faq .q').forEach(function (q) {
+      q.tabIndex = 0; q.setAttribute('role', 'button'); q.setAttribute('aria-expanded', 'false');
+      function alterna() { if (!estreito.matches) return; var ab = q.classList.toggle('aberto'); q.setAttribute('aria-expanded', ab ? 'true' : 'false'); avalia(); }
+      q.addEventListener('click', alterna);
+      q.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alterna(); } });
+    });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', roda); else roda();
 })();
