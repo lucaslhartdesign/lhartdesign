@@ -65,7 +65,7 @@ footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:1
 .link::after{width:30%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.16) 50%,transparent 100%);animation-duration:5.2s}
 @keyframes varre{0%{left:-70%}55%,100%{left:140%}}
 @media(prefers-reduced-motion:reduce){.tag::after,.btn::after,.link::after{animation:none;display:none}}
-</style></head><body>
+</style><link rel="stylesheet" href="home-mobile.css?v=1"></head><body>
 <div class="nav"><div class="wrap"><a href="index.html"><img src="assets/logo.png" alt="Lhart Design"></a>
 <div class="l"><a class="on" href="index.html">Início</a><a href="social.html">Social Media & Tráfego</a><a href="delivery.html">Apps de Delivery</a><a href="mesa.html">Pedido na Mesa</a><a href="vitrine.html">Game Commerce</a><div id="langsw"></div><a class="btn" id="navwa" href="#" style="padding:10px 20px;font-size:14px">Falar no WhatsApp</a></div></div></div>
 
@@ -76,19 +76,19 @@ footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:1
 </div></div>
 
 <div class="wrap"><div class="doors">
-<a class="door" href="social.html"><span class="tag">Restaurantes, hotéis, imóveis e mais</span>
+<a class="door" href="social.html"><i class="ic" aria-hidden="true">🎬</i><span class="tag">Restaurantes, hotéis, imóveis e mais</span>
 <h2>Social Media & Tráfego</h2>
 <p>Fotos, vídeos, vídeos de drone, edição de imagem e de vídeo e tráfego pago para o seu negócio ser a primeira escolha.</p>
 <ul><li>Produção cinematográfica</li><li>Drone e edição</li><li>Tráfego pago (Google e Meta)</li><li>Gestão de redes sociais</li></ul>
 <span class="btn">Ver Social Media & Tráfego →</span></a>
 
-<a class="door" href="delivery.html"><span class="tag">Para restaurantes</span>
+<a class="door" href="delivery.html"><i class="ic" aria-hidden="true">🛵</i><span class="tag">Para restaurantes</span>
 <h2>Apps de Delivery</h2>
 <p>Seu app próprio de pedidos: cliente, cozinha e motoboy sincronizados, com a sua marca. Chega de ceder uma fatia de cada pedido aos apps de comissão.</p>
 <ul><li>App do cliente com cardápio e Pix</li><li>Tela da cozinha em tempo real</li><li>App do motoboy com rota</li><li>Português, inglês e espanhol</li></ul>
 <span class="btn">Ver Apps de Delivery →</span></a>
 
-<a class="door" href="vitrine.html"><span class="tag">Para vendedores de jogos</span>
+<a class="door" href="vitrine.html"><i class="ic" aria-hidden="true">🎮</i><span class="tag">Para vendedores de jogos</span>
 <h2>Game Commerce</h2>
 <p>Lojas online para vender itens, moedas e contas de jogos (RMT) e bots de Discord que recebem pedidos, avisam a equipe e entregam sozinhos.</p>
 <ul><li>26 estilos de loja</li><li>Bots de Discord e ShotCaller</li><li>Venda e entrega automáticas</li><li>Painel e avisos no celular</li></ul>
@@ -101,10 +101,11 @@ footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:1
 <div class="talk"><h3>Prefere falar agora?</h3><a class="btn" id="talkwa" href="#">Falar com o Lucas no WhatsApp</a></div>
 </div>
 
+<a class="stickwa" id="stickwa" href="#">Falar no WhatsApp</a>
 <footer><div class="wrap">© 2026 Lhart Design · <a href="cliente.html">Área do cliente</a> · <a href="admin.html" rel="nofollow">Acesso</a></div></footer>
 <script>
 const WA='5511989304239',wa=t=>'https://wa.me/'+WA+'?text='+encodeURIComponent(t);
-function links(){const g=wa(LH.t('Oi! Vim pelo site da Lhart Design e quero saber mais.'));[navwa,talkwa].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'})}
+function links(){const g=wa(LH.t('Oi! Vim pelo site da Lhart Design e quero saber mais.'));[navwa,talkwa,stickwa].forEach(a=>{a.href=g;a.target='_blank';a.rel='noopener'})}
 LH.switcher(document.getElementById('langsw'));LH.meta({title:{pt:'Lhart Design — Social Media, apps de delivery e lojas para games',en:'Lhart Design — Social media, delivery apps and game stores',es:'Lhart Design — Social media, apps de delivery y tiendas para juegos'}});LH.on(links);LH.observe(document.body);links();
 LH.start();
 </script>
