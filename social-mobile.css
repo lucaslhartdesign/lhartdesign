@@ -1,0 +1,38 @@
+/* Social Media e Tráfego no celular: mais informação por tela. Cartões em 2 colunas ou em carrossel, topo menor, WhatsApp fixo no pé. */
+.sm-stick{display:none}
+@media(max-width:560px){
+  .homebtn,#lhc-btn,#lhc{display:none!important}
+  /* nada de blocos esperando "aparecer" ao rolar: tudo já está visível */
+  .reveal{opacity:1!important;transform:none!important;transition:none!important}
+
+  /* topo menor, para o conteúdo chegar mais cedo */
+  .hero{min-height:0!important;padding:18px 0 26px!important}
+  .hero-logo-wrap{padding-left:18px!important;padding-right:18px!important}
+  .hero-logo-mark{height:72px!important;width:auto!important;margin-bottom:8px!important}
+  .hero-kicker{font-size:11px!important;margin-bottom:8px!important}
+  .hero .display{font-size:clamp(27px,8.2vw,34px)!important;line-height:1.08!important;margin-bottom:10px!important}
+  .hero .sub{font-size:15px!important;line-height:1.45!important;margin-bottom:14px!important}
+
+  /* cartões em 2 colunas, textos menores */
+  .aud-grid,.method-grid{grid-template-columns:1fr 1fr!important;gap:10px!important}
+  .aud-card,.method-step{padding:14px 12px!important;border-radius:16px!important;min-width:0}
+  .aud-card h3,.method-step h3{font-size:15px!important;line-height:1.2!important;margin:6px 0 4px!important}
+  .aud-card ul{margin:0!important;padding:0!important}
+  .aud-card ul li{font-size:12.5px!important;line-height:1.4!important}
+  .aud-card ul li:nth-child(n+3){display:none}
+  .method-step .m-num{font-size:13px!important}
+  .method-step .m-copy{font-size:12.5px!important;line-height:1.4!important;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+  .aud-icon{transform:scale(.85);transform-origin:left top}
+
+  /* carrossel: deslizar para o lado, com o próximo cartão aparecendo pela metade */
+  .cases-grid,.threed-grid,.testi-grid,.aerial-grid,.plans-grid,.ai-points{display:flex!important;gap:12px!important;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 20px;padding-bottom:12px!important;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .cases-grid,.threed-grid,.testi-grid,.aerial-grid{margin-left:-20px!important;margin-right:-20px!important;padding-left:20px!important;padding-right:20px!important}
+  .cases-grid::-webkit-scrollbar,.threed-grid::-webkit-scrollbar,.testi-grid::-webkit-scrollbar,.aerial-grid::-webkit-scrollbar,.plans-grid::-webkit-scrollbar,.ai-points::-webkit-scrollbar{display:none}
+  .cases-grid>*,.threed-grid>*,.testi-grid>*,.aerial-grid>*,.plans-grid>*,.ai-points>*{flex:0 0 84%!important;scroll-snap-align:start;min-width:0}
+  .testi-grid>*{flex-basis:78%!important}
+
+  /* botão de WhatsApp sempre à mão */
+  .sm-stick{display:flex;position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:900;align-items:center;justify-content:center;gap:10px;min-height:54px;border-radius:16px;background:#25d366;color:#06240f;font:800 16.5px Inter,sans-serif;text-decoration:none;box-shadow:0 16px 34px -14px #000b}
+  .sm-stick::before{content:"💬"}
+  footer{padding-bottom:88px!important}
+}

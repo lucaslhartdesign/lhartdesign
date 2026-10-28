@@ -1,0 +1,40 @@
+/* Game Commerce no celular: a galeria de 26 estilos deixa de ser uma fila de 16.000 px; cartões em 2 colunas, carrosséis e topo menor. */
+@media(max-width:560px){
+  .homebtn,#lhc-btn,#lhc{display:none!important}
+  .bg-glow{display:none}
+  .btn::after,.kick::after{display:none!important;animation:none!important}
+  .nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:#161826f5}
+  .wrap{padding-left:18px;padding-right:18px}
+
+  /* topo menor */
+  .hero h1{font-size:clamp(30px,9vw,38px)!important;line-height:1.05!important}
+  .hero .l{font-size:15.5px!important;line-height:1.45!important}
+  .hero .row{gap:10px}.hero .row .btn{flex:1 1 100%;min-height:50px}
+
+  /* galeria de estilos: 2 colunas, sem as 26 prévias rodando ao mesmo tempo */
+  .gal{grid-template-columns:1fr 1fr!important;gap:10px!important}
+  .gal .card{border-radius:16px!important;min-width:0}
+  .gal .pv{height:64px!important;min-height:0!important;aspect-ratio:auto!important;overflow:hidden;background:linear-gradient(135deg,var(--c,#9184d9),#161826)!important}
+  .gal .pv iframe{display:none!important}
+  .gal .pv .num{font-size:13px!important}
+  .gal .cb{padding:10px 10px 12px!important}
+  .gal .cb .cat{font-size:10px!important;letter-spacing:.05em}
+  .gal .cb h3{font-size:15px!important;line-height:1.2!important;margin:3px 0 4px!important}
+  .gal .cb .ins{font-size:12px!important;line-height:1.35!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .gal .cb .sw{margin:6px 0 0!important}
+  .gal .cb p{display:none!important}
+  .gal .cb .acts{display:grid!important;grid-template-columns:1fr!important;gap:6px!important;margin-top:8px!important}
+  .gal .cb .acts .btn,.gal .cb .acts a,.gal .cb .acts button{padding:8px 6px!important;font-size:12.5px!important;min-height:38px}
+
+  /* blocos de 3 e de 4: 2 colunas ou carrossel */
+  .st,.inc{grid-template-columns:1fr 1fr!important;gap:10px!important}
+  .st>div,.inc>div{padding:13px 12px!important;border-radius:16px!important;min-width:0}
+  .st h4{font-size:15px!important}.st p,.inc>div{font-size:13px!important;line-height:1.4!important}
+  .pillars,.ca-duo{display:flex!important;gap:12px!important;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 18px;margin-left:-18px!important;margin-right:-18px!important;padding:0 18px 12px!important;scrollbar-width:none}
+  .pillars::-webkit-scrollbar,.ca-duo::-webkit-scrollbar{display:none}
+  .pillars>*,.ca-duo>*{flex:0 0 84%!important;scroll-snap-align:start;min-width:0}
+
+  .sec{padding-top:38px}
+  .sec h2{font-size:clamp(26px,8vw,34px);line-height:1.08}
+  .sec .s{font-size:15.5px}
+}
