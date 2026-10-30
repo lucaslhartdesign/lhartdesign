@@ -33,6 +33,29 @@ module.exports = async (req, res) => {
   const { key, data, reset } = body || {};
   const redis = getRedis();
 
+  // Mapa de Bateria: mp3 do Lucas em pedaços de até ~1 MB (base64), atrás do login
+  if (key === 'audio' || key === 'audio-apagar') {
+    const id = String((data && data.id) || '');
+    if (!/^[\w-]{1,80}$/.test(id)) { res.status(400).json({ error: 'bad id' }); return; }
+    if (key === 'audio-apagar') {
+      const meta = await redis.get(`bateria:audio:${id}:meta`);
+      const total = (meta && (typeof meta === 'string' ? JSON.parse(meta) : meta).total) || 0;
+      const chaves = [`bateria:audio:${id}:meta`];
+      for (let i = 0; i < Math.min(total, 200); i++) chaves.push(`bateria:audio:${id}:${i}`);
+      await redis.del(...chaves);
+      res.status(200).json({ ok: true });
+      return;
+    }
+    const i = Number(data.i), total = Number(data.total), d = String(data.d || '');
+    if (!Number.isInteger(i) || !Number.isInteger(total) || total < 1 || total > 200 || i < 0 || i >= total) { res.status(400).json({ error: 'bad chunk' }); return; }
+    if (!d || d.length > 1000000 || !/^[A-Za-z0-9+/=]+$/.test(d)) { res.status(400).json({ error: 'bad data' }); return; }
+    await redis.set(`bateria:audio:${id}:${i}`, JSON.stringify({ d }));
+    // a ficha só aparece com o último pedaço: até lá, os outros aparelhos não tentam baixar
+    if (i === total - 1) await redis.set(`bateria:audio:${id}:meta`, JSON.stringify({ total, tipo: String(data.tipo || 'audio/mpeg').slice(0, 40), em: Date.now() }));
+    res.status(200).json({ ok: true });
+    return;
+  }
+
   // Mapa de Bateria (/bateria/): guarda o conjunto inteiro de músicas e listas de ensaio
   if (key === 'bateria') {
     if (!data || typeof data !== 'object' || !Array.isArray(data.musicas)) { res.status(400).json({ error: 'invalid bateria payload' }); return; }

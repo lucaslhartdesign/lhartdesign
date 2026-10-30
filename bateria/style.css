@@ -16,7 +16,10 @@
   --c-conducao: #B99AFF;
   --c-pausa: #C9D2E3;
   --c-entra: #4FD3C9;
-  --c-livre: #AEB9CC;
+  --c-livre: #FF7AD9;
+  --c-caixa: #F2E9D8;
+  --c-bumbo: #D9A066;
+  --c-chimbal: #CFE38A;
 
   --f-letra: 'Atkinson Hyperlegible', system-ui, sans-serif;
   --f-deixa: 'Barlow Condensed', 'Arial Narrow', sans-serif;
@@ -173,12 +176,26 @@ svg { fill: currentColor; }
 .bater-tempo { width: 100%; margin-top: 8px; min-height: 48px; }
 .palco .vazio a { color: var(--c-prato); }
 
-/* modo palco: tocando, só fica o que se lê de longe */
-#app.tocando .topo, #app.tocando .ensaio-barra, #app.tocando .opcoes, #app.tocando .som { display: none; }
+/* modo palco: tocando, só fica o que se lê de longe, mais Som e Anotar para arrumar na hora */
+#app.tocando .topo, #app.tocando .ensaio-barra { display: none; }
+#app.tocando .opcoes > :not(#abrir-som):not(#anotar) { display: none; }
 #app.tocando .faixa { height: 10px; }
 #app.tocando .botoes .btn.icone { display: none; }
 #app.tocando .proxima { font-size: 1.45rem; min-height: 40px; }
 #app.tocando .palco { padding-top: max(16px, env(safe-area-inset-top)); }
+/* anotar: as linhas viram alvo de toque */
+#app.anotando .linha { outline: 1px dashed var(--line); outline-offset: 2px; border-radius: 4px; }
+#app.anotando .deixa { cursor: pointer; outline: 1px dashed var(--cor); outline-offset: 2px; }
+.folha {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; max-width: 900px; margin: 0 auto;
+  background: var(--surface2); border-top: 1px solid var(--line); border-radius: 16px 16px 0 0;
+  padding: 14px 16px max(14px, env(safe-area-inset-bottom)); box-shadow: 0 -12px 30px rgba(0, 0, 0, .35);
+}
+.folha .f-onde { color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
+.folha .f-onde b { color: var(--text); }
+.folha .f-tipos { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; }
+.folha .f-tipos .btn, .folha .acoes .btn[data-t] { color: var(--cor); border-color: color-mix(in srgb, var(--cor) 45%, transparent); justify-content: flex-start; padding: 0 10px; }
+.folha .campo { margin-top: 10px; }
 .medidor { width: 46px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
 .medidor i { display: block; height: 100%; width: 0; background: var(--c-entra); }
 

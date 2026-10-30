@@ -11,6 +11,17 @@ module.exports = async (req, res) => {
   try {
     const redis = getRedis();
     // Mapa de Bateria (/bateria/): músicas e listas de ensaio do Lucas. Mora aqui por causa do limite de funções da Vercel.
+    // mp3 do Lucas guardado em pedaços (o Redis aceita pouco por vez); só sai com login
+    if (req.query && req.query.k === 'audio') {
+      const id = String(req.query.id || ''), i = Number(req.query.i);
+      if (!/^[\w-]{1,80}$/.test(id) || !Number.isInteger(i) || i < 0 || i > 200) { res.status(400).json({ error: 'bad request' }); return; }
+      const [meta, pedaco] = await Promise.all([redis.get(`bateria:audio:${id}:meta`), redis.get(`bateria:audio:${id}:${i}`)]);
+      const m = parse(meta), p = parse(pedaco);
+      if (!m || !p) { res.status(404).json({ error: 'not found' }); return; }
+      res.setHeader('Cache-Control', 'private, no-store');
+      res.status(200).json({ total: m.total, tipo: m.tipo, d: p.d });
+      return;
+    }
     if (req.query && req.query.k === 'bateria') {
       res.setHeader('Cache-Control', 'no-store');
       res.status(200).json({ bateria: parse(await redis.get('bateria:dados')) });

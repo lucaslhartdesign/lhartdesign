@@ -22,6 +22,10 @@ const ICONE = {
   pausa: '<svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
   entra: '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>',
   livre: '<svg viewBox="0 0 24 24"><path d="M5 4h14v12l-5 5H5zm9 15.5L17.5 16H14z"/></svg>',
+  caixa: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="9" ry="3"/><path d="M3 7v9c0 1.7 4 3 9 3s9-1.3 9-3V7c-1.4 1.6-5 2.6-9 2.6S4.4 8.6 3 7z" opacity=".6"/><path d="M6 10.5v6M10 11v7M14 11v7M18 10.5v6" stroke="currentColor" stroke-width="1.2"/></svg>',
+  bumbo: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5" fill="#0F1B2D" opacity=".55"/></svg>',
+  chimbal: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="9" ry="2.2"/><ellipse cx="12" cy="10.5" rx="9" ry="2.2" opacity=".7"/><rect x="11" y="12" width="2" height="10" rx="1"/></svg>',
+  lapis: '<svg viewBox="0 0 24 24"><path d="M4 17.2V20h2.8L17.3 9.5l-2.8-2.8zM19.7 7.1a1 1 0 000-1.4l-1.4-1.4a1 1 0 00-1.4 0l-1.2 1.2 2.8 2.8z"/></svg>',
   marca: '<svg viewBox="0 0 32 32"><ellipse cx="16" cy="12" rx="12" ry="4.5"/><path d="M4 12v9c0 2.5 5.4 4.5 12 4.5s12-2 12-4.5v-9c-1.6 2.4-6.4 4-12 4s-10.4-1.6-12-4z" opacity=".55"/><rect x="18" y="-1" width="2.2" height="15" rx="1.1" transform="rotate(32 19 6)"/><rect x="10" y="-1" width="2.2" height="15" rx="1.1" transform="rotate(-32 11 6)"/></svg>',
   voltar: '<svg viewBox="0 0 24 24"><path d="M15.5 4L7.5 12l8 8 1.5-1.5L10.5 12 17 5.5z"/></svg>',
   play: '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>',
@@ -39,6 +43,7 @@ const ICONE = {
 const TIPOS = {
   sobe: 'Sobe', desce: 'Desce', virada: 'Virada', prato: 'Prato', corte: 'Corte',
   conducao: 'Condução', pausa: 'Para', entra: 'Entra', livre: 'Nota',
+  caixa: 'Caixa', bumbo: 'Bumbo', chimbal: 'Chimbal',
 };
 // primeira palavra depois do "!" que escolhe o tipo
 const ALIAS = {
@@ -47,6 +52,7 @@ const ALIAS = {
   virada: 'virada', vira: 'virada', prato: 'prato', ataque: 'prato', crash: 'prato',
   corte: 'corte', corta: 'corte', conducao: 'conducao', ride: 'conducao',
   para: 'pausa', pausa: 'pausa', sai: 'pausa', entra: 'entra', nota: 'livre',
+  caixa: 'caixa', bumbo: 'bumbo', chimbal: 'chimbal', 'hi-hat': 'chimbal',
 };
 function tipoDe(txt) {
   const t = semAcento(txt);
@@ -56,6 +62,9 @@ function tipoDe(txt) {
   if (/\b(sub|cresc|cheio|abre)/.test(t)) return 'sobe';
   if (/\b(prato|ataque|crash)/.test(t)) return 'prato';
   if (/\b(conduc|ride)/.test(t)) return 'conducao';
+  if (/\bcaixa/.test(t)) return 'caixa';
+  if (/\bbumbo/.test(t)) return 'bumbo';
+  if (/\b(chimbal|hi-?hat)/.test(t)) return 'chimbal';
   if (/\b(pausa|para\b|sem bateria|sai\b)/.test(t)) return 'pausa';
   if (/\bentra/.test(t)) return 'entra';
   return 'livre';
@@ -66,6 +75,8 @@ function lerDeixa(l) {
     const resto = l.slice(1).trim();
     const [p, ...r] = resto.split(/\s+/);
     const tipo = ALIAS[semAcento(p || '')];
+    // "! nota olhar pro ministro" mostra só o recado
+    if (tipo === 'livre' && r.length) return { tipo, txt: cap(r.join(' ')) };
     if (tipo) return { tipo, txt: cap(resto) };
     return { tipo: tipoDe(resto), txt: cap(resto) || 'Nota' };
   }
@@ -75,13 +86,14 @@ function lerDeixa(l) {
 // texto do editor -> itens. "#" = parte da música, "!" ou "Bateria..." = marcação, resto = letra
 function interpretar(texto) {
   const itens = []; let n = 0;
-  for (const bruta of String(texto || '').split(/\r?\n/)) {
+  // r = número da linha no texto, para a edição rápida do palco saber onde mexer
+  String(texto || '').split(/\r?\n/).forEach((bruta, r) => {
     const l = bruta.trim();
-    if (!l) itens.push({ k: 'vazio' });
-    else if (l.startsWith('#')) itens.push({ k: 'secao', txt: l.replace(/^#+\s*/, '') });
-    else if (ehDeixa(l)) itens.push({ k: 'deixa', ...lerDeixa(l) });
-    else itens.push({ k: 'linha', txt: l, i: n++ });
-  }
+    if (!l) itens.push({ k: 'vazio', r });
+    else if (l.startsWith('#')) itens.push({ k: 'secao', txt: l.replace(/^#+\s*/, ''), r });
+    else if (ehDeixa(l)) itens.push({ k: 'deixa', ...lerDeixa(l), r });
+    else itens.push({ k: 'linha', txt: l, i: n++, r });
+  });
   return { itens, nLinhas: n };
 }
 // cifra colada do Cifra Club: tira as linhas de acorde e de tablatura, e "[Refrão]" vira "# Refrão".
@@ -142,6 +154,7 @@ const Nuvem = {
     try { j = r.ok ? await r.json() : null; } catch {}
     if (!j || !('bateria' in j)) { this.estado = 'desligada'; return; }
     this.estado = 'ok';
+    setTimeout(() => this.subirPendentes(), 0);
     if (dados.pendente || !j.bateria) { await this.enviar(); return; }
     const b = j.bateria;
     dados.locais = Object.fromEntries((b.musicas || []).map(m => [m.id, m]));
@@ -167,6 +180,40 @@ const Nuvem = {
     } catch { this.estado = 'offline'; }
     mostrarNuvem();
   },
+  // mp3 vai em pedaços de 700 KB (o banco do site aceita pouco por vez); só baixa quem tem a senha
+  async subirAudio(id, blob, aoProgresso) {
+    const PED = 700 * 1024, total = Math.ceil(blob.size / PED);
+    if (total > 200) throw new Error('grande demais');
+    for (let i = 0; i < total; i++) {
+      const d = await paraBase64(blob.slice(i * PED, (i + 1) * PED));
+      const r = await this.pedir('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'audio', data: { id, i, total, tipo: blob.type || 'audio/mpeg', d } }) });
+      if (!r.ok) throw new Error('site respondeu ' + r.status);
+      if (aoProgresso) aoProgresso((i + 1) / total);
+    }
+  },
+  async baixarAudio(id, aoProgresso) {
+    const partes = []; let total = 1, tipo = 'audio/mpeg';
+    for (let i = 0; i < total; i++) {
+      const r = await this.pedir(`/api/admin/data?k=audio&id=${encodeURIComponent(id)}&i=${i}`);
+      if (!r.ok) throw new Error('site respondeu ' + r.status);
+      const j = await r.json();
+      total = j.total; tipo = j.tipo || tipo;
+      partes.push(deBase64(j.d));
+      if (aoProgresso) aoProgresso((i + 1) / total);
+    }
+    return new Blob(partes, { type: tipo });
+  },
+  apagarAudio(id) {
+    return this.pedir('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'audio-apagar', data: { id } }) }).catch(() => {});
+  },
+  // mp3 escolhido antes de entrar com a senha: sobe agora
+  async subirPendentes() {
+    for (const m of Object.values(dados.locais)) {
+      if (!m.audioSubir) continue;
+      const blob = await Banco.get(m.id);
+      if (blob) subirMp3(m, blob); else { delete m.audioSubir; gravarLocal(); }
+    }
+  },
   async entrar(senha) {
     let r;
     try { r = await this.pedir('/api/admin/login', { method: 'POST', body: JSON.stringify({ password: senha }) }); }
@@ -177,6 +224,45 @@ const Nuvem = {
     return '';
   },
 };
+function paraBase64(blob) {
+  return new Promise((ok, erro) => {
+    const r = new FileReader();
+    r.onload = () => ok(String(r.result).slice(String(r.result).indexOf(',') + 1));
+    r.onerror = () => erro(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+function deBase64(s) {
+  const bin = atob(s), u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return u;
+}
+// mp3 novo (do editor ou do palco): toca já neste aparelho, a análise preenche o que falta,
+// e ele sobe para o site em segundo plano
+async function receberMp3(m, arq, status) {
+  await Banco.put(m.id, arq);
+  if (status) status('Lendo a música…');
+  try {
+    const r = await analisarAudio(arq);
+    Object.assign(m, { energia: r.energia, duracao: r.duracao, primeiroSom: r.primeiroSom });
+    if (!m.bpm || m.bpmConferir) { m.bpm = r.bpm; m.bpmConferir = true; }
+  } catch { /* sem análise o mp3 toca do mesmo jeito */ }
+  m.audioNoSite = false; m.temAudio = true;
+  guardar(m);
+  subirMp3(m, arq, status);
+}
+function subirMp3(m, arq, status) {
+  const dizer = t => { if (status) status(t); };
+  if (Nuvem.estado !== 'ok') {
+    m.audioSubir = true; guardar(m);
+    dizer('O mp3 já toca neste aparelho. Entre com a senha do painel para ele ir para o site.');
+    return;
+  }
+  dizer('Guardando o mp3 no site… 0%');
+  Nuvem.subirAudio(m.id, arq, p => dizer(`Guardando o mp3 no site… ${Math.round(p * 100)}%`))
+    .then(() => { m.audioNoSite = true; delete m.audioSubir; guardar(m); dizer('mp3 guardado no site. Só abre com a sua senha.'); })
+    .catch(() => { m.audioSubir = true; guardar(m); dizer('Não deu para guardar o mp3 no site agora. Ele toca aqui; tento de novo depois.'); });
+}
 window.addEventListener('online', () => { if (Nuvem.estado === 'offline') Nuvem.carregar().then(mostrarNuvem); });
 function mostrarNuvem() {
   const el = $('#nuvem'); if (!el) return;
@@ -321,7 +407,7 @@ async function fonteYouTube(id, caixa) {
       playerVars: { playsinline: 1, rel: 0 },
       events: {
         onReady: () => ok(f),
-        onError: () => erro(new Error('vídeo indisponível')),
+        onError: () => { erro(new Error('vídeo indisponível')); aviso('O dono deste vídeo não deixa tocar fora do YouTube. Use o mp3 (Editar → Escolher mp3).', 9000); },
         onStateChange: e => { tocando = e.data === 1 || e.data === 3; if (e.data === 0) aoFim(); },
       },
     });
@@ -334,6 +420,18 @@ async function abrirFonte(m, caixa) {
     const url = URL.createObjectURL(blob), f = fonteAudio(url), d = f.destruir;
     f.destruir = () => { d(); URL.revokeObjectURL(url); };
     return f;
+  }
+  if (m.audioNoSite && Nuvem.pronto) await Nuvem.pronto; // espera saber se está logado
+  if (m.audioNoSite && Nuvem.estado !== 'desligada') {
+    try {
+      aviso('Baixando o mp3 do site…', 60000);
+      const baixado = await Nuvem.baixarAudio(m.id, p => aviso(`Baixando o mp3 do site… ${Math.round(p * 100)}%`, 60000));
+      await Banco.put(m.id, baixado);
+      aviso('mp3 baixado. Fica guardado neste aparelho.');
+      const url = URL.createObjectURL(baixado), f = fonteAudio(url), d = f.destruir;
+      f.destruir = () => { d(); URL.revokeObjectURL(url); };
+      return f;
+    } catch { aviso(Nuvem.estado === 'entrar' ? 'O mp3 está no site: entre com a senha para ouvir. Tocando pelo YouTube.' : 'Não consegui baixar o mp3 agora. Tocando pelo YouTube.', 7000); }
   }
   if (m.audioUrl) return fonteAudio(m.audioUrl);
   const id = idYouTube(m.youtube);
@@ -553,7 +651,8 @@ function pararTudo() {
   cancelAnimationFrame(P.raf);
   if (P.fonte) P.fonte.destruir();
   if (P.pararClique) P.pararClique();
-  app.classList.remove('tocando');
+  app.classList.remove('tocando', 'anotando');
+  document.querySelectorAll('.folha').forEach(f => f.remove());
   pararMic();
   try { P.lock && P.lock.release(); } catch {}
   P = null;
@@ -699,8 +798,8 @@ function telaEnsaio(id) {
 function renderItens(itens) {
   return itens.map(it => {
     if (it.k === 'secao') return `<h2 class="secao">${esc(it.txt)}</h2>`;
-    if (it.k === 'deixa') return `<div class="deixa" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`;
-    if (it.k === 'linha') return `<p class="linha" data-i="${it.i}">${esc(it.txt)}</p>`;
+    if (it.k === 'deixa') return `<div class="deixa" data-r="${it.r}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`;
+    if (it.k === 'linha') return `<p class="linha" data-i="${it.i}" data-r="${it.r}">${esc(it.txt)}</p>`;
     return '<div class="espaco"></div>';
   }).join('');
 }
@@ -722,22 +821,26 @@ async function telaPalco(id, listaId) {
       <a class="onde" href="#/l/${encodeURIComponent(ensaio.id)}">Música ${pos + 1} de ${ensaio.musicas.length}</a>
       ${depois ? `<a class="btn depois" href="${depois.href}"><span>${esc(depois.titulo)}</span>${ICONE.seguir}</a>` : '<span class="fim-ensaio">Última</span>'}
     </nav>`;
-  const { itens, nLinhas } = interpretar(m.texto);
+  const { nLinhas } = interpretar(m.texto);
   // cada marcação aponta para a linha de letra que vem logo depois dela
-  const deixas = []; let pend = [];
-  itens.forEach(it => {
-    if (it.k === 'deixa') pend.push(it);
-    if (it.k === 'linha') { pend.forEach(d => deixas.push({ ...d, alvo: it.i })); pend = []; }
-  });
-  pend.forEach(d => deixas.push({ ...d, alvo: nLinhas }));
+  let deixas = [];
+  function lerDeixas() {
+    const { itens } = interpretar(m.texto);
+    deixas = []; let pend = [];
+    itens.forEach(it => {
+      if (it.k === 'deixa') pend.push(it);
+      if (it.k === 'linha') { pend.forEach(d => deixas.push({ ...d, alvo: it.i })); pend = []; }
+    });
+    pend.forEach(d => deixas.push({ ...d, alvo: nLinhas }));
+    return itens;
+  }
 
   app.innerHTML = `
     <header class="topo"><a class="btn icone" href="${ensaio ? '#/l/' + encodeURIComponent(ensaio.id) : '#/'}" aria-label="Voltar">${ICONE.voltar}</a>
       <h1>${esc(m.titulo || 'Sem nome')}</h1><a class="btn" href="#/e/${encodeURIComponent(m.id)}${ensaio ? '/' + encodeURIComponent(ensaio.id) : ''}">Editar</a></header>
     ${barraEnsaio}
     <canvas class="faixa" id="faixa" aria-label="Intensidade da música; toque para pular"></canvas>
-    <main class="rolagem palco" id="palco"><div class="yt" id="yt" hidden></div>${nLinhas ? renderItens(itens)
-      : `<p class="vazio">Esta música ainda não tem letra. Dá para ouvir com o clique; para a letra aparecer, toque em <a href="#/e/${encodeURIComponent(m.id)}${ensaio ? '/' + encodeURIComponent(ensaio.id) : ''}">Editar</a> e cole.</p>`}<div class="fim"></div></main>
+    <main class="rolagem palco" id="palco"><div class="yt" id="yt" hidden></div><div id="letra"></div><div class="fim"></div></main>
     <footer class="controle">
       <div class="proxima" id="proxima" aria-live="polite"></div>
       <div class="botoes">
@@ -751,6 +854,7 @@ async function telaPalco(id, listaId) {
         </div>
         <button class="btn" id="ouvir" title="Liga o microfone e começa o cronômetro quando a banda tocar">${ICONE.mic}<span>Ouvir</span><span class="medidor" hidden><i></i></span></button>
         <button class="btn" id="abrir-som" aria-expanded="${!!dados.prefs.somAberto}" aria-controls="som">${ICONE.som}<span>Som</span></button>
+        <button class="btn" id="anotar" aria-pressed="false" title="Toque numa linha para pôr marcação em cima">${ICONE.lapis}<span>Anotar</span></button>
         <span class="espacador"></span>
         <button class="btn icone" id="menor" aria-label="Letra menor">A−</button>
         <button class="btn icone" id="maior" aria-label="Letra maior">A+</button>
@@ -769,12 +873,76 @@ async function telaPalco(id, listaId) {
           <button class="btn" id="bater1" type="button">Bater no 1</button>
         </div>
         <button class="btn bater-tempo" id="bater-tempo" type="button">Bater o tempo junto com a música</button>
+        <label class="btn bater-tempo">${ICONE.som}Pôr o mp3 desta música<input type="file" id="som-mp3" accept="audio/*" hidden></label>
         <p class="dica" id="clique-info"></p>
       </div>
     </footer>`;
 
   const palco = $('#palco'), faixa = $('#faixa'), proxima = $('#proxima');
-  const linhasEl = [...palco.querySelectorAll('.linha')];
+  let linhasEl = [];
+  let anotando = false;
+  // desenha só a letra; o vídeo do YouTube em cima fica intacto (a música não para)
+  function montarLetra() {
+    const itens = lerDeixas();
+    $('#letra').innerHTML = nLinhas ? renderItens(itens)
+      : `<p class="vazio">Esta música ainda não tem letra. Dá para ouvir com o clique; para a letra aparecer, toque em <a href="#/e/${encodeURIComponent(m.id)}${ensaio ? '/' + encodeURIComponent(ensaio.id) : ''}">Editar</a> e cole.</p>`;
+    linhasEl = [...palco.querySelectorAll('.linha')];
+    linhasEl.forEach((el, k) => {
+      el.classList.toggle('atual', P && k === P.atual); el.classList.toggle('passada', P && k < P.atual);
+      el.onclick = () => anotando ? abrirFolha({ antesDe: +el.dataset.r, rotulo: el.textContent }) : irPara(+el.dataset.i, true);
+    });
+    palco.querySelectorAll('.deixa').forEach(el => {
+      el.onclick = () => { if (anotando) abrirFolha({ trocar: +el.dataset.r, rotulo: el.textContent }); };
+    });
+    if (P) mostrarProxima();
+  }
+  const PALAVRA = { sobe: 'sobe', desce: 'desce', virada: 'virada', prato: 'prato', caixa: 'caixa', bumbo: 'bumbo', chimbal: 'chimbal',
+    corte: 'corte', conducao: 'condução', pausa: 'para', entra: 'entra' };
+  // folha de baixo: escolhe a marcação para pôr acima da linha tocada (ou trocar/apagar a que foi tocada)
+  function abrirFolha({ antesDe, trocar, rotulo }) {
+    fecharFolha();
+    $('#aviso').hidden = true; // o aviso flutuante cobriria os botões
+    const linhas = String(m.texto || '').split(/\r?\n/);
+    let detalhe = '';
+    if (trocar != null) {
+      const resto = linhas[trocar].trim().replace(/^!\s*/, '').replace(/^bateria\s*/i, '');
+      const [p, ...r] = resto.split(/\s+/);
+      detalhe = ALIAS[semAcento(p || '')] ? r.join(' ') : resto;
+    }
+    const el = document.createElement('div');
+    el.className = 'folha'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Marcação');
+    el.innerHTML = `
+      <p class="f-onde">${trocar != null ? 'Trocar' : 'Pôr acima de'}: <b>${esc(rotulo)}</b></p>
+      <div class="f-tipos">${Object.keys(PALAVRA).map(t => `<button class="btn" data-t="${t}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}</div>
+      <label class="campo">Detalhe ou recado (opcional)<input id="f-det" autocomplete="off" placeholder="ex.: só aro, segura o prato"></label>
+      <div class="acoes">
+        <button class="btn" data-t="livre" style="--cor:var(--c-livre)">${ICONE.livre}Pôr como nota</button>
+        ${trocar != null ? '<button class="btn perigo" id="f-apagar">Apagar</button>' : ''}
+        <button class="btn" id="f-fechar">Fechar</button>
+      </div>`;
+    document.body.appendChild(el);
+    const det = $('#f-det', el); det.value = detalhe;
+    const aplicar = nova => {
+      if (trocar != null) { if (nova == null) linhas.splice(trocar, 1); else linhas[trocar] = nova; }
+      else linhas.splice(antesDe, 0, nova);
+      m.texto = linhas.join('\n');
+      guardarAjuste(); montarLetra(); fecharFolha();
+    };
+    el.querySelectorAll('[data-t]').forEach(b => b.onclick = () => {
+      const t = b.dataset.t, d = det.value.trim();
+      if (t === 'livre' && !d) { det.focus(); aviso('Escreva o recado no campo.'); return; }
+      aplicar(`! ${t === 'livre' ? 'nota' : PALAVRA[t]}${d ? ' ' + d : ''}`);
+    });
+    if (trocar != null) $('#f-apagar', el).onclick = () => aplicar(null);
+    $('#f-fechar', el).onclick = fecharFolha;
+  }
+  function fecharFolha() { document.querySelectorAll('.folha').forEach(f => f.remove()); }
+  $('#anotar').onclick = () => {
+    anotando = !anotando;
+    $('#anotar').setAttribute('aria-pressed', anotando); $('#anotar').classList.toggle('ativo', anotando);
+    app.classList.toggle('anotando', anotando);
+    if (anotando) aviso('Toque numa linha para pôr marcação em cima, ou numa marcação para trocar.', 5000); else fecharFolha();
+  };
   const { tempos, marcados } = temposEfetivos(m, nLinhas);
   P = { ativo: true, m, tempos, fonte: null, modo: 'manual', tocando: false, base: 0, t0: 0, atual: -1, raf: 0 };
   const pode = { audio: false, tempo: !!tempos, manual: true };
@@ -985,6 +1153,14 @@ async function telaPalco(id, listaId) {
     cliqueDoZero(); guardarAjuste();
     aviso('O 1 do clique agora cai aqui.');
   };
+  $('#som-mp3').onchange = async ev => {
+    const arq = ev.target.files[0]; if (!arq) return;
+    const { origem, ...copia } = m;
+    const alvo = JSON.parse(JSON.stringify(copia));
+    pausar();
+    try { await receberMp3(alvo, arq, t => aviso(t, 8000)); } catch { aviso('Não consegui guardar esse arquivo. Tente um mp3.'); return; }
+    if (P === meuClique) rota(); // reabre a música já com o mp3 (a subida para o site continua)
+  };
   $('#abrir-som').onclick = () => {
     const s = $('#som'), abrir = s.hidden;
     s.hidden = !abrir; $('#abrir-som').setAttribute('aria-expanded', abrir);
@@ -1026,7 +1202,7 @@ async function telaPalco(id, listaId) {
   };
   $('#menor').onclick = () => zoom(-0.1);
   $('#maior').onclick = () => zoom(0.1);
-  linhasEl.forEach(el => el.onclick = () => irPara(+el.dataset.i, true));
+  montarLetra();
   faixa.onclick = ev => {
     if (P.modo === 'manual' || !tempos) return;
     const t = (ev.offsetX / faixa.clientWidth) * duracao();
@@ -1097,7 +1273,9 @@ function pararMic() {
 // ---------------- editor ----------------
 const PALETA = [
   ['sobe', '! sobe '], ['desce', '! desce '], ['virada', '! virada '], ['prato', '! prato '],
+  ['caixa', '! caixa '], ['bumbo', '! bumbo '], ['chimbal', '! chimbal '],
   ['corte', '! corte '], ['conducao', '! condução '], ['pausa', '! para '], ['entra', '! entra '],
+  ['livre', '! nota '],
 ];
 async function telaEditor(id, listaId) {
   const voltarPara = mid => '#/m/' + encodeURIComponent(mid) + (listaId ? '/' + encodeURIComponent(listaId) : '');
@@ -1121,21 +1299,23 @@ async function telaEditor(id, listaId) {
       <div class="paleta" role="toolbar" aria-label="Inserir marcação acima da linha do cursor">
         ${PALETA.map(([t, ins]) => `<button class="btn" type="button" data-ins="${esc(ins)}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}
         <button class="btn" type="button" data-ins="# " style="--cor:var(--muted)">Parte</button>
+        <button class="btn" type="button" data-virar="1" style="--cor:var(--c-livre)">${ICONE.lapis}Linha → nota</button>
       </div>
       <textarea id="f-texto" spellcheck="false" placeholder="Cole a letra aqui, uma frase por linha.&#10;Deixe uma linha em branco entre as partes."></textarea>
       <div class="acoes"><a class="btn" id="buscar-letra" target="_blank" rel="noopener">Buscar no Cifra Club</a></div>
       <p class="dica">Pode colar a cifra inteira: o app tira os acordes e transforma [Refrão] em parte. Depois use "Sugerir pela letra" lá embaixo para as marcações da bateria.</p>
-      <p class="dica">Linha que começa com <code>!</code> ou com <code>Bateria</code> vira marcação. A primeira palavra escolhe o ícone: sobe, desce, virada, prato, corte, condução, para, entra. Linha com <code>#</code> é o nome da parte (Verso, Refrão).</p>
+      <p class="dica">Linha que começa com <code>!</code> ou com <code>Bateria</code> vira marcação. A primeira palavra escolhe o ícone: sobe, desce, virada, prato, caixa, bumbo, chimbal, corte, condução, para, entra. <code>! nota</code> é recado livre, em rosa. Linha com <code>#</code> é o nome da parte (Verso, Refrão).</p>
 
       <section class="bloco">
         <h2>Áudio da música</h2>
         <p class="status" id="a-status"></p>
+        <p class="status" id="a-subida" aria-live="polite"></p>
         <canvas class="energia" id="a-energia" aria-hidden="true"></canvas>
         <div class="acoes"><label class="btn">Escolher mp3<input type="file" id="a-arquivo" accept="audio/*" hidden></label>
           <button class="btn perigo" id="a-tirar" type="button" hidden>Tirar o mp3 deste aparelho</button></div>
         <label class="campo">Link do YouTube<input id="f-yt" type="url" inputmode="url" placeholder="https://youtu.be/..." autocomplete="off"></label>
         <label class="campo">Endereço do mp3 no site (opcional)<input id="f-url" placeholder="audio/nome-da-musica.mp3" autocomplete="off"></label>
-        <p class="dica">A música toca nesta ordem: mp3 escolhido aqui (fica só neste aparelho), mp3 do site, YouTube. O link do YouTube vale em qualquer celular, mas precisa de internet e o vídeo aparece pequeno em cima da letra. A análise de BPM e de onde a música enche só funciona com mp3.</p>
+        <p class="dica">O mp3 escolhido toca na hora e sobe para o site trancado com a sua senha; nos outros aparelhos ele baixa sozinho. Sem mp3, toca pelo YouTube (precisa de internet e pode ter anúncio, que atrasa a letra). O BPM e onde a música enche só saem do mp3.</p>
       </section>
 
       <section class="bloco">
@@ -1182,7 +1362,8 @@ async function telaEditor(id, listaId) {
     m.temAudio = temBlob;
     const a = [];
     const yt = f('yt').value.trim();
-    if (temBlob) a.push('Toca o mp3 deste aparelho.');
+    if (temBlob) a.push(m.audioNoSite ? 'Toca o mp3 (guardado também no site, só com a sua senha).' : 'Toca o mp3 deste aparelho.');
+    else if (m.audioNoSite) a.push('O mp3 está no site; baixa sozinho quando abrir a música.');
     else if (f('url').value.trim()) a.push('Toca o mp3 do site.');
     else if (idYouTube(yt)) a.push('Toca pelo YouTube.');
     else a.push('Nenhuma música ainda.');
@@ -1200,6 +1381,15 @@ async function telaEditor(id, listaId) {
   app.querySelectorAll('.paleta button').forEach(b => b.onclick = () => {
     const ins = b.dataset.ins, v = ta.value, pos = ta.selectionStart;
     const ini = v.lastIndexOf('\n', pos - 1) + 1;   // começo da linha do cursor
+    if (b.dataset.virar) {
+      // a linha do cursor vira anotação (cor própria); se já for, volta a ser letra
+      let fimL = v.indexOf('\n', ini); if (fimL < 0) fimL = v.length;
+      const linha = v.slice(ini, fimL);
+      const nova = /^\s*!\s*nota\s+/i.test(linha) ? linha.replace(/^\s*!\s*nota\s+/i, '') : '! nota ' + linha.replace(/^\s*!\s*/, '');
+      ta.value = v.slice(0, ini) + nova + v.slice(fimL);
+      ta.focus(); ta.setSelectionRange(ini + nova.length, ini + nova.length);
+      return;
+    }
     ta.value = v.slice(0, ini) + ins + '\n' + v.slice(ini);
     const cursor = ini + ins.length;
     ta.focus(); ta.setSelectionRange(cursor, cursor);
@@ -1207,15 +1397,11 @@ async function telaEditor(id, listaId) {
 
   $('#a-arquivo').onchange = async ev => {
     const arq = ev.target.files[0]; if (!arq) return;
-    $('#a-status').textContent = 'Lendo a música…';
-    try {
-      await Banco.put(m.id, arq);
-      const r = await analisarAudio(arq);
-      Object.assign(m, { energia: r.energia, duracao: r.duracao, primeiroSom: r.primeiroSom });
-      if (!parseInt(f('bpm').value, 10)) f('bpm').value = r.bpm;
-      else if (Math.abs(parseInt(f('bpm').value, 10) - r.bpm) > 3) aviso(`Pelo áudio deu ${r.bpm} BPM; mantive o ${f('bpm').value} que você escreveu.`, 6000);
-      guardarSemSair();
-    } catch (e) { aviso('Não consegui ler esse arquivo de áudio. Tente um mp3.'); }
+    lerCampos();
+    const subida = $('#a-subida');
+    try { await receberMp3(m, arq, t => { subida.textContent = t; }); }
+    catch { aviso('Não consegui guardar esse arquivo. Tente um mp3.'); }
+    f('bpm').value = m.bpm || '';
     atualizarStatus();
   };
 
@@ -1258,8 +1444,11 @@ async function telaEditor(id, listaId) {
     if (confirm(`Apagar "${m.titulo}" deste aparelho?`)) { apagarMusica(m.id); location.hash = '#/'; }
   };
   $('#a-tirar').onclick = async () => {
+    if (!confirm('Tirar o mp3 deste aparelho' + (m.audioNoSite ? ' e do site?' : '?'))) return;
     await Banco.del(m.id);
-    delete m.energia; delete m.duracao; delete m.primeiroSom;
+    if (m.audioNoSite) Nuvem.apagarAudio(m.id);
+    delete m.energia; delete m.duracao; delete m.primeiroSom; delete m.audioSubir; m.audioNoSite = false;
+    $('#a-subida').textContent = '';
     guardarSemSair(); atualizarStatus();
   };
   // abre a pesquisa da letra em outra aba; o Lucas copia e cola aqui
@@ -1347,7 +1536,7 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 }
 rota();
 // traz do site o que foi feito em outro aparelho; só redesenha se estiver na tela inicial
-Nuvem.carregar().then(() => {
+Nuvem.pronto = Nuvem.carregar().then(() => {
   const h = location.hash.slice(1) || '/';
   if (h === '/' || h === '') telaLista(); else mostrarNuvem();
 });
