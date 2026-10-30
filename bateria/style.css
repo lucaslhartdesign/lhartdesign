@@ -122,6 +122,14 @@ svg { fill: currentColor; }
   transform: rotate(-.7deg); transform-origin: left center;
 }
 .deixa svg { width: 1.1em; height: 1.1em; flex: none; }
+.deixa { transition: transform .2s, opacity .25s, box-shadow .2s, background-color .2s; }
+/* a marcação da linha cantada agora: maior e acesa, para ler de longe sem perder a música */
+.deixa.agora {
+  transform: rotate(-.7deg) scale(1.12);
+  background: color-mix(in srgb, var(--cor) 32%, transparent);
+  box-shadow: 0 0 0 2px var(--cor), 0 0 18px color-mix(in srgb, var(--cor) 45%, transparent);
+}
+.deixa.passada { opacity: .35; }
 .deixa + .deixa { margin-top: 4px; }
 
 .linha {

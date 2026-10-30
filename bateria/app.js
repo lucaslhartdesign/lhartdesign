@@ -947,11 +947,14 @@ async function telaPalco(id, listaId) {
   // desenha só a letra; o vídeo do YouTube em cima fica intacto (a música não para)
   function montarLetra() {
     const itens = lerDeixas();
+    const rol = palco.scrollTop; // a letra é redesenhada, mas a tela não pode pular
+    requestAnimationFrame(() => { palco.scrollTop = rol; });
     $('#letra').innerHTML = nLinhas ? renderItens(itens)
       : `<div class="sem-letra"><p class="vazio">Esta música ainda não tem letra. Abra no Cifra Club, copie a cifra e volte aqui.</p>
           <div class="acoes"><a class="btn" href="${esc(urlCifra(m.titulo, m.artista, m.cifra))}" target="_blank" rel="noopener">Abrir no Cifra Club</a>
           <a class="btn" href="${esc(buscaVersoes(m.titulo, m.artista))}" target="_blank" rel="noopener">Procurar versões</a>
           <button class="btn primario" id="palco-colar" type="button">Colar letra</button></div></div>`;
+    palco.scrollTop = rol;
     const colar = $('#palco-colar');
     if (colar) colar.onclick = async () => {
       const letra = await lerLetraCopiada();
@@ -961,7 +964,15 @@ async function telaPalco(id, listaId) {
       aviso(inseridas ? `Letra colada, com ${inseridas} marcação(ões) da bateria. Use Anotar para ajustar.` : 'Letra colada.', 7000);
       rota(); // reabre com a letra (o número de linhas mudou)
     };
+    // cada marcação sabe de qual linha de letra ela é (a de baixo); ela não conta como linha da música
+    let pendentes = [];
+    $('#letra').querySelectorAll('.deixa, .linha').forEach(el => {
+      if (el.classList.contains('deixa')) pendentes.push(el);
+      else { pendentes.forEach(d => { d.dataset.alvo = el.dataset.i; }); pendentes = []; }
+    });
+    pendentes.forEach(d => { d.dataset.alvo = String(nLinhas); });
     linhasEl = [...palco.querySelectorAll('.linha')];
+    acenderDeixas(P ? P.atual : -1);
     linhasEl.forEach((el, k) => {
       el.classList.toggle('atual', P && k === P.atual); el.classList.toggle('passada', P && k < P.atual);
       el.onclick = () => anotando ? abrirFolha({ antesDe: +el.dataset.r, rotulo: el.textContent }) : irPara(+el.dataset.i, true);
@@ -974,6 +985,14 @@ async function telaPalco(id, listaId) {
       };
     });
     if (P) mostrarProxima();
+  }
+  // a marcação da linha cantada agora acende; as das linhas que já passaram apagam
+  function acenderDeixas(i) {
+    palco.querySelectorAll('#letra .deixa').forEach(d => {
+      const a = +d.dataset.alvo;
+      d.classList.toggle('agora', a === i);
+      d.classList.toggle('passada', i >= 0 && a < i);
+    });
   }
   const PALAVRA = { sobe: 'sobe', desce: 'desce', virada: 'virada', prato: 'prato', caixa: 'caixa', bumbo: 'bumbo', chimbal: 'chimbal',
     corte: 'corte', conducao: 'condução', pausa: 'para', entra: 'entra' };
@@ -1086,7 +1105,9 @@ async function telaPalco(id, listaId) {
     if (i === P.atual) return;
     P.atual = i;
     linhasEl.forEach((el, k) => { el.classList.toggle('atual', k === i); el.classList.toggle('passada', k < i); });
-    const el = linhasEl[Math.max(0, i)];
+    acenderDeixas(i);
+    // a rolagem para com a marcação da linha à vista (ela fica em cima), não só a letra
+    const el = palco.querySelector(`#letra .deixa[data-alvo="${Math.max(0, i)}"]`) || linhasEl[Math.max(0, i)];
     if (el) palco.scrollTo({ top: Math.max(0, el.offsetTop - palco.offsetTop - palco.clientHeight * 0.3), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     mostrarProxima();
   }
@@ -1630,16 +1651,21 @@ async function telaEditor(id, listaId) {
       let fimL = v.indexOf('\n', ini); if (fimL < 0) fimL = v.length;
       const linha = v.slice(ini, fimL);
       const nova = /^\s*!\s*nota\s+/i.test(linha) ? linha.replace(/^\s*!\s*nota\s+/i, '') : '! nota ' + linha.replace(/^\s*!\s*/, '');
+      const tela = ta.closest('.rolagem'), rolTela = tela.scrollTop, rolTexto = ta.scrollTop;
       ta.value = v.slice(0, ini) + nova + v.slice(fimL);
-      ta.focus(); ta.setSelectionRange(ini + nova.length, ini + nova.length);
+      ta.focus({ preventScroll: true }); ta.setSelectionRange(ini + nova.length, ini + nova.length);
+      ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
       return;
     }
+    // a tela fica parada: trocar o texto faria o navegador pular para o topo ou para o cursor
+    const tela = ta.closest('.rolagem'), rolTela = tela.scrollTop, rolTexto = ta.scrollTop;
     ta.value = v.slice(0, ini) + ins + '\n' + v.slice(ini);
     const cursor = ini + ins.length;
     if (cantada >= 0) { // tocando: não abre o teclado do celular; só mostra onde entrou
-      ta.setSelectionRange(cursor, cursor);
       aviso(`Marcado em cima de: ${linhasDe(ta.value)[cantada]}`, 2500);
-    } else { ta.focus(); ta.setSelectionRange(cursor, cursor); }
+    } else ta.focus({ preventScroll: true });
+    ta.setSelectionRange(cursor, cursor);
+    ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
   });
 
   $('#a-arquivo').onchange = async ev => {
