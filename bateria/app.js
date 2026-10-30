@@ -502,11 +502,13 @@ function interpolar(t, n) {
   return r;
 }
 // tempos marcados (com buracos preenchidos) ou, sem eles, uma linha a cada N compassos pelo BPM
-function temposEfetivos(m, n) {
-  const t = (m.tempos || []).slice(0, n);
-  if (t.filter(x => typeof x === 'number').length >= 2) return { tempos: interpolar(t, n), marcados: true };
+// tipo = fonte tocando ('audio' | 'youtube'): soma o acerto "letra ⇄ música" que o Lucas fez para essa fonte
+const deslocamento = (m, tipo) => (tipo && m.ajusteLetra && m.ajusteLetra[tipo]) || 0;
+function temposEfetivos(m, n, tipo) {
+  const t = (m.tempos || []).slice(0, n), d = deslocamento(m, tipo);
+  if (t.filter(x => typeof x === 'number').length >= 2) return { tempos: interpolar(t, n).map(x => x + d), marcados: true };
   if (m.bpm > 0 && n) {
-    const passo = (m.compassos || 2) * 4 * 60 / m.bpm, ini = m.primeiroSom || 0;
+    const passo = (m.compassos || 2) * 4 * 60 / m.bpm, ini = (m.primeiroSom || 0) + d;
     return { tempos: Array.from({ length: n }, (_, i) => ini + i * passo), marcados: false };
   }
   return { tempos: null, marcados: false };
@@ -655,7 +657,7 @@ function sugerirPelaLetra(texto) {
 }
 function sugerirPeloAudio(m, texto) {
   const n = linhasDe(texto).length;
-  const { tempos, marcados } = temposEfetivos({ ...m, tempos: m.tempos }, n);
+  const { tempos, marcados } = temposEfetivos({ ...m, tempos: m.tempos }, n, 'audio'); // a intensidade é do mp3
   if (!marcados || !m.energia || !m.duracao) return null;
   const e = m.energia, dt = m.duracao / e.length;
   const media = (a, b) => {
@@ -938,6 +940,13 @@ async function telaPalco(id, listaId) {
         <button class="btn bater-tempo" id="bater-tempo" type="button">Bater o tempo junto com a música</button>
         <label class="btn bater-tempo">${ICONE.som}Pôr o mp3 desta música<input type="file" id="som-mp3" accept="audio/*" hidden></label>
         <p class="dica" id="clique-info"></p>
+        <div class="acerto">
+          <span class="rotulo">Letra</span>
+          <button class="btn icone" id="ac-menos" type="button" aria-label="Letra meio segundo mais cedo">−½</button>
+          <button class="btn" id="ac-agora" type="button">Letra começa agora</button>
+          <button class="btn icone" id="ac-mais" type="button" aria-label="Letra meio segundo mais tarde">+½</button>
+        </div>
+        <p class="dica" id="acerto-info"></p>
       </div>
     </footer>`;
 
@@ -1050,7 +1059,7 @@ async function telaPalco(id, listaId) {
     gravarMarcacoes(alvo, (marcas, fonteTipo, novosTempos) => {
       if (!marcas) { if (P === meuClique) rota(); return; }
       m.marcas = marcas; m.marcasFonte = fonteTipo;
-      if (novosTempos) { m.tempos = novosTempos; m.temposFonte = fonteTipo; }
+      if (novosTempos) { m.tempos = novosTempos; m.temposFonte = fonteTipo; m.ajusteLetra = { ...(m.ajusteLetra || {}), [fonteTipo]: 0 }; }
       guardarAjuste();
       const naLetra = marcados || novosTempos;
       aviso(`${marcas.length} marcação(ões) gravada(s)` + (naLetra ? ', já em cima da letra.' : (nLinhas ? '. Para irem para a letra, grave de novo tocando "Próxima linha" quando o cantor mudar de linha.' : '.')), 9000);
@@ -1063,8 +1072,29 @@ async function telaPalco(id, listaId) {
     app.classList.toggle('anotando', anotando);
     if (anotando) aviso('Toque numa linha para pôr marcação em cima, ou numa marcação para trocar.', 5000); else fecharFolha();
   };
-  const { tempos, marcados } = temposEfetivos(m, nLinhas);
+  let { tempos, marcados } = temposEfetivos(m, nLinhas);
   P = { ativo: true, m, tempos, fonte: null, modo: 'manual', tocando: false, base: 0, t0: 0, atual: -1, raf: 0 };
+  // a música carregou ou o acerto mudou: os tempos da letra passam a valer para essa fonte
+  function recalcularTempos() {
+    ({ tempos, marcados } = temposEfetivos(m, nLinhas, P.fonte ? P.fonte.tipo : null));
+    P.tempos = tempos;
+    montarLetra(); desenhar(); mostrarAcerto();
+  }
+  // onde a letra começa (em segundos da música que está tocando)
+  const inicioLetra = () => tempos && tempos.length ? tempos[0] : null;
+  function acertarLetra(novoInicio) {
+    if (!P.fonte || !tempos) return;
+    const tipo = P.fonte.tipo, base = inicioLetra() - deslocamento(m, tipo);
+    m.ajusteLetra = { ...(m.ajusteLetra || {}), [tipo]: Math.round((novoInicio - base) * 100) / 100 };
+    guardarAjuste(); recalcularTempos();
+  }
+  function mostrarAcerto() {
+    const el = $('#acerto-info'); if (!el) return;
+    const i = inicioLetra();
+    el.textContent = !P.fonte ? 'Ponha a música para acertar a letra com ela.'
+      : !tempos ? 'Marque os tempos ou informe o BPM para a letra andar.'
+      : `A letra começa em ${mmss(i)},${Math.floor((i % 1) * 10)}. Arraste a marca verde na faixa de cima, ou use os botões.`;
+  }
   const pode = { audio: false, tempo: !!tempos, manual: true };
 
   const tempoAtual = () => P.modo === 'audio' && P.fonte ? P.fonte.t
@@ -1073,8 +1103,17 @@ async function telaPalco(id, listaId) {
   // a análise (intensidade, duração) veio do mp3; com o vídeo do YouTube ela não bate, então não aparece
   const duracao = () => (ehYT() ? P.fonte.duracao : m.duracao) || (P.fonte && P.fonte.duracao) || (tempos ? tempos[nLinhas - 1] + 8 : 0);
 
+  let arrastoT = null; // onde a marca verde está sendo arrastada
   function desenhar() {
     desenharEnergia(faixa, { ...m, energia: ehYT() ? null : m.energia, duracao: duracao() }, P.modo === 'manual' ? null : tempoAtual(), tempos);
+    // marca verde: onde a letra começa nesta música (arrastável)
+    const ini = arrastoT != null ? arrastoT : inicioLetra(), dur = duracao();
+    if (!P.fonte || ini == null || !dur) return;
+    const g = faixa.getContext('2d'), w = faixa.clientWidth, h = faixa.clientHeight;
+    const x = Math.max(1, Math.min(w - 2, ini / dur * w));
+    g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--c-sobe').trim();
+    g.fillRect(x - 1.5, 0, 3, h);
+    g.beginPath(); g.moveTo(x - 7, 0); g.lineTo(x + 7, 0); g.lineTo(x, 9); g.fill();
   }
   function mostrarProxima() {
     // marcação gravada com o segundo exato chegando: ela manda na barra (contagem regressiva)
@@ -1324,6 +1363,7 @@ async function telaPalco(id, listaId) {
     if (P !== meu || !P.ativo) { if (fonte) fonte.destruir(); return; }
     if (!fonte) return;
     P.fonte = fonte; pode.audio = true;
+    recalcularTempos(); // aplica o acerto "letra ⇄ música" desta fonte
     fonte.aoTerminar(() => { pausar(); if (depois) aviso(`Acabou. Próxima do ensaio: ${depois.titulo}.`, 8000); });
     fonte.aoErro(() => { if (P && P.modo === 'audio') aviso('Não consegui abrir o áudio desta música.'); });
     const vol = $('#vol'), num = $('#vol-num');
@@ -1355,12 +1395,36 @@ async function telaPalco(id, listaId) {
   $('#menor').onclick = () => zoom(-0.1);
   $('#maior').onclick = () => zoom(0.1);
   montarLetra();
-  faixa.onclick = ev => {
+  // faixa: arrastar a marca verde acerta onde a letra começa; tocar em outro ponto pula a música
+  let arrastando = false;
+  const xParaT = x => Math.max(0, Math.min(duracao(), x / faixa.clientWidth * duracao()));
+  faixa.onpointerdown = ev => {
+    const ini = inicioLetra(), dur = duracao();
+    if (P.fonte && ini != null && dur && Math.abs(ev.offsetX - ini / dur * faixa.clientWidth) < 24) {
+      arrastando = true; arrastoT = ini; faixa.setPointerCapture(ev.pointerId); ev.preventDefault();
+    }
+  };
+  faixa.onpointermove = ev => { if (arrastando) { arrastoT = xParaT(ev.offsetX); desenhar(); } };
+  faixa.onpointerup = ev => {
+    if (arrastando) {
+      arrastando = false; const t = arrastoT; arrastoT = null;
+      acertarLetra(t); aviso(`A letra agora começa em ${mmss(t)}.`);
+      return;
+    }
     if (P.modo === 'manual' || !tempos) return;
-    const t = (ev.offsetX / faixa.clientWidth) * duracao();
+    const t = xParaT(ev.offsetX);
     if (P.modo === 'audio') P.fonte.t = t; else { P.base = t; P.t0 = agora(); }
     if (P.cliqueDoZero) P.cliqueDoZero();
   };
+  $('#ac-agora').onclick = () => {
+    if (!P.fonte || !P.fonte.tocando) { aviso('Toque Tocar e aperte aqui quando o cantor começar a primeira linha.'); return; }
+    if (!tempos) { aviso('Marque os tempos ou informe o BPM antes.'); return; }
+    acertarLetra(P.fonte.t - 0.12); // desconta o tempo do dedo
+    aviso('Pronto: a letra começa aqui nesta música.');
+  };
+  $('#ac-menos').onclick = () => { if (inicioLetra() != null) acertarLetra(inicioLetra() - 0.5); };
+  $('#ac-mais').onclick = () => { if (inicioLetra() != null) acertarLetra(inicioLetra() + 0.5); };
+  mostrarAcerto();
 
   mostrarProxima(); laco();
   P.irPara = irPara; P.tocar = tocar; P.pausar = pausar;
@@ -1565,7 +1629,7 @@ async function telaEditor(id, listaId) {
     if (!edFonte) return -1;
     if (edNovos) return edPtr;
     const tt = ta.value === textoGuardado ? m.tempos : remapear(textoGuardado, ta.value, m.tempos);
-    const n = linhasDe(ta.value).length, ef = temposEfetivos({ ...m, tempos: tt }, n);
+    const n = linhasDe(ta.value).length, ef = temposEfetivos({ ...m, tempos: tt }, n, edFonte.tipo);
     if (!ef.marcados) return -1;
     const t = edFonte.t + 0.3;
     let i = -1; while (i + 1 < n && ef.tempos[i + 1] <= t) i++;
@@ -1604,6 +1668,7 @@ async function telaEditor(id, listaId) {
     edPtr++; edNovos[edPtr] = Math.max(0, Math.round((edFonte.t - 0.12) * 100) / 100);
     // vira os tempos da música (o texto atual é a referência deles)
     m.tempos = edNovos.slice(); m.temposFonte = edFonte.tipo; textoGuardado = ta.value;
+    m.ajusteLetra = { ...(m.ajusteLetra || {}), [edFonte.tipo]: 0 }; // tempos novos já vêm certos para esta música
   };
   $('#ed-linha-volta').onclick = () => {
     if (!edNovos || edPtr < 0) return;
@@ -1618,7 +1683,7 @@ async function telaEditor(id, listaId) {
       b.disabled = false; b.innerHTML = `${ICONE.play}Ouvir a música`;
       if (!edFonte) { aviso('Esta música ainda não tem mp3. Ponha em "Escolher mp3" lá embaixo, ou escolha YouTube no palco.', 8000); return; }
       edFonte.volume(dados.prefs.volume / 100);
-      temposMarcadosAntes = temposEfetivos(m, linhasDe(ta.value).length).marcados;
+      temposMarcadosAntes = temposEfetivos(m, linhasDe(ta.value).length, edFonte.tipo).marcados;
       edTocava = null; cancelAnimationFrame(edRaf); edRelogio();
       if (!linhasDe(ta.value).length) aviso('Cole a letra para ir marcando em cima dela.');
       else if (!temposMarcadosAntes)
@@ -1686,6 +1751,7 @@ async function telaEditor(id, listaId) {
       if (!tempos) return;
       m.tempos = lin.map((_, i) => tempos[i] ?? null);
       m.temposFonte = fonteTipo;
+      m.ajusteLetra = { ...(m.ajusteLetra || {}), [fonteTipo]: 0 };
       guardarSemSair(); atualizarStatus();
       aviso(`${tempos.length} linha(s) marcadas. Já pode tocar no palco.`);
     });
@@ -1796,7 +1862,7 @@ async function gravarMarcacoes(m, fim) {
   if (!fonte) { el.remove(); aviso('Para gravar ouvindo, a música precisa de mp3 (Pôr o mp3) ou de link do YouTube.', 7000); fim(null); return; }
   fonte.volume(dados.prefs.volume / 100);
   play.disabled = false;
-  const linhas = linhasDe(m.texto), tem = temposEfetivos(m, linhas.length);
+  const linhas = linhasDe(m.texto), tem = temposEfetivos(m, linhas.length, fonte.tipo);
   const lista = $('#g-lista', el);
   let raf = 0, saiu = false, tocandoAntes = null;
   // letra sem tempos: na mesma passada ele toca "Próxima linha" quando o cantor muda de linha.

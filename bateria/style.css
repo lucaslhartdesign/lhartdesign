@@ -103,7 +103,12 @@ svg { fill: currentColor; }
 .ensaio-barra .fim-ensaio { flex: 1; text-align: right; color: var(--muted); }
 
 /* ---------- palco ---------- */
-.faixa { display: block; width: 100%; height: 30px; background: var(--surface); cursor: pointer; touch-action: none; }
+.faixa { display: block; width: 100%; height: 40px; background: var(--surface); cursor: pointer; touch-action: none; }
+.acerto { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
+.acerto .rotulo { color: var(--muted); min-width: 40px; }
+.acerto .btn { min-height: 40px; }
+.acerto .btn.icone { width: 40px; }
+.acerto #ac-agora { flex: 1; color: var(--c-sobe); border-color: color-mix(in srgb, var(--c-sobe) 50%, transparent); }
 .palco { padding: 20px 16px 0 30px; }
 .palco .fim { height: 65dvh; }
 .secao {
