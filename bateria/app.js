@@ -114,6 +114,29 @@ function limparCifra(texto) {
   if (acordes < 2 && !partes) return null;
   return { texto: out.join('\n').replace(/\n{3,}/g, '\n\n').trim(), acordes };
 }
+// endereço da música no Cifra Club (padrão artista/musica); o app não lê a página: o Cifra Club bloqueia
+// acesso automático e os termos não deixam copiar a letra. O Lucas abre, copia e toca "Colar letra".
+const slug = s => semAcento(String(s || '')).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+function urlCifra(titulo, artista) {
+  const principal = String(artista || '').split(/,|&|\s+e\s+|feat\.?|part\.?/i)[0].trim();
+  if (titulo && principal) return `https://www.cifraclub.com.br/${slug(principal)}/${slug(titulo)}/`;
+  return 'https://www.google.com/search?q=' + encodeURIComponent(`site:cifraclub.com.br ${titulo || ''} ${artista || ''}`.trim());
+}
+// lê o que foi copiado; se for cifra, tira os acordes
+async function lerLetraCopiada() {
+  let t = '';
+  try { t = await navigator.clipboard.readText(); }
+  catch { aviso('O navegador não deixou ler o que foi copiado. Toque e segure no campo da letra e escolha Colar.', 7000); return null; }
+  if (!t.trim()) { aviso('Não tem nada copiado. Copie a cifra no Cifra Club e volte.'); return null; }
+  const r = limparCifra(t);
+  return r ? r.texto : t.trim();
+}
+// letra recém-colada sem nenhuma marcação: o app já escreve as da bateria pelo refrão
+function letraComMarcacoes(texto) {
+  if (interpretar(texto).itens.some(x => x.k === 'deixa')) return { texto, inseridas: 0 };
+  const s = sugerirPelaLetra(texto);
+  return s ? inserirDeixas(texto, s.sugestoes, s.finais) : { texto, inseridas: 0 };
+}
 const linhasDe = texto => interpretar(texto).itens.filter(x => x.k === 'linha').map(x => x.txt);
 
 // ---------------- dados ----------------
@@ -885,7 +908,18 @@ async function telaPalco(id, listaId) {
   function montarLetra() {
     const itens = lerDeixas();
     $('#letra').innerHTML = nLinhas ? renderItens(itens)
-      : `<p class="vazio">Esta música ainda não tem letra. Dá para ouvir com o clique; para a letra aparecer, toque em <a href="#/e/${encodeURIComponent(m.id)}${ensaio ? '/' + encodeURIComponent(ensaio.id) : ''}">Editar</a> e cole.</p>`;
+      : `<div class="sem-letra"><p class="vazio">Esta música ainda não tem letra. Abra no Cifra Club, copie a cifra e volte aqui.</p>
+          <div class="acoes"><a class="btn" href="${esc(urlCifra(m.titulo, m.artista))}" target="_blank" rel="noopener">Abrir no Cifra Club</a>
+          <button class="btn primario" id="palco-colar" type="button">Colar letra</button></div></div>`;
+    const colar = $('#palco-colar');
+    if (colar) colar.onclick = async () => {
+      const letra = await lerLetraCopiada();
+      if (!letra) return;
+      const { texto, inseridas } = letraComMarcacoes(letra);
+      m.texto = texto; guardarAjuste();
+      aviso(inseridas ? `Letra colada, com ${inseridas} marcação(ões) da bateria. Use Anotar para ajustar.` : 'Letra colada.', 7000);
+      rota(); // reabre com a letra (o número de linhas mudou)
+    };
     linhasEl = [...palco.querySelectorAll('.linha')];
     linhasEl.forEach((el, k) => {
       el.classList.toggle('atual', P && k === P.atual); el.classList.toggle('passada', P && k < P.atual);
@@ -1302,8 +1336,11 @@ async function telaEditor(id, listaId) {
         <button class="btn" type="button" data-virar="1" style="--cor:var(--c-livre)">${ICONE.lapis}Linha → nota</button>
       </div>
       <textarea id="f-texto" spellcheck="false" placeholder="Cole a letra aqui, uma frase por linha.&#10;Deixe uma linha em branco entre as partes."></textarea>
-      <div class="acoes"><a class="btn" id="buscar-letra" target="_blank" rel="noopener">Buscar no Cifra Club</a></div>
-      <p class="dica">Pode colar a cifra inteira: o app tira os acordes e transforma [Refrão] em parte. Depois use "Sugerir pela letra" lá embaixo para as marcações da bateria.</p>
+      <div class="acoes">
+        <a class="btn" id="buscar-letra" target="_blank" rel="noopener">Abrir no Cifra Club</a>
+        <button class="btn primario" id="colar-letra" type="button">Colar letra</button>
+      </div>
+      <p class="dica">Abra no Cifra Club, copie a cifra inteira e toque em Colar letra: o app tira os acordes, transforma [Refrão] em parte e já escreve as marcações da bateria. Se a página não for a música certa, procure lá pelo nome.</p>
       <p class="dica">Linha que começa com <code>!</code> ou com <code>Bateria</code> vira marcação. A primeira palavra escolhe o ícone: sobe, desce, virada, prato, caixa, bumbo, chimbal, corte, condução, para, entra. <code>! nota</code> é recado livre, em rosa. Linha com <code>#</code> é o nome da parte (Verso, Refrão).</p>
 
       <section class="bloco">
@@ -1453,7 +1490,17 @@ async function telaEditor(id, listaId) {
   };
   // abre a pesquisa da letra em outra aba; o Lucas copia e cola aqui
   const linkLetra = () => {
-    $('#buscar-letra').href = 'https://www.google.com/search?q=' + encodeURIComponent(`site:cifraclub.com.br ${f('titulo').value} ${f('artista').value}`.trim());
+    $('#buscar-letra').href = urlCifra(f('titulo').value.trim(), f('artista').value.trim());
+  };
+  $('#colar-letra').onclick = async () => {
+    const letra = await lerLetraCopiada();
+    if (!letra) return;
+    desfazerTexto = ta.value;
+    const base = ta.value.trim() ? ta.value.replace(/\s+$/, '') + '\n\n' + letra : letra;
+    const { texto, inseridas } = letraComMarcacoes(base);
+    ta.value = texto;
+    $('#sug-desfazer').hidden = false;
+    aviso(inseridas ? `Letra colada, com ${inseridas} marcação(ões) da bateria. Confira e ajuste.` : 'Letra colada.');
   };
   ta.addEventListener('paste', ev => {
     const colado = ev.clipboardData && ev.clipboardData.getData('text');

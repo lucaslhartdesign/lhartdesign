@@ -175,6 +175,8 @@ svg { fill: currentColor; }
 .som .dica { margin: 6px 0 0; font-size: .85rem; }
 .bater-tempo { width: 100%; margin-top: 8px; min-height: 48px; }
 .palco .vazio a { color: var(--c-prato); }
+.sem-letra .vazio { padding: 8px 0 0; }
+.sem-letra .acoes { margin-top: 4px; }
 
 /* modo palco: tocando, só fica o que se lê de longe, mais Som e Anotar para arrumar na hora */
 #app.tocando .topo, #app.tocando .ensaio-barra { display: none; }
