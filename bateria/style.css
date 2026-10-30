@@ -215,6 +215,8 @@ svg { fill: currentColor; }
 .fonte-escolha { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 16px -14px; color: var(--muted); }
 .fonte-escolha .btn { min-height: 40px; }
 #app.tocando .fonte-escolha { display: none; }
+.fonte-info { flex-basis: 100%; font-size: .88rem; color: var(--muted); }
+.fonte-info:empty { display: none; }
 
 /* marcação gravada ouvindo: traço pontilhado à esquerda para diferenciar da escrita */
 .deixa.gravada { border-left-style: dotted; }

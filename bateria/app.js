@@ -244,7 +244,8 @@ const Nuvem = {
     for (const m of Object.values(dados.locais)) {
       if (!m.audioSubir) continue;
       const blob = await Banco.get(m.id);
-      if (blob) subirMp3(m, blob); else { delete m.audioSubir; gravarLocal(); }
+      if (blob) subirMp3(m, blob, t => { if (/guardado|Não deu/.test(t)) aviso(`${m.titulo}: ${t}`, 6000); });
+      else anotarAudio(m.id, { audioSubir: undefined });
     }
   },
   async entrar(senha) {
@@ -284,17 +285,36 @@ async function receberMp3(m, arq, status) {
   guardar(m);
   subirMp3(m, arq, status);
 }
+// estado do mp3 de uma música ("no site", "subindo") muda em segundo plano: grava SÓ esses campos na
+// música guardada e na que está aberta na tela. Gravar a música inteira apagava o que ele editou nesse meio tempo.
+const subindo = {}; // id -> fração já enviada
+function anotarAudio(id, campos) {
+  const base = dados.locais[id] || (pegar(id) ? (({ origem, ...c }) => c)(pegar(id)) : null);
+  if (!base) return;
+  for (const [k, v] of Object.entries(campos)) { if (v === undefined) delete base[k]; else base[k] = v; }
+  dados.locais[id] = base; salvar();
+  if (P && P.m && P.m.id === id) for (const [k, v] of Object.entries(campos)) { if (v === undefined) delete P.m[k]; else P.m[k] = v; }
+}
 function subirMp3(m, arq, status) {
   const dizer = t => { if (status) status(t); };
   if (Nuvem.estado !== 'ok') {
-    m.audioSubir = true; guardar(m);
+    anotarAudio(m.id, { audioSubir: true });
     dizer('O mp3 já toca neste aparelho. Entre com a senha do painel para ele ir para o site.');
     return;
   }
+  if (subindo[m.id] != null) return; // já está subindo
+  subindo[m.id] = 0;
   dizer('Guardando o mp3 no site… 0%');
-  Nuvem.subirAudio(m.id, arq, p => dizer(`Guardando o mp3 no site… ${Math.round(p * 100)}%`))
-    .then(() => { m.audioNoSite = true; delete m.audioSubir; guardar(m); dizer('mp3 guardado no site. Só abre com a sua senha.'); })
-    .catch(() => { m.audioSubir = true; guardar(m); dizer('Não deu para guardar o mp3 no site agora. Ele toca aqui; tento de novo depois.'); });
+  Nuvem.subirAudio(m.id, arq, p => { subindo[m.id] = p; dizer(`Guardando o mp3 no site… ${Math.round(p * 100)}%`); })
+    .then(() => { delete subindo[m.id]; anotarAudio(m.id, { audioNoSite: true, audioSubir: undefined }); dizer('mp3 guardado no site. Só abre com a sua senha.'); })
+    .catch(() => { delete subindo[m.id]; anotarAudio(m.id, { audioSubir: true }); dizer('Não deu para guardar o mp3 no site agora. Ele toca aqui; tento de novo quando abrir o app.'); });
+}
+// a música diz em que pé está o mp3 dela
+function estadoMp3(m, temNoAparelho) {
+  if (subindo[m.id] != null) return `mp3 subindo para o site, ${Math.round(subindo[m.id] * 100)}%`;
+  if (m.audioNoSite) return temNoAparelho ? 'mp3 no site e neste aparelho' : 'mp3 no site (baixa ao tocar)';
+  if (m.audioSubir) return 'mp3 só neste aparelho, esperando subir para o site';
+  return temNoAparelho ? 'mp3 só neste aparelho' : '';
 }
 window.addEventListener('online', () => { if (Nuvem.estado === 'offline') Nuvem.carregar().then(mostrarNuvem); });
 function mostrarNuvem() {
@@ -373,6 +393,8 @@ let ctxAudio = null;
 // iPhone: som que passa pelo Web Audio (volume e clique) fica mudo com a chave do silencioso.
 // "playback" diz ao iOS que isto é música, e aí toca mesmo no silencioso (Safari 16.4 ou mais novo).
 try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
+// pede ao navegador para não apagar os mp3 guardados quando faltar espaço (o iPhone apaga dados de sites)
+try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
 const ehIphone = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 function fonteAudio(src) {
   const a = new Audio(src); a.preload = 'auto';
@@ -726,8 +748,9 @@ function resumo(m) {
   if (m.bpm) p.push(`${m.bpm} BPM`);
   const marc = (m.tempos || []).filter(x => typeof x === 'number').length;
   p.push(marc >= 2 ? 'rola sozinha' : m.bpm ? 'rola pelo BPM' : 'rolagem manual');
-  if (m.origem === 'aparelho') p.push('só neste aparelho');
-  if (m.origem === 'editada') p.push('editada neste aparelho');
+  const mp3 = subindo[m.id] != null ? `mp3 subindo ${Math.round(subindo[m.id] * 100)}%`
+    : m.audioNoSite ? 'mp3 no site' : m.audioSubir ? 'mp3 esperando subir' : '';
+  if (mp3) p.push(mp3);
   return p.join(', ');
 }
 
@@ -910,6 +933,7 @@ async function telaPalco(id, listaId) {
         <span>Tocar com:</span>
         <div class="seg" role="group" aria-label="Tocar com"><button data-f="mp3">mp3</button><button data-f="youtube">YouTube</button></div>
         <label class="btn" id="fonte-por">${ICONE.som}Pôr o mp3<input type="file" accept="audio/*" hidden></label>
+        <span class="fonte-info" id="fonte-info"></span>
       </div>
       <div class="yt" id="yt" hidden></div><div id="letra"></div><div class="fim"></div></main>
     <footer class="controle">
@@ -1355,6 +1379,10 @@ async function telaPalco(id, listaId) {
     $('#fonte-por').hidden = tem;
     caixa.hidden = false;
     if (!tem && !temYT) caixa.querySelector('.seg').hidden = true;
+    // em que pé está o mp3 desta música (atualiza enquanto sobe)
+    const info = $('#fonte-info'), noAparelho = !!(await Banco.get(m.id));
+    const mostrar = () => { if (P !== meuClique) return; info.textContent = estadoMp3(m, noAparelho); if (subindo[m.id] != null) setTimeout(mostrar, 1000); };
+    mostrar();
     if (!atual) aviso(temYT ? 'Escolha como tocar: ponha o mp3 ou toque em YouTube.' : 'Ponha o mp3 para a música tocar.', 6000);
   })();
   $('#fonte-por input').onchange = ev => $('#som-mp3').onchange(ev);
@@ -1616,6 +1644,9 @@ async function telaEditor(id, listaId) {
     m.audioUrl = f('url').value.trim() || undefined;
     m.youtube = f('yt').value.trim() || undefined;
     m.cifra = linkDeVersao(f('cifra').value) || undefined;
+    // o mp3 pode ter terminado de subir enquanto ele editava: vale o que está guardado
+    const s = dados.locais[m.id];
+    if (s) { m.audioNoSite = s.audioNoSite; m.audioSubir = s.audioSubir; }
   }
   const guardarSemSair = () => { lerCampos(); guardar(m); };
   async function atualizarStatus() {
