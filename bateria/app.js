@@ -117,7 +117,16 @@ function limparCifra(texto) {
 // endereço da música no Cifra Club (padrão artista/musica); o app não lê a página: o Cifra Club bloqueia
 // acesso automático e os termos não deixam copiar a letra. O Lucas abre, copia e toca "Colar letra".
 const slug = s => semAcento(String(s || '')).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-function urlCifra(titulo, artista) {
+// busca que lista as versões da música no Cifra Club (original, simplificada, ao vivo, letra)
+const buscaVersoes = (titulo, artista) =>
+  'https://www.google.com/search?q=' + encodeURIComponent(`site:cifraclub.com.br ${titulo || ''} ${String(artista || '').split(',')[0]}`.trim());
+// link de versão colado pelo Lucas: só aceita endereço do Cifra Club ou do Letras
+function linkDeVersao(s) {
+  try { const u = new URL(String(s || '').trim()); return /(^|\.)(cifraclub\.com\.br|letras\.mus\.br)$/.test(u.hostname) ? u.href : ''; }
+  catch { return ''; }
+}
+function urlCifra(titulo, artista, link) {
+  if (linkDeVersao(link)) return linkDeVersao(link);
   const principal = String(artista || '').split(/,|&|\s+e\s+|feat\.?|part\.?/i)[0].trim();
   if (titulo && principal) return `https://www.cifraclub.com.br/${slug(principal)}/${slug(titulo)}/`;
   return 'https://www.google.com/search?q=' + encodeURIComponent(`site:cifraclub.com.br ${titulo || ''} ${artista || ''}`.trim());
@@ -909,7 +918,8 @@ async function telaPalco(id, listaId) {
     const itens = lerDeixas();
     $('#letra').innerHTML = nLinhas ? renderItens(itens)
       : `<div class="sem-letra"><p class="vazio">Esta música ainda não tem letra. Abra no Cifra Club, copie a cifra e volte aqui.</p>
-          <div class="acoes"><a class="btn" href="${esc(urlCifra(m.titulo, m.artista))}" target="_blank" rel="noopener">Abrir no Cifra Club</a>
+          <div class="acoes"><a class="btn" href="${esc(urlCifra(m.titulo, m.artista, m.cifra))}" target="_blank" rel="noopener">Abrir no Cifra Club</a>
+          <a class="btn" href="${esc(buscaVersoes(m.titulo, m.artista))}" target="_blank" rel="noopener">Procurar versões</a>
           <button class="btn primario" id="palco-colar" type="button">Colar letra</button></div></div>`;
     const colar = $('#palco-colar');
     if (colar) colar.onclick = async () => {
@@ -1338,9 +1348,11 @@ async function telaEditor(id, listaId) {
       <textarea id="f-texto" spellcheck="false" placeholder="Cole a letra aqui, uma frase por linha.&#10;Deixe uma linha em branco entre as partes."></textarea>
       <div class="acoes">
         <a class="btn" id="buscar-letra" target="_blank" rel="noopener">Abrir no Cifra Club</a>
+        <a class="btn" id="buscar-versoes" target="_blank" rel="noopener">Procurar versões</a>
         <button class="btn primario" id="colar-letra" type="button">Colar letra</button>
       </div>
-      <p class="dica">Abra no Cifra Club, copie a cifra inteira e toque em Colar letra: o app tira os acordes, transforma [Refrão] em parte e já escreve as marcações da bateria. Se a página não for a música certa, procure lá pelo nome.</p>
+      <label class="campo">Link da versão no Cifra Club (opcional)<input id="f-cifra" type="url" inputmode="url" placeholder="https://www.cifraclub.com.br/artista/musica/..." autocomplete="off"></label>
+      <p class="dica">Achou a versão certa? Cole o link aqui e o "Abrir no Cifra Club" vai direto nela. Lá, copie a cifra inteira e toque em Colar letra: o app tira os acordes, separa as partes e já escreve as marcações da bateria.</p>
       <p class="dica">Linha que começa com <code>!</code> ou com <code>Bateria</code> vira marcação. A primeira palavra escolhe o ícone: sobe, desce, virada, prato, caixa, bumbo, chimbal, corte, condução, para, entra. <code>! nota</code> é recado livre, em rosa. Linha com <code>#</code> é o nome da parte (Verso, Refrão).</p>
 
       <section class="bloco">
@@ -1392,6 +1404,7 @@ async function telaEditor(id, listaId) {
     m.batidas = parseInt(f('batidas').value, 10) || 4;
     m.audioUrl = f('url').value.trim() || undefined;
     m.youtube = f('yt').value.trim() || undefined;
+    m.cifra = linkDeVersao(f('cifra').value) || undefined;
   }
   const guardarSemSair = () => { lerCampos(); guardar(m); };
   async function atualizarStatus() {
@@ -1490,7 +1503,15 @@ async function telaEditor(id, listaId) {
   };
   // abre a pesquisa da letra em outra aba; o Lucas copia e cola aqui
   const linkLetra = () => {
-    $('#buscar-letra').href = urlCifra(f('titulo').value.trim(), f('artista').value.trim());
+    $('#buscar-letra').href = urlCifra(f('titulo').value.trim(), f('artista').value.trim(), f('cifra').value);
+    $('#buscar-versoes').href = buscaVersoes(f('titulo').value.trim(), f('artista').value.trim());
+  };
+  f('cifra').value = m.cifra || '';
+  f('cifra').oninput = () => {
+    linkLetra();
+    const v = f('cifra').value.trim();
+    f('cifra').setCustomValidity(v && !linkDeVersao(v) ? 'Cole um link do Cifra Club (cifraclub.com.br) ou do Letras (letras.mus.br).' : '');
+    f('cifra').reportValidity();
   };
   $('#colar-letra').onclick = async () => {
     const letra = await lerLetraCopiada();
