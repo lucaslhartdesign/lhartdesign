@@ -370,6 +370,10 @@ if (dados.prefs.clique == null) dados.prefs.clique = 70;
 // ---------------- fonte da música: mp3 (aparelho ou site) ou vídeo do YouTube ----------------
 // as duas têm a mesma cara: play, pause, t (segundos), duracao, tocando, volume(0..1), destruir
 let ctxAudio = null;
+// iPhone: som que passa pelo Web Audio (volume e clique) fica mudo com a chave do silencioso.
+// "playback" diz ao iOS que isto é música, e aí toca mesmo no silencioso (Safari 16.4 ou mais novo).
+try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
+const ehIphone = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 function fonteAudio(src) {
   const a = new Audio(src); a.preload = 'auto';
   // o iPhone ignora audio.volume; passando por um GainNode o volume funciona em todo lugar.
@@ -382,6 +386,9 @@ function fonteAudio(src) {
       if (ganho === null) {
         try {
           if (!mesmaOrigem) throw 0;
+          // iPhone sem o recurso de música: toca direto (sem o volume do app, que use os botões do celular),
+          // senão a chave do silencioso cala tudo
+          if (ehIphone && !navigator.audioSession) throw 0;
           ctxAudio ||= new (window.AudioContext || window.webkitAudioContext)();
           ganho = ctxAudio.createGain();
           ctxAudio.createMediaElementSource(a).connect(ganho).connect(ctxAudio.destination);
@@ -1173,8 +1180,18 @@ async function telaPalco(id, listaId) {
     if (P.modo === 'manual') b.innerHTML = `${ICONE.proxima}<span>Próxima linha</span>`;
     else b.innerHTML = P.tocando ? `${ICONE.pause}<span>Pausar</span>` : `${ICONE.play}<span>Tocar</span>`;
   }
+  let avisouSemSom = false;
   async function tocar() {
     if (P.modo === 'manual') return irPara(P.atual + 1, true);
+    if (!P.fonte && !avisouSemSom) {
+      // sem música neste aparelho, o Tocar só anda o cronômetro: dizer por que não sai som
+      avisouSemSom = true;
+      aviso(m.audioNoSite && Nuvem.estado === 'entrar'
+        ? 'Sem som: o mp3 está no site, mas este celular não entrou com a senha. Volte à tela inicial, Guardar no site, e entre.'
+        : m.audioNoSite && Nuvem.estado !== 'ok'
+          ? 'Sem som: o mp3 está no site, mas não consegui baixar agora. Confira a internet e abra a música de novo.'
+          : 'Sem som: esta música não tem mp3 neste celular. A letra anda pelo cronômetro. Para ouvir: Som, Pôr o mp3, ou toque YouTube lá em cima.', 12000);
+    }
     if (P.modo === 'audio') {
       try { await P.fonte.play(); }
       catch { aviso('O navegador não deixou tocar. Toque de novo.'); return; }
