@@ -84,6 +84,24 @@ function interpretar(texto) {
   }
   return { itens, nLinhas: n };
 }
+// cifra colada do Cifra Club: tira as linhas de acorde e de tablatura, e "[Refrão]" vira "# Refrão".
+// Devolve null quando o texto não parece cifra (aí cola do jeito que veio).
+const ACORDE = /^\(?[A-G][#b]?(?:maj|min|dim|aug|sus|add|m|M|º|°|\+|-|\d|\(|\)|[#b]|\/[A-G][#b]?)*\)?$/;
+function limparCifra(texto) {
+  let acordes = 0, partes = 0;
+  const out = [];
+  for (const bruta of String(texto).split(/\r?\n/)) {
+    const l = bruta.trim();
+    const soAcordes = s => { const toks = s.split(/\s+/).filter(Boolean); return toks.length > 0 && toks.every(t => ACORDE.test(t) || /^[|x\d()]+$/i.test(t)); };
+    const sec = l.match(/^\[([^\]]+)\](.*)$/); // "[Intro] G D/F# Em" também é título de parte
+    if (sec && (!sec[2].trim() || soAcordes(sec[2]))) { partes++; out.push('', '# ' + sec[1].trim()); continue; }
+    if (soAcordes(l)) { acordes++; continue; }
+    if (/^[EADGBe]\s*\|/.test(l) || /-{3,}/.test(l) || /^(tom|capotraste|afinação)\b/i.test(l)) { acordes++; continue; }
+    out.push(l);
+  }
+  if (acordes < 2 && !partes) return null;
+  return { texto: out.join('\n').replace(/\n{3,}/g, '\n\n').trim(), acordes };
+}
 const linhasDe = texto => interpretar(texto).itens.filter(x => x.k === 'linha').map(x => x.txt);
 
 // ---------------- dados ----------------
@@ -916,7 +934,8 @@ async function telaPalco(id, listaId) {
     $('#bpm-num').textContent = m.bpm ? `${m.bpm} BPM` : 'sem BPM';
     $('#vol-clique-num').textContent = dados.prefs.clique;
     $('#clique-info').textContent = !m.bpm ? 'Informe o BPM (em Editar ou no + e −) para ligar o clique.'
-      : `${batidas()} tempos por compasso. Se o 1 estiver fora, toque "Bater no 1" junto com o primeiro tempo de um compasso.`;
+      : (m.bpmConferir ? 'BPM tirado do mp3: pode estar na metade ou no dobro. Confira com "Bater o tempo". ' : '')
+        + `${batidas()} tempos por compasso. Se o 1 estiver fora, toque "Bater no 1" junto com o primeiro tempo de um compasso.`;
   }
   function guardarAjuste() { const { origem, ...c } = m; dados.locais[m.id] = JSON.parse(JSON.stringify(c)); salvar(); }
   $('#vol-clique').value = dados.prefs.clique;
@@ -930,7 +949,7 @@ async function telaPalco(id, listaId) {
     mostrarClique();
   };
   const mudarBpm = d => {
-    m.bpm = Math.max(30, Math.min(260, (m.bpm || 100) + d));
+    m.bpm = Math.max(30, Math.min(260, (m.bpm || 100) + d)); delete m.bpmConferir;
     cliqueDoZero(); mostrarClique(); guardarAjuste();
   };
   $('#bpm-menos').onclick = () => mudarBpm(-1);
@@ -946,7 +965,7 @@ async function telaPalco(id, listaId) {
     const dif = toques.slice(1).map((x, i) => x - toques[i]).sort((a, c) => a - c);
     const bpm = Math.round(60000 / dif[Math.floor(dif.length / 2)]);
     if (bpm < 30 || bpm > 260) return;
-    m.bpm = bpm;
+    m.bpm = bpm; delete m.bpmConferir;
     b.textContent = `${bpm} BPM. Pare para fixar, ou continue para refinar`;
     cliqueDoZero(); mostrarClique(); guardarAjuste();
     clearTimeout(b._fim);
@@ -1094,7 +1113,8 @@ async function telaEditor(id, listaId) {
         <button class="btn" type="button" data-ins="# " style="--cor:var(--muted)">Parte</button>
       </div>
       <textarea id="f-texto" spellcheck="false" placeholder="Cole a letra aqui, uma frase por linha.&#10;Deixe uma linha em branco entre as partes."></textarea>
-      <div class="acoes"><a class="btn" id="buscar-letra" target="_blank" rel="noopener">Buscar letra</a></div>
+      <div class="acoes"><a class="btn" id="buscar-letra" target="_blank" rel="noopener">Buscar no Cifra Club</a></div>
+      <p class="dica">Pode colar a cifra inteira: o app tira os acordes e transforma [Refrão] em parte. Depois use "Sugerir pela letra" lá embaixo para as marcações da bateria.</p>
       <p class="dica">Linha que começa com <code>!</code> ou com <code>Bateria</code> vira marcação. A primeira palavra escolhe o ícone: sobe, desce, virada, prato, corte, condução, para, entra. Linha com <code>#</code> é o nome da parte (Verso, Refrão).</p>
 
       <section class="bloco">
@@ -1233,8 +1253,18 @@ async function telaEditor(id, listaId) {
   };
   // abre a pesquisa da letra em outra aba; o Lucas copia e cola aqui
   const linkLetra = () => {
-    $('#buscar-letra').href = 'https://www.google.com/search?q=' + encodeURIComponent(`letra ${f('titulo').value} ${f('artista').value}`.trim());
+    $('#buscar-letra').href = 'https://www.google.com/search?q=' + encodeURIComponent(`site:cifraclub.com.br ${f('titulo').value} ${f('artista').value}`.trim());
   };
+  ta.addEventListener('paste', ev => {
+    const colado = ev.clipboardData && ev.clipboardData.getData('text');
+    const r = colado && limparCifra(colado);
+    if (!r) return;
+    ev.preventDefault();
+    const ini = ta.selectionStart, fim = ta.selectionEnd;
+    ta.value = ta.value.slice(0, ini) + r.texto + ta.value.slice(fim);
+    ta.setSelectionRange(ini + r.texto.length, ini + r.texto.length);
+    aviso(`Colei só a letra: tirei ${r.acordes} linha(s) de acorde.`);
+  });
   f('titulo').oninput = f('artista').oninput = linkLetra;
   linkLetra();
   f('comp').oninput = atualizarStatus;
