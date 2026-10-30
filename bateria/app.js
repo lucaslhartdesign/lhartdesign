@@ -90,7 +90,14 @@ const linhasDe = texto => interpretar(texto).itens.filter(x => x.k === 'linha').
 const CHAVE = 'mapabateria.v1';
 let dados;
 try { dados = JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch { dados = {}; }
-dados.locais ||= {}; dados.ocultas ||= []; dados.listas ||= []; dados.prefs ||= {};
+dados.locais ||= {}; dados.ocultas ||= []; dados.listas ||= []; dados.prefs ||= {}; dados.listasApagadas ||= [];
+// ensaios que vêm no musicas.js entram na lista uma vez; dali em diante são editados como qualquer outro
+function trazerListasDoSite() {
+  (Array.isArray(window.LISTAS_DO_SITE) ? window.LISTAS_DO_SITE : []).forEach(l => {
+    if (!dados.listas.some(x => x.id === l.id) && !dados.listasApagadas.includes(l.id)) dados.listas.push(JSON.parse(JSON.stringify(l)));
+  });
+}
+trazerListasDoSite();
 dados.prefs.escala ||= 1;
 function gravarLocal() {
   try { localStorage.setItem(CHAVE, JSON.stringify(dados)); }
@@ -122,6 +129,8 @@ const Nuvem = {
     dados.locais = Object.fromEntries((b.musicas || []).map(m => [m.id, m]));
     dados.listas = b.listas || [];
     dados.ocultas = b.ocultas || [];
+    dados.listasApagadas = b.listasApagadas || dados.listasApagadas;
+    trazerListasDoSite();
     gravarLocal();
   },
   agendar() {
@@ -130,7 +139,7 @@ const Nuvem = {
     this.timer = setTimeout(() => this.enviar(), 1200);
   },
   async enviar() {
-    const corpo = { key: 'bateria', data: { musicas: Object.values(dados.locais), listas: dados.listas, ocultas: dados.ocultas } };
+    const corpo = { key: 'bateria', data: { musicas: Object.values(dados.locais), listas: dados.listas, ocultas: dados.ocultas, listasApagadas: dados.listasApagadas } };
     try {
       const r = await this.pedir('/api/admin/save', { method: 'POST', body: JSON.stringify(corpo) });
       if (r.status === 401) this.estado = 'entrar';
@@ -661,7 +670,9 @@ function telaEnsaio(id) {
     app.querySelectorAll('[data-por]').forEach(b => b.onclick = () => { l.musicas.push(b.dataset.por); salvar(); desenhar(); });
     $('#l-apagar').onclick = () => {
       if (!confirm(`Apagar o ensaio "${l.nome}"? As músicas continuam.`)) return;
-      dados.listas = dados.listas.filter(x => x !== l); salvar(); location.hash = '#/';
+      dados.listas = dados.listas.filter(x => x !== l);
+      if (!dados.listasApagadas.includes(l.id)) dados.listasApagadas.push(l.id);
+      salvar(); location.hash = '#/';
     };
   };
   desenhar();
@@ -707,7 +718,8 @@ async function telaPalco(id, listaId) {
       <h1>${esc(m.titulo || 'Sem nome')}</h1><a class="btn" href="#/e/${encodeURIComponent(m.id)}${ensaio ? '/' + encodeURIComponent(ensaio.id) : ''}">Editar</a></header>
     ${barraEnsaio}
     <canvas class="faixa" id="faixa" aria-label="Intensidade da música; toque para pular"></canvas>
-    <main class="rolagem palco" id="palco"><div class="yt" id="yt" hidden></div>${renderItens(itens)}<div class="fim"></div></main>
+    <main class="rolagem palco" id="palco"><div class="yt" id="yt" hidden></div>${nLinhas ? renderItens(itens)
+      : `<p class="vazio">Esta música ainda não tem letra. Dá para ouvir com o clique; para a letra aparecer, toque em <a href="#/e/${encodeURIComponent(m.id)}${ensaio ? '/' + encodeURIComponent(ensaio.id) : ''}">Editar</a> e cole.</p>`}<div class="fim"></div></main>
     <footer class="controle">
       <div class="proxima" id="proxima" aria-live="polite"></div>
       <div class="botoes">
@@ -738,6 +750,7 @@ async function telaPalco(id, listaId) {
           <button class="btn icone" id="bpm-mais" type="button" aria-label="BPM mais rápido">+</button>
           <button class="btn" id="bater1" type="button">Bater no 1</button>
         </div>
+        <button class="btn bater-tempo" id="bater-tempo" type="button">Bater o tempo junto com a música</button>
         <p class="dica" id="clique-info"></p>
       </div>
     </footer>`;
@@ -922,6 +935,23 @@ async function telaPalco(id, listaId) {
   };
   $('#bpm-menos').onclick = () => mudarBpm(-1);
   $('#bpm-mais').onclick = () => mudarBpm(1);
+  // tap tempo: 4 toques ou mais no ritmo viram o BPM; parar 2 s recomeça a contagem
+  let toques = [];
+  $('#bater-tempo').onclick = () => {
+    const t = agora();
+    if (toques.length && t - toques[toques.length - 1] > 2000) toques = [];
+    toques.push(t); toques = toques.slice(-9);
+    const b = $('#bater-tempo');
+    if (toques.length < 4) { b.textContent = `Continue batendo… ${toques.length}`; return; }
+    const dif = toques.slice(1).map((x, i) => x - toques[i]).sort((a, c) => a - c);
+    const bpm = Math.round(60000 / dif[Math.floor(dif.length / 2)]);
+    if (bpm < 30 || bpm > 260) return;
+    m.bpm = bpm;
+    b.textContent = `${bpm} BPM. Pare para fixar, ou continue para refinar`;
+    cliqueDoZero(); mostrarClique(); guardarAjuste();
+    clearTimeout(b._fim);
+    b._fim = setTimeout(() => { b.textContent = 'Bater o tempo junto com a música'; toques = []; }, 2200);
+  };
   $('#bater1').onclick = () => {
     if (!m.bpm) { aviso('Informe o BPM antes.'); return; }
     ctxClique();
@@ -1064,6 +1094,7 @@ async function telaEditor(id, listaId) {
         <button class="btn" type="button" data-ins="# " style="--cor:var(--muted)">Parte</button>
       </div>
       <textarea id="f-texto" spellcheck="false" placeholder="Cole a letra aqui, uma frase por linha.&#10;Deixe uma linha em branco entre as partes."></textarea>
+      <div class="acoes"><a class="btn" id="buscar-letra" target="_blank" rel="noopener">Buscar letra</a></div>
       <p class="dica">Linha que começa com <code>!</code> ou com <code>Bateria</code> vira marcação. A primeira palavra escolhe o ícone: sobe, desce, virada, prato, corte, condução, para, entra. Linha com <code>#</code> é o nome da parte (Verso, Refrão).</p>
 
       <section class="bloco">
@@ -1200,6 +1231,12 @@ async function telaEditor(id, listaId) {
     delete m.energia; delete m.duracao; delete m.primeiroSom;
     guardarSemSair(); atualizarStatus();
   };
+  // abre a pesquisa da letra em outra aba; o Lucas copia e cola aqui
+  const linkLetra = () => {
+    $('#buscar-letra').href = 'https://www.google.com/search?q=' + encodeURIComponent(`letra ${f('titulo').value} ${f('artista').value}`.trim());
+  };
+  f('titulo').oninput = f('artista').oninput = linkLetra;
+  linkLetra();
   f('comp').oninput = atualizarStatus;
   f('yt').oninput = f('url').oninput = atualizarStatus;
   atualizarStatus();

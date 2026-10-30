@@ -40,6 +40,7 @@ module.exports = async (req, res) => {
       musicas: data.musicas.filter((m) => m && typeof m.id === 'string' && typeof m.texto === 'string').slice(0, 400),
       listas: Array.isArray(data.listas) ? data.listas.filter((l) => l && typeof l.id === 'string').slice(0, 200) : [],
       ocultas: Array.isArray(data.ocultas) ? data.ocultas.filter((x) => typeof x === 'string').slice(0, 400) : [],
+      listasApagadas: Array.isArray(data.listasApagadas) ? data.listasApagadas.filter((x) => typeof x === 'string').slice(0, 400) : [],
       atualizado: Date.now(),
     };
     const json = JSON.stringify(clean);

@@ -1,6 +1,6 @@
-// Guarda o app no celular para abrir mesmo sem internet na igreja.
-// Sempre tenta a rede primeiro (pega a versão nova do site) e usa a cópia guardada se falhar.
-const CACHE = 'mapabateria-v1';
+﻿// Guarda o app no celular para abrir mesmo sem internet na igreja.
+// Sempre tenta a rede primeiro (pega a versÃ£o nova do site) e usa a cÃ³pia guardada se falhar.
+const CACHE = 'mapabateria-v2';
 const BASE = ['./', 'index.html', 'style.css', 'app.js', 'musicas.js', 'icone.svg', 'icone-192.png', 'manifest.webmanifest'];
 
 self.addEventListener('install', e => {

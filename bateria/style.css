@@ -34,6 +34,7 @@ body {
 }
 #app { height: 100dvh; display: flex; flex-direction: column; max-width: 900px; margin: 0 auto; }
 svg { fill: currentColor; }
+[hidden] { display: none !important; }
 :focus-visible { outline: 3px solid var(--c-desce); outline-offset: 2px; }
 
 /* ---------- peças comuns ---------- */
@@ -169,6 +170,8 @@ svg { fill: currentColor; }
 .clique-ajuste .bpm { min-width: 76px; text-align: center; font-family: var(--f-deixa); font-size: 1.2rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .clique-ajuste #bater1 { margin-left: auto; }
 .som .dica { margin: 6px 0 0; font-size: .85rem; }
+.bater-tempo { width: 100%; margin-top: 8px; min-height: 48px; }
+.palco .vazio a { color: var(--c-prato); }
 
 /* modo palco: tocando, só fica o que se lê de longe */
 #app.tocando .topo, #app.tocando .ensaio-barra, #app.tocando .opcoes, #app.tocando .som { display: none; }
