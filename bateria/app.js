@@ -699,8 +699,10 @@ function pararTudo() {
   try { P.lock && P.lock.release(); } catch {}
   P = null;
 }
+let edFonte = null; // música tocando dentro do Editar
 function rota() {
   pararTudo();
+  if (edFonte) { edFonte.destruir(); edFonte = null; }
   const [, tipo, id, extra] = (location.hash.slice(1) || '/').split('/');
   if (tipo === 'm' && id) telaPalco(decodeURIComponent(id), extra ? decodeURIComponent(extra) : null);
   else if (tipo === 'l' && id) telaEnsaio(decodeURIComponent(id));
@@ -1026,11 +1028,13 @@ async function telaPalco(id, listaId) {
     pausar(); fecharFolha();
     const { origem, ...copia } = m;
     const alvo = JSON.parse(JSON.stringify(copia));
-    gravarMarcacoes(alvo, (marcas, fonteTipo) => {
+    gravarMarcacoes(alvo, (marcas, fonteTipo, novosTempos) => {
       if (!marcas) { if (P === meuClique) rota(); return; }
       m.marcas = marcas; m.marcasFonte = fonteTipo;
+      if (novosTempos) { m.tempos = novosTempos; m.temposFonte = fonteTipo; }
       guardarAjuste();
-      aviso(`${marcas.length} marcação(ões) gravada(s).` + (marcados ? '' : ' Para elas aparecerem em cima da letra, marque os tempos em Editar; a contagem na barra já funciona.'), 8000);
+      const naLetra = marcados || novosTempos;
+      aviso(`${marcas.length} marcação(ões) gravada(s)` + (naLetra ? ', já em cima da letra.' : (nLinhas ? '. Para irem para a letra, grave de novo tocando "Próxima linha" quando o cantor mudar de linha.' : '.')), 9000);
       if (P === meuClique) rota();
     });
   };
@@ -1403,7 +1407,9 @@ const PALETA = [
   ['caixa', '! caixa '], ['bumbo', '! bumbo '], ['chimbal', '! chimbal '],
   ['corte', '! corte '], ['conducao', '! condução '], ['pausa', '! para '], ['entra', '! entra '],
   ['livre', '! nota '],
+  ['entra', '! entra forte ', 'Começa forte'], ['desce', '! entra fraco ', 'Começa fraco'],
 ];
+const PARTES = ['Intro', 'Verso', 'Pré-refrão', 'Refrão', 'Ponte', 'Solo', 'Final'];
 async function telaEditor(id, listaId) {
   const voltarPara = mid => '#/m/' + encodeURIComponent(mid) + (listaId ? '/' + encodeURIComponent(listaId) : '');
   const nova = id === 'novo';
@@ -1423,10 +1429,30 @@ async function telaEditor(id, listaId) {
         <label class="campo">Artista<input id="f-artista" autocomplete="off"></label>
         <label class="campo">BPM<input id="f-bpm" type="number" inputmode="numeric" min="30" max="260"></label>
       </div>
+      <div class="yt" id="ed-yt" hidden></div>
+      <div class="ed-fixo">
+      <div class="ed-player">
+        <button class="btn" id="ed-volta" type="button" aria-label="Voltar 5 segundos">− 5 s</button>
+        <button class="btn primario" id="ed-play" type="button">${ICONE.play}Ouvir a música</button>
+        <button class="btn" id="ed-frente" type="button" aria-label="Avançar 5 segundos">+ 5 s</button>
+        <span class="ed-tempo" id="ed-tempo"></span>
+      </div>
+      <div class="ed-linha" id="ed-linha" hidden>
+        <span id="ed-cantando"></span>
+        <span class="ed-linha-bts" id="ed-linha-bts" hidden>
+          <button class="btn" id="ed-linha-volta" type="button" aria-label="Linha anterior">${ICONE.anterior}</button>
+          <button class="btn primario" id="ed-linha-prox" type="button">Próxima linha</button>
+        </span>
+      </div>
       <div class="paleta" role="toolbar" aria-label="Inserir marcação acima da linha do cursor">
-        ${PALETA.map(([t, ins]) => `<button class="btn" type="button" data-ins="${esc(ins)}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}
-        <button class="btn" type="button" data-ins="# " style="--cor:var(--muted)">Parte</button>
+        ${PALETA.map(([t, ins, rot]) => `<button class="btn" type="button" data-ins="${esc(ins)}" style="--cor:var(--c-${t})">${ICONE[t]}${rot || TIPOS[t]}</button>`).join('')}
         <button class="btn" type="button" data-virar="1" style="--cor:var(--c-livre)">${ICONE.lapis}Linha → nota</button>
+      </div>
+      <div class="paleta partes" role="toolbar" aria-label="Pôr o nome da parte">
+        <span class="rotulo-partes">Partes:</span>
+        ${PARTES.map(p => `<button class="btn" type="button" data-ins="# ${p}" style="--cor:var(--text)">${p}</button>`).join('')}
+        <button class="btn" type="button" data-ins="# " style="--cor:var(--muted)">Outra</button>
+      </div>
       </div>
       <textarea id="f-texto" spellcheck="false" placeholder="Cole a letra aqui, uma frase por linha.&#10;Deixe uma linha em branco entre as partes."></textarea>
       <div class="acoes">
@@ -1511,9 +1537,94 @@ async function telaEditor(id, listaId) {
     desenharEnergia(cvE, m, null, m.tempos);
   }
 
+  // ---- ouvir a música no Editar: com tempos marcados, o botão colorido entra em cima da linha cantada agora ----
+  // sem tempos marcados: ele toca "Próxima linha" quando o cantor muda; isso já vira os tempos da música
+  let edNovos = null, edPtr = -1;
+  function linhaCantada() {
+    if (!edFonte) return -1;
+    if (edNovos) return edPtr;
+    const tt = ta.value === textoGuardado ? m.tempos : remapear(textoGuardado, ta.value, m.tempos);
+    const n = linhasDe(ta.value).length, ef = temposEfetivos({ ...m, tempos: tt }, n);
+    if (!ef.marcados) return -1;
+    const t = edFonte.t + 0.3;
+    let i = -1; while (i + 1 < n && ef.tempos[i + 1] <= t) i++;
+    return i;
+  }
+  function inicioDaLinhaDeLetra(i) { // posição (em caracteres) da i-ésima linha de letra no texto
+    let pos = 0, k = 0;
+    for (const l of ta.value.split('\n')) {
+      const s = l.trim();
+      if (s && !s.startsWith('#') && !ehDeixa(s)) { if (k === i) return pos; k++; }
+      pos += l.length + 1;
+    }
+    return -1;
+  }
+  let edRaf = 0, edTocava = null;
+  function edRelogio() {
+    if (!edFonte || !document.body.contains(ta)) return;
+    $('#ed-tempo').textContent = mmss(edFonte.t) + (edFonte.duracao ? ' / ' + mmss(edFonte.duracao) : '');
+    if (edTocava !== edFonte.tocando) {
+      edTocava = edFonte.tocando;
+      $('#ed-play').innerHTML = edFonte.tocando ? `${ICONE.pause}Pausar` : `${ICONE.play}Tocar`;
+    }
+    const i = linhaCantada(), lin = linhasDe(ta.value), manual = !!edNovos || !temposMarcadosAntes;
+    $('#ed-linha').hidden = !lin.length;
+    $('#ed-linha-bts').hidden = !manual;
+    $('#ed-cantando').textContent = i >= 0 ? 'Cantando agora: ' + lin[i]
+      : manual ? 'Toque Próxima linha quando começar a cantar: ' + (lin[0] || '') : '';
+    edRaf = requestAnimationFrame(edRelogio);
+  }
+  let temposMarcadosAntes = false;
+  $('#ed-linha-prox').onclick = () => {
+    if (!edFonte || !edFonte.tocando) { aviso('Toque em Tocar primeiro.'); return; }
+    const n = linhasDe(ta.value).length;
+    if (!edNovos) { edNovos = new Array(n).fill(null); edPtr = -1; }
+    if (edPtr >= n - 1) { aviso('Essa já é a última linha.'); return; }
+    edPtr++; edNovos[edPtr] = Math.max(0, Math.round((edFonte.t - 0.12) * 100) / 100);
+    // vira os tempos da música (o texto atual é a referência deles)
+    m.tempos = edNovos.slice(); m.temposFonte = edFonte.tipo; textoGuardado = ta.value;
+  };
+  $('#ed-linha-volta').onclick = () => {
+    if (!edNovos || edPtr < 0) return;
+    edNovos[edPtr] = null; edPtr--;
+    m.tempos = edNovos.slice(); textoGuardado = ta.value;
+  };
+  $('#ed-play').onclick = async () => {
+    if (!edFonte) {
+      lerCampos();
+      const b = $('#ed-play'); b.disabled = true; b.textContent = 'Carregando a música…';
+      edFonte = await abrirFonte(m, $('#ed-yt'));
+      b.disabled = false; b.innerHTML = `${ICONE.play}Ouvir a música`;
+      if (!edFonte) { aviso('Esta música ainda não tem mp3. Ponha em "Escolher mp3" lá embaixo, ou escolha YouTube no palco.', 8000); return; }
+      edFonte.volume(dados.prefs.volume / 100);
+      temposMarcadosAntes = temposEfetivos(m, linhasDe(ta.value).length).marcados;
+      edTocava = null; cancelAnimationFrame(edRaf); edRelogio();
+      if (!linhasDe(ta.value).length) aviso('Cole a letra para ir marcando em cima dela.');
+      else if (!temposMarcadosAntes)
+        aviso('Toque "Próxima linha" sempre que o cantor mudar de linha. Os botões coloridos entram em cima da linha cantada.', 9000);
+    }
+    if (edFonte.tocando) edFonte.pause();
+    else { try { await edFonte.play(); } catch { aviso('Toque de novo para a música começar.'); } }
+  };
+  $('#ed-volta').onclick = () => { if (edFonte) edFonte.t = Math.max(0, edFonte.t - 5); };
+  $('#ed-frente').onclick = () => { if (edFonte) edFonte.t = edFonte.t + 5; };
+
   app.querySelectorAll('.paleta button').forEach(b => b.onclick = () => {
     const ins = b.dataset.ins, v = ta.value, pos = ta.selectionStart;
-    const ini = v.lastIndexOf('\n', pos - 1) + 1;   // começo da linha do cursor
+    let ini = v.lastIndexOf('\n', pos - 1) + 1;   // começo da linha do cursor
+    // música tocando e tempos marcados: vai para cima da linha que está sendo cantada
+    const cantada = !b.dataset.virar && edFonte && edFonte.tocando ? linhaCantada() : -1;
+    if (cantada >= 0) {
+      const p = inicioDaLinhaDeLetra(cantada); if (p >= 0) ini = p;
+      // nome de parte vai acima das marcações que já estão em cima da linha
+      if (ins.startsWith('#')) {
+        while (ini > 0) {
+          const antes = v.lastIndexOf('\n', ini - 2) + 1, l = v.slice(antes, ini - 1).trim();
+          if (!ehDeixa(l)) break;
+          ini = antes;
+        }
+      }
+    }
     if (b.dataset.virar) {
       // a linha do cursor vira anotação (cor própria); se já for, volta a ser letra
       let fimL = v.indexOf('\n', ini); if (fimL < 0) fimL = v.length;
@@ -1525,7 +1636,10 @@ async function telaEditor(id, listaId) {
     }
     ta.value = v.slice(0, ini) + ins + '\n' + v.slice(ini);
     const cursor = ini + ins.length;
-    ta.focus(); ta.setSelectionRange(cursor, cursor);
+    if (cantada >= 0) { // tocando: não abre o teclado do celular; só mostra onde entrou
+      ta.setSelectionRange(cursor, cursor);
+      aviso(`Marcado em cima de: ${linhasDe(ta.value)[cantada]}`, 2500);
+    } else { ta.focus(); ta.setSelectionRange(cursor, cursor); }
   });
 
   $('#a-arquivo').onchange = async ev => {
@@ -1632,6 +1746,14 @@ async function gravarMarcacoes(m, fim) {
   el.innerHTML = `
     <div class="yt" id="g-yt" hidden></div>
     <div class="m-topo"><span id="g-linha" class="g-linha"></span><span id="g-tempo">0:00</span></div>
+    <div class="g-letra" id="g-letra" hidden>
+      <p class="g-agora" id="g-agora"></p>
+      <p class="g-seguinte" id="g-seguinte"></p>
+      <div class="g-linha-bts">
+        <button class="btn" id="g-linha-volta" type="button">Linha anterior</button>
+        <button class="btn primario" id="g-linha-prox" type="button">Próxima linha</button>
+      </div>
+    </div>
     <div class="g-tipos">${TIPOS_GRAVAR.map(t => `<button class="btn" data-t="${t}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}</div>
     <div class="g-transporte">
       <button class="btn" id="g-volta" aria-label="Voltar 5 segundos">− 5 s</button>
@@ -1651,6 +1773,30 @@ async function gravarMarcacoes(m, fim) {
   const linhas = linhasDe(m.texto), tem = temposEfetivos(m, linhas.length);
   const lista = $('#g-lista', el);
   let raf = 0, saiu = false, tocandoAntes = null;
+  // letra sem tempos: na mesma passada ele toca "Próxima linha" quando o cantor muda de linha.
+  // É isso que diz ao app em que linha cai cada marcação.
+  const marcandoLinhas = linhas.length > 0 && !tem.marcados;
+  const novos = new Array(linhas.length).fill(null);
+  let ptr = -1;
+  const mostrarLinhaAtual = () => {
+    $('#g-agora', el).textContent = ptr >= 0 ? linhas[ptr] : 'Toque Próxima linha quando começar: ' + linhas[0];
+    $('#g-seguinte', el).textContent = linhas[ptr + 1] ? 'depois: ' + linhas[ptr + 1] : (ptr >= 0 ? 'última linha' : '');
+  };
+  const acharPtr = () => { // depois de voltar a música, a linha atual acompanha
+    let k = -1; novos.forEach((x, i) => { if (x != null && x <= fonte.t + 0.1) k = i; });
+    ptr = k; mostrarLinhaAtual();
+  };
+  if (marcandoLinhas) {
+    $('#g-letra', el).hidden = false;
+    $('#g-linha-prox', el).onclick = () => {
+      if (!fonte.tocando) { aviso('Toque em Tocar primeiro.'); return; }
+      if (ptr >= linhas.length - 1) { aviso('Essa já é a última linha.'); return; }
+      ptr++; novos[ptr] = Math.max(0, Math.round((fonte.t - 0.12) * 100) / 100);
+      mostrarLinhaAtual();
+    };
+    $('#g-linha-volta', el).onclick = () => { if (ptr >= 0) { novos[ptr] = null; ptr--; mostrarLinhaAtual(); } };
+    mostrarLinhaAtual();
+  }
   function desenharLista() {
     marcas.sort((a, b) => a.t - b.t);
     lista.innerHTML = marcas.length ? marcas.map((x, i) => `
@@ -1669,7 +1815,7 @@ async function gravarMarcacoes(m, fim) {
     const d = b.dataset;
     if (d.menos) marcas[+d.menos].t = Math.max(0, Math.round((marcas[+d.menos].t - 0.5) * 100) / 100);
     else if (d.mais) marcas[+d.mais].t = Math.round((marcas[+d.mais].t + 0.5) * 100) / 100;
-    else if (d.ouvir) { fonte.t = Math.max(0, marcas[+d.ouvir].t - 3); fonte.play().catch(() => {}); }
+    else if (d.ouvir) { fonte.t = Math.max(0, marcas[+d.ouvir].t - 3); fonte.play().catch(() => {}); if (marcandoLinhas) acharPtr(); }
     else if (d.tirar) marcas.splice(+d.tirar, 1);
     desenharLista();
   };
@@ -1680,14 +1826,14 @@ async function gravarMarcacoes(m, fim) {
     b.classList.remove('pisca'); void b.offsetWidth; b.classList.add('pisca');
   });
   play.onclick = async () => { if (fonte.tocando) fonte.pause(); else { try { await fonte.play(); } catch { aviso('Toque de novo para a música começar.'); } } };
-  $('#g-volta', el).onclick = () => { fonte.t = Math.max(0, fonte.t - 5); };
+  $('#g-volta', el).onclick = () => { fonte.t = Math.max(0, fonte.t - 5); if (marcandoLinhas) setTimeout(acharPtr, 50); };
   $('#g-frente', el).onclick = () => { fonte.t = fonte.t + 5; };
   function relogio() {
     if (saiu) return;
     const t = fonte.t;
     $('#g-tempo', el).textContent = mmss(t) + (fonte.duracao ? ' / ' + mmss(fonte.duracao) : '');
     let linha = '';
-    if (tem.tempos) {
+    if (tem.marcados) {
       let i = -1; while (i + 1 < linhas.length && tem.tempos[i + 1] <= t + 0.2) i++;
       linha = i >= 0 ? linhas[i] : (linhas[0] ? 'Antes de: ' + linhas[0] : '');
     }
@@ -1697,7 +1843,8 @@ async function gravarMarcacoes(m, fim) {
   }
   function sair(salvar) {
     saiu = true; cancelAnimationFrame(raf); fonte.destruir(); el.remove();
-    fim(salvar ? marcas.sort((a, b) => a.t - b.t) : null, fonte.tipo);
+    const marcadas = novos.filter(x => x != null).length;
+    fim(salvar ? marcas.sort((a, b) => a.t - b.t) : null, fonte.tipo, salvar && marcadas >= 2 ? novos : null);
   }
   $('#g-cancelar', el).onclick = () => { if (marcas.length && !confirm('Sair sem salvar as marcações?')) return; sair(false); };
   $('#g-ok', el).onclick = () => sair(true);
