@@ -640,11 +640,14 @@ async function analisarAudio(blob) {
 function desenharEnergia(cv, m, t, marcas) {
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
   if (!w) return;
-  if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+  if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
   const g = cv.getContext('2d');
   g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
   const css = getComputedStyle(document.documentElement), cor = v => css.getPropertyValue(v).trim();
   const dur = m.duracao || 0, e = m.energia;
+  // trilha sempre visível (mesmo sem a análise do mp3): o dedo sempre acha onde tocar para pular
+  g.fillStyle = cor('--line'); g.fillRect(0, h / 2 - 2, w, 4);
+  if (t != null && dur) { g.fillStyle = cor('--c-prato'); g.fillRect(0, h / 2 - 2, Math.min(w, t / dur * w), 4); }
   if (e && e.length && dur) {
     const passo = w / e.length;
     g.fillStyle = cor('--c-desce');
@@ -656,7 +659,15 @@ function desenharEnergia(cv, m, t, marcas) {
     g.globalAlpha = 1;
   }
   if (marcas && dur) { g.fillStyle = cor('--muted'); marcas.forEach(x => { if (x != null) g.fillRect(x / dur * w, 0, 1, 5); }); }
-  if (t != null && dur) { g.fillStyle = cor('--c-prato'); g.fillRect(Math.min(w - 2, t / dur * w), 0, 2, h); }
+  if (t != null && dur) {
+    const px = Math.min(w - 2, t / dur * w);
+    g.fillStyle = cor('--c-prato'); g.fillRect(px, 0, 3, h);
+    g.beginPath(); g.arc(px + 1.5, h / 2, 7, 0, 7); g.fill();
+    // hora atual / total, do lado oposto ao ponteiro para não ficar em cima dele
+    g.font = '600 13px system-ui, sans-serif'; g.textBaseline = 'top'; g.fillStyle = cor('--text');
+    const txt = `${mmss(t)} / ${mmss(dur)}`;
+    g.textAlign = px > w / 2 ? 'left' : 'right'; g.fillText(txt, px > w / 2 ? 6 : w - 6, 3);
+  }
 }
 
 // ---------------- sugestões de marcação ----------------
@@ -1195,9 +1206,7 @@ async function telaPalco(id, listaId) {
   function irPara(i, doUsuario) {
     i = Math.max(-1, Math.min(nLinhas - 1, i));
     if (doUsuario && tempos && i >= 0 && P.modo !== 'manual') {
-      if (P.modo === 'audio') P.fonte.t = tempos[i];
-      else { P.base = tempos[i]; P.t0 = agora(); }
-      if (P.cliqueDoZero) P.cliqueDoZero();
+      pularPara(tempos[i]);
     }
     if (i === P.atual) return;
     P.atual = i;
@@ -1232,8 +1241,16 @@ async function telaPalco(id, listaId) {
     else b.innerHTML = P.tocando ? `${ICONE.pause}<span>Pausar</span>` : `${ICONE.play}<span>Tocar</span>`;
   }
   let avisouSemSom = false;
+  // pula a música (ou o cronômetro) para t segundos e lembra: o Tocar seguinte começa daí, não do começo
+  function pularPara(t) {
+    P.alvoT = t;
+    if (P.modo === 'audio' && P.fonte) { try { P.fonte.t = t; } catch {} }
+    else { P.base = t; P.t0 = agora(); }
+    if (P.cliqueDoZero) P.cliqueDoZero();
+  }
   async function tocar() {
     if (P.modo === 'manual') return irPara(P.atual + 1, true);
+    if (P.modo === 'audio' && P.fonte && P.alvoT != null && Math.abs(P.fonte.t - P.alvoT) > 0.4) { try { P.fonte.t = P.alvoT; } catch {} }
     if (!P.fonte && !avisouSemSom) {
       // sem música neste aparelho, o Tocar só anda o cronômetro: dizer por que não sai som
       avisouSemSom = true;
@@ -1246,6 +1263,9 @@ async function telaPalco(id, listaId) {
     if (P.modo === 'audio') {
       try { await P.fonte.play(); }
       catch { aviso('O navegador não deixou tocar. Toque de novo.'); return; }
+      // iPhone: o pulo feito antes de o mp3 estar pronto é ignorado; refaz com a música já tocando
+      if (P.alvoT != null && Math.abs(P.fonte.t - P.alvoT) > 1) { try { P.fonte.t = P.alvoT; } catch {} }
+      P.alvoT = null;
       if (P.fonte.tipo === 'youtube') setTimeout(() => { if (P && P.fonte && !P.fonte.tocando && P.modo === 'audio') aviso('Se o vídeo não começou, toque nele uma vez. Depois o botão funciona.', 6000); }, 1500);
     }
     else P.t0 = agora();
@@ -1504,10 +1524,9 @@ async function telaPalco(id, listaId) {
       acertarLetra(t); aviso(`A letra agora começa em ${mmss(t)}.`);
       return;
     }
-    if (P.modo === 'manual' || !tempos) return;
-    const t = xParaT(ev.offsetX);
-    if (P.modo === 'audio') P.fonte.t = t; else { P.base = t; P.t0 = agora(); }
-    if (P.cliqueDoZero) P.cliqueDoZero();
+    if (P.modo === 'manual' || !duracao()) return;
+    pularPara(xParaT(ev.offsetX));
+    desenhar();
   };
   $('#ac-agora').onclick = () => {
     if (!P.fonte || !P.fonte.tocando) { aviso('Toque Tocar e aperte aqui quando o cantor começar a primeira linha.'); return; }
@@ -2049,6 +2068,14 @@ async function marcarTempos(linhas, m, fim) {
     <p class="m-prox" id="m-prox"></p>
     <p class="m-depois" id="m-depois"></p>
     <button class="btn primario enorme" id="m-toque"></button>
+    <div class="m-controle" id="m-controle" hidden>
+      <input type="range" id="m-pos" min="0" max="0" step="0.1" value="0" aria-label="Ponto da música">
+      <div class="acoes">
+        <button class="btn" id="m-menos" type="button">◀ 10 s</button>
+        <button class="btn" id="m-pausa" type="button">Pausar</button>
+        <button class="btn" id="m-mais" type="button">10 s ▶</button>
+      </div>
+    </div>
     <div class="acoes">
       <button class="btn" id="m-desfazer">Desfazer</button>
       <button class="btn" id="m-cancelar">Cancelar</button>
@@ -2071,7 +2098,30 @@ async function marcarTempos(linhas, m, fim) {
     toque.textContent = !comecou ? (fonte ? 'Tocar a música' : 'Começar quando a música começar')
       : k < linhas.length ? 'Toque quando cantar esta linha' : 'Concluir';
   }
-  function relogio() { $('#m-tempo', el).textContent = mmss(t()); raf = requestAnimationFrame(relogio); }
+  const pos = $('#m-pos', el), pausa = $('#m-pausa', el);
+  let arrastandoPos = false;
+  function relogio() {
+    $('#m-tempo', el).textContent = fonte ? `${mmss(t())} / ${mmss(fonte.duracao)}` : mmss(t());
+    if (fonte && !arrastandoPos) {
+      const d = fonte.duracao || 0;
+      if (+pos.max !== d) pos.max = d;
+      pos.value = t();
+    }
+    if (fonte && comecou) pausa.textContent = fonte.tocando ? 'Pausar' : 'Continuar';
+    raf = requestAnimationFrame(relogio);
+  }
+  // pular para outro ponto (ou pausar e continuar) sem perder o que já foi marcado
+  if (fonte) {
+    $('#m-controle', el).hidden = false;
+    pos.oninput = () => { arrastandoPos = true; $('#m-tempo', el).textContent = `${mmss(+pos.value)} / ${mmss(fonte.duracao)}`; };
+    pos.onchange = () => { fonte.t = +pos.value; arrastandoPos = false; };
+    $('#m-menos', el).onclick = () => { fonte.t = Math.max(0, fonte.t - 10); };
+    $('#m-mais', el).onclick = () => { fonte.t = Math.min(fonte.duracao || 1e9, fonte.t + 10); };
+    pausa.onclick = async () => {
+      if (fonte.tocando) { fonte.pause(); return; }
+      try { await fonte.play(); comecou = true; mostrar(); } catch { aviso('Toque de novo para a música continuar.'); }
+    };
+  }
   function sair(r) {
     saiu = true; cancelAnimationFrame(raf); if (fonte) fonte.destruir();
     document.removeEventListener('keydown', tecla); el.remove(); fim(r, fonte ? fonte.tipo : 'cronometro');
