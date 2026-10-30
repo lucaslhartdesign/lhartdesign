@@ -25,6 +25,7 @@ const ICONE = {
   caixa: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="9" ry="3"/><path d="M3 7v9c0 1.7 4 3 9 3s9-1.3 9-3V7c-1.4 1.6-5 2.6-9 2.6S4.4 8.6 3 7z" opacity=".6"/><path d="M6 10.5v6M10 11v7M14 11v7M18 10.5v6" stroke="currentColor" stroke-width="1.2"/></svg>',
   bumbo: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5" fill="#0F1B2D" opacity=".55"/></svg>',
   chimbal: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="9" ry="2.2"/><ellipse cx="12" cy="10.5" rx="9" ry="2.2" opacity=".7"/><rect x="11" y="12" width="2" height="10" rx="1"/></svg>',
+  menu: '<svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="2.2" rx="1.1"/><rect x="4" y="11" width="16" height="2.2" rx="1.1"/><rect x="4" y="16" width="16" height="2.2" rx="1.1"/></svg>',
   gravar: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><path d="M12 2a10 10 0 110 20 10 10 0 010-20zm0 2a8 8 0 100 16 8 8 0 000-16z"/></svg>',
   lapis: '<svg viewBox="0 0 24 24"><path d="M4 17.2V20h2.8L17.3 9.5l-2.8-2.8zM19.7 7.1a1 1 0 000-1.4l-1.4-1.4a1 1 0 00-1.4 0l-1.2 1.2 2.8 2.8z"/></svg>',
   marca: '<svg viewBox="0 0 32 32"><ellipse cx="16" cy="12" rx="12" ry="4.5"/><path d="M4 12v9c0 2.5 5.4 4.5 12 4.5s12-2 12-4.5v-9c-1.6 2.4-6.4 4-12 4s-10.4-1.6-12-4z" opacity=".55"/><rect x="18" y="-1" width="2.2" height="15" rx="1.1" transform="rotate(32 19 6)"/><rect x="10" y="-1" width="2.2" height="15" rx="1.1" transform="rotate(-32 11 6)"/></svg>',
@@ -727,6 +728,7 @@ function pararTudo() {
   app.classList.remove('tocando', 'anotando');
   document.querySelectorAll('.folha').forEach(f => f.remove());
   pararMic();
+  document.querySelectorAll('.menu-lado, .menu-fundo').forEach(x => { x.hidden = true; });
   try { P.lock && P.lock.release(); } catch {}
   P = null;
 }
@@ -942,20 +944,30 @@ async function telaPalco(id, listaId) {
         <button class="btn icone" id="ant" aria-label="Linha anterior">${ICONE.anterior}</button>
         <button class="btn primario grande" id="play"></button>
         <button class="btn icone" id="prox" aria-label="Próxima linha">${ICONE.proxima}</button>
+        <button class="btn icone" id="menu-abrir" aria-label="Opções" aria-controls="menu" aria-expanded="false">${ICONE.menu}</button>
       </div>
-      <div class="opcoes">
-        <div class="seg" role="group" aria-label="Como a letra anda">
-          <button data-modo="audio" title="Toca a música (mp3 ou YouTube) e a letra acompanha">Música</button><button data-modo="tempo" title="Cronômetro: anda pelos tempos marcados, sem tocar som">Tempo</button><button data-modo="manual">Manual</button>
-        </div>
-        <button class="btn" id="ouvir" title="Liga o microfone e começa o cronômetro quando a banda tocar">${ICONE.mic}<span>Ouvir</span><span class="medidor" hidden><i></i></span></button>
-        <button class="btn" id="abrir-som" aria-expanded="${!!dados.prefs.somAberto}" aria-controls="som">${ICONE.som}<span>Som</span></button>
-        <button class="btn" id="anotar" aria-pressed="false" title="Toque numa linha para pôr marcação em cima">${ICONE.lapis}<span>Anotar</span></button>
-        <button class="btn" id="gravar" title="Ouve a música e você toca quando a bateria muda">${ICONE.gravar}<span>Gravar</span></button>
-        <span class="espacador"></span>
-        <button class="btn icone" id="menor" aria-label="Letra menor">A−</button>
-        <button class="btn icone" id="maior" aria-label="Letra maior">A+</button>
-      </div>
-      <div class="som" id="som" ${dados.prefs.somAberto ? '' : 'hidden'}>
+    </footer>
+    <div class="menu-fundo" id="menu-fundo" hidden></div>
+    <aside class="menu-lado" id="menu" hidden aria-label="Opções">
+      <div class="menu-topo"><b>Opções</b><button class="btn icone" id="menu-fechar" aria-label="Fechar">${ICONE.fechar}</button></div>
+      <div class="menu-corpo">
+        <section>
+          <h3>Letra junto com a música</h3>
+          <button class="btn item" id="sincronizar" type="button">${ICONE.proxima}<span>Sincronizar a letra<small>A música toca e você toca no começo de cada linha cantada</small></span></button>
+          <div class="acerto">
+            <button class="btn icone" id="ac-menos" type="button" aria-label="Letra meio segundo mais cedo">−½</button>
+            <button class="btn" id="ac-agora" type="button">Letra começa agora</button>
+            <button class="btn icone" id="ac-mais" type="button" aria-label="Letra meio segundo mais tarde">+½</button>
+          </div>
+          <p class="dica" id="acerto-info"></p>
+        </section>
+        <section>
+          <h3>Bateria</h3>
+          <button class="btn item" id="gravar" type="button">${ICONE.gravar}<span>Gravar a bateria ouvindo<small>Toque Sobe, Virada, Caixa… na hora em que muda</small></span></button>
+          <p class="dica">Para pôr uma marcação, toque na linha da letra.</p>
+        </section>
+        <section>
+          <h3>Som</h3>
         <label class="vol" id="vol-caixa" hidden>${ICONE.som}<span class="rotulo">Música</span>
           <input type="range" id="vol" min="0" max="100" step="1"><output id="vol-num"></output></label>
         <div class="vol">
@@ -971,19 +983,23 @@ async function telaPalco(id, listaId) {
         <button class="btn bater-tempo" id="bater-tempo" type="button">Bater o tempo junto com a música</button>
         <label class="btn bater-tempo">${ICONE.som}Pôr o mp3 desta música<input type="file" id="som-mp3" accept="audio/*" hidden></label>
         <p class="dica" id="clique-info"></p>
-        <div class="acerto">
-          <span class="rotulo">Letra</span>
-          <button class="btn icone" id="ac-menos" type="button" aria-label="Letra meio segundo mais cedo">−½</button>
-          <button class="btn" id="ac-agora" type="button">Letra começa agora</button>
-          <button class="btn icone" id="ac-mais" type="button" aria-label="Letra meio segundo mais tarde">+½</button>
-        </div>
-        <p class="dica" id="acerto-info"></p>
+        </section>
+        <section>
+          <h3>Como a letra anda</h3>
+          <div class="seg" role="group" aria-label="Como a letra anda">
+            <button data-modo="audio" title="Toca a música (mp3 ou YouTube) e a letra acompanha">Música</button><button data-modo="tempo" title="Cronômetro: anda pelos tempos marcados, sem tocar som">Tempo</button><button data-modo="manual">Manual</button>
+          </div>
+          <button class="btn item" id="ouvir" type="button" title="Liga o microfone e começa o cronômetro quando a banda tocar">${ICONE.mic}<span>Ouvir a banda<small>O cronômetro começa sozinho quando a banda tocar</small></span><span class="medidor" hidden><i></i></span></button>
+        </section>
+        <section>
+          <h3>Tamanho da letra</h3>
+          <div class="acoes"><button class="btn" id="menor" aria-label="Letra menor">A−</button><button class="btn" id="maior" aria-label="Letra maior">A+</button></div>
+        </section>
       </div>
-    </footer>`;
+    </aside>`;
 
   const palco = $('#palco'), faixa = $('#faixa'), proxima = $('#proxima');
   let linhasEl = [];
-  let anotando = false;
   // desenha só a letra; o vídeo do YouTube em cima fica intacto (a música não para)
   function montarLetra() {
     const itens = lerDeixas();
@@ -1015,11 +1031,11 @@ async function telaPalco(id, listaId) {
     acenderDeixas(P ? P.atual : -1);
     linhasEl.forEach((el, k) => {
       el.classList.toggle('atual', P && k === P.atual); el.classList.toggle('passada', P && k < P.atual);
-      el.onclick = () => anotando ? abrirFolha({ antesDe: +el.dataset.r, rotulo: el.textContent }) : irPara(+el.dataset.i, true);
+      // tocou na linha: escolhe a bateria para pôr em cima dela (a música continua)
+      el.onclick = () => abrirFolha({ antesDe: +el.dataset.r, linha: +el.dataset.i, rotulo: el.textContent });
     });
     palco.querySelectorAll('.deixa').forEach(el => {
       el.onclick = () => {
-        if (!anotando) return;
         if (el.dataset.marca != null) abrirFolha({ marca: +el.dataset.marca, rotulo: el.textContent });
         else abrirFolha({ trocar: +el.dataset.r, rotulo: el.textContent });
       };
@@ -1037,7 +1053,7 @@ async function telaPalco(id, listaId) {
   const PALAVRA = { sobe: 'sobe', desce: 'desce', virada: 'virada', prato: 'prato', caixa: 'caixa', bumbo: 'bumbo', chimbal: 'chimbal',
     corte: 'corte', conducao: 'condução', pausa: 'para', entra: 'entra' };
   // folha de baixo: escolhe a marcação para pôr acima da linha tocada (ou trocar/apagar a que foi tocada)
-  function abrirFolha({ antesDe, trocar, marca, rotulo }) {
+  function abrirFolha({ antesDe, trocar, marca, linha, rotulo }) {
     fecharFolha();
     $('#aviso').hidden = true; // o aviso flutuante cobriria os botões
     const linhas = String(m.texto || '').split(/\r?\n/);
@@ -1057,6 +1073,7 @@ async function telaPalco(id, listaId) {
       <div class="acoes">
         <button class="btn" data-t="livre" style="--cor:var(--c-livre)">${ICONE.livre}Pôr como nota</button>
         ${trocar != null ? '<button class="btn perigo" id="f-apagar">Apagar</button>' : ''}
+        ${linha != null && tempos ? `<button class="btn" id="f-daqui">${ICONE.play}Tocar daqui</button>` : ''}
         <button class="btn" id="f-fechar">Fechar</button>
       </div>`;
     document.body.appendChild(el);
@@ -1080,11 +1097,13 @@ async function telaPalco(id, listaId) {
       aplicar(`! ${t === 'livre' ? 'nota' : PALAVRA[t]}${d ? ' ' + d : ''}`, t, d);
     });
     if (trocar != null) $('#f-apagar', el).onclick = () => aplicar(null);
+    const daqui = $('#f-daqui', el);
+    if (daqui) daqui.onclick = () => { fecharFolha(); irPara(linha, true); if (!P.tocando) tocar(); };
     $('#f-fechar', el).onclick = fecharFolha;
   }
   function fecharFolha() { document.querySelectorAll('.folha').forEach(f => f.remove()); }
   $('#gravar').onclick = () => {
-    pausar(); fecharFolha();
+    pausar(); fecharFolha(); if (P.fecharMenu) P.fecharMenu();
     const { origem, ...copia } = m;
     const alvo = JSON.parse(JSON.stringify(copia));
     gravarMarcacoes(alvo, (marcas, fonteTipo, novosTempos) => {
@@ -1096,12 +1115,6 @@ async function telaPalco(id, listaId) {
       aviso(`${marcas.length} marcação(ões) gravada(s)` + (naLetra ? ', já em cima da letra.' : (nLinhas ? '. Para irem para a letra, grave de novo tocando "Próxima linha" quando o cantor mudar de linha.' : '.')), 9000);
       if (P === meuClique) rota();
     });
-  };
-  $('#anotar').onclick = () => {
-    anotando = !anotando;
-    $('#anotar').setAttribute('aria-pressed', anotando); $('#anotar').classList.toggle('ativo', anotando);
-    app.classList.toggle('anotando', anotando);
-    if (anotando) aviso('Toque numa linha para pôr marcação em cima, ou numa marcação para trocar.', 5000); else fecharFolha();
   };
   let { tempos, marcados } = temposEfetivos(m, nLinhas);
   P = { ativo: true, m, tempos, fonte: null, modo: 'manual', tocando: false, base: 0, t0: 0, atual: -1, raf: 0 };
@@ -1395,10 +1408,31 @@ async function telaPalco(id, listaId) {
     try { await receberMp3(alvo, arq, t => aviso(t, 8000)); } catch { aviso('Não consegui guardar esse arquivo. Tente um mp3.'); return; }
     if (P === meuClique) rota(); // reabre a música já com o mp3 (a subida para o site continua)
   };
-  $('#abrir-som').onclick = () => {
-    const s = $('#som'), abrir = s.hidden;
-    s.hidden = !abrir; $('#abrir-som').setAttribute('aria-expanded', abrir);
-    dados.prefs.somAberto = abrir; gravarLocal();
+  // menu do lado direito: as opções uma embaixo da outra; a música continua tocando com ele aberto
+  const menuAbrir = abrir => {
+    $('#menu').hidden = !abrir; $('#menu-fundo').hidden = !abrir;
+    $('#menu-abrir').setAttribute('aria-expanded', abrir);
+    if (abrir) fecharFolha();
+  };
+  $('#menu-abrir').onclick = () => menuAbrir($('#menu').hidden);
+  $('#menu-fechar').onclick = () => menuAbrir(false);
+  $('#menu-fundo').onclick = () => menuAbrir(false);
+  P.fecharMenu = () => menuAbrir(false);
+  // sincronizar: a música toca e ele toca no começo de cada linha cantada (os tempos da letra)
+  $('#sincronizar').onclick = () => {
+    const lin = linhasDe(m.texto);
+    if (!lin.length) { aviso('Cole a letra antes (Editar → Colar letra).'); return; }
+    menuAbrir(false); pausar();
+    const { origem, ...copia } = m;
+    marcarTempos(lin, JSON.parse(JSON.stringify(copia)), (novos, fonteTipo) => {
+      if (!novos) return;
+      m.tempos = lin.map((_, i) => novos[i] ?? null);
+      m.temposFonte = fonteTipo;
+      m.ajusteLetra = { ...(m.ajusteLetra || {}), [fonteTipo]: 0 };
+      guardarAjuste();
+      aviso(`Letra sincronizada: ${novos.length} linha(s). Agora ela anda junto com a música.`, 7000);
+      if (P === meuClique) rota();
+    });
   };
   mostrarClique();
 
@@ -1528,7 +1562,7 @@ function pararMic() {
   try { P.mic.ctx.close(); } catch {}
   P.mic = null;
   const botao = $('#ouvir');
-  if (botao) { botao.classList.remove('ativo'); botao.querySelector('span').textContent = 'Ouvir'; botao.querySelector('.medidor').hidden = true; }
+  if (botao) { botao.classList.remove('ativo'); botao.querySelector('span').textContent = 'Ouvir a banda'; botao.querySelector('.medidor').hidden = true; }
 }
 
 // ---------------- editor ----------------
