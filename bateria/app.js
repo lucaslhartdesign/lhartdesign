@@ -220,8 +220,22 @@ const Nuvem = {
     if (total > 200) throw new Error('grande demais');
     for (let i = 0; i < total; i++) {
       const d = await paraBase64(blob.slice(i * PED, (i + 1) * PED));
-      const r = await this.pedir('/api/admin/save', { method: 'POST', body: JSON.stringify({ key: 'audio', data: { id, i, total, tipo: blob.type || 'audio/mpeg', d } }) });
-      if (!r.ok) throw new Error('site respondeu ' + r.status);
+      const corpo = JSON.stringify({ key: 'audio', data: { id, i, total, tipo: blob.type || 'audio/mpeg', d } });
+      // rede de celular oscila: cada pedaço tem 3 tentativas antes de desistir
+      for (let t = 1; ; t++) {
+        let falha = '';
+        try {
+          const r = await this.pedir('/api/admin/save', { method: 'POST', body: corpo });
+          if (r.ok) break;
+          falha = 'site respondeu ' + r.status;
+          if (r.status === 401 || r.status === 413) throw new Error(falha); // repetir não adianta
+        } catch (e) {
+          if (/^site respondeu (401|413)/.test(e.message)) throw e;
+          falha = falha || 'sem conexão';
+        }
+        if (t >= 3) throw new Error(falha + ` (pedaço ${i + 1} de ${total})`);
+        await new Promise(ok => setTimeout(ok, 1500 * t));
+      }
       if (aoProgresso) aoProgresso((i + 1) / total);
     }
   },
@@ -308,7 +322,7 @@ function subirMp3(m, arq, status) {
   dizer('Guardando o mp3 no site… 0%');
   Nuvem.subirAudio(m.id, arq, p => { subindo[m.id] = p; dizer(`Guardando o mp3 no site… ${Math.round(p * 100)}%`); })
     .then(() => { delete subindo[m.id]; anotarAudio(m.id, { audioNoSite: true, audioSubir: undefined }); dizer('mp3 guardado no site. Só abre com a sua senha.'); })
-    .catch(() => { delete subindo[m.id]; anotarAudio(m.id, { audioSubir: true }); dizer('Não deu para guardar o mp3 no site agora. Ele toca aqui; tento de novo quando abrir o app.'); });
+    .catch(e => { delete subindo[m.id]; anotarAudio(m.id, { audioSubir: true }); dizer(`Não deu para guardar o mp3 no site agora (${e && e.message ? e.message : 'erro'}). Ele toca aqui; tento de novo quando abrir o app.`); });
 }
 // a música diz em que pé está o mp3 dela
 function estadoMp3(m, temNoAparelho) {
