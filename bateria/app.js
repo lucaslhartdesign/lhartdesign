@@ -781,10 +781,12 @@ async function telaPalco(id, listaId) {
 
   const tempoAtual = () => P.modo === 'audio' && P.fonte ? P.fonte.t
     : P.tocando ? P.base + (agora() - P.t0) / 1000 : P.base;
-  const duracao = () => m.duracao || (P.fonte && P.fonte.duracao) || (tempos ? tempos[nLinhas - 1] + 8 : 0);
+  function ehYT() { return !!(P && P.fonte && P.fonte.tipo === 'youtube'); }
+  // a análise (intensidade, duração) veio do mp3; com o vídeo do YouTube ela não bate, então não aparece
+  const duracao = () => (ehYT() ? P.fonte.duracao : m.duracao) || (P.fonte && P.fonte.duracao) || (tempos ? tempos[nLinhas - 1] + 8 : 0);
 
   function desenhar() {
-    desenharEnergia(faixa, { ...m, duracao: duracao() }, P.modo === 'manual' ? null : tempoAtual(), tempos);
+    desenharEnergia(faixa, { ...m, energia: ehYT() ? null : m.energia, duracao: duracao() }, P.modo === 'manual' ? null : tempoAtual(), tempos);
   }
   function mostrarProxima() {
     const a = P.atual, prox = deixas.filter(d => d.alvo > a);
@@ -883,6 +885,9 @@ async function telaPalco(id, listaId) {
   // a diferença passa de 0,12 s (pulo na música, travada da internet).
   const clique = { ligado: false, timer: 0, prox: -1e9, livre0: 0, ancora: null };
   const batidas = () => m.batidas || 4;
+  // o vídeo do YouTube começa em outro ponto que o mp3: cada fonte guarda o seu "1" do clique
+  const chaveFase = () => ehYT() ? 'faseYT' : 'faseClique';
+  const faseAtual = () => ehYT() ? (m.faseYT ?? 0) : (m.faseClique ?? (m.primeiroSom || 0));
   const periodo = () => 60 / m.bpm;
   const ctxClique = () => {
     ctxAudio ||= new (window.AudioContext || window.webkitAudioContext)();
@@ -913,7 +918,7 @@ async function telaPalco(id, listaId) {
   }
   function agendarClique() {
     if (!clique.ligado || !P || P !== meuClique || !m.bpm) return;
-    const t = relogioClique(), p = periodo(), fase = m.faseClique ?? (m.primeiroSom || 0), agoraCtx = ctxAudio.currentTime;
+    const t = relogioClique(), p = periodo(), fase = faseAtual(), agoraCtx = ctxAudio.currentTime;
     let k = Math.ceil((t - fase) / p - 1e-6);
     if (k < clique.prox && clique.prox - k < 3) k = clique.prox; // não repete a batida já marcada
     for (; fase + k * p < t + 0.15; k++) {
@@ -976,7 +981,7 @@ async function telaPalco(id, listaId) {
     ctxClique();
     const t = (ctxAudio && clique.ligado ? relogioClique() : tempoAtual()) - 0.05; // desconta o tempo do dedo
     const compasso = periodo() * batidas();
-    m.faseClique = Math.round((((t % compasso) + compasso) % compasso) * 1000) / 1000;
+    m[chaveFase()] = Math.round((((t % compasso) + compasso) % compasso) * 1000) / 1000;
     cliqueDoZero(); guardarAjuste();
     aviso('O 1 do clique agora cai aqui.');
   };
@@ -1003,7 +1008,12 @@ async function telaPalco(id, listaId) {
     $('#vol-caixa').hidden = false;
     atualizarModos();
     trocarModo('audio');
+    const fonteDosTempos = m.temposFonte === 'youtube' ? 'no YouTube' : m.temposFonte === 'audio' ? 'com o mp3' : '';
     if (!tempos) aviso('A música toca, mas a letra não sabe quando andar. Use as setas, ou em Editar marque os tempos.', 7000);
+    else if (marcados && fonteDosTempos && m.temposFonte !== fonte.tipo)
+      aviso(`Os tempos desta música foram marcados ${fonteDosTempos}, e agora toca ${fonte.tipo === 'youtube' ? 'pelo YouTube' : 'o mp3'}. A letra pode sair fora do lugar: marque de novo aqui.`, 9000);
+    else if (!marcados && fonte.tipo === 'youtube')
+      aviso('Pelo YouTube, a letra anda pelo BPM e pode escorregar. Para ficar certinho, marque os tempos em Editar tocando o vídeo.', 8000);
   });
 
   $('#play').onclick = () => P.tocando ? pausar() : tocar();
@@ -1213,9 +1223,10 @@ async function telaEditor(id, listaId) {
     lerCampos();
     const lin = linhasDe(m.texto);
     if (!lin.length) { aviso('Cole a letra antes de marcar os tempos.'); return; }
-    marcarTempos(lin, m, tempos => {
+    marcarTempos(lin, m, (tempos, fonteTipo) => {
       if (!tempos) return;
       m.tempos = lin.map((_, i) => tempos[i] ?? null);
+      m.temposFonte = fonteTipo;
       guardarSemSair(); atualizarStatus();
       aviso(`${tempos.length} linha(s) marcadas. Já pode tocar no palco.`);
     });
@@ -1307,7 +1318,7 @@ async function marcarTempos(linhas, m, fim) {
   function relogio() { $('#m-tempo', el).textContent = mmss(t()); raf = requestAnimationFrame(relogio); }
   function sair(r) {
     saiu = true; cancelAnimationFrame(raf); if (fonte) fonte.destruir();
-    document.removeEventListener('keydown', tecla); el.remove(); fim(r);
+    document.removeEventListener('keydown', tecla); el.remove(); fim(r, fonte ? fonte.tipo : 'cronometro');
   }
   async function bater() {
     if (tempos.length >= linhas.length) return sair(tempos);
