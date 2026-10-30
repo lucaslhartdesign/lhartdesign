@@ -25,6 +25,7 @@ const ICONE = {
   caixa: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="9" ry="3"/><path d="M3 7v9c0 1.7 4 3 9 3s9-1.3 9-3V7c-1.4 1.6-5 2.6-9 2.6S4.4 8.6 3 7z" opacity=".6"/><path d="M6 10.5v6M10 11v7M14 11v7M18 10.5v6" stroke="currentColor" stroke-width="1.2"/></svg>',
   bumbo: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5" fill="#0F1B2D" opacity=".55"/></svg>',
   chimbal: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="9" ry="2.2"/><ellipse cx="12" cy="10.5" rx="9" ry="2.2" opacity=".7"/><rect x="11" y="12" width="2" height="10" rx="1"/></svg>',
+  gravar: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><path d="M12 2a10 10 0 110 20 10 10 0 010-20zm0 2a8 8 0 100 16 8 8 0 000-16z"/></svg>',
   lapis: '<svg viewBox="0 0 24 24"><path d="M4 17.2V20h2.8L17.3 9.5l-2.8-2.8zM19.7 7.1a1 1 0 000-1.4l-1.4-1.4a1 1 0 00-1.4 0l-1.2 1.2 2.8 2.8z"/></svg>',
   marca: '<svg viewBox="0 0 32 32"><ellipse cx="16" cy="12" rx="12" ry="4.5"/><path d="M4 12v9c0 2.5 5.4 4.5 12 4.5s12-2 12-4.5v-9c-1.6 2.4-6.4 4-12 4s-10.4-1.6-12-4z" opacity=".55"/><rect x="18" y="-1" width="2.2" height="15" rx="1.1" transform="rotate(32 19 6)"/><rect x="10" y="-1" width="2.2" height="15" rx="1.1" transform="rotate(-32 11 6)"/></svg>',
   voltar: '<svg viewBox="0 0 24 24"><path d="M15.5 4L7.5 12l8 8 1.5-1.5L10.5 12 17 5.5z"/></svg>',
@@ -328,11 +329,13 @@ const Banco = {
   db: null,
   abrir() {
     if (this.db) return Promise.resolve(this.db);
+    // se o banco do navegador travar, desiste em 4 s: a tela segue sem o mp3 em vez de ficar parada
     return new Promise((ok, erro) => {
+      const desiste = setTimeout(() => erro(new Error('banco do navegador não respondeu')), 4000);
       const r = indexedDB.open('mapabateria', 1);
       r.onupgradeneeded = () => r.result.createObjectStore('audios');
-      r.onsuccess = () => ok(this.db = r.result);
-      r.onerror = () => erro(r.error);
+      r.onsuccess = () => { clearTimeout(desiste); ok(this.db = r.result); };
+      r.onerror = () => { clearTimeout(desiste); erro(r.error); };
     });
   },
   async op(modo, fn) {
@@ -446,7 +449,9 @@ async function fonteYouTube(id, caixa) {
   });
 }
 // escolhe a fonte da música: mp3 guardado no aparelho > mp3 do site > YouTube
+// a música toca pelo que o Lucas escolheu (m.fonte): 'youtube' só quando ele escolher; sem escolha, só mp3
 async function abrirFonte(m, caixa) {
+  if (m.fonte === 'youtube') return abrirYouTube(m, caixa);
   const blob = await Banco.get(m.id);
   if (blob) {
     const url = URL.createObjectURL(blob), f = fonteAudio(url), d = f.destruir;
@@ -463,9 +468,14 @@ async function abrirFonte(m, caixa) {
       const url = URL.createObjectURL(baixado), f = fonteAudio(url), d = f.destruir;
       f.destruir = () => { d(); URL.revokeObjectURL(url); };
       return f;
-    } catch { aviso(Nuvem.estado === 'entrar' ? 'O mp3 está no site: entre com a senha para ouvir. Tocando pelo YouTube.' : 'Não consegui baixar o mp3 agora. Tocando pelo YouTube.', 7000); }
+    } catch { aviso(Nuvem.estado === 'entrar' ? 'O mp3 está no site: entre com a senha (na tela inicial) para ouvir.' : 'Não consegui baixar o mp3 agora. Confira a internet.', 7000); }
   }
   if (m.audioUrl) return fonteAudio(m.audioUrl);
+  return null;
+}
+// o mp3 existe em algum lugar (aparelho, site trancado ou endereço)?
+async function temMp3(m) { return !!(m.audioNoSite || m.audioUrl || await Banco.get(m.id).catch(() => null)); }
+async function abrirYouTube(m, caixa) {
   const id = idYouTube(m.youtube);
   if (id && caixa) {
     caixa.hidden = false;
@@ -830,7 +840,9 @@ function telaEnsaio(id) {
 function renderItens(itens) {
   return itens.map(it => {
     if (it.k === 'secao') return `<h2 class="secao">${esc(it.txt)}</h2>`;
-    if (it.k === 'deixa') return `<div class="deixa" data-r="${it.r}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`;
+    if (it.k === 'deixa') return it.marca != null
+      ? `<div class="deixa gravada" data-marca="${it.marca}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`
+      : `<div class="deixa" data-r="${it.r}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`;
     if (it.k === 'linha') return `<p class="linha" data-i="${it.i}" data-r="${it.r}">${esc(it.txt)}</p>`;
     return '<div class="espaco"></div>';
   }).join('');
@@ -858,6 +870,16 @@ async function telaPalco(id, listaId) {
   let deixas = [];
   function lerDeixas() {
     const { itens } = interpretar(m.texto);
+    // marcações gravadas ouvindo (com o segundo exato): entram acima da linha cantada naquele momento,
+    // se os tempos da letra estiverem marcados
+    (m.marcas || []).map((mk, idx) => ({ mk, idx })).sort((a, b) => a.mk.t - b.mk.t).forEach(({ mk, idx }) => {
+      if (!marcados || !tempos) return;
+      let alvo = tempos.findIndex(x => x >= mk.t - 0.8);
+      if (alvo < 0) alvo = nLinhas;
+      const item = { k: 'deixa', tipo: mk.tipo, txt: TIPOS[mk.tipo] + (mk.det ? ' ' + mk.det : ''), marca: idx };
+      const pos = itens.findIndex(x => x.k === 'linha' && x.i === alvo);
+      if (pos < 0) itens.push(item); else itens.splice(pos, 0, item);
+    });
     deixas = []; let pend = [];
     itens.forEach(it => {
       if (it.k === 'deixa') pend.push(it);
@@ -872,7 +894,13 @@ async function telaPalco(id, listaId) {
       <h1>${esc(m.titulo || 'Sem nome')}</h1><a class="btn" href="#/e/${encodeURIComponent(m.id)}${ensaio ? '/' + encodeURIComponent(ensaio.id) : ''}">Editar</a></header>
     ${barraEnsaio}
     <canvas class="faixa" id="faixa" aria-label="Intensidade da música; toque para pular"></canvas>
-    <main class="rolagem palco" id="palco"><div class="yt" id="yt" hidden></div><div id="letra"></div><div class="fim"></div></main>
+    <main class="rolagem palco" id="palco">
+      <div class="fonte-escolha" id="fonte-escolha" hidden>
+        <span>Tocar com:</span>
+        <div class="seg" role="group" aria-label="Tocar com"><button data-f="mp3">mp3</button><button data-f="youtube">YouTube</button></div>
+        <label class="btn" id="fonte-por">${ICONE.som}Pôr o mp3<input type="file" accept="audio/*" hidden></label>
+      </div>
+      <div class="yt" id="yt" hidden></div><div id="letra"></div><div class="fim"></div></main>
     <footer class="controle">
       <div class="proxima" id="proxima" aria-live="polite"></div>
       <div class="botoes">
@@ -887,6 +915,7 @@ async function telaPalco(id, listaId) {
         <button class="btn" id="ouvir" title="Liga o microfone e começa o cronômetro quando a banda tocar">${ICONE.mic}<span>Ouvir</span><span class="medidor" hidden><i></i></span></button>
         <button class="btn" id="abrir-som" aria-expanded="${!!dados.prefs.somAberto}" aria-controls="som">${ICONE.som}<span>Som</span></button>
         <button class="btn" id="anotar" aria-pressed="false" title="Toque numa linha para pôr marcação em cima">${ICONE.lapis}<span>Anotar</span></button>
+        <button class="btn" id="gravar" title="Ouve a música e você toca quando a bateria muda">${ICONE.gravar}<span>Gravar</span></button>
         <span class="espacador"></span>
         <button class="btn icone" id="menor" aria-label="Letra menor">A−</button>
         <button class="btn icone" id="maior" aria-label="Letra maior">A+</button>
@@ -936,19 +965,24 @@ async function telaPalco(id, listaId) {
       el.onclick = () => anotando ? abrirFolha({ antesDe: +el.dataset.r, rotulo: el.textContent }) : irPara(+el.dataset.i, true);
     });
     palco.querySelectorAll('.deixa').forEach(el => {
-      el.onclick = () => { if (anotando) abrirFolha({ trocar: +el.dataset.r, rotulo: el.textContent }); };
+      el.onclick = () => {
+        if (!anotando) return;
+        if (el.dataset.marca != null) abrirFolha({ marca: +el.dataset.marca, rotulo: el.textContent });
+        else abrirFolha({ trocar: +el.dataset.r, rotulo: el.textContent });
+      };
     });
     if (P) mostrarProxima();
   }
   const PALAVRA = { sobe: 'sobe', desce: 'desce', virada: 'virada', prato: 'prato', caixa: 'caixa', bumbo: 'bumbo', chimbal: 'chimbal',
     corte: 'corte', conducao: 'condução', pausa: 'para', entra: 'entra' };
   // folha de baixo: escolhe a marcação para pôr acima da linha tocada (ou trocar/apagar a que foi tocada)
-  function abrirFolha({ antesDe, trocar, rotulo }) {
+  function abrirFolha({ antesDe, trocar, marca, rotulo }) {
     fecharFolha();
     $('#aviso').hidden = true; // o aviso flutuante cobriria os botões
     const linhas = String(m.texto || '').split(/\r?\n/);
     let detalhe = '';
-    if (trocar != null) {
+    if (marca != null) { detalhe = m.marcas[marca].det || ''; trocar = -1; } // gravada ouvindo: troca no m.marcas
+    else if (trocar != null) {
       const resto = linhas[trocar].trim().replace(/^!\s*/, '').replace(/^bateria\s*/i, '');
       const [p, ...r] = resto.split(/\s+/);
       detalhe = ALIAS[semAcento(p || '')] ? r.join(' ') : resto;
@@ -966,7 +1000,14 @@ async function telaPalco(id, listaId) {
       </div>`;
     document.body.appendChild(el);
     const det = $('#f-det', el); det.value = detalhe;
-    const aplicar = nova => {
+    const aplicar = (nova, tipo, det) => {
+      if (marca != null) {
+        if (nova == null) m.marcas.splice(marca, 1);
+        else if (tipo === 'livre') { aviso('Recado livre vai na letra: use Anotar numa linha.'); return; }
+        else Object.assign(m.marcas[marca], { tipo, det: det || undefined });
+        guardarAjuste(); montarLetra(); fecharFolha();
+        return;
+      }
       if (trocar != null) { if (nova == null) linhas.splice(trocar, 1); else linhas[trocar] = nova; }
       else linhas.splice(antesDe, 0, nova);
       m.texto = linhas.join('\n');
@@ -975,12 +1016,24 @@ async function telaPalco(id, listaId) {
     el.querySelectorAll('[data-t]').forEach(b => b.onclick = () => {
       const t = b.dataset.t, d = det.value.trim();
       if (t === 'livre' && !d) { det.focus(); aviso('Escreva o recado no campo.'); return; }
-      aplicar(`! ${t === 'livre' ? 'nota' : PALAVRA[t]}${d ? ' ' + d : ''}`);
+      aplicar(`! ${t === 'livre' ? 'nota' : PALAVRA[t]}${d ? ' ' + d : ''}`, t, d);
     });
     if (trocar != null) $('#f-apagar', el).onclick = () => aplicar(null);
     $('#f-fechar', el).onclick = fecharFolha;
   }
   function fecharFolha() { document.querySelectorAll('.folha').forEach(f => f.remove()); }
+  $('#gravar').onclick = () => {
+    pausar(); fecharFolha();
+    const { origem, ...copia } = m;
+    const alvo = JSON.parse(JSON.stringify(copia));
+    gravarMarcacoes(alvo, (marcas, fonteTipo) => {
+      if (!marcas) { if (P === meuClique) rota(); return; }
+      m.marcas = marcas; m.marcasFonte = fonteTipo;
+      guardarAjuste();
+      aviso(`${marcas.length} marcação(ões) gravada(s).` + (marcados ? '' : ' Para elas aparecerem em cima da letra, marque os tempos em Editar; a contagem na barra já funciona.'), 8000);
+      if (P === meuClique) rota();
+    });
+  };
   $('#anotar').onclick = () => {
     anotando = !anotando;
     $('#anotar').setAttribute('aria-pressed', anotando); $('#anotar').classList.toggle('ativo', anotando);
@@ -1001,6 +1054,16 @@ async function telaPalco(id, listaId) {
     desenharEnergia(faixa, { ...m, energia: ehYT() ? null : m.energia, duracao: duracao() }, P.modo === 'manual' ? null : tempoAtual(), tempos);
   }
   function mostrarProxima() {
+    // marcação gravada com o segundo exato chegando: ela manda na barra (contagem regressiva)
+    if (P.tocando && P.modo !== 'manual' && m.marcas && m.marcas.length) {
+      const agoraS = tempoAtual(), mk = m.marcas.filter(x => x.t > agoraS - 0.3).sort((x, y) => x.t - y.t)[0];
+      if (mk && mk.t - agoraS <= 10) {
+        const falta = Math.max(0, mk.t - agoraS);
+        proxima.className = 'proxima' + (falta <= 2 ? ' ja' : '');
+        proxima.innerHTML = `<span>Próxima:</span><span class="mini" style="--cor:var(--c-${mk.tipo})">${ICONE[mk.tipo]}${esc(TIPOS[mk.tipo] + (mk.det ? ' ' + mk.det : ''))}</span><span>${falta < 0.5 ? 'agora' : `em ${Math.ceil(falta)} s`}</span>`;
+        return;
+      }
+    }
     const a = P.atual, prox = deixas.filter(d => d.alvo > a);
     if (!prox.length) { proxima.innerHTML = ''; proxima.className = 'proxima'; return; }
     const alvo = prox[0].alvo, grupo = prox.filter(d => d.alvo === alvo), dist = alvo - a;
@@ -1034,7 +1097,7 @@ async function telaPalco(id, listaId) {
       let i = -1; while (i + 1 < nLinhas && tempos[i + 1] <= t) i++;
       irPara(i, false);
       mostrarProxima();
-    }
+    } else if (P.tocando && m.marcas && m.marcas.length) mostrarProxima(); // contagem das gravadas, mesmo sem letra
     desenhar();
     P.raf = requestAnimationFrame(laco);
   }
@@ -1068,7 +1131,7 @@ async function telaPalco(id, listaId) {
     P.modo = modo;
     // só pula se precisar: no YouTube, pular um vídeo parado faz ele começar a tocar
     if (modo === 'audio') { if (Math.abs(P.fonte.t - t) > 0.5) P.fonte.t = t; } else P.base = t;
-    app.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.modo === modo));
+    app.querySelectorAll('.seg [data-modo]').forEach(b => b.setAttribute('aria-pressed', b.dataset.modo === modo));
     rotularPlay(); desenhar();
   }
   P.comecarPeloSom = () => {
@@ -1079,7 +1142,7 @@ async function telaPalco(id, listaId) {
   };
 
   function atualizarModos() {
-    app.querySelectorAll('.seg button').forEach(b => {
+    app.querySelectorAll('.seg [data-modo]').forEach(b => {
       b.disabled = !pode[b.dataset.modo];
       b.setAttribute('aria-pressed', b.dataset.modo === P.modo);
       b.onclick = () => trocarModo(b.dataset.modo);
@@ -1197,10 +1260,28 @@ async function telaPalco(id, listaId) {
     cliqueDoZero(); guardarAjuste();
     aviso('O 1 do clique agora cai aqui.');
   };
+  // escolha da fonte ao entrar: mp3 (padrão) ou YouTube (só se ele tocar no botão); fica guardada na música
+  (async () => {
+    const tem = await temMp3(m), temYT = !!idYouTube(m.youtube);
+    if (P !== meuClique) return;
+    const caixa = $('#fonte-escolha');
+    const atual = m.fonte === 'youtube' && temYT ? 'youtube' : tem ? 'mp3' : '';
+    caixa.querySelectorAll('[data-f]').forEach(b => {
+      b.disabled = b.dataset.f === 'mp3' ? !tem : !temYT;
+      b.setAttribute('aria-pressed', b.dataset.f === atual);
+      b.onclick = () => { if (b.dataset.f === atual) return; m.fonte = b.dataset.f === 'youtube' ? 'youtube' : undefined; guardarAjuste(); rota(); };
+    });
+    $('#fonte-por').hidden = tem;
+    caixa.hidden = false;
+    if (!tem && !temYT) caixa.querySelector('.seg').hidden = true;
+    if (!atual) aviso(temYT ? 'Escolha como tocar: ponha o mp3 ou toque em YouTube.' : 'Ponha o mp3 para a música tocar.', 6000);
+  })();
+  $('#fonte-por input').onchange = ev => $('#som-mp3').onchange(ev);
   $('#som-mp3').onchange = async ev => {
     const arq = ev.target.files[0]; if (!arq) return;
     const { origem, ...copia } = m;
     const alvo = JSON.parse(JSON.stringify(copia));
+    delete alvo.fonte; // pôs mp3: passa a tocar o mp3
     pausar();
     try { await receberMp3(alvo, arq, t => aviso(t, 8000)); } catch { aviso('Não consegui guardar esse arquivo. Tente um mp3.'); return; }
     if (P === meuClique) rota(); // reabre a música já com o mp3 (a subida para o site continua)
@@ -1229,7 +1310,9 @@ async function telaPalco(id, listaId) {
     atualizarModos();
     trocarModo('audio');
     const fonteDosTempos = m.temposFonte === 'youtube' ? 'no YouTube' : m.temposFonte === 'audio' ? 'com o mp3' : '';
-    if (!tempos) aviso('A música toca, mas a letra não sabe quando andar. Use as setas, ou em Editar marque os tempos.', 7000);
+    if (m.marcas && m.marcas.length && m.marcasFonte && m.marcasFonte !== fonte.tipo)
+      aviso(`As marcações gravadas foram feitas ${m.marcasFonte === 'youtube' ? 'no YouTube' : 'com o mp3'} e agora toca ${fonte.tipo === 'youtube' ? 'pelo YouTube' : 'o mp3'}: podem cair fora do tempo. Grave de novo aqui.`, 9000);
+    else if (!tempos) aviso('A música toca, mas a letra não sabe quando andar. Use as setas, ou em Editar marque os tempos.', 7000);
     else if (marcados && fonteDosTempos && m.temposFonte !== fonte.tipo)
       aviso(`Os tempos desta música foram marcados ${fonteDosTempos}, e agora toca ${fonte.tipo === 'youtube' ? 'pelo YouTube' : 'o mp3'}. A letra pode sair fora do lugar: marque de novo aqui.`, 9000);
     else if (!marcados && fonte.tipo === 'youtube')
@@ -1538,6 +1621,87 @@ async function telaEditor(id, listaId) {
   f('comp').oninput = atualizarStatus;
   f('yt').oninput = f('url').oninput = atualizarStatus;
   atualizarStatus();
+}
+
+// tela cheia: a música toca e o Lucas toca o botão da mudança na hora em que a bateria muda.
+// Cada toque vira {t, tipo}; a lista deixa ajustar meio segundo, ouvir de novo e apagar.
+const TIPOS_GRAVAR = ['sobe', 'desce', 'virada', 'prato', 'caixa', 'bumbo', 'chimbal', 'corte', 'pausa', 'entra'];
+async function gravarMarcacoes(m, fim) {
+  const el = document.createElement('div');
+  el.className = 'marcar gravar';
+  el.innerHTML = `
+    <div class="yt" id="g-yt" hidden></div>
+    <div class="m-topo"><span id="g-linha" class="g-linha"></span><span id="g-tempo">0:00</span></div>
+    <div class="g-tipos">${TIPOS_GRAVAR.map(t => `<button class="btn" data-t="${t}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}</div>
+    <div class="g-transporte">
+      <button class="btn" id="g-volta" aria-label="Voltar 5 segundos">− 5 s</button>
+      <button class="btn primario" id="g-play"></button>
+      <button class="btn" id="g-frente" aria-label="Avançar 5 segundos">+ 5 s</button>
+    </div>
+    <ol class="g-lista" id="g-lista"></ol>
+    <div class="acoes"><button class="btn" id="g-cancelar">Cancelar</button><button class="btn primario" id="g-ok">Salvar marcações</button></div>`;
+  document.body.appendChild(el);
+  const play = $('#g-play', el);
+  play.textContent = 'Carregando a música…'; play.disabled = true;
+  const marcas = (m.marcas || []).map(x => ({ ...x }));
+  const fonte = await abrirFonte(m, $('#g-yt', el));
+  if (!fonte) { el.remove(); aviso('Para gravar ouvindo, a música precisa de mp3 (Pôr o mp3) ou de link do YouTube.', 7000); fim(null); return; }
+  fonte.volume(dados.prefs.volume / 100);
+  play.disabled = false;
+  const linhas = linhasDe(m.texto), tem = temposEfetivos(m, linhas.length);
+  const lista = $('#g-lista', el);
+  let raf = 0, saiu = false, tocandoAntes = null;
+  function desenharLista() {
+    marcas.sort((a, b) => a.t - b.t);
+    lista.innerHTML = marcas.length ? marcas.map((x, i) => `
+      <li><span class="g-t">${mmss(x.t)}<small>,${Math.floor((x.t % 1) * 10)}</small></span>
+        <span class="mini" style="--cor:var(--c-${x.tipo})">${ICONE[x.tipo]}${esc(TIPOS[x.tipo] + (x.det ? ' ' + x.det : ''))}</span>
+        <span class="g-acoes">
+          <button class="btn icone" data-menos="${i}" aria-label="Meio segundo antes">−½</button>
+          <button class="btn icone" data-mais="${i}" aria-label="Meio segundo depois">+½</button>
+          <button class="btn" data-ouvir="${i}">Ouvir</button>
+          <button class="btn icone perigo" data-tirar="${i}" aria-label="Apagar">${ICONE.fechar}</button>
+        </span></li>`).join('')
+      : '<li class="dica">Toque em Tocar. Quando a bateria mudar, toque o botão da mudança. Errou o momento? Use −½ e +½, e Ouvir para conferir.</li>';
+  }
+  lista.onclick = ev => {
+    const b = ev.target.closest('button'); if (!b) return;
+    const d = b.dataset;
+    if (d.menos) marcas[+d.menos].t = Math.max(0, Math.round((marcas[+d.menos].t - 0.5) * 100) / 100);
+    else if (d.mais) marcas[+d.mais].t = Math.round((marcas[+d.mais].t + 0.5) * 100) / 100;
+    else if (d.ouvir) { fonte.t = Math.max(0, marcas[+d.ouvir].t - 3); fonte.play().catch(() => {}); }
+    else if (d.tirar) marcas.splice(+d.tirar, 1);
+    desenharLista();
+  };
+  el.querySelectorAll('.g-tipos [data-t]').forEach(b => b.onclick = () => {
+    if (!fonte.tocando) { aviso('Toque em Tocar primeiro.'); return; }
+    marcas.push({ t: Math.max(0, Math.round((fonte.t - 0.15) * 100) / 100), tipo: b.dataset.t }); // desconta o tempo do dedo
+    desenharLista();
+    b.classList.remove('pisca'); void b.offsetWidth; b.classList.add('pisca');
+  });
+  play.onclick = async () => { if (fonte.tocando) fonte.pause(); else { try { await fonte.play(); } catch { aviso('Toque de novo para a música começar.'); } } };
+  $('#g-volta', el).onclick = () => { fonte.t = Math.max(0, fonte.t - 5); };
+  $('#g-frente', el).onclick = () => { fonte.t = fonte.t + 5; };
+  function relogio() {
+    if (saiu) return;
+    const t = fonte.t;
+    $('#g-tempo', el).textContent = mmss(t) + (fonte.duracao ? ' / ' + mmss(fonte.duracao) : '');
+    let linha = '';
+    if (tem.tempos) {
+      let i = -1; while (i + 1 < linhas.length && tem.tempos[i + 1] <= t + 0.2) i++;
+      linha = i >= 0 ? linhas[i] : (linhas[0] ? 'Antes de: ' + linhas[0] : '');
+    }
+    $('#g-linha', el).textContent = linha;
+    if (tocandoAntes !== fonte.tocando) { tocandoAntes = fonte.tocando; play.innerHTML = fonte.tocando ? `${ICONE.pause}Pausar` : `${ICONE.play}Tocar`; }
+    raf = requestAnimationFrame(relogio);
+  }
+  function sair(salvar) {
+    saiu = true; cancelAnimationFrame(raf); fonte.destruir(); el.remove();
+    fim(salvar ? marcas.sort((a, b) => a.t - b.t) : null, fonte.tipo);
+  }
+  $('#g-cancelar', el).onclick = () => { if (marcas.length && !confirm('Sair sem salvar as marcações?')) return; sair(false); };
+  $('#g-ok', el).onclick = () => sair(true);
+  desenharLista(); relogio();
 }
 
 // tela cheia: toca a música (ou cronometra) e cada toque marca o começo da próxima linha

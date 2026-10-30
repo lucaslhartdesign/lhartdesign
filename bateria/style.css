@@ -198,6 +198,32 @@ svg { fill: currentColor; }
 .folha .f-tipos { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; }
 .folha .f-tipos .btn, .folha .acoes .btn[data-t] { color: var(--cor); border-color: color-mix(in srgb, var(--cor) 45%, transparent); justify-content: flex-start; padding: 0 10px; }
 .folha .campo { margin-top: 10px; }
+/* escolha da fonte ao entrar na música */
+.fonte-escolha { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 16px -14px; color: var(--muted); }
+.fonte-escolha .btn { min-height: 40px; }
+#app.tocando .fonte-escolha { display: none; }
+
+/* marcação gravada ouvindo: traço pontilhado à esquerda para diferenciar da escrita */
+.deixa.gravada { border-left-style: dotted; }
+
+/* gravar marcações */
+.gravar .g-linha { color: var(--text); font-family: var(--f-letra); font-size: 1.05rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%; }
+.gravar .g-tipos { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+.gravar .g-tipos .btn { min-height: 56px; font-size: 1.05rem; color: var(--cor); border-color: color-mix(in srgb, var(--cor) 50%, transparent); }
+.gravar .g-tipos .btn.pisca { animation: bateu .35s ease-out; }
+@keyframes bateu { from { background: color-mix(in srgb, var(--cor) 55%, transparent); } }
+.gravar .g-transporte { display: flex; gap: 8px; }
+.gravar .g-transporte .primario { flex: 1; }
+.gravar .g-lista { flex: 1; min-height: 0; overflow-y: auto; list-style: none; padding: 0; border-top: 1px solid var(--line); }
+.gravar .g-lista li { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.gravar .g-t { font-family: var(--f-deixa); font-size: 1.2rem; font-weight: 700; min-width: 4.2em; font-variant-numeric: tabular-nums; }
+.gravar .g-t small { color: var(--muted); }
+.gravar .mini { display: inline-flex; align-items: center; gap: 5px; color: var(--cor); font-family: var(--f-deixa); font-weight: 700; font-size: 1.1rem; flex: 1; }
+.gravar .mini svg { width: 1em; height: 1em; }
+.gravar .g-acoes { display: flex; gap: 6px; }
+.gravar .g-acoes .btn { min-height: 38px; }
+.gravar .g-acoes .btn.icone { width: 38px; }
+.gravar .yt { max-height: 22dvh; }
 .medidor { width: 46px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
 .medidor i { display: block; height: 100%; width: 0; background: var(--c-entra); }
 
