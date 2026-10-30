@@ -142,6 +142,7 @@ svg { fill: currentColor; }
   padding: 3px 0 3px 12px; margin-left: -16px; border-left: 4px solid transparent;
   color: var(--letra); cursor: pointer; transition: color .2s, opacity .25s;
 }
+.linha { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 .linha.passada { opacity: .38; }
 .linha.atual { color: #FFFFFF; border-left-color: var(--c-prato); }
 .espaco { height: 12px; }

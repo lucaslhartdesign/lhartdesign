@@ -989,7 +989,7 @@ async function telaPalco(id, listaId) {
         <section>
           <h3>Bateria</h3>
           <button class="btn item" id="gravar" type="button">${ICONE.gravar}<span>Gravar a bateria ouvindo<small>Toque Sobe, Virada, Caixa… na hora em que muda</small></span></button>
-          <p class="dica">Para pôr uma marcação, toque na linha da letra.</p>
+          <p class="dica">Toque numa linha para a música pular até ela. Segure o dedo na linha para pôr uma marcação.</p>
         </section>
         <section>
           <h3>Som</h3>
@@ -1057,7 +1057,20 @@ async function telaPalco(id, listaId) {
     linhasEl.forEach((el, k) => {
       el.classList.toggle('atual', P && k === P.atual); el.classList.toggle('passada', P && k < P.atual);
       // tocou na linha: escolhe a bateria para pôr em cima dela (a música continua)
-      el.onclick = () => abrirFolha({ antesDe: +el.dataset.r, linha: +el.dataset.i, rotulo: el.textContent });
+      // toque: a música pula para esta linha (e segue tocando, ou fica pronta para o Tocar).
+      // segurar o dedo: abre a escolha da bateria para pôr em cima da linha
+      let seguro = null, abriu = false;
+      const abrirBateria = () => { abriu = true; if (navigator.vibrate) try { navigator.vibrate(30); } catch {} abrirFolha({ antesDe: +el.dataset.r, linha: +el.dataset.i, rotulo: el.textContent }); };
+      let x0 = 0, y0 = 0;
+      el.onpointerdown = ev => { abriu = false; x0 = ev.clientX; y0 = ev.clientY; clearTimeout(seguro); seguro = setTimeout(abrirBateria, 550); };
+      el.onpointermove = ev => { if (Math.hypot(ev.clientX - x0, ev.clientY - y0) > 10) clearTimeout(seguro); }; // rolando a letra, não segurando
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => { el['on' + ev] = () => clearTimeout(seguro); });
+      el.oncontextmenu = ev => ev.preventDefault();
+      el.onclick = () => {
+        if (abriu) return;
+        if (tempos || P.modo === 'manual') irPara(+el.dataset.i, true);
+        else abrirBateria(); // sem tempos a música não sabe onde a linha está: só dá para pôr a bateria
+      };
     });
     palco.querySelectorAll('.deixa').forEach(el => {
       el.onclick = () => {
