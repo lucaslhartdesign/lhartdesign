@@ -63,6 +63,7 @@ window.MUSICAS_DO_SITE = [
   "titulo": "Emaús",
   "artista": "Morada",
   "youtube": "https://youtu.be/d7iMVvuZkyg",
+  "cifra": "https://www.letras.mus.br/ministerio-morada/emaus/",
   "bpm": 70,
   "bpmConferir": true,
   "compassos": 2,
