@@ -298,6 +298,15 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .marcar .enorme { flex: 1; min-height: 35dvh; font-size: 1.7rem; border-radius: 18px; }
 .marcar .acoes { justify-content: space-between; }
 
+/* tela da senha ao abrir o link */
+.porta { position: fixed; inset: 0; z-index: 40; background: var(--bg); display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
+.porta-caixa { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; }
+.porta-caixa .marca { display: flex; align-items: center; gap: 10px; font-family: var(--f-deixa); font-size: 2rem; font-weight: 700; }
+.porta-caixa .marca svg { width: 40px; height: 40px; color: var(--c-prato); }
+.porta-caixa p { color: var(--muted); line-height: 1.5; }
+.porta-caixa .btn { min-height: 50px; font-size: 1.05rem; }
+.porta-caixa #porta-erro { color: var(--c-corte); min-height: 1.4em; margin: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

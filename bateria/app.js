@@ -2024,7 +2024,44 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 }
 rota();
 // traz do site o que foi feito em outro aparelho; só redesenha se estiver na tela inicial
+// ao abrir o link sem ter entrado: pede a senha antes de tudo (é ela que traz as músicas e o mp3 do site)
+function pedirSenha() {
+  if (document.querySelector('.porta')) return;
+  const el = document.createElement('div');
+  el.className = 'porta';
+  el.innerHTML = `
+    <form class="porta-caixa">
+      <div class="marca">${ICONE.marca}<span>Mapa de Bateria</span></div>
+      <p>Entre com a senha do painel da Lhart para ver suas músicas e ouvir os mp3.</p>
+      <label class="campo">Senha<input type="password" id="porta-senha" autocomplete="current-password" required></label>
+      <button class="btn primario" type="submit">Entrar</button>
+      <button class="btn" type="button" id="porta-pular">Usar sem entrar</button>
+      <p class="dica" id="porta-erro" aria-live="polite"></p>
+    </form>`;
+  document.body.appendChild(el);
+  const campo = $('#porta-senha', el), erro = $('#porta-erro', el);
+  campo.focus();
+  $('form', el).onsubmit = async ev => {
+    ev.preventDefault();
+    const botao = $('button[type=submit]', el);
+    botao.disabled = true; botao.textContent = 'Entrando…'; erro.textContent = '';
+    const msg = await Nuvem.entrar(campo.value);
+    botao.disabled = false; botao.textContent = 'Entrar';
+    if (msg) { erro.textContent = msg; campo.select(); return; }
+    el.remove();
+    aviso('Pronto. Suas músicas e os mp3 vêm do site.');
+    rota(); // redesenha a tela já com o que está no site
+  };
+  $('#porta-pular', el).onclick = () => {
+    try { sessionStorage.setItem('mapabateria.semSenha', '1'); } catch {}
+    el.remove();
+    aviso('Sem entrar, fica só o que está neste celular. Para entrar depois: tela inicial, Guardar no site.', 8000);
+  };
+}
 Nuvem.pronto = Nuvem.carregar().then(() => {
+  let pulou = false;
+  try { pulou = sessionStorage.getItem('mapabateria.semSenha') === '1'; } catch {}
+  if (Nuvem.estado === 'entrar' && !pulou) pedirSenha();
   const h = location.hash.slice(1) || '/';
   if (h === '/' || h === '') telaLista(); else mostrarNuvem();
 });
