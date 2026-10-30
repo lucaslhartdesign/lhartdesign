@@ -33,6 +33,22 @@ module.exports = async (req, res) => {
   const { key, data, reset } = body || {};
   const redis = getRedis();
 
+  // Mapa de Bateria (/bateria/): guarda o conjunto inteiro de músicas e listas de ensaio
+  if (key === 'bateria') {
+    if (!data || typeof data !== 'object' || !Array.isArray(data.musicas)) { res.status(400).json({ error: 'invalid bateria payload' }); return; }
+    const clean = {
+      musicas: data.musicas.filter((m) => m && typeof m.id === 'string' && typeof m.texto === 'string').slice(0, 400),
+      listas: Array.isArray(data.listas) ? data.listas.filter((l) => l && typeof l.id === 'string').slice(0, 200) : [],
+      ocultas: Array.isArray(data.ocultas) ? data.ocultas.filter((x) => typeof x === 'string').slice(0, 400) : [],
+      atualizado: Date.now(),
+    };
+    const json = JSON.stringify(clean);
+    if (json.length > 900000) { res.status(413).json({ error: 'too large' }); return; }
+    await redis.set('bateria:dados', json);
+    res.status(200).json({ ok: true, atualizado: clean.atualizado });
+    return;
+  }
+
   // "Restore site default": drop the saved override so the site goes back to its built-in (translated) content.
   if (reset === true) {
     if (!['testimonials', 'plans', 'videos', 'results'].includes(key)) { res.status(400).json({ error: 'unknown key: ' + key }); return; }

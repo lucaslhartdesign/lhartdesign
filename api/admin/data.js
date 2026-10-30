@@ -10,6 +10,12 @@ module.exports = async (req, res) => {
   if (!(await requireAuth(req, res))) return;
   try {
     const redis = getRedis();
+    // Mapa de Bateria (/bateria/): músicas e listas de ensaio do Lucas. Mora aqui por causa do limite de funções da Vercel.
+    if (req.query && req.query.k === 'bateria') {
+      res.setHeader('Cache-Control', 'no-store');
+      res.status(200).json({ bateria: parse(await redis.get('bateria:dados')) });
+      return;
+    }
     const [testimonials, plans, videos, results, visitsRaw, waRaw, visitsTotal, waTotal] = await Promise.all([
       redis.get('content:testimonials'),
       redis.get('content:plans'),
