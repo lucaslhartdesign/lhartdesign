@@ -246,9 +246,9 @@ svg { fill: currentColor; }
 
 /* gravar marcações */
 .gravar .g-linha { color: var(--text); font-family: var(--f-letra); font-size: 1.05rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%; }
-.gravar .g-tipos { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
-.gravar .g-tipos .btn { min-height: 56px; font-size: 1.05rem; color: var(--cor); border-color: color-mix(in srgb, var(--cor) 50%, transparent); }
-.gravar .g-tipos .btn.pisca { animation: bateu .35s ease-out; }
+.marcar .g-tipos { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+.marcar .g-tipos .btn { min-height: 56px; font-size: 1.05rem; color: var(--cor); border-color: color-mix(in srgb, var(--cor) 50%, transparent); }
+.marcar .g-tipos .btn.pisca { animation: bateu .35s ease-out; }
 @keyframes bateu { from { background: color-mix(in srgb, var(--cor) 55%, transparent); } }
 .gravar .g-transporte { display: flex; gap: 8px; }
 .gravar .g-transporte .primario { flex: 1; }
@@ -373,3 +373,14 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .paradas { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .paradas li { display: flex; gap: 8px; align-items: center; }
 .paradas li .btn:first-child { flex: 1; justify-content: flex-start; }
+
+/* ajustes rápidos no palco: BPM e volumes */
+.rapido { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+.rapido .grp { display: grid; grid-template-columns: 34px 1fr 34px; grid-template-rows: auto 34px; align-items: center; justify-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3px 4px 4px; }
+.rapido .grp span { grid-column: 1 / 4; font-size: .7rem; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.rapido .grp button { width: 34px; height: 34px; border-radius: 8px; border: 0; background: var(--surface2); color: var(--text); font: inherit; font-size: 1.2rem; line-height: 1; cursor: pointer; }
+.rapido .grp output { font-weight: 700; font-size: 1.05rem; }
+#ant, #prox { min-width: 0; padding-left: 8px; padding-right: 8px; flex: none; }
+.botoes { gap: 6px; }
+.botoes #inicio { padding-left: 8px; padding-right: 8px; flex: none; }
+.botoes .grande { min-width: 0; padding-left: 8px; padding-right: 8px; }

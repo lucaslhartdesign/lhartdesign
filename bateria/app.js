@@ -1121,6 +1121,11 @@ async function telaPalco(id, listaId) {
       <div class="yt" id="yt" hidden></div><div id="letra"></div><div class="fim"></div></main>
     <footer class="controle">
       <div class="proxima" id="proxima" aria-live="polite"></div>
+      <div class="rapido" aria-label="Ajustes rápidos">
+        <div class="grp"><span>BPM</span><button type="button" id="r-bpm-" aria-label="BPM mais lento">−</button><output id="r-bpm"></output><button type="button" id="r-bpm+" aria-label="BPM mais rápido">+</button></div>
+        <div class="grp"><span>Música</span><button type="button" id="r-vol-" aria-label="Volume da música menos">−</button><output id="r-vol"></output><button type="button" id="r-vol+" aria-label="Volume da música mais">+</button></div>
+        <div class="grp"><span>Clique</span><button type="button" id="r-cl-" aria-label="Volume do clique menos">−</button><output id="r-cl"></output><button type="button" id="r-cl+" aria-label="Volume do clique mais">+</button></div>
+      </div>
       <div class="botoes">
         <button class="btn icone" id="ant" aria-label="Linha anterior">${ICONE.anterior}</button>
         <button class="btn" id="inicio" type="button" aria-label="Começar a música do começo">⏮ Início</button>
@@ -1235,18 +1240,22 @@ async function telaPalco(id, listaId) {
       let seguro = null, abriu = false;
       const abrirBateria = () => { abriu = true; if (navigator.vibrate) try { navigator.vibrate(30); } catch {} abrirFolha({ antesDe: +el.dataset.r, linha: +el.dataset.i, rotulo: el.textContent }); };
       let x0 = 0, y0 = 0;
-      el.onpointerdown = ev => { abriu = false; x0 = ev.clientX; y0 = ev.clientY; clearTimeout(seguro); seguro = setTimeout(abrirBateria, 550); };
+      // com a música tocando, a letra nunca abre o menu da bateria: o toque só pula a música
+      const tocandoAgora = () => P.tocando && P.modo !== 'manual';
+      el.onpointerdown = ev => { abriu = false; x0 = ev.clientX; y0 = ev.clientY; clearTimeout(seguro); if (!tocandoAgora()) seguro = setTimeout(abrirBateria, 550); };
       el.onpointermove = ev => { if (Math.hypot(ev.clientX - x0, ev.clientY - y0) > 10) clearTimeout(seguro); }; // rolando a letra, não segurando
       ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => { el['on' + ev] = () => clearTimeout(seguro); });
       el.oncontextmenu = ev => ev.preventDefault();
       el.onclick = () => {
         if (abriu) return;
         if (tempos || P.modo === 'manual') irPara(+el.dataset.i, true);
+        else if (tocandoAgora()) aviso('Para pular pela letra, sincronize a letra (☰ → Sincronizar). Use −5 s e +5 s para andar na música.', 6000);
         else abrirBateria(); // sem tempos a música não sabe onde a linha está: só dá para pôr a bateria
       };
     });
     palco.querySelectorAll('.deixa').forEach(el => {
       el.onclick = () => {
+        if (P.tocando && P.modo !== 'manual') return; // tocando: não abre o menu
         if (el.dataset.marca != null) abrirFolha({ marca: +el.dataset.marca, rotulo: el.textContent });
         else abrirFolha({ trocar: +el.dataset.r, rotulo: el.textContent });
       };
@@ -1480,6 +1489,12 @@ async function telaPalco(id, listaId) {
     app.classList.toggle('tocando', P.tocando && P.modo !== 'manual');
     if (P.cliqueDoZero) P.cliqueDoZero();
     const b = $('#play');
+    // as setas ao lado do Tocar: linha anterior/próxima no Manual; −5 s/+5 s com a música
+    const ant = $('#ant'), prx = $('#prox'), man = P.modo === 'manual';
+    if (ant) {
+      ant.innerHTML = man ? ICONE.anterior : '<span>−5 s</span>'; prx.innerHTML = man ? ICONE.proxima : '<span>+5 s</span>';
+      ant.setAttribute('aria-label', man ? 'Linha anterior' : 'Voltar 5 segundos'); prx.setAttribute('aria-label', man ? 'Próxima linha' : 'Avançar 5 segundos');
+    }
     if (P.modo === 'manual') b.innerHTML = `${ICONE.proxima}<span>Próxima linha</span>`;
     else b.innerHTML = P.tocando ? `${ICONE.pause}<span>Pausar</span>` : `${ICONE.play}<span>Tocar</span>`;
   }
@@ -1679,6 +1694,7 @@ async function telaPalco(id, listaId) {
     b.classList.toggle('ativo', clique.ligado);
     $('#bpm-num').textContent = m.bpm ? `${m.bpm} BPM` : 'sem BPM';
     $('#vol-clique-num').textContent = dados.prefs.clique;
+    if (P && P.atualizarRapido) P.atualizarRapido();
     $('#clique-info').textContent = !m.bpm ? 'Informe o BPM (em Editar ou no + e −) para ligar o clique.'
       : (m.bpmConferir ? 'BPM tirado do mp3: pode estar na metade ou no dobro. Confira com "Bater o tempo". ' : '')
         + `${batidas()} tempos por compasso. Se o 1 estiver fora, toque "Bater no 1" junto com o primeiro tempo de um compasso.`;
@@ -1772,13 +1788,16 @@ async function telaPalco(id, listaId) {
     if (!lin.length) { aviso('Cole a letra antes (Editar → Colar letra).'); return; }
     menuAbrir(false); pausar();
     const { origem, ...copia } = m;
-    marcarTempos(lin, JSON.parse(JSON.stringify(copia)), (novos, fonteTipo) => {
+    marcarTempos(lin, JSON.parse(JSON.stringify(copia)), (novos, fonteTipo, marcasNovas) => {
       if (!novos) return;
-      m.tempos = lin.map((_, i) => novos[i] ?? null);
-      m.temposFonte = fonteTipo;
-      m.ajusteLetra = { ...(m.ajusteLetra || {}), [fonteTipo]: 0 };
+      if (novos.length) {
+        m.tempos = lin.map((_, i) => novos[i] ?? null);
+        m.temposFonte = fonteTipo;
+        m.ajusteLetra = { ...(m.ajusteLetra || {}), [fonteTipo]: 0 };
+      }
+      if (marcasNovas) { m.marcas = marcasNovas; m.marcasFonte = fonteTipo; }
       guardarAjuste();
-      aviso(`Letra sincronizada: ${novos.length} linha(s). Agora ela anda junto com a música.`, 7000);
+      aviso([novos.length ? `Letra sincronizada: ${novos.length} linha(s).` : '', marcasNovas ? `${marcasNovas.length} marcação(ões) da bateria guardadas.` : ''].filter(Boolean).join(' ') + ' Agora anda junto com a música.', 8000);
       if (P === meuClique) rota();
     });
   };
@@ -1820,8 +1839,34 @@ async function telaPalco(id, listaId) {
     if (!P.tocando) await comecar();
     desenhar();
   };
-  $('#ant').onclick = () => irPara(P.atual - 1, true);
-  $('#prox').onclick = () => irPara(P.atual + 1, true);
+  // música (ou cronômetro) tocando: as setas andam 5 s; no modo Manual, andam uma linha
+  const andar = d => {
+    if (P.modo === 'manual') { irPara(P.atual + d, true); return; }
+    const dur = duracao() || 1e9;
+    pularPara(Math.max(0, Math.min(dur, tempoAtual() + d * 5))); desenhar();
+  };
+  $('#ant').onclick = () => andar(-1);
+  $('#prox').onclick = () => andar(1);
+  // ajustes rápidos (BPM e volumes), sempre à mão
+  const trava = (v, a, b) => Math.max(a, Math.min(b, v));
+  function atualizarRapido() {
+    $('#r-bpm').textContent = m.bpm || '—'; $('#r-vol').textContent = dados.prefs.volume; $('#r-cl').textContent = dados.prefs.clique;
+  }
+  const ajVol = d => {
+    dados.prefs.volume = trava(dados.prefs.volume + d, 0, 100);
+    if (P.fonte) P.fonte.volume(dados.prefs.volume / 100);
+    const v = $('#vol'); if (v) { v.value = dados.prefs.volume; $('#vol-num').textContent = dados.prefs.volume; }
+    gravarLocal(); atualizarRapido();
+  };
+  const ajClique = d => {
+    dados.prefs.clique = trava(dados.prefs.clique + d, 0, 100);
+    $('#vol-clique').value = dados.prefs.clique; gravarLocal(); mostrarClique();
+  };
+  $('#r-bpm-').onclick = () => mudarBpm(-2); $('#r-bpm\\+').onclick = () => mudarBpm(2);
+  $('#r-vol-').onclick = () => ajVol(-10); $('#r-vol\\+').onclick = () => ajVol(10);
+  $('#r-cl-').onclick = () => ajClique(-10); $('#r-cl\\+').onclick = () => ajClique(10);
+  P.atualizarRapido = atualizarRapido;
+  atualizarRapido();
   $('#ouvir').onclick = () => P.mic ? pararMic() : ouvir();
   const aplicarEscala = v => {
     dados.prefs.escala = Math.round(Math.max(0.7, Math.min(2.2, v)) * 20) / 20;
@@ -2272,8 +2317,10 @@ async function telaEditor(id, listaId) {
     lerCampos();
     const lin = linhasDe(m.texto);
     if (!lin.length) { aviso('Cole a letra antes de marcar os tempos.'); return; }
-    marcarTempos(lin, m, (tempos, fonteTipo) => {
-      if (!tempos) return;
+    marcarTempos(lin, m, (tempos, fonteTipo, marcasNovas) => {
+      if (!tempos || (!tempos.length && !marcasNovas)) return;
+      if (marcasNovas) { m.marcas = marcasNovas; m.marcasFonte = fonteTipo; }
+      if (!tempos.length) { guardarSemSair(); atualizarStatus(); aviso(`${marcasNovas.length} marcação(ões) da bateria guardadas.`); return; }
       m.tempos = lin.map((_, i) => tempos[i] ?? null);
       m.temposFonte = fonteTipo;
       m.ajusteLetra = { ...(m.ajusteLetra || {}), [fonteTipo]: 0 };
@@ -2488,6 +2535,8 @@ async function marcarTempos(linhas, m, fim) {
     <p class="m-prox" id="m-prox"></p>
     <p class="m-depois" id="m-depois"></p>
     <button class="btn primario enorme" id="m-toque"></button>
+    <div class="g-tipos" id="m-tipos">${TIPOS_GRAVAR.map(t => `<button class="btn" type="button" data-t="${t}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}</div>
+    <p class="m-depois" id="m-marcas"></p>
     <div class="m-controle" id="m-controle" hidden>
       <input type="range" id="m-pos" min="0" max="0" step="0.1" value="0" aria-label="Ponto da música">
       <div class="acoes">
@@ -2504,6 +2553,8 @@ async function marcarTempos(linhas, m, fim) {
   document.body.appendChild(el);
   const toque = $('#m-toque', el);
   const tempos = []; let t0 = null, raf = 0, comecou = false, saiu = false;
+  // bateria na mesma passada: cada botão grava uma marcação no segundo exato; o "Desfazer" desfaz o último toque (linha ou bateria)
+  const marcas = (m.marcas || []).map(x => ({ ...x })), antigas = marcas.length, hist = [];
   toque.textContent = 'Carregando a música…'; toque.disabled = true;
   const fonte = await abrirFonte(m, $('#m-yt', el));
   if (saiu) { if (fonte) fonte.destruir(); return; }
@@ -2517,6 +2568,8 @@ async function marcarTempos(linhas, m, fim) {
     $('#m-depois', el).textContent = linhas[k + 1] ? 'depois: ' + linhas[k + 1] : '';
     toque.textContent = !comecou ? (fonte ? 'Tocar a música' : 'Começar quando a música começar')
       : k < linhas.length ? 'Toque quando cantar esta linha' : 'Concluir';
+    const novas = marcas.length - antigas, ult = marcas[marcas.length - 1];
+    $('#m-marcas', el).textContent = novas > 0 ? `${novas} marcação(ões) da bateria nesta passada. Última: ${TIPOS[ult.tipo]} em ${mmss(ult.t)}.` : 'Bateria: toque o botão da mudança na hora em que ela acontece.';
   }
   const pos = $('#m-pos', el), pausa = $('#m-pausa', el);
   let arrastandoPos = false;
@@ -2544,7 +2597,9 @@ async function marcarTempos(linhas, m, fim) {
   }
   function sair(r) {
     saiu = true; cancelAnimationFrame(raf); if (fonte) fonte.destruir();
-    document.removeEventListener('keydown', tecla); el.remove(); fim(r, fonte ? fonte.tipo : 'cronometro');
+    document.removeEventListener('keydown', tecla); el.remove();
+    const comBateria = marcas.length > antigas && r !== null;
+    fim(r, fonte ? fonte.tipo : 'cronometro', comBateria ? marcas.sort((a, b) => a.t - b.t) : null);
   }
   async function bater() {
     if (tempos.length >= linhas.length) return sair(tempos);
@@ -2556,14 +2611,21 @@ async function marcarTempos(linhas, m, fim) {
       comecou = true; mostrar(); return;
     }
     tempos.push(Math.max(0, Math.round((t() - 0.12) * 100) / 100)); // desconta o tempo de reação
+    hist.push('l');
     if (tempos.length >= linhas.length && fonte) fonte.pause();
     mostrar();
   }
+  el.querySelectorAll('#m-tipos [data-t]').forEach(b => b.onclick = () => {
+    if (!comecou) { aviso('Toque na música primeiro (botão grande).'); return; }
+    marcas.push({ t: Math.max(0, Math.round((t() - 0.15) * 100) / 100), tipo: b.dataset.t }); // desconta o tempo do dedo
+    hist.push('m'); mostrar();
+    b.classList.remove('pisca'); void b.offsetWidth; b.classList.add('pisca');
+  });
   function tecla(ev) { if (ev.key === ' ' || ev.key === 'Enter') { ev.preventDefault(); bater(); } }
   toque.onclick = bater;
-  $('#m-desfazer', el).onclick = () => { tempos.pop(); mostrar(); };
+  $('#m-desfazer', el).onclick = () => { if (hist.pop() === 'm') marcas.pop(); else tempos.pop(); mostrar(); };
   $('#m-cancelar', el).onclick = () => sair(null);
-  $('#m-ok', el).onclick = () => sair(tempos.length ? tempos : null);
+  $('#m-ok', el).onclick = () => sair(tempos.length || marcas.length > antigas ? tempos : null);
   document.addEventListener('keydown', tecla);
   mostrar(); relogio(); toque.focus();
 }
