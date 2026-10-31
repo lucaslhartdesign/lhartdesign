@@ -149,6 +149,29 @@ function letraComMarcacoes(texto) {
   return s ? inserirDeixas(texto, s.sugestoes, s.finais) : { texto, inseridas: 0 };
 }
 const linhasDe = texto => interpretar(texto).itens.filter(x => x.k === 'linha').map(x => x.txt);
+// põe "# nome" (ex.: Solo) acima da linha de letra k, das marcações dela e do nome de parte que já estiver ali.
+// Se já houver um Solo/Instrumental logo acima, não repete.
+function inserirSecaoAntes(texto, k, nome) {
+  const linhas = String(texto || '').split('\n'); let n = 0, alvo = -1;
+  for (let r = 0; r < linhas.length; r++) {
+    const l = linhas[r].trim();
+    if (l && !l.startsWith('#') && !ehDeixa(l)) { if (n === k) { alvo = r; break; } n++; }
+  }
+  if (alvo < 0) return texto;
+  let pos = alvo; while (pos > 0 && ehDeixa(linhas[pos - 1].trim())) pos--;
+  let q = pos - 1, cabeca = -1;
+  while (q >= 0) {
+    const t = linhas[q].trim();
+    if (!t) { q--; continue; }
+    if (t.startsWith('#')) { if (/solo|instrumental/i.test(t)) return texto; if (cabeca < 0) cabeca = q; q--; continue; }
+    break;
+  }
+  if (cabeca >= 0) pos = cabeca; // já tem nome de parte (ex.: Refrão): o Solo entra acima dele
+  const novo = []; if (pos > 0 && linhas[pos - 1].trim()) novo.push('');
+  novo.push('# ' + nome);
+  linhas.splice(pos, 0, ...novo);
+  return linhas.join('\n');
+}
 
 // ---------------- dados ----------------
 const CHAVE = 'mapabateria.v1';
@@ -1434,7 +1457,20 @@ async function telaPalco(id, listaId) {
     g.fillRect(x - 1.5, 0, 3, h);
     g.beginPath(); g.moveTo(x - 7, 0); g.lineTo(x + 7, 0); g.lineTo(x, 9); g.fill();
   }
+  // dentro de um solo/instrumental marcado: mostra quanto falta para voltar a cantar
+  function soloAgora() {
+    if (!m.solos || !m.solos.length || !tempos || !P.tocando || P.modo === 'manual') return null;
+    const d = deslocamento(m, P.fonte ? P.fonte.tipo : null), tt = tempoAtual();
+    const s = m.solos.find(x => tempos[x.k] != null && tt >= x.t + d && tt < tempos[x.k]);
+    return s ? { falta: tempos[s.k] - tt } : null;
+  }
   function mostrarProxima() {
+    const so = soloAgora();
+    if (so) {
+      proxima.className = 'proxima' + (so.falta <= 2 ? ' ja' : '');
+      proxima.innerHTML = `<span class="mini" style="--cor:var(--c-livre)">Solo / instrumental</span><span>${so.falta < 0.5 ? 'volta a cantar agora' : `volta a cantar em ${Math.ceil(so.falta)} s`}</span>`;
+      return;
+    }
     // marcação gravada com o segundo exato chegando: ela manda na barra (contagem regressiva)
     if (P.tocando && P.modo !== 'manual' && m.marcas && m.marcas.length) {
       const agoraS = tempoAtual(), mk = m.marcas.filter(x => x.t > agoraS - 0.3).sort((x, y) => x.t - y.t)[0];
@@ -1799,12 +1835,14 @@ async function telaPalco(id, listaId) {
     if (!lin.length) { aviso('Cole a letra antes (Editar → Colar letra).'); return; }
     menuAbrir(false); pausar();
     const { origem, ...copia } = m;
-    marcarTempos(lin, JSON.parse(JSON.stringify(copia)), (novos, fonteTipo, marcasNovas) => {
+    marcarTempos(lin, JSON.parse(JSON.stringify(copia)), (novos, fonteTipo, marcasNovas, solosNovos) => {
       if (!novos) return;
       if (novos.length) {
         m.tempos = lin.map((_, i) => novos[i] ?? null);
         m.temposFonte = fonteTipo;
         m.ajusteLetra = { ...(m.ajusteLetra || {}), [fonteTipo]: 0 };
+        if (solosNovos) { m.solos = solosNovos; solosNovos.forEach(sl => { m.texto = inserirSecaoAntes(m.texto, sl.k, 'Solo'); }); }
+        else delete m.solos;
       }
       if (marcasNovas) { m.marcas = marcasNovas; m.marcasFonte = fonteTipo; }
       guardarAjuste();
@@ -2415,8 +2453,12 @@ async function telaEditor(id, listaId) {
     lerCampos();
     const lin = linhasDe(m.texto);
     if (!lin.length) { aviso('Cole a letra antes de marcar os tempos.'); return; }
-    marcarTempos(lin, m, (tempos, fonteTipo, marcasNovas) => {
+    marcarTempos(lin, m, (tempos, fonteTipo, marcasNovas, solosNovos) => {
       if (!tempos || (!tempos.length && !marcasNovas)) return;
+      if (tempos.length) {
+        if (solosNovos) { m.solos = solosNovos; solosNovos.forEach(sl => { ta.value = inserirSecaoAntes(ta.value, sl.k, 'Solo'); }); }
+        else delete m.solos;
+      }
       if (marcasNovas) { m.marcas = marcasNovas; m.marcasFonte = fonteTipo; }
       if (!tempos.length) { guardarSemSair(); atualizarStatus(); aviso(`${marcasNovas.length} marcação(ões) da bateria guardadas.`); return; }
       m.tempos = lin.map((_, i) => tempos[i] ?? null);
@@ -2633,6 +2675,7 @@ async function marcarTempos(linhas, m, fim) {
     <p class="m-prox" id="m-prox"></p>
     <p class="m-depois" id="m-depois"></p>
     <button class="btn primario enorme" id="m-toque"></button>
+    <button class="btn" id="m-solo" type="button" hidden></button>
     <div class="g-tipos" id="m-tipos">${TIPOS_GRAVAR.map(t => `<button class="btn" type="button" data-t="${t}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}</div>
     <p class="m-depois" id="m-marcas"></p>
     <div class="m-controle" id="m-controle" hidden>
@@ -2653,6 +2696,8 @@ async function marcarTempos(linhas, m, fim) {
   const tempos = []; let t0 = null, raf = 0, comecou = false, saiu = false;
   // bateria na mesma passada: cada botão grava uma marcação no segundo exato; o "Desfazer" desfaz o último toque (linha ou bateria)
   const marcas = (m.marcas || []).map(x => ({ ...x })), antigas = marcas.length, hist = [];
+  // solo / instrumental: o tempo fica "segurado" até ele tocar no começo da linha em que a música volta a cantar
+  const solos = []; let solo = null;
   toque.textContent = 'Carregando a música…'; toque.disabled = true;
   const fonte = await abrirFonte(m, $('#m-yt', el));
   if (saiu) { if (fonte) fonte.destruir(); return; }
@@ -2665,7 +2710,11 @@ async function marcarTempos(linhas, m, fim) {
     $('#m-prox', el).textContent = linhas[k] || 'Todas as linhas marcadas.';
     $('#m-depois', el).textContent = linhas[k + 1] ? 'depois: ' + linhas[k + 1] : '';
     toque.textContent = !comecou ? (fonte ? 'Tocar a música' : 'Começar quando a música começar')
-      : k < linhas.length ? 'Toque quando cantar esta linha' : 'Concluir';
+      : solo ? 'Instrumental… toque quando voltar a cantar' : k < linhas.length ? 'Toque quando cantar esta linha' : 'Concluir';
+    const bs = $('#m-solo', el);
+    bs.hidden = !comecou || k >= linhas.length;
+    bs.textContent = solo ? 'Cancelar o solo' : 'Solo / instrumental: segurar o tempo';
+    bs.classList.toggle('ativo', !!solo);
     const novas = marcas.length - antigas, ult = marcas[marcas.length - 1];
     $('#m-marcas', el).textContent = novas > 0 ? `${novas} marcação(ões) da bateria nesta passada. Última: ${TIPOS[ult.tipo]} em ${mmss(ult.t)}.` : 'Bateria: toque o botão da mudança na hora em que ela acontece.';
   }
@@ -2697,7 +2746,7 @@ async function marcarTempos(linhas, m, fim) {
     saiu = true; cancelAnimationFrame(raf); if (fonte) fonte.destruir();
     document.removeEventListener('keydown', tecla); el.remove();
     const comBateria = marcas.length > antigas && r !== null;
-    fim(r, fonte ? fonte.tipo : 'cronometro', comBateria ? marcas.sort((a, b) => a.t - b.t) : null);
+    fim(r, fonte ? fonte.tipo : 'cronometro', comBateria ? marcas.sort((a, b) => a.t - b.t) : null, r && solos.length ? solos : null);
   }
   async function bater() {
     if (tempos.length >= linhas.length) return sair(tempos);
@@ -2709,19 +2758,33 @@ async function marcarTempos(linhas, m, fim) {
       comecou = true; mostrar(); return;
     }
     tempos.push(Math.max(0, Math.round((t() - 0.12) * 100) / 100)); // desconta o tempo de reação
-    hist.push('l');
+    const fechou = solo; // o toque que volta a cantar fecha o solo: ele dura do botão Solo até aqui
+    if (solo) { solos.push({ t: Math.round(solo.t * 100) / 100, k: tempos.length - 1, fim: tempos[tempos.length - 1] }); solo = null; }
+    hist.push({ a: 'l', solo: fechou });
     if (tempos.length >= linhas.length && fonte) fonte.pause();
     mostrar();
   }
   el.querySelectorAll('#m-tipos [data-t]').forEach(b => b.onclick = () => {
     if (!comecou) { aviso('Toque na música primeiro (botão grande).'); return; }
     marcas.push({ t: Math.max(0, Math.round((t() - 0.15) * 100) / 100), tipo: b.dataset.t }); // desconta o tempo do dedo
-    hist.push('m'); mostrar();
+    hist.push({ a: 'm' }); mostrar();
     b.classList.remove('pisca'); void b.offsetWidth; b.classList.add('pisca');
   });
   function tecla(ev) { if (ev.key === ' ' || ev.key === 'Enter') { ev.preventDefault(); bater(); } }
   toque.onclick = bater;
-  $('#m-desfazer', el).onclick = () => { if (hist.pop() === 'm') marcas.pop(); else tempos.pop(); mostrar(); };
+  $('#m-solo', el).onclick = () => {
+    if (!comecou) { aviso('Toque na música primeiro (botão grande).'); return; }
+    if (solo) { solo = null; const i = hist.map(h => h.a).lastIndexOf('s'); if (i >= 0) hist.splice(i, 1); }
+    else { solo = { t: t() }; hist.push({ a: 's' }); }
+    mostrar();
+  };
+  $('#m-desfazer', el).onclick = () => {
+    const h = hist.pop(); if (!h) return;
+    if (h.a === 'm') marcas.pop();
+    else if (h.a === 's') solo = null;
+    else { tempos.pop(); if (h.solo) { solos.pop(); solo = h.solo; hist.push({ a: 's' }); } } // desfez o toque que fechou o solo: o solo volta a esperar
+    mostrar();
+  };
   $('#m-cancelar', el).onclick = () => sair(null);
   $('#m-ok', el).onclick = () => sair(tempos.length || marcas.length > antigas ? tempos : null);
   document.addEventListener('keydown', tecla);
