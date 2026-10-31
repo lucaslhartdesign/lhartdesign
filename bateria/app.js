@@ -2213,7 +2213,8 @@ async function telaEditor(id, listaId) {
   let acTxt = null, acI = -9, acTocando = null, acAlvo = null;
   // alvo escolhido com o dedo (linha e palavra): os botões da bateria entram em cima dele, em vez de seguir a música
   let alvo = null; // { k: linha de letra, w: índice da palavra, palavra }
-  const chaveAlvo = () => alvo ? alvo.k + ':' + alvo.w : '';
+  let alvoMarca = null; // { r: linha do texto } marcação da bateria escolhida para apagar
+  const chaveAlvo = () => (alvo ? alvo.k + ':' + alvo.w : '') + '|' + (alvoMarca ? alvoMarca.r : '');
   function edAcompanhar(i) {
     const box = $('#ed-ac'), v = ta.value, tocando = !!(edFonte && edFonte.tocando);
     if (v === acTxt && i === acI && tocando === acTocando && chaveAlvo() === acAlvo) return; // nada mudou: não redesenha a 60 quadros por segundo
@@ -2223,11 +2224,11 @@ async function telaEditor(id, listaId) {
     mostrarAlvo(nLinhas);
     if (!nLinhas) return;
     box.classList.toggle('parado', !tocando);
-    box.classList.toggle('com-alvo', !!alvo);
+    box.classList.toggle('com-alvo', !!alvo || !!alvoMarca);
     const rolAntes = box.scrollTop; // com a linha escolhida, a lista não pode pular de lugar quando redesenha
     box.innerHTML = itens.map(it => {
       if (it.k === 'secao') return `<div class="s">${esc(it.txt)}</div>`;
-      if (it.k === 'deixa') return `<div class="d" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo] || ''}<span>${esc(it.txt)}</span></div>`;
+      if (it.k === 'deixa') return `<div class="d${alvoMarca && alvoMarca.r === it.r ? ' escolhida' : ''}" data-r="${it.r}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo] || ''}<span>${esc(it.txt)}</span></div>`;
       if (it.k === 'linha') {
         const ehAlvo = alvo && alvo.k === it.i;
         const palavras = it.txt.split(/\s+/).filter(Boolean).map((p, w) => `<span class="w${ehAlvo && alvo.w === w ? ' alvo' : ''}" data-w="${w}">${esc(p)}</span>`).join(' ');
@@ -2236,17 +2237,29 @@ async function telaEditor(id, listaId) {
       return '';
     }).join('');
     const el = box.querySelector('.escolhida') || box.querySelector('.agora') || box.firstElementChild;
-    if (alvo) box.scrollTop = rolAntes;
+    if (alvo || alvoMarca) box.scrollTop = rolAntes;
     else if (el) box.scrollTop = Math.max(0, el.offsetTop - box.offsetTop - box.clientHeight * 0.4);
   }
   // barrinha em cima da letra: diz onde a marcação vai entrar e deixa tocar dali ou soltar
   function mostrarAlvo(nLinhas) {
     const el = $('#ed-alvo');
+    if (alvoMarca && nLinhas) {
+      el.hidden = false;
+      el.innerHTML = `<span>Marcação escolhida: <b>${esc(alvoMarca.txt)}</b></span>
+        <span class="ed-alvo-bts"><button class="btn perigo" type="button" id="alvo-apagar-uma">Apagar esta marcação</button><button class="btn" type="button" id="alvo-soltar">Fechar</button></span>`;
+      $('#alvo-soltar').onclick = () => { alvoMarca = null; edAcompanhar(linhaCantada()); };
+      $('#alvo-apagar-uma').onclick = () => apagarLinhaDoTexto(alvoMarca.r);
+      return;
+    }
     if (!alvo || !nLinhas) { el.hidden = true; return; }
+    const quantas = marcasEmCima(alvo.k).length;
     el.hidden = false;
     el.innerHTML = `<span>Marcação entra em cima de: <b>${esc(linhasDe(ta.value)[alvo.k] || '')}</b>${alvo.w > 0 ? ` (na palavra <b>${esc(alvo.palavra)}</b>)` : ''}</span>
-      <span class="ed-alvo-bts"><button class="btn" type="button" id="alvo-tocar">Tocar daqui</button><button class="btn" type="button" id="alvo-soltar">Seguir a música</button></span>`;
+      <span class="ed-alvo-bts"><button class="btn" type="button" id="alvo-tocar">Tocar daqui</button>
+      ${quantas ? `<button class="btn perigo" type="button" id="alvo-apagar">Apagar ${quantas === 1 ? 'a marcação' : quantas + ' marcações'} de cima</button>` : ''}
+      <button class="btn" type="button" id="alvo-soltar">Seguir a música</button></span>`;
     $('#alvo-soltar').onclick = () => { alvo = null; edAcompanhar(linhaCantada()); };
+    const ap = $('#alvo-apagar'); if (ap) ap.onclick = () => apagarMarcasDe(alvo.k);
     $('#alvo-tocar').onclick = async () => {
       if (!edFonte) { await $('#ed-play').onclick(); if (edFonte && edFonte.tocando) edFonte.pause(); }
       if (!edFonte) return;
@@ -2256,14 +2269,51 @@ async function telaEditor(id, listaId) {
       if (!edFonte.tocando) { try { await edFonte.play(); } catch {} }
     };
   }
+  // as marcações da bateria coladas em cima de uma linha de letra: [{ ini, fim }] (posições no texto), de baixo para cima
+  function marcasEmCima(k) {
+    const v = ta.value, achadas = [];
+    let corte = inicioDaLinhaDeLetra(k);
+    while (corte > 0) {
+      const antes = v.lastIndexOf('\n', corte - 2) + 1, l = v.slice(antes, corte - 1).trim();
+      if (!ehDeixa(l)) break;
+      achadas.push({ ini: antes, fim: corte }); corte = antes;
+    }
+    return achadas;
+  }
+  // tira um trecho do texto sem a tela pular; a letra de baixo sobe e o padrão (marcações coladas na linha) continua
+  function cortarTexto(ini, fim) {
+    const tela = ta.closest('.rolagem'), rolTela = tela.scrollTop, rolTexto = ta.scrollTop;
+    ta.value = ta.value.slice(0, ini) + ta.value.slice(fim);
+    ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
+  }
+  function apagarMarcasDe(k) {
+    const a = marcasEmCima(k); if (!a.length) return;
+    cortarTexto(a[a.length - 1].ini, a[0].fim);
+    aviso(a.length === 1 ? 'Marcação apagada. A linha de baixo subiu.' : `${a.length} marcações apagadas. A linha de baixo subiu.`, 3000);
+    edAcompanhar(linhaCantada());
+  }
+  function apagarLinhaDoTexto(r) {
+    const linhas = ta.value.split('\n'); if (r >= linhas.length) return;
+    let ini = 0; for (let j = 0; j < r; j++) ini += linhas[j].length + 1;
+    cortarTexto(ini, ini + linhas[r].length + 1);
+    alvoMarca = null; aviso('Marcação apagada. A linha de baixo subiu.', 3000);
+    edAcompanhar(linhaCantada());
+  }
   // tocar numa palavra da letra: a marcação passa a entrar em cima dessa linha (toque de novo para soltar)
   $('#ed-ac').onclick = ev => {
+    const d = ev.target.closest('.d');
+    if (d) { // tocou numa marcação da bateria: dá para apagar só ela
+      const r = +d.dataset.r;
+      alvo = null; alvoMarca = alvoMarca && alvoMarca.r === r ? null : { r, txt: d.textContent.trim() };
+      edAcompanhar(linhaCantada()); return;
+    }
     const l = ev.target.closest('.l'); if (!l) return;
     const k = +l.dataset.k, wEl = ev.target.closest('.w'), w = wEl ? +wEl.dataset.w : 0;
+    alvoMarca = null;
     alvo = alvo && alvo.k === k && alvo.w === w ? null : { k, w, palavra: wEl ? wEl.textContent : '' };
     edAcompanhar(linhaCantada());
   };
-  ta.addEventListener('input', () => { if (alvo && alvo.k >= linhasDe(ta.value).length) alvo = null; edAcompanhar(linhaCantada()); });
+  ta.addEventListener('input', () => { if (alvo && alvo.k >= linhasDe(ta.value).length) alvo = null; alvoMarca = null; edAcompanhar(linhaCantada()); });
   edAcompanhar(-1);
   let temposMarcadosAntes = false;
   $('#ed-linha-prox').onclick = () => {

@@ -395,3 +395,5 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .ed-ac .l.escolhida::after { content: 'a marcação entra aqui ↑'; position: absolute; right: 6px; top: -9px; padding: 0 6px; font-size: .7rem; font-weight: 600; color: var(--c-sobe); background: var(--surface); }
 .ed-ac .l.escolhida .w.alvo { background: var(--c-sobe); color: #0b1a10; }
 .ed-ac.com-alvo .l.agora::after { content: ''; }
+.ed-ac .d { cursor: pointer; }
+.ed-ac .d.escolhida { background: color-mix(in srgb, var(--cor) 22%, transparent); outline: 1px solid var(--cor); outline-offset: -1px; border-radius: 4px; }
