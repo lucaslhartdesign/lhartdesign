@@ -94,9 +94,46 @@ function interpretar(texto) {
     if (!l) itens.push({ k: 'vazio', r });
     else if (l.startsWith('#')) itens.push({ k: 'secao', txt: l.replace(/^#+\s*/, ''), r });
     else if (ehDeixa(l)) itens.push({ k: 'deixa', ...lerDeixa(l), r });
-    else itens.push({ k: 'linha', txt: l, i: n++, r });
+    else {
+      // {virada} no meio da linha = marcação da bateria naquele ponto da frase (aparece como etiqueta; o texto da letra sai limpo)
+      const li = l.includes('{') ? lerInline(l) : null;
+      if (li && li.txt) itens.push({ k: 'linha', txt: li.txt, inline: li.inline, i: n++, r });
+      else itens.push({ k: 'linha', txt: l, i: n++, r });
+    }
   });
   return { itens, nLinhas: n };
+}
+// "Surge {virada} silenciosa": as palavras ficam em txt; cada {..} vira { pos: antes de qual palavra, tipo, txt }
+function lerInline(l) {
+  const palavras = [], marcas = [];
+  for (const p of l.split(/(\{[^}]*\})/)) {
+    const mt = p.match(/^\{([^}]*)\}$/);
+    if (mt) { const d = lerDeixa('! ' + (mt[1].trim() || 'nota')); marcas.push({ pos: palavras.length, tipo: d.tipo, txt: d.txt }); }
+    else p.split(/\s+/).filter(Boolean).forEach(w => palavras.push(w));
+  }
+  return { txt: palavras.join(' '), inline: marcas };
+}
+const chipHtml = (m, extra = '') => `<span class="chip" ${extra} style="--cor:var(--c-${m.tipo})">${ICONE[m.tipo] || ''}${esc(m.txt)}</span>`;
+// a linha com as etiquetas da bateria nos pontos onde entram
+function linhaHtml(it) {
+  if (!it.inline || !it.inline.length) return esc(it.txt);
+  const pal = it.txt.split(' '); let out = '';
+  pal.forEach((w, i) => { it.inline.filter(m => m.pos === i).forEach(m => { out += chipHtml(m); }); out += esc(w) + ' '; });
+  it.inline.filter(m => m.pos >= pal.length).forEach(m => { out += chipHtml(m); });
+  return out.trim();
+}
+// põe {token} antes da palavra w de uma linha de texto (que pode já ter outras etiquetas)
+function inserirInline(raw, w, token) {
+  let n = 0, feito = false; const out = [];
+  for (const p of raw.split(/(\{[^}]*\})/)) {
+    if (/^\{[^}]*\}$/.test(p)) { out.push(p); continue; }
+    for (const t of p.split(/(\s+)/)) {
+      if (t && !/^\s+$/.test(t)) { if (n === w && !feito) { out.push(token + ' '); feito = true; } n++; }
+      out.push(t);
+    }
+  }
+  if (!feito) out.push(' ' + token);
+  return out.join('').replace(/[ \t]{2,}/g, ' ').trim();
 }
 // cifra colada do Cifra Club: tira as linhas de acorde e de tablatura, e "[Refrão]" vira "# Refrão".
 // Devolve null quando o texto não parece cifra (aí cola do jeito que veio).
@@ -1094,7 +1131,7 @@ function renderItens(itens) {
     if (it.k === 'deixa') return it.marca != null
       ? `<div class="deixa gravada" data-marca="${it.marca}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`
       : `<div class="deixa" data-r="${it.r}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`;
-    if (it.k === 'linha') return `<p class="linha" data-i="${it.i}" data-r="${it.r}">${esc(it.txt)}</p>`;
+    if (it.k === 'linha') return `<p class="linha" data-i="${it.i}" data-r="${it.r}" data-t="${esc(it.txt)}">${linhaHtml(it)}</p>`;
     return '<div class="espaco"></div>';
   }).join('');
 }
@@ -1134,7 +1171,10 @@ async function telaPalco(id, listaId) {
     deixas = []; let pend = [];
     itens.forEach(it => {
       if (it.k === 'deixa') pend.push(it);
-      if (it.k === 'linha') { pend.forEach(d => deixas.push({ ...d, alvo: it.i })); pend = []; }
+      if (it.k === 'linha') {
+        pend.forEach(d => deixas.push({ ...d, alvo: it.i })); pend = [];
+        (it.inline || []).forEach(mk => deixas.push({ k: 'deixa', tipo: mk.tipo, txt: mk.txt + ' (no meio da linha)', alvo: it.i, inline: true }));
+      }
     });
     pend.forEach(d => deixas.push({ ...d, alvo: nLinhas }));
     return itens;
@@ -1272,7 +1312,7 @@ async function telaPalco(id, listaId) {
       // toque: a música pula para esta linha (e segue tocando, ou fica pronta para o Tocar).
       // segurar o dedo: abre a escolha da bateria para pôr em cima da linha
       let seguro = null, abriu = false;
-      const abrirBateria = () => { abriu = true; if (navigator.vibrate) try { navigator.vibrate(30); } catch {} abrirFolha({ antesDe: +el.dataset.r, linha: +el.dataset.i, rotulo: el.textContent }); };
+      const abrirBateria = () => { abriu = true; if (navigator.vibrate) try { navigator.vibrate(30); } catch {} abrirFolha({ antesDe: +el.dataset.r, linha: +el.dataset.i, rotulo: el.dataset.t || el.textContent }); };
       let x0 = 0, y0 = 0;
       // com a música tocando, a letra nunca abre o menu da bateria: o toque só pula a música
       const tocandoAgora = () => P.tocando && P.modo !== 'manual';
@@ -1481,12 +1521,12 @@ async function telaPalco(id, listaId) {
         return;
       }
     }
-    const a = P.atual, prox = deixas.filter(d => d.alvo > a);
+    const a = P.atual, prox = deixas.filter(d => d.alvo > a || (d.inline && d.alvo === a));
     if (!prox.length) { proxima.innerHTML = ''; proxima.className = 'proxima'; return; }
-    const alvo = prox[0].alvo, grupo = prox.filter(d => d.alvo === alvo), dist = alvo - a;
-    let quando = alvo >= nLinhas ? 'no fim' : dist === 1 ? 'na próxima linha' : `em ${dist} linhas`;
-    if (P.tocando && tempos && alvo < nLinhas) quando += `, ${Math.max(0, Math.ceil(tempos[alvo] - tempoAtual()))} s`;
-    proxima.className = 'proxima' + (dist === 1 ? ' ja' : '');
+    const alvo = prox[0].alvo, grupo = prox.filter(d => d.alvo === alvo && !!d.inline === !!prox[0].inline), dist = alvo - a;
+    let quando = grupo[0].inline && dist === 0 ? 'agora, no meio desta linha' : alvo >= nLinhas ? 'no fim' : dist === 1 ? 'na próxima linha' : `em ${dist} linhas`;
+    if (P.tocando && tempos && alvo < nLinhas && dist > 0) quando += `, ${Math.max(0, Math.ceil(tempos[alvo] - tempoAtual()))} s`;
+    proxima.className = 'proxima' + (dist <= 1 ? ' ja' : '');
     proxima.innerHTML = `<span>Próxima:</span>${grupo.map(d => `<span class="mini" style="--cor:var(--c-${d.tipo})">${ICONE[d.tipo]}${esc(d.txt)}</span>`).join('')}<span>${quando}</span>`;
   }
   function irPara(i, doUsuario) {
@@ -2269,7 +2309,11 @@ async function telaEditor(id, listaId) {
       if (it.k === 'deixa') return `<div class="d${alvoMarca && alvoMarca.r === it.r ? ' escolhida' : ''}" data-r="${it.r}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo] || ''}<span>${esc(it.txt)}</span></div>`;
       if (it.k === 'linha') {
         const ehAlvo = alvo && alvo.k === it.i;
-        const palavras = it.txt.split(/\s+/).filter(Boolean).map((p, w) => `<span class="w${ehAlvo && alvo.w === w ? ' alvo' : ''}" data-w="${w}">${esc(p)}</span>`).join(' ');
+        const marcasIn = it.inline || [];
+        const palavras = it.txt.split(/\s+/).filter(Boolean).map((p, w) =>
+          marcasIn.map((mk, ci) => mk.pos === w ? chipHtml(mk, `data-r="${it.r}" data-ci="${ci}"`).replace('class="chip"', `class="chip${alvoMarca && alvoMarca.r === it.r && alvoMarca.ci === ci ? ' escolhida' : ''}"`) : '').join('')
+          + `<span class="w${ehAlvo && alvo.w === w ? ' alvo' : ''}" data-w="${w}">${esc(p)}</span>`).join(' ')
+          + marcasIn.map((mk, ci) => mk.pos >= it.txt.split(/\s+/).filter(Boolean).length ? chipHtml(mk, `data-r="${it.r}" data-ci="${ci}"`) : '').join('');
         return `<div class="l${it.i === i ? ' agora' : ''}${i >= 0 && it.i < i ? ' passou' : ''}${ehAlvo ? ' escolhida' : ''}" data-k="${it.i}">${palavras}</div>`;
       }
       return '';
@@ -2286,13 +2330,13 @@ async function telaEditor(id, listaId) {
       el.innerHTML = `<span>Marcação escolhida: <b>${esc(alvoMarca.txt)}</b></span>
         <span class="ed-alvo-bts"><button class="btn perigo" type="button" id="alvo-apagar-uma">Apagar esta marcação</button><button class="btn" type="button" id="alvo-soltar">Fechar</button></span>`;
       $('#alvo-soltar').onclick = () => { alvoMarca = null; edAcompanhar(linhaCantada()); };
-      $('#alvo-apagar-uma').onclick = () => apagarLinhaDoTexto(alvoMarca.r);
+      $('#alvo-apagar-uma').onclick = () => alvoMarca.ci != null ? tirarInline(alvoMarca.r, alvoMarca.ci) : apagarLinhaDoTexto(alvoMarca.r);
       return;
     }
     if (!alvo || !nLinhas) { el.hidden = true; return; }
     const quantas = marcasEmCima(alvo.k).length;
     el.hidden = false;
-    el.innerHTML = `<span>Marcação entra em cima de: <b>${esc(linhasDe(ta.value)[alvo.k] || '')}</b>${alvo.w > 0 ? ` (na palavra <b>${esc(alvo.palavra)}</b>)` : ''}</span>
+    el.innerHTML = `<span>Marcação entra em cima de: <b>${esc(linhasDe(ta.value)[alvo.k] || '')}</b>${alvo.w > 0 ? ` <i>(no MEIO da linha, antes da palavra <b>${esc(alvo.palavra)}</b>)</i>` : ''}</span>
       <span class="ed-alvo-bts"><button class="btn" type="button" id="alvo-tocar">Tocar daqui</button>
       ${quantas ? `<button class="btn perigo" type="button" id="alvo-apagar">Apagar ${quantas === 1 ? 'a marcação' : quantas + ' marcações'} de cima</button>` : ''}
       <button class="btn" type="button" id="alvo-soltar">Seguir a música</button></span>`;
@@ -2330,6 +2374,16 @@ async function telaEditor(id, listaId) {
     aviso(a.length === 1 ? 'Marcação apagada. A linha de baixo subiu.' : `${a.length} marcações apagadas. A linha de baixo subiu.`, 3000);
     edAcompanhar(linhaCantada());
   }
+  // tira só a etiqueta {..} número ci da linha r do texto; a letra da linha fica como estava
+  function tirarInline(r, ci) {
+    const linhas = ta.value.split('\n'); if (r >= linhas.length) return;
+    let n = 0;
+    linhas[r] = linhas[r].replace(/\{[^}]*\}\s?/g, x => (n++ === ci ? '' : x)).replace(/[ \t]{2,}/g, ' ').trim();
+    const tela = ta.closest('.rolagem'), rolTela = tela.scrollTop, rolTexto = ta.scrollTop;
+    ta.value = linhas.join('\n'); ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
+    alvoMarca = null; aviso('Marcação do meio da linha apagada.', 2500);
+    edAcompanhar(linhaCantada());
+  }
   function apagarLinhaDoTexto(r) {
     const linhas = ta.value.split('\n'); if (r >= linhas.length) return;
     let ini = 0; for (let j = 0; j < r; j++) ini += linhas[j].length + 1;
@@ -2339,6 +2393,12 @@ async function telaEditor(id, listaId) {
   }
   // tocar numa palavra da letra: a marcação passa a entrar em cima dessa linha (toque de novo para soltar)
   $('#ed-ac').onclick = ev => {
+    const ch = ev.target.closest('.chip');
+    if (ch) { // etiqueta no meio da linha: dá para apagar só ela
+      const r = +ch.dataset.r, ci = +ch.dataset.ci;
+      alvo = null; alvoMarca = alvoMarca && alvoMarca.r === r && alvoMarca.ci === ci ? null : { r, ci, txt: ch.textContent.trim() + ' (no meio da linha)' };
+      edAcompanhar(linhaCantada()); return;
+    }
     const d = ev.target.closest('.d');
     if (d) { // tocou numa marcação da bateria: dá para apagar só ela
       const r = +d.dataset.r;
@@ -2401,8 +2461,19 @@ async function telaEditor(id, listaId) {
     // linha escolhida com o dedo na letra: vale ela. Senão, música tocando e tempos marcados: a linha cantada agora
     const comAlvo = !!alvo && alvo.k < linhasDe(v).length;
     const cantada = comAlvo ? alvo.k : (!b.dataset.virar && edFonte && edFonte.tocando ? linhaCantada() : -1);
-    // palavra escolhida (não a primeira): a marcação diz em qual palavra entra
-    if (comAlvo && alvo.w > 0 && alvo.palavra && /^!/.test(ins)) ins = ins.trimEnd() + ` na palavra "${alvo.palavra.replace(/[",.;:!?…]+$/g, '')}" `;
+    // palavra escolhida (não a primeira): a marcação entra NO MEIO da linha, como etiqueta antes dessa palavra
+    if (comAlvo && alvo.w > 0 && /^!/.test(ins) && !b.dataset.virar) {
+      const it = interpretar(v).itens.find(x => x.k === 'linha' && x.i === alvo.k);
+      if (it) {
+        const linhas = v.split('\n'), token = '{' + ins.slice(1).trim() + '}';
+        linhas[it.r] = inserirInline(linhas[it.r], alvo.w, token);
+        const tela = ta.closest('.rolagem'), rolTela = tela.scrollTop, rolTexto = ta.scrollTop;
+        ta.value = linhas.join('\n'); ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
+        aviso(`Marcação no meio da linha, antes de "${alvo.palavra}".`, 2500);
+        edAcompanhar(linhaCantada());
+        return;
+      }
+    }
     if (comAlvo && b.dataset.virar) { const p = inicioDaLinhaDeLetra(cantada); if (p >= 0) ini = p; }
     if (cantada >= 0) {
       const p = inicioDaLinhaDeLetra(cantada); if (p >= 0) ini = p;

@@ -427,3 +427,10 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .marcar .g-tipos.m-tipos-h { display: flex; overflow-x: auto; gap: 6px; padding-bottom: 2px; flex: none; }
 .marcar .g-tipos.m-tipos-h .btn { flex: none; min-height: 46px; padding: 0 12px; font-size: .95rem; }
 .m-l.flash { --cor: var(--c-sobe); }
+
+/* marcação no meio da linha: etiqueta colorida no ponto exato */
+.chip { display: inline-flex; align-items: center; gap: .25em; padding: 0 .45em; margin: 0 .3em; border-radius: .5em; font-family: var(--f-deixa); font-size: .78em; font-weight: 700; line-height: 1.5; color: var(--cor); background: color-mix(in srgb, var(--cor) 16%, transparent); border: 1px solid color-mix(in srgb, var(--cor) 45%, transparent); vertical-align: .08em; white-space: nowrap; }
+.chip svg { width: 1em; height: 1em; flex: none; }
+.linha.atual .chip { background: color-mix(in srgb, var(--cor) 32%, transparent); }
+.ed-ac .chip { cursor: pointer; font-size: .8em; }
+.ed-ac .chip.escolhida { outline: 2px solid var(--cor); outline-offset: 1px; }
