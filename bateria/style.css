@@ -354,3 +354,16 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* contagem antes de tocar */
+.contagem { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--bg) 82%, transparent); font-size: 9rem; font-weight: 800; color: var(--text); pointer-events: none; }
+/* música acabou: abrir a próxima do ensaio */
+.fim-card { position: fixed; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 50; display: flex; flex-direction: column; gap: 8px; padding: 14px; background: var(--surface2); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 28px rgba(0,0,0,.4); }
+.fim-card b { font-size: 1.25rem; }
+.fim-card .acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+.fim-card .btn { min-height: 52px; }
+/* menos / normal / mais marcações */
+.seg.sens { margin: 0 0 8px; }
+.menu-corpo .seg.sens { margin-bottom: 8px; }
+.btn.item[aria-pressed="true"] { background: var(--surface2); outline: 2px solid var(--c-sobe); outline-offset: -2px; }
+.palco { touch-action: pan-y; }
