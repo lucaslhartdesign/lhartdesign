@@ -194,7 +194,6 @@ svg { fill: currentColor; }
 
 /* modo palco: tocando, só fica o que se lê de longe, mais Som e Anotar para arrumar na hora */
 #app.tocando .topo, #app.tocando .ensaio-barra { display: none; }
-#app.tocando #ant, #app.tocando #prox { display: none; }
 #app.tocando .proxima { font-size: 1.45rem; min-height: 40px; }
 #app.tocando .palco { padding-top: max(16px, env(safe-area-inset-top)); }
 /* anotar: as linhas viram alvo de toque */
@@ -434,3 +433,13 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .linha.atual .chip { background: color-mix(in srgb, var(--cor) 32%, transparent); }
 .ed-ac .chip { cursor: pointer; font-size: .8em; }
 .ed-ac .chip.escolhida { outline: 2px solid var(--cor); outline-offset: 1px; }
+
+/* começar de onde canta */
+
+/* começar com a banda / onde canta: dois botões lado a lado */
+.canta-linha { display: flex; gap: 8px; margin-top: 8px; }
+.canta-linha[hidden] { display: none; }
+.canta-linha .btn { flex: 1; min-height: 44px; font-weight: 700; font-size: .9rem; padding: 0 8px; }
+.canta-linha .btn[hidden] { display: none; }
+.canta-linha .btn { min-width: 0; white-space: normal; line-height: 1.15; font-size: .82rem; padding: 4px 6px; }
+.canta-linha { max-width: 100%; }

@@ -1195,6 +1195,10 @@ async function telaPalco(id, listaId) {
       <div class="yt" id="yt" hidden></div><div id="letra"></div><div class="fim"></div></main>
     <footer class="controle">
       <div class="proxima" id="proxima" aria-live="polite"></div>
+      <div class="canta-linha" id="canta-linha" hidden>
+        <button class="btn" id="banda" type="button" title="Vai até onde a banda entra, conta 1, 2, 3, 4 e começa" hidden>🥁 Começar com a banda</button>
+        <button class="btn" id="canta" type="button" title="Vai até onde o canto começa, conta 1, 2, 3, 4 e começa" hidden>🎤 Começar onde canta</button>
+      </div>
       <div class="rapido" aria-label="Ajustes rápidos">
         <div class="grp"><span>BPM</span><button type="button" id="r-bpm-" aria-label="BPM mais lento">−</button><output id="r-bpm"></output><button type="button" id="r-bpm+" aria-label="BPM mais rápido">+</button></div>
         <div class="grp"><span>Música</span><button type="button" id="r-vol-" aria-label="Volume da música menos">−</button><output id="r-vol"></output><button type="button" id="r-vol+" aria-label="Volume da música mais">+</button></div>
@@ -1235,6 +1239,12 @@ async function telaPalco(id, listaId) {
           <div class="acoes"><button class="btn" id="laco-a" type="button">Começo aqui</button><button class="btn" id="laco-b" type="button">Fim aqui</button></div>
           <div class="acoes"><button class="btn" id="laco-liga" type="button" aria-pressed="false">Repetir</button><button class="btn" id="laco-limpar" type="button">Limpar</button></div>
           <p class="dica" id="laco-info"></p>
+        </section>
+        <section>
+          <h3>Onde a banda entra</h3>
+          <p class="dica">Toque a música e aperte "Banda entra aqui" no instante em que a banda entra. Depois o botão "Começar com a banda" (embaixo, na tela) vai direto a esse ponto, conta 1, 2, 3, 4 e começa. Serve para música que demora a começar.</p>
+          <div class="acoes"><button class="btn" id="banda-marcar" type="button">Banda entra aqui</button><button class="btn icone" id="banda-menos" type="button" aria-label="Meio segundo antes">−½</button><button class="btn icone" id="banda-mais" type="button" aria-label="Meio segundo depois">+½</button><button class="btn" id="banda-limpar" type="button">Limpar</button></div>
+          <p class="dica" id="banda-info"></p>
         </section>
         <section>
           <h3>Paradas: esperar até você voltar</h3>
@@ -1439,7 +1449,15 @@ async function telaPalco(id, listaId) {
   function recalcularTempos() {
     ({ tempos, marcados } = temposEfetivos(m, nLinhas, P.fonte ? P.fonte.tipo : null));
     P.tempos = tempos;
-    montarLetra(); desenhar(); mostrarAcerto();
+    montarLetra(); desenhar(); mostrarAcerto(); mostrarCanta();
+  }
+  // botão "começar de onde canta": só aparece com a letra sincronizada (ele sabe onde a primeira linha começa)
+  const entradaDaBanda = () => m.entradaBanda != null ? m.entradaBanda : (m.primeiroSom > 0.5 ? m.primeiroSom : null);
+  function mostrarCanta() {
+    const b = $('#canta'), bb = $('#banda'); if (!b || !bb) return;
+    b.hidden = !(tempos && tempos.length && P.modo !== 'manual' && (marcados || false));
+    bb.hidden = !(P.modo !== 'manual' && entradaDaBanda() != null);
+    $('#canta-linha').hidden = b.hidden && bb.hidden;
   }
   // onde a letra começa (em segundos da música que está tocando)
   const inicioLetra = () => tempos && tempos.length ? tempos[0] : null;
@@ -1470,6 +1488,11 @@ async function telaPalco(id, listaId) {
   const par = { ultT: null, preso: null, libera: null, esperando: null };
   function desenhar() {
     desenharEnergia(faixa, { ...m, energia: ehYT() ? null : m.energia, duracao: duracao() }, P.modo === 'manual' ? null : tempoAtual(), tempos, m.marcas);
+    if (m.entradaBanda != null && duracao()) { // onde a banda entra
+      const g = faixa.getContext('2d'), w = faixa.clientWidth, h = faixa.clientHeight, x = m.entradaBanda / duracao() * w;
+      g.save(); g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--c-entra').trim() || '#3dd';
+      g.fillRect(x - 1.5, 0, 3, h); g.fillRect(x - 6, 0, 12, 5); g.restore();
+    }
     if (m.paradas && m.paradas.length && duracao()) {
       const g = faixa.getContext('2d'), w = faixa.clientWidth, h = faixa.clientHeight, dur = duracao();
       g.save(); g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--c-prato').trim() || '#e6a';
@@ -1576,6 +1599,7 @@ async function telaPalco(id, listaId) {
     app.classList.toggle('tocando', P.tocando && P.modo !== 'manual');
     if (P.cliqueDoZero) P.cliqueDoZero();
     const b = $('#play');
+    mostrarCanta();
     // as setas ao lado do Tocar: linha anterior/próxima no Manual; −5 s/+5 s com a música
     const ant = $('#ant'), prx = $('#prox'), man = P.modo === 'manual';
     if (ant) {
@@ -1747,10 +1771,10 @@ async function telaPalco(id, listaId) {
       passo();
     });
   }
-  async function comecar() {
+  async function comecar(forcar) {
     if (contando) { contando.cancelar(); return; }
     if (P.tocando) return;
-    if (dados.prefs.contagem && m.bpm && P.modo !== 'manual') {
+    if ((forcar === true || dados.prefs.contagem) && m.bpm && P.modo !== 'manual') {
       $('#play').innerHTML = `${ICONE.pause}<span>Contando…</span>`;
       const feito = await contar();
       if (P !== meuClique) return;
@@ -1934,6 +1958,45 @@ async function telaPalco(id, listaId) {
     const dur = duracao() || 1e9;
     pularPara(Math.max(0, Math.min(dur, tempoAtual() + d * 5))); desenhar();
   };
+  // pula a introdução: vai ao começo da primeira linha cantada, conta os tempos no BPM e só então a música segue
+  $('#canta').onclick = async () => {
+    if (contando) { contando.cancelar(); return; }
+    const ini = inicioLetra();
+    if (ini == null) { aviso('Sincronize a letra (☰ → Sincronizar) para o app saber onde o canto começa.', 6000); return; }
+    if (P.tocando) pausar();
+    pularPara(Math.max(0, ini)); irPara(-1, false);
+    palco.scrollTo({ top: 0, behavior: 'smooth' }); desenhar();
+    if (!m.bpm) aviso('Sem BPM não dá para contar: informe o BPM no − e + do rodapé. Começando direto.', 5000);
+    await comecar(true);
+  };
+  // começar com a banda: vai ao ponto em que a banda entra (o que ele marcou, ou o primeiro som que o app achou no mp3), conta e toca
+  $('#banda').onclick = async () => {
+    if (contando) { contando.cancelar(); return; }
+    const ini = entradaDaBanda();
+    if (ini == null) { aviso('Marque onde a banda entra em ☰ → "Onde a banda entra".', 6000); return; }
+    if (P.tocando) pausar();
+    pularPara(Math.max(0, ini)); irPara(-1, false);
+    palco.scrollTo({ top: 0, behavior: 'smooth' }); desenhar();
+    if (!m.bpm) aviso('Sem BPM não dá para contar: informe o BPM no − e + do rodapé. Começando direto.', 5000);
+    await comecar(true);
+  };
+  // marcar onde a banda entra: toca a música e aperta no instante em que a banda entra (ou ajusta com os botões)
+  function mostrarBanda() {
+    const i = entradaDaBanda();
+    $('#banda-info').textContent = m.entradaBanda != null ? `A banda entra em ${mmss(m.entradaBanda)},${Math.floor((m.entradaBanda % 1) * 10)}.`
+      : i != null ? `Sem marcação sua. Uso o primeiro som do mp3: ${mmss(i)}. Marque para ficar exato.` : 'Ainda não marcou onde a banda entra.';
+    mostrarCanta(); desenhar();
+  }
+  const ajBanda = v => { m.entradaBanda = Math.max(0, Math.round(v * 10) / 10); guardarAjuste(); mostrarBanda(); };
+  $('#banda-marcar').onclick = () => {
+    if (P.modo === 'manual') { aviso('Para marcar a entrada da banda, use o modo Música ou Tempo.'); return; }
+    ajBanda(tempoAtual() - 0.1); aviso('Pronto: a banda entra aqui. Use −0,5 s e +0,5 s para acertar.', 4000);
+  };
+  $('#banda-menos').onclick = () => ajBanda((m.entradaBanda ?? entradaDaBanda() ?? 0) - 0.5);
+  $('#banda-mais').onclick = () => ajBanda((m.entradaBanda ?? entradaDaBanda() ?? 0) + 0.5);
+  $('#banda-limpar').onclick = () => { delete m.entradaBanda; guardarAjuste(); mostrarBanda(); };
+  mostrarBanda();
+  mostrarCanta();
   $('#ant').onclick = () => andar(-1);
   $('#prox').onclick = () => andar(1);
   // ajustes rápidos (BPM e volumes), sempre à mão
