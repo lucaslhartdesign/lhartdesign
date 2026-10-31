@@ -967,6 +967,7 @@ async function telaPalco(id, listaId) {
       <div class="proxima" id="proxima" aria-live="polite"></div>
       <div class="botoes">
         <button class="btn icone" id="ant" aria-label="Linha anterior">${ICONE.anterior}</button>
+        <button class="btn" id="inicio" type="button" aria-label="Começar a música do começo">⏮ Início</button>
         <button class="btn primario grande" id="play"></button>
         <button class="btn icone" id="prox" aria-label="Próxima linha">${ICONE.proxima}</button>
         <button class="btn icone" id="menu-abrir" aria-label="Opções" aria-controls="menu" aria-expanded="false">${ICONE.menu}</button>
@@ -1511,6 +1512,14 @@ async function telaPalco(id, listaId) {
   });
 
   $('#play').onclick = () => P.tocando ? pausar() : tocar();
+  // começar do começo: volta a música (ou o cronômetro) a 0:00, a letra ao topo, e já toca
+  $('#inicio').onclick = async () => {
+    if (P.modo === 'manual') { irPara(-1, false); palco.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    pularPara(0); irPara(-1, false);
+    palco.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!P.tocando) await tocar();
+    desenhar();
+  };
   $('#ant').onclick = () => irPara(P.atual - 1, true);
   $('#prox').onclick = () => irPara(P.atual + 1, true);
   $('#ouvir').onclick = () => P.mic ? pararMic() : ouvir();
@@ -1642,6 +1651,7 @@ async function telaEditor(id, listaId) {
       <div class="yt" id="ed-yt" hidden></div>
       <div class="ed-fixo">
       <div class="ed-player">
+        <button class="btn" id="ed-inicio" type="button" aria-label="Começar a música do começo" title="Do começo">⏮</button>
         <button class="btn" id="ed-volta" type="button" aria-label="Voltar 5 segundos">− 5 s</button>
         <button class="btn primario" id="ed-play" type="button">${ICONE.play}Ouvir a música</button>
         <button class="btn" id="ed-frente" type="button" aria-label="Avançar 5 segundos">+ 5 s</button>
@@ -1654,6 +1664,7 @@ async function telaEditor(id, listaId) {
           <button class="btn primario" id="ed-linha-prox" type="button">Próxima linha</button>
         </span>
       </div>
+      <div class="ed-ac" id="ed-ac" hidden aria-label="A letra acompanhando a música"></div>
       <div class="paleta" role="toolbar" aria-label="Inserir marcação acima da linha do cursor">
         ${PALETA.map(([t, ins, rot]) => `<button class="btn" type="button" data-ins="${esc(ins)}" style="--cor:var(--c-${t})">${ICONE[t]}${rot || TIPOS[t]}</button>`).join('')}
         <button class="btn" type="button" data-virar="1" style="--cor:var(--c-livre)">${ICONE.lapis}Linha → nota</button>
@@ -1785,8 +1796,35 @@ async function telaEditor(id, listaId) {
     $('#ed-linha-bts').hidden = !manual;
     $('#ed-cantando').textContent = i >= 0 ? 'Cantando agora: ' + lin[i]
       : manual ? 'Toque Próxima linha quando começar a cantar: ' + (lin[0] || '') : '';
+    edAcompanhar(i);
     edRaf = requestAnimationFrame(edRelogio);
   }
+  // a letra com o ponto que anda junto com a música: a marcação entra em cima da linha onde o ponto está
+  let acTxt = null, acI = -9, acTocando = null;
+  function edAcompanhar(i) {
+    const box = $('#ed-ac'), v = ta.value, tocando = !!edFonte.tocando;
+    if (v === acTxt && i === acI && tocando === acTocando) return; // nada mudou: não redesenha a 60 quadros por segundo
+    acTxt = v; acI = i; acTocando = tocando;
+    const { itens, nLinhas } = interpretar(v);
+    box.hidden = !nLinhas;
+    if (!nLinhas) return;
+    box.classList.toggle('parado', !tocando);
+    box.innerHTML = itens.map(it => {
+      if (it.k === 'secao') return `<div class="s">${esc(it.txt)}</div>`;
+      if (it.k === 'deixa') return `<div class="d" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo] || ''}<span>${esc(it.txt)}</span></div>`;
+      if (it.k === 'linha') return `<div class="l${it.i === i ? ' agora' : ''}${i >= 0 && it.i < i ? ' passou' : ''}" data-k="${it.i}">${esc(it.txt)}</div>`;
+      return '';
+    }).join('');
+    const el = box.querySelector('.agora') || box.firstElementChild;
+    if (el) box.scrollTop = Math.max(0, el.offsetTop - box.offsetTop - box.clientHeight * 0.4);
+  }
+  // tocar numa linha da letra: a música pula até ela (precisa dos tempos marcados)
+  $('#ed-ac').onclick = ev => {
+    const l = ev.target.closest('.l'); if (!l || !edFonte) return;
+    const n = linhasDe(ta.value).length, ef = temposEfetivos({ ...m, tempos: ta.value === textoGuardado ? m.tempos : remapear(textoGuardado, ta.value, m.tempos) }, n, edFonte.tipo);
+    if (!ef.tempos) { aviso('Sem tempos ainda: marque a letra tocando junto primeiro.'); return; }
+    edFonte.t = ef.tempos[+l.dataset.k];
+  };
   let temposMarcadosAntes = false;
   $('#ed-linha-prox').onclick = () => {
     if (!edFonte || !edFonte.tocando) { aviso('Toque em Tocar primeiro.'); return; }
@@ -1819,6 +1857,12 @@ async function telaEditor(id, listaId) {
     }
     if (edFonte.tocando) edFonte.pause();
     else { try { await edFonte.play(); } catch { aviso('Toque de novo para a música começar.'); } }
+  };
+  $('#ed-inicio').onclick = async () => {
+    if (!edFonte) { await $('#ed-play').onclick(); } // abre a música (e já toca) se ainda não abriu
+    if (!edFonte) return;
+    edFonte.t = 0; if (edNovos) { edNovos = null; edPtr = -1; }
+    if (!edFonte.tocando) { try { await edFonte.play(); } catch {} }
   };
   $('#ed-volta').onclick = () => { if (edFonte) edFonte.t = Math.max(0, edFonte.t - 5); };
   $('#ed-frente').onclick = () => { if (edFonte) edFonte.t = edFonte.t + 5; };
