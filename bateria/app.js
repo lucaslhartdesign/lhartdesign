@@ -362,29 +362,53 @@ function apagarMusica(id) {
 
 const Banco = {
   db: null,
+  mem: new Map(), // mp3 já lido nesta abertura do app: trocar de música não lê o banco de novo
   abrir() {
     if (this.db) return Promise.resolve(this.db);
-    // se o banco do navegador travar, desiste em 4 s: a tela segue sem o mp3 em vez de ficar parada
+    // se o banco do navegador travar, desiste em 12 s: a tela segue sem o mp3 em vez de ficar parada
     return new Promise((ok, erro) => {
-      const desiste = setTimeout(() => erro(new Error('banco do navegador não respondeu')), 4000);
+      const desiste = setTimeout(() => erro(new Error('banco do navegador não respondeu')), 12000);
       const r = indexedDB.open('mapabateria', 1);
       r.onupgradeneeded = () => r.result.createObjectStore('audios');
-      r.onsuccess = () => { clearTimeout(desiste); ok(this.db = r.result); };
+      r.onsuccess = () => {
+        clearTimeout(desiste);
+        const db = this.db = r.result;
+        // o celular fecha a conexão quando o app vai para o fundo: esquece a velha e abre outra na próxima
+        db.onclose = db.onversionchange = () => { if (this.db === db) this.db = null; try { db.close(); } catch {} };
+        ok(db);
+      };
       r.onerror = () => { clearTimeout(desiste); erro(r.error); };
     });
   },
-  async op(modo, fn) {
-    const db = await this.abrir();
-    return new Promise((ok, erro) => {
-      const tx = db.transaction('audios', modo);
-      const r = fn(tx.objectStore('audios'));
-      tx.oncomplete = () => ok(r && r.result);
-      tx.onerror = () => erro(tx.error);
-    });
+  async op(modo, fn, tentativa = 0) {
+    try {
+      const db = await this.abrir();
+      return await new Promise((ok, erro) => {
+        const tx = db.transaction('audios', modo);
+        const r = fn(tx.objectStore('audios'));
+        tx.oncomplete = () => ok(r && r.result);
+        tx.onerror = tx.onabort = () => erro(tx.error || new Error('banco abortou'));
+      });
+    } catch (e) {
+      if (tentativa >= 2) throw e;
+      this.db = null; // conexão velha: abre outra e tenta de novo
+      await new Promise(ok => setTimeout(ok, 300 * (tentativa + 1)));
+      return this.op(modo, fn, tentativa + 1);
+    }
   },
-  get(id) { return this.op('readonly', s => s.get(id)).catch(() => null); },
-  put(id, blob) { return this.op('readwrite', s => s.put(blob, id)); },
-  del(id) { return this.op('readwrite', s => s.delete(id)).catch(() => {}); },
+  async get(id) {
+    if (this.mem.has(id)) return this.mem.get(id);
+    const b = await this.op('readonly', s => s.get(id)).catch(() => null);
+    if (b) this.mem.set(id, b);
+    return b;
+  },
+  async put(id, blob) {
+    this.mem.set(id, blob);
+    await this.op('readwrite', s => s.put(blob, id));
+    // pede ao celular para não apagar os mp3 guardados quando faltar espaço
+    try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch {}
+  },
+  del(id) { this.mem.delete(id); return this.op('readwrite', s => s.delete(id)).catch(() => {}); },
 };
 
 let avisoTimer;
@@ -507,8 +531,8 @@ async function abrirFonte(m, caixa) {
     try {
       aviso('Baixando o mp3 do site…', 60000);
       const baixado = await Nuvem.baixarAudio(m.id, p => aviso(`Baixando o mp3 do site… ${Math.round(p * 100)}%`, 60000));
-      await Banco.put(m.id, baixado);
-      aviso('mp3 baixado. Fica guardado neste aparelho.');
+      try { await Banco.put(m.id, baixado); aviso('mp3 baixado. Fica guardado neste aparelho.'); }
+      catch { aviso('Baixei, mas o celular não deixou guardar o mp3 (sem espaço ou navegação privada). Vai baixar de novo na próxima vez.', 8000); }
       const url = URL.createObjectURL(baixado), f = fonteAudio(url), d = f.destruir;
       f.destruir = () => { d(); URL.revokeObjectURL(url); };
       return f;

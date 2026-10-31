@@ -1,6 +1,6 @@
 ﻿// Guarda o app no celular para abrir mesmo sem internet na igreja.
 // Sempre tenta a rede primeiro (pega a versão nova do site) e usa a cópia guardada se falhar.
-const CACHE = 'mapabateria-v2';
+const CACHE = 'mapabateria-v3';
 const BASE = ['./', 'index.html', 'style.css', 'app.js', 'musicas.js', 'icone.svg', 'icone-192.png', 'manifest.webmanifest'];
 
 self.addEventListener('install', e => {
@@ -13,6 +13,7 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  if (new URL(e.request.url).pathname.startsWith('/api/')) return; // dados e mp3 do site: nunca encher o cache do app
   e.respondWith(
     fetch(e.request).then(r => {
       if (r.status === 200 && (new URL(e.request.url).origin === location.origin || r.type === 'cors')) {
