@@ -2330,4 +2330,18 @@ Nuvem.pronto = Nuvem.carregar().then(() => {
   const h = location.hash.slice(1) || '/';
   if (h === '/' || h === '') telaLista(); else mostrarNuvem();
 });
+// voltou para o app (saiu e entrou, ou trocou de aba): busca o que foi salvo em outro aparelho
+let ultimaBusca = Date.now();
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState !== 'visible' || Date.now() - ultimaBusca < 20000) return;
+  if (Nuvem.estado === 'desligada' || Nuvem.estado === 'entrar' || dados.pendente) return;
+  if (edFonte || (P && P.tocando)) return; // não mexe no que está em uso
+  ultimaBusca = Date.now();
+  const antes = JSON.stringify([dados.locais, dados.listas, dados.ocultas]);
+  await Nuvem.carregar();
+  if (JSON.stringify([dados.locais, dados.listas, dados.ocultas]) === antes) return;
+  const h = location.hash.slice(1) || '/';
+  if (h === '/' || h.startsWith('/l/')) { rota(); aviso('Atualizado com o que foi salvo em outro aparelho.'); }
+  else aviso('Chegou versão nova do site. Volte à lista e abra a música de novo para ver.', 7000);
+});
 })();
