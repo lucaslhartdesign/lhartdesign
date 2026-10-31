@@ -637,7 +637,7 @@ async function analisarAudio(blob) {
   return { bpm: Math.round(60 * fps / Lf), energia, duracao: n / sr, primeiroSom: Math.round(primeiro * 100) / 100 };
 }
 
-function desenharEnergia(cv, m, t, marcas) {
+function desenharEnergia(cv, m, t, marcas, deixas) {
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
   if (!w) return;
   if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
@@ -659,6 +659,8 @@ function desenharEnergia(cv, m, t, marcas) {
     g.globalAlpha = 1;
   }
   if (marcas && dur) { g.fillStyle = cor('--muted'); marcas.forEach(x => { if (x != null) g.fillRect(x / dur * w, 0, 1, 5); }); }
+  // marcações da bateria: uma fita colorida no pé da faixa, na cor do tipo
+  if (deixas && dur) deixas.forEach(k => { g.fillStyle = cor('--c-' + k.tipo) || cor('--muted'); g.fillRect(Math.max(0, k.t / dur * w - 1.5), h - 8, 3, 8); });
   if (t != null && dur) {
     const px = Math.min(w - 2, t / dur * w);
     g.fillStyle = cor('--c-prato'); g.fillRect(px, 0, 3, h);
@@ -740,6 +742,39 @@ function sugerirPeloAudio(m, texto) {
   const fimLetra = tempos[n - 1] || 0;
   const finais = media(fimLetra + 2, m.duracao) < 0.25 ? ['! corte final'] : [];
   return { sugestoes: s, finais };
+}
+
+// Pré-marcação pela música: olha a curva de intensidade do mp3 (meio em meio segundo) e acha onde ela
+// sobe, desce ou cai no silêncio. Devolve marcações com o segundo exato, sem depender da letra.
+// Quem manda é o ouvido do Lucas: tudo sai com auto:true e dá para conferir/ajustar/apagar depois.
+function premarcarPeloAudio(m) {
+  const e = m.energia, dur = m.duracao;
+  if (!e || e.length < 20 || !dur) return null;
+  const dt = dur / e.length, J = Math.max(2, Math.round(2 / dt)); // janela de ~2 s de cada lado
+  const media = (a, b) => { let s = 0, c = 0; for (let i = Math.max(0, a); i < Math.min(e.length, b); i++) { s += e[i]; c++; } return c ? s / c : 0; };
+  const cand = [];
+  for (let i = J; i <= e.length - J; i++) {
+    const t = i * dt; if (t < Math.max(6, (m.primeiroSom || 0) + 3)) continue; // a entrada da banda no começo não é uma "mudança"
+    const a = media(i - J, i), b = media(i, i + J), d = b - a;
+    let tipo = null, det;
+    if (b < 0.12 && a > 0.3) tipo = 'pausa';
+    else if (a < 0.1 && b > 0.3) tipo = 'entra';
+    else if (d >= 0.14 && b >= 1.35 * Math.max(a, 0.05)) { tipo = b > 0.75 ? 'prato' : 'sobe'; det = b > 0.75 ? 'entra cheio' : 'caixa e tom'; }
+    else if (-d >= 0.14 && b <= 0.75 * a) tipo = 'desce';
+    if (tipo) cand.push({ t, tipo, det, forca: Math.abs(d) });
+  }
+  // mudança longa aparece em vários pontos seguidos: fica a mais forte, com pelo menos 8 s entre marcações
+  const aceitas = [];
+  cand.sort((x, y) => y.forca - x.forca).forEach(c => { if (aceitas.every(k => Math.abs(k.t - c.t) >= 8)) aceitas.push(c); });
+  return aceitas.sort((x, y) => x.t - y.t).map(c => ({ t: Math.round(c.t * 10) / 10, tipo: c.tipo, ...(c.det ? { det: c.det } : {}), auto: true }));
+}
+// junta com o que ele já gravou à mão: troca só as automáticas antigas e não bate em marcação dele
+function aplicarPremarcas(m, novas) {
+  const dele = (m.marcas || []).filter(x => !x.auto);
+  const livres = novas.filter(n => dele.every(x => Math.abs(x.t - n.t) >= 3));
+  m.marcas = [...dele, ...livres].sort((a, b) => a.t - b.t);
+  m.marcasFonte = 'audio';
+  return livres.length;
 }
 
 // ---------------- telas ----------------
@@ -990,6 +1025,7 @@ async function telaPalco(id, listaId) {
         <section>
           <h3>Bateria</h3>
           <button class="btn item" id="gravar" type="button">${ICONE.gravar}<span>Gravar a bateria ouvindo<small>Toque Sobe, Virada, Caixa… na hora em que muda</small></span></button>
+          <button class="btn item" id="premarcar" type="button">${ICONE.sobe || ICONE.anterior}<span>Pré-marcar pela música<small>Acho onde a música sobe, desce ou fica em silêncio. Você confere em "Gravar"</small></span></button>
           <p class="dica">Toque numa linha para a música pular até ela. Segure o dedo na linha para pôr uma marcação.</p>
         </section>
         <section>
@@ -1155,6 +1191,15 @@ async function telaPalco(id, listaId) {
       if (P === meuClique) rota();
     });
   };
+  $('#premarcar').onclick = () => {
+    const novas = premarcarPeloAudio(m);
+    if (!novas) { aviso('Preciso do mp3 desta música neste celular (Som, Pôr o mp3) para ouvir onde ela sobe e desce.', 8000); return; }
+    const n = aplicarPremarcas(m, novas);
+    if (!n) { aviso('Não achei mudanças claras na música. Use "Gravar a bateria ouvindo" para marcar na mão.', 8000); return; }
+    guardarAjuste();
+    aviso(`${n} marcação(ões) pré-marcada(s) pela música (veja as fitas coloridas na faixa de cima). É só um palpite: abra "Gravar a bateria ouvindo" para ouvir, ajustar ou apagar.`, 12000);
+    if (P === meuClique) rota();
+  };
   let { tempos, marcados } = temposEfetivos(m, nLinhas);
   P = { ativo: true, m, tempos, fonte: null, modo: 'manual', tocando: false, base: 0, t0: 0, atual: -1, raf: 0 };
   // a música carregou ou o acerto mudou: os tempos da letra passam a valer para essa fonte
@@ -1188,7 +1233,7 @@ async function telaPalco(id, listaId) {
 
   let arrastoT = null; // onde a marca verde está sendo arrastada
   function desenhar() {
-    desenharEnergia(faixa, { ...m, energia: ehYT() ? null : m.energia, duracao: duracao() }, P.modo === 'manual' ? null : tempoAtual(), tempos);
+    desenharEnergia(faixa, { ...m, energia: ehYT() ? null : m.energia, duracao: duracao() }, P.modo === 'manual' ? null : tempoAtual(), tempos, m.marcas);
     // marca verde: onde a letra começa nesta música (arrastável)
     const ini = arrastoT != null ? arrastoT : inicioLetra(), dur = duracao();
     if (!P.fonte || ini == null || !dur) return;
@@ -1710,6 +1755,7 @@ async function telaEditor(id, listaId) {
         <p class="dica">Pela letra: acha o refrão pelas frases que se repetem (precisa de linha em branco entre as partes). Pelo áudio: mede onde a música enche e esvazia (precisa do mp3 e dos tempos marcados). Confira sempre: é sugestão.</p>
         <div class="acoes">
           <button class="btn" id="sug-letra" type="button">Sugerir pela letra</button>
+          <button class="btn primario" id="premarcar-ed" type="button">Pré-marcar pela música</button>
           <button class="btn" id="sug-audio" type="button">Sugerir pelo áudio</button>
           <button class="btn" id="sug-desfazer" type="button" hidden>Desfazer sugestões</button>
         </div>
@@ -1758,7 +1804,7 @@ async function telaEditor(id, listaId) {
     $('#t-status').textContent = marc >= 2 ? `${marc} de ${n} linhas com tempo marcado. A letra anda sozinha.`
       : m.bpm ? `Sem tempos marcados. A letra anda pelo BPM, ${f('comp').value || 2} compassos por linha.`
       : 'Sem tempos e sem BPM: a letra anda só pelo botão. Marque os tempos ou informe o BPM.';
-    desenharEnergia(cvE, m, null, m.tempos);
+    desenharEnergia(cvE, m, null, m.tempos, m.marcas);
   }
 
   // ---- ouvir a música no Editar: com tempos marcados, o botão colorido entra em cima da linha cantada agora ----
@@ -1947,6 +1993,15 @@ async function telaEditor(id, listaId) {
     const r = sugerirPeloAudio(m, ta.value);
     if (!r) { aviso('Para sugerir pelo áudio, escolha o mp3 e marque os tempos antes.'); return; }
     aplicarSugestao(r);
+  };
+  $('#premarcar-ed').onclick = () => {
+    lerCampos();
+    const novas = premarcarPeloAudio(m);
+    if (!novas) { aviso('Preciso do mp3 analisado: escolha o mp3 desta música em "Áudio da música".', 8000); return; }
+    const n = aplicarPremarcas(m, novas);
+    if (!n) { aviso('Não achei mudanças claras na música. Marque na mão com "Gravar a bateria ouvindo", no palco.', 8000); return; }
+    guardarSemSair(); atualizarStatus();
+    aviso(`${n} marcação(ões) pré-marcada(s) (fitas coloridas na faixa do áudio). Abra a música no palco e toque em "Gravar a bateria ouvindo" para ouvir e ajustar.`, 12000);
   };
   $('#sug-desfazer').onclick = () => { if (desfazerTexto != null) { ta.value = desfazerTexto; desfazerTexto = null; $('#sug-desfazer').hidden = true; } };
 
