@@ -2791,13 +2791,13 @@ async function marcarTempos(linhas, m, fim) {
     const k = tempos.length;
     $('#m-cont', el).textContent = `${Math.min(k, linhas.length)} de ${linhas.length} linhas marcadas`;
     $('#m-prog', el).style.width = (linhas.length ? k / linhas.length * 100 : 0) + '%';
-    const guia = !comecou ? 'Como funciona: 1) toque no botão grande para a música começar. 2) Toque de novo no INÍCIO de cada frase, quando o cantor começar a cantá-la (nunca no fim). A linha fica verde e mostra quanto durou. Errou? Toque na linha marcada para ajustar ou refazer dali.'
+    const guia = !comecou ? 'Como funciona: 1) toque no botão grande para a música começar. 2) Um toque por linha da letra, no botão grande, quando o cantor COMEÇA a cantar aquela linha (nunca no fim). A linha fica verde e mostra quanto durou. Errou? Toque na linha marcada para ajustar ou refazer dali.'
       : solo ? 'Instrumental rolando. Toque quando o cantor voltar a cantar.'
       : k === 0 ? 'Introdução rolando. Toque no botão grande no instante em que o cantor COMEÇAR a primeira linha: esse é o começo da letra.'
-      : k < linhas.length ? 'Toque no INÍCIO da frase da borda amarela, no instante em que o cantor abre a boca. Nunca no fim: o fim da frase é o começo da próxima.' : 'Todas as linhas marcadas! Toque em Concluir.';
+      : k < linhas.length ? 'Um toque por linha, no botão grande, no instante em que o cantor começa a linha da borda amarela. Nunca no fim: o fim de uma linha é o começo da próxima.' : 'Todas as linhas marcadas! Toque em Concluir.';
     $('#m-info', el).innerHTML = (ultimo ? `<b>${esc(ultimo)}</b> ` : '') + esc(guia);
     toque.textContent = !comecou ? (fonte ? 'Tocar a música' : 'Começar quando a música começar')
-      : solo ? 'Voltou a cantar: toque agora' : k === 0 ? 'COMEÇOU a cantar: toque agora' : k < linhas.length ? 'COMEÇOU a frase: toque agora' : 'Concluir';
+      : solo ? 'Voltou a cantar: toque agora' : k === 0 ? 'COMEÇOU a cantar: toque agora' : k < linhas.length ? 'COMEÇOU esta linha: toque agora' : 'Concluir';
     const bs = $('#m-solo', el);
     bs.hidden = !comecou || k >= linhas.length;
     bs.textContent = solo ? 'Cancelar o solo' : 'Solo / instrumental: segurar o tempo';
