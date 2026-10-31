@@ -2711,6 +2711,7 @@ async function marcarTempos(linhas, m, fim) {
   const seg = x => x.toFixed(1).replace('.', ',') + ' s';
   const lista = $('#m-lista', el), edicao = $('#m-edicao', el);
   let sel = -1, ultimo = '', piscar = -1; // sel = linha já marcada que ele escolheu para ajustar
+  let inicioT = null; // segundo da música em que ele apertou Tocar: a introdução vai daí até ele marcar que começou a cantar
   const pct = d => Math.max(4, Math.min(100, d / 10 * 100)) + '%'; // barra: 10 s = linha cheia
   function desenharLista() {
     const k = tempos.length, soloDe = new Map(solos.map(x => [x.k, x]));
@@ -2720,8 +2721,12 @@ async function marcarTempos(linhas, m, fim) {
       const est = marcada ? (i === k - 1 ? 'cantando' : 'feita') : proxima ? 'proxima' : 'pendente';
       const s0 = soloDe.get(i);
       let pre = '';
-      if (s0) { const d = tempos[i] - s0.t; pre = `<div class="m-l solo feita"><i class="fill" style="width:${pct(d)}"></i><span class="n">♪</span><span class="tx">Solo / instrumental</span><span class="tm">${dec(s0.t)}</span><span class="dd">durou ${seg(d)}</span></div>`; }
-      else if (proxima && solo) pre = `<div class="m-l solo vivo"><i class="fill" style="width:4%"></i><span class="n">♪</span><span class="tx">Instrumental…</span><span class="tm">${dec(solo.t)}</span><span class="dd">há 0,0 s</span></div>`;
+      if (i === 0 && comecou && inicioT != null) { // introdução: do Tocar até o primeiro toque ("começou a cantar")
+        if (k > 0) { const d = tempos[0] - inicioT; pre += `<div class="m-l solo feita"><i class="fill" style="width:${pct(d)}"></i><span class="n">♪</span><span class="tx">Introdução (antes de cantar)</span><span class="tm">${dec(inicioT)}</span><span class="dd">durou ${seg(d)}</span></div>`; }
+        else if (!solo) pre += `<div class="m-l solo vivo intro"><i class="fill" style="width:4%"></i><span class="n">♪</span><span class="tx">Introdução… toque quando começar a cantar</span><span class="tm">${dec(inicioT)}</span><span class="dd">há 0,0 s</span></div>`;
+      }
+      if (s0) { const d = tempos[i] - s0.t; pre += `<div class="m-l solo feita"><i class="fill" style="width:${pct(d)}"></i><span class="n">♪</span><span class="tx">Solo / instrumental</span><span class="tm">${dec(s0.t)}</span><span class="dd">durou ${seg(d)}</span></div>`; }
+      else if (proxima && solo) pre += `<div class="m-l solo vivo"><i class="fill" style="width:4%"></i><span class="n">♪</span><span class="tx">Instrumental…</span><span class="tm">${dec(solo.t)}</span><span class="dd">há 0,0 s</span></div>`;
       const dd = durou != null ? `durou ${seg(durou)}` : est === 'cantando' ? 'há 0,0 s' : '';
       const tm = marcada ? dec(tempos[i]) : proxima ? '← agora?' : '';
       const largura = durou != null ? pct(durou) : est === 'cantando' ? '4%' : '0';
@@ -2737,9 +2742,10 @@ async function marcarTempos(linhas, m, fim) {
   function atualizarVivo() {
     if (!comecou || !(fonte ? fonte.tocando : true)) return;
     const k = tempos.length;
-    const v = lista.querySelector('.m-l.cantando'), sv = lista.querySelector('.m-l.solo.vivo');
+    const v = lista.querySelector('.m-l.cantando'), sv = lista.querySelector('.m-l.vivo');
     if (v && k > 0) { const d = Math.max(0, t() - tempos[k - 1]); v.querySelector('.dd').textContent = 'há ' + seg(d); v.querySelector('.fill').style.width = pct(d); }
-    if (sv && solo) { const d = Math.max(0, t() - solo.t); sv.querySelector('.dd').textContent = 'há ' + seg(d); sv.querySelector('.fill').style.width = pct(d); }
+    const ini = sv ? (sv.classList.contains('intro') ? inicioT : solo && solo.t) : null;
+    if (sv && ini != null) { const d = Math.max(0, t() - ini); sv.querySelector('.dd').textContent = 'há ' + seg(d); sv.querySelector('.fill').style.width = pct(d); }
   }
   function mostrarEdicao() {
     if (sel < 0 || sel >= tempos.length) { sel = -1; edicao.hidden = true; return; }
@@ -2785,12 +2791,13 @@ async function marcarTempos(linhas, m, fim) {
     const k = tempos.length;
     $('#m-cont', el).textContent = `${Math.min(k, linhas.length)} de ${linhas.length} linhas marcadas`;
     $('#m-prog', el).style.width = (linhas.length ? k / linhas.length * 100 : 0) + '%';
-    const guia = !comecou ? 'Como funciona: 1) toque no botão grande para a música começar. 2) Quando o cantor começar cada linha, toque de novo. A linha fica verde e mostra quanto durou. Errou? Toque na linha marcada para ajustar ou refazer dali.'
+    const guia = !comecou ? 'Como funciona: 1) toque no botão grande para a música começar. 2) Toque de novo no INÍCIO de cada frase, quando o cantor começar a cantá-la (nunca no fim). A linha fica verde e mostra quanto durou. Errou? Toque na linha marcada para ajustar ou refazer dali.'
       : solo ? 'Instrumental rolando. Toque quando o cantor voltar a cantar.'
-      : k < linhas.length ? 'Toque quando o cantor começar a linha com a borda amarela.' : 'Todas as linhas marcadas! Toque em Concluir.';
+      : k === 0 ? 'Introdução rolando. Toque no botão grande no instante em que o cantor COMEÇAR a primeira linha: esse é o começo da letra.'
+      : k < linhas.length ? 'Toque no INÍCIO da frase da borda amarela, no instante em que o cantor abre a boca. Nunca no fim: o fim da frase é o começo da próxima.' : 'Todas as linhas marcadas! Toque em Concluir.';
     $('#m-info', el).innerHTML = (ultimo ? `<b>${esc(ultimo)}</b> ` : '') + esc(guia);
     toque.textContent = !comecou ? (fonte ? 'Tocar a música' : 'Começar quando a música começar')
-      : solo ? 'Voltou a cantar: toque agora' : k < linhas.length ? 'Toque quando cantar a linha' : 'Concluir';
+      : solo ? 'Voltou a cantar: toque agora' : k === 0 ? 'COMEÇOU a cantar: toque agora' : k < linhas.length ? 'COMEÇOU a frase: toque agora' : 'Concluir';
     const bs = $('#m-solo', el);
     bs.hidden = !comecou || k >= linhas.length;
     bs.textContent = solo ? 'Cancelar o solo' : 'Solo / instrumental: segurar o tempo';
@@ -2821,7 +2828,7 @@ async function marcarTempos(linhas, m, fim) {
     $('#m-mais', el).onclick = () => { fonte.t = Math.min(fonte.duracao || 1e9, fonte.t + 10); };
     pausa.onclick = async () => {
       if (fonte.tocando) { fonte.pause(); return; }
-      try { await fonte.play(); comecou = true; mostrar(); } catch { aviso('Toque de novo para a música continuar.'); }
+      try { await fonte.play(); if (!comecou) inicioT = Math.round(fonte.t * 100) / 100; comecou = true; mostrar(); } catch { aviso('Toque de novo para a música continuar.'); }
     };
   }
   function sair(r) {
@@ -2837,7 +2844,7 @@ async function marcarTempos(linhas, m, fim) {
         try { await fonte.play(); } catch { aviso('Toque de novo para a música começar.'); return; }
         if (fonte.tipo === 'youtube') setTimeout(() => { if (!saiu && !fonte.tocando) aviso('Se o vídeo não começou, toque nele uma vez.', 6000); }, 1500);
       } else t0 = agora();
-      comecou = true; mostrar(); return;
+      comecou = true; inicioT = Math.round(t() * 100) / 100; mostrar(); return;
     }
     tempos.push(Math.max(0, Math.round((t() - 0.12) * 100) / 100)); // desconta o tempo de reação
     const fechou = solo; // o toque que volta a cantar fecha o solo: ele dura do botão Solo até aqui
