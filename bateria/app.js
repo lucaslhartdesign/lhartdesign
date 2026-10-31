@@ -941,11 +941,7 @@ function telaLista() {
     aviso('Pronto. Agora fica tudo guardado no site.');
     telaLista();
   };
-  $('#nova-lista').onclick = () => {
-    const l = { id: 'l' + Date.now().toString(36), nome: 'Ensaio ' + new Date().toLocaleDateString('pt-BR'), musicas: [] };
-    dados.listas.unshift(l); salvar();
-    location.hash = '#/l/' + encodeURIComponent(l.id);
-  };
+  $('#nova-lista').onclick = () => criarEnsaio();
   $('#exportar').onclick = () => {
     const musicas = todas().map(({ origem, temAudio, ...m }) => m);
     const dia = new Date().toISOString().slice(0, 10);
@@ -971,6 +967,13 @@ function telaLista() {
 }
 
 // ---------------- ensaio: a lista de músicas na ordem ----------------
+let ensaioNovo = null; // ensaio recém-criado: o campo do nome já abre selecionado para digitar
+function criarEnsaio(nome, musicas = []) {
+  const l = { id: 'l' + Date.now().toString(36), nome: nome || 'Ensaio ' + new Date().toLocaleDateString('pt-BR'), musicas: [...musicas] };
+  dados.listas.unshift(l); salvar();
+  ensaioNovo = l.id;
+  location.hash = '#/l/' + encodeURIComponent(l.id);
+}
 function telaEnsaio(id) {
   const l = dados.listas.find(x => x.id === id);
   if (!l) { location.hash = '#/'; return; }
@@ -997,10 +1000,18 @@ function telaEnsaio(id) {
           ${fora.length ? `<ul class="adicionar">${fora.map(m => `<li><button class="btn" data-por="${esc(m.id)}">${ICONE.mais}${esc(m.titulo || 'Sem nome')}</button></li>`).join('')}</ul>`
           : '<p class="dica">Todas as músicas já estão neste ensaio.</p>'}
         </section>
+        <section class="bloco"><h2>Outro ensaio</h2>
+          <div class="acoes"><button class="btn primario" id="l-novo" type="button">Criar um ensaio novo (vazio)</button>
+          <button class="btn" id="l-copiar" type="button">Copiar este ensaio</button></div>
+          <p class="dica">O ensaio novo começa vazio: você dá o nome e toca nas músicas para colocar. "Copiar" leva as mesmas músicas para você mudar o que precisar.</p>
+        </section>
         <button class="btn perigo apagar" id="l-apagar" type="button">Apagar este ensaio</button>
       </main>`;
     const nome = $('#l-nome');
     nome.value = l.nome;
+    if (ensaioNovo === l.id) { ensaioNovo = null; nome.focus(); nome.select(); }
+    $('#l-novo').onclick = () => criarEnsaio();
+    $('#l-copiar').onclick = () => criarEnsaio('Cópia de ' + l.nome, l.musicas);
     nome.oninput = () => { l.nome = nome.value.trim() || 'Ensaio'; $('.topo h1').textContent = l.nome; salvar(); };
     app.querySelectorAll('[data-mover]').forEach(b => b.onclick = () => {
       const [i, d] = b.dataset.mover.split(',').map(Number);
