@@ -384,3 +384,14 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .botoes { gap: 6px; }
 .botoes #inicio { padding-left: 8px; padding-right: 8px; flex: none; }
 .botoes .grande { min-width: 0; padding-left: 8px; padding-right: 8px; }
+
+/* editor: escolher onde a marcação entra tocando na palavra */
+.ed-alvo { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; padding: 8px 10px; border: 1px solid var(--c-sobe); border-radius: 10px; background: color-mix(in srgb, var(--c-sobe) 12%, var(--surface)); font-size: .95rem; }
+.ed-alvo[hidden] { display: none; }
+.ed-alvo-bts { display: flex; gap: 8px; flex-wrap: wrap; }
+.ed-alvo-bts .btn { min-height: 40px; }
+.ed-ac .w { padding: 2px 1px; border-radius: 4px; }
+.ed-ac .l.escolhida { margin-top: 6px; padding-top: 6px; font-weight: 700; color: #fff; border-top: 2px solid var(--c-sobe); background: color-mix(in srgb, var(--c-sobe) 16%, transparent); }
+.ed-ac .l.escolhida::after { content: 'a marcação entra aqui ↑'; position: absolute; right: 6px; top: -9px; padding: 0 6px; font-size: .7rem; font-weight: 600; color: var(--c-sobe); background: var(--surface); }
+.ed-ac .l.escolhida .w.alvo { background: var(--c-sobe); color: #0b1a10; }
+.ed-ac.com-alvo .l.agora::after { content: ''; }

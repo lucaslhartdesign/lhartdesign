@@ -2071,6 +2071,7 @@ async function telaEditor(id, listaId) {
           <button class="btn primario" id="ed-linha-prox" type="button">Próxima linha</button>
         </span>
       </div>
+      <div class="ed-alvo" id="ed-alvo" hidden></div>
       <div class="ed-ac" id="ed-ac" hidden aria-label="A letra acompanhando a música"></div>
       <div class="paleta" role="toolbar" aria-label="Inserir marcação acima da linha do cursor">
         ${PALETA.map(([t, ins, rot]) => `<button class="btn" type="button" data-ins="${esc(ins)}" style="--cor:var(--c-${t})">${ICONE[t]}${rot || TIPOS[t]}</button>`).join('')}
@@ -2209,31 +2210,61 @@ async function telaEditor(id, listaId) {
     edRaf = requestAnimationFrame(edRelogio);
   }
   // a letra com o ponto que anda junto com a música: a marcação entra em cima da linha onde o ponto está
-  let acTxt = null, acI = -9, acTocando = null;
+  let acTxt = null, acI = -9, acTocando = null, acAlvo = null;
+  // alvo escolhido com o dedo (linha e palavra): os botões da bateria entram em cima dele, em vez de seguir a música
+  let alvo = null; // { k: linha de letra, w: índice da palavra, palavra }
+  const chaveAlvo = () => alvo ? alvo.k + ':' + alvo.w : '';
   function edAcompanhar(i) {
-    const box = $('#ed-ac'), v = ta.value, tocando = !!edFonte.tocando;
-    if (v === acTxt && i === acI && tocando === acTocando) return; // nada mudou: não redesenha a 60 quadros por segundo
-    acTxt = v; acI = i; acTocando = tocando;
+    const box = $('#ed-ac'), v = ta.value, tocando = !!(edFonte && edFonte.tocando);
+    if (v === acTxt && i === acI && tocando === acTocando && chaveAlvo() === acAlvo) return; // nada mudou: não redesenha a 60 quadros por segundo
+    acTxt = v; acI = i; acTocando = tocando; acAlvo = chaveAlvo();
     const { itens, nLinhas } = interpretar(v);
     box.hidden = !nLinhas;
+    mostrarAlvo(nLinhas);
     if (!nLinhas) return;
     box.classList.toggle('parado', !tocando);
+    box.classList.toggle('com-alvo', !!alvo);
+    const rolAntes = box.scrollTop; // com a linha escolhida, a lista não pode pular de lugar quando redesenha
     box.innerHTML = itens.map(it => {
       if (it.k === 'secao') return `<div class="s">${esc(it.txt)}</div>`;
       if (it.k === 'deixa') return `<div class="d" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo] || ''}<span>${esc(it.txt)}</span></div>`;
-      if (it.k === 'linha') return `<div class="l${it.i === i ? ' agora' : ''}${i >= 0 && it.i < i ? ' passou' : ''}" data-k="${it.i}">${esc(it.txt)}</div>`;
+      if (it.k === 'linha') {
+        const ehAlvo = alvo && alvo.k === it.i;
+        const palavras = it.txt.split(/\s+/).filter(Boolean).map((p, w) => `<span class="w${ehAlvo && alvo.w === w ? ' alvo' : ''}" data-w="${w}">${esc(p)}</span>`).join(' ');
+        return `<div class="l${it.i === i ? ' agora' : ''}${i >= 0 && it.i < i ? ' passou' : ''}${ehAlvo ? ' escolhida' : ''}" data-k="${it.i}">${palavras}</div>`;
+      }
       return '';
     }).join('');
-    const el = box.querySelector('.agora') || box.firstElementChild;
-    if (el) box.scrollTop = Math.max(0, el.offsetTop - box.offsetTop - box.clientHeight * 0.4);
+    const el = box.querySelector('.escolhida') || box.querySelector('.agora') || box.firstElementChild;
+    if (alvo) box.scrollTop = rolAntes;
+    else if (el) box.scrollTop = Math.max(0, el.offsetTop - box.offsetTop - box.clientHeight * 0.4);
   }
-  // tocar numa linha da letra: a música pula até ela (precisa dos tempos marcados)
+  // barrinha em cima da letra: diz onde a marcação vai entrar e deixa tocar dali ou soltar
+  function mostrarAlvo(nLinhas) {
+    const el = $('#ed-alvo');
+    if (!alvo || !nLinhas) { el.hidden = true; return; }
+    el.hidden = false;
+    el.innerHTML = `<span>Marcação entra em cima de: <b>${esc(linhasDe(ta.value)[alvo.k] || '')}</b>${alvo.w > 0 ? ` (na palavra <b>${esc(alvo.palavra)}</b>)` : ''}</span>
+      <span class="ed-alvo-bts"><button class="btn" type="button" id="alvo-tocar">Tocar daqui</button><button class="btn" type="button" id="alvo-soltar">Seguir a música</button></span>`;
+    $('#alvo-soltar').onclick = () => { alvo = null; edAcompanhar(linhaCantada()); };
+    $('#alvo-tocar').onclick = async () => {
+      if (!edFonte) { await $('#ed-play').onclick(); if (edFonte && edFonte.tocando) edFonte.pause(); }
+      if (!edFonte) return;
+      const n = linhasDe(ta.value).length, ef = temposEfetivos({ ...m, tempos: ta.value === textoGuardado ? m.tempos : remapear(textoGuardado, ta.value, m.tempos) }, n, edFonte.tipo);
+      if (!ef.tempos) { aviso('Sem tempos ainda: marque a letra tocando junto primeiro.'); return; }
+      edFonte.t = Math.max(0, ef.tempos[alvo.k] - 1);
+      if (!edFonte.tocando) { try { await edFonte.play(); } catch {} }
+    };
+  }
+  // tocar numa palavra da letra: a marcação passa a entrar em cima dessa linha (toque de novo para soltar)
   $('#ed-ac').onclick = ev => {
-    const l = ev.target.closest('.l'); if (!l || !edFonte) return;
-    const n = linhasDe(ta.value).length, ef = temposEfetivos({ ...m, tempos: ta.value === textoGuardado ? m.tempos : remapear(textoGuardado, ta.value, m.tempos) }, n, edFonte.tipo);
-    if (!ef.tempos) { aviso('Sem tempos ainda: marque a letra tocando junto primeiro.'); return; }
-    edFonte.t = ef.tempos[+l.dataset.k];
+    const l = ev.target.closest('.l'); if (!l) return;
+    const k = +l.dataset.k, wEl = ev.target.closest('.w'), w = wEl ? +wEl.dataset.w : 0;
+    alvo = alvo && alvo.k === k && alvo.w === w ? null : { k, w, palavra: wEl ? wEl.textContent : '' };
+    edAcompanhar(linhaCantada());
   };
+  ta.addEventListener('input', () => { if (alvo && alvo.k >= linhasDe(ta.value).length) alvo = null; edAcompanhar(linhaCantada()); });
+  edAcompanhar(-1);
   let temposMarcadosAntes = false;
   $('#ed-linha-prox').onclick = () => {
     if (!edFonte || !edFonte.tocando) { aviso('Toque em Tocar primeiro.'); return; }
@@ -2277,10 +2308,14 @@ async function telaEditor(id, listaId) {
   $('#ed-frente').onclick = () => { if (edFonte) edFonte.t = edFonte.t + 5; };
 
   app.querySelectorAll('.paleta button').forEach(b => b.onclick = () => {
-    const ins = b.dataset.ins, v = ta.value, pos = ta.selectionStart;
+    let ins = b.dataset.ins; const v = ta.value, pos = ta.selectionStart;
     let ini = v.lastIndexOf('\n', pos - 1) + 1;   // começo da linha do cursor
-    // música tocando e tempos marcados: vai para cima da linha que está sendo cantada
-    const cantada = !b.dataset.virar && edFonte && edFonte.tocando ? linhaCantada() : -1;
+    // linha escolhida com o dedo na letra: vale ela. Senão, música tocando e tempos marcados: a linha cantada agora
+    const comAlvo = !!alvo && alvo.k < linhasDe(v).length;
+    const cantada = comAlvo ? alvo.k : (!b.dataset.virar && edFonte && edFonte.tocando ? linhaCantada() : -1);
+    // palavra escolhida (não a primeira): a marcação diz em qual palavra entra
+    if (comAlvo && alvo.w > 0 && alvo.palavra && /^!/.test(ins)) ins = ins.trimEnd() + ` na palavra "${alvo.palavra.replace(/[",.;:!?…]+$/g, '')}" `;
+    if (comAlvo && b.dataset.virar) { const p = inicioDaLinhaDeLetra(cantada); if (p >= 0) ini = p; }
     if (cantada >= 0) {
       const p = inicioDaLinhaDeLetra(cantada); if (p >= 0) ini = p;
       // nome de parte vai acima das marcações que já estão em cima da linha
@@ -2301,6 +2336,7 @@ async function telaEditor(id, listaId) {
       ta.value = v.slice(0, ini) + nova + v.slice(fimL);
       ta.focus({ preventScroll: true }); ta.setSelectionRange(ini + nova.length, ini + nova.length);
       ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
+      edAcompanhar(linhaCantada());
       return;
     }
     // a tela fica parada: trocar o texto faria o navegador pular para o topo ou para o cursor
@@ -2312,6 +2348,7 @@ async function telaEditor(id, listaId) {
     } else ta.focus({ preventScroll: true });
     ta.setSelectionRange(cursor, cursor);
     ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
+    edAcompanhar(linhaCantada()); // a marcação nova já aparece na letra de cima
   });
 
   $('#a-arquivo').onchange = async ev => {
