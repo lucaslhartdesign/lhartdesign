@@ -115,12 +115,18 @@ function lerInline(l) {
 }
 const chipHtml = (m, extra = '') => `<span class="chip" ${extra} style="--cor:var(--c-${m.tipo})">${ICONE[m.tipo] || ''}${esc(m.txt)}</span>`;
 // a linha com as etiquetas da bateria nos pontos onde entram
+// As etiquetas ficam EM CIMA da palavra (como a cifra em cima da letra), sem empurrar o texto. Etiqueta no fim da linha
+// fica em cima do último pedaço, alinhada à direita. fw(palavra, w) monta cada palavra; cx(etiqueta, ci) monta cada etiqueta.
+function linhaAnotada(it, fw, cx) {
+  const pal = it.txt.split(/\s+/).filter(Boolean), ms = it.inline || [];
+  const em = w => ms.map((mk, ci) => mk.pos === w ? cx(mk, ci) : '').join('');
+  const corpo = pal.map((p, w) => { const c = em(w); return c ? `<span class="pal"><span class="anot">${c}</span>${fw(p, w)}</span>` : fw(p, w); }).join(' ');
+  const fim = ms.map((mk, ci) => mk.pos >= pal.length ? cx(mk, ci) : '').join('');
+  return corpo + (fim ? ` <span class="pal fim"><span class="anot">${fim}</span></span>` : '');
+}
 function linhaHtml(it) {
   if (!it.inline || !it.inline.length) return esc(it.txt);
-  const pal = it.txt.split(' '); let out = '';
-  pal.forEach((w, i) => { it.inline.filter(m => m.pos === i).forEach(m => { out += chipHtml(m); }); out += esc(w) + ' '; });
-  it.inline.filter(m => m.pos >= pal.length).forEach(m => { out += chipHtml(m); });
-  return out.trim();
+  return linhaAnotada(it, p => esc(p), m => chipHtml(m));
 }
 // põe {token} antes da palavra w de uma linha de texto (que pode já ter outras etiquetas)
 function inserirInline(raw, w, token) {
@@ -1131,7 +1137,7 @@ function renderItens(itens) {
     if (it.k === 'deixa') return it.marca != null
       ? `<div class="deixa gravada" data-marca="${it.marca}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`
       : `<div class="deixa" data-r="${it.r}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo]}<span>${esc(it.txt)}</span></div>`;
-    if (it.k === 'linha') return `<p class="linha" data-i="${it.i}" data-r="${it.r}" data-t="${esc(it.txt)}">${linhaHtml(it)}</p>`;
+    if (it.k === 'linha') return `<p class="linha${it.inline && it.inline.length ? ' tem-nota' : ''}" data-i="${it.i}" data-r="${it.r}" data-t="${esc(it.txt)}">${linhaHtml(it)}</p>`;
     return '<div class="espaco"></div>';
   }).join('');
 }
@@ -1371,7 +1377,8 @@ async function telaPalco(id, listaId) {
     const el = document.createElement('div');
     el.className = 'folha'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Marcação');
     el.innerHTML = `
-      <p class="f-onde">${trocar != null ? 'Trocar' : 'Pôr acima de'}: <b>${esc(rotulo)}</b></p>
+      <p class="f-onde">${trocar != null ? 'Trocar' : 'Pôr na linha'}: <b>${esc(rotulo)}</b></p>
+      ${trocar == null ? '<div class="seg f-posicao" role="group" aria-label="Onde na linha"><button type="button" data-o="ini" aria-pressed="true">No início da linha</button><button type="button" data-o="fim" aria-pressed="false">No fim da linha</button></div>' : ''}
       <div class="f-tipos">${Object.keys(PALAVRA).map(t => `<button class="btn" data-t="${t}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}</div>
       <label class="campo">Detalhe ou recado (opcional)<input id="f-det" autocomplete="off" placeholder="ex.: só aro, segura o prato"></label>
       <div class="acoes">
@@ -1383,6 +1390,7 @@ async function telaPalco(id, listaId) {
       </div>`;
     document.body.appendChild(el);
     const det = $('#f-det', el); det.value = detalhe;
+    el.querySelectorAll('.f-posicao [data-o]').forEach(bt => bt.onclick = () => el.querySelectorAll('.f-posicao [data-o]').forEach(x => x.setAttribute('aria-pressed', x === bt)));
     const aplicar = (nova, tipo, det) => {
       if (marca != null) {
         if (nova == null) m.marcas.splice(marca, 1);
@@ -1392,7 +1400,10 @@ async function telaPalco(id, listaId) {
         return;
       }
       if (trocar != null) { if (nova == null) linhas.splice(trocar, 1); else linhas[trocar] = nova; }
-      else linhas.splice(antesDe, 0, nova);
+      else { // marcação nova: etiqueta dentro da linha, no início ou no fim
+        const fimLinha = !!el.querySelector('.f-posicao [data-o="fim"][aria-pressed="true"]');
+        linhas[antesDe] = inserirInline(linhas[antesDe], fimLinha ? 1e9 : 0, '{' + nova.replace(/^!\s*/, '').trim() + '}');
+      }
       m.texto = linhas.join('\n');
       guardarAjuste(); montarLetra(); fecharFolha();
     };
@@ -1606,7 +1617,7 @@ async function telaPalco(id, listaId) {
       ant.innerHTML = man ? ICONE.anterior : '<span>−5 s</span>'; prx.innerHTML = man ? ICONE.proxima : '<span>+5 s</span>';
       ant.setAttribute('aria-label', man ? 'Linha anterior' : 'Voltar 5 segundos'); prx.setAttribute('aria-label', man ? 'Próxima linha' : 'Avançar 5 segundos');
     }
-    if (P.modo === 'manual') b.innerHTML = `${ICONE.proxima}<span>Próxima linha</span>`;
+    if (P.modo === 'manual') b.innerHTML = `<span>Próxima</span>`;
     else b.innerHTML = P.tocando ? `${ICONE.pause}<span>Pausar</span>` : `${ICONE.play}<span>Tocar</span>`;
   }
   let avisouSemSom = false;
@@ -2371,13 +2382,13 @@ async function telaEditor(id, listaId) {
       if (it.k === 'secao') return `<div class="s">${esc(it.txt)}</div>`;
       if (it.k === 'deixa') return `<div class="d${alvoMarca && alvoMarca.r === it.r ? ' escolhida' : ''}" data-r="${it.r}" style="--cor:var(--c-${it.tipo})">${ICONE[it.tipo] || ''}<span>${esc(it.txt)}</span></div>`;
       if (it.k === 'linha') {
-        const ehAlvo = alvo && alvo.k === it.i;
-        const marcasIn = it.inline || [];
-        const palavras = it.txt.split(/\s+/).filter(Boolean).map((p, w) =>
-          marcasIn.map((mk, ci) => mk.pos === w ? chipHtml(mk, `data-r="${it.r}" data-ci="${ci}"`).replace('class="chip"', `class="chip${alvoMarca && alvoMarca.r === it.r && alvoMarca.ci === ci ? ' escolhida' : ''}"`) : '').join('')
-          + `<span class="w${ehAlvo && alvo.w === w ? ' alvo' : ''}" data-w="${w}">${esc(p)}</span>`).join(' ')
-          + marcasIn.map((mk, ci) => mk.pos >= it.txt.split(/\s+/).filter(Boolean).length ? chipHtml(mk, `data-r="${it.r}" data-ci="${ci}"`) : '').join('');
-        return `<div class="l${it.i === i ? ' agora' : ''}${i >= 0 && it.i < i ? ' passou' : ''}${ehAlvo ? ' escolhida' : ''}" data-k="${it.i}">${palavras}</div>`;
+        const ehAlvo = alvo && alvo.k === it.i, nPal = it.txt.split(/\s+/).filter(Boolean).length;
+        const palavras = linhaAnotada(it,
+          (p, w) => `<span class="w${ehAlvo && alvo.w === w ? ' alvo' : ''}" data-w="${w}">${esc(p)}</span>`,
+          (mk, ci) => chipHtml(mk, `data-r="${it.r}" data-ci="${ci}"`).replace('class="chip"', `class="chip${alvoMarca && alvoMarca.r === it.r && alvoMarca.ci === ci ? ' escolhida' : ''}"`))
+          // linha escolhida: aparece o alvo "+ fim" para pôr a marcação no final da linha
+          + (ehAlvo ? ` <span class="w w-fim${alvo.w >= nPal ? ' alvo' : ''}" data-w="${nPal}" data-fim="1">+ fim</span>` : '');
+        return `<div class="l${it.i === i ? ' agora' : ''}${i >= 0 && it.i < i ? ' passou' : ''}${ehAlvo ? ' escolhida' : ''}${it.inline && it.inline.length ? ' tem-nota' : ''}" data-k="${it.i}">${palavras}</div>`;
       }
       return '';
     }).join('');
@@ -2399,7 +2410,9 @@ async function telaEditor(id, listaId) {
     if (!alvo || !nLinhas) { el.hidden = true; return; }
     const quantas = marcasEmCima(alvo.k).length;
     el.hidden = false;
-    el.innerHTML = `<span>Marcação entra em cima de: <b>${esc(linhasDe(ta.value)[alvo.k] || '')}</b>${alvo.w > 0 ? ` <i>(no MEIO da linha, antes da palavra <b>${esc(alvo.palavra)}</b>)</i>` : ''}</span>
+    const txtLinha = linhasDe(ta.value)[alvo.k] || '', nPal = txtLinha.split(/\s+/).filter(Boolean).length;
+    const onde = alvo.w >= nPal ? '<i>(no FIM da linha)</i>' : alvo.w === 0 ? '<i>(no INÍCIO da linha)</i>' : `<i>(no MEIO, em cima da palavra <b>${esc(alvo.palavra)}</b>)</i>`;
+    el.innerHTML = `<span>Marcação entra na linha: <b>${esc(txtLinha)}</b> ${onde}. Toque em outra palavra ou em "+ fim" para mudar o ponto.</span>
       <span class="ed-alvo-bts"><button class="btn" type="button" id="alvo-tocar">Tocar daqui</button>
       ${quantas ? `<button class="btn perigo" type="button" id="alvo-apagar">Apagar ${quantas === 1 ? 'a marcação' : quantas + ' marcações'} de cima</button>` : ''}
       <button class="btn" type="button" id="alvo-soltar">Seguir a música</button></span>`;
@@ -2471,7 +2484,7 @@ async function telaEditor(id, listaId) {
     const l = ev.target.closest('.l'); if (!l) return;
     const k = +l.dataset.k, wEl = ev.target.closest('.w'), w = wEl ? +wEl.dataset.w : 0;
     alvoMarca = null;
-    alvo = alvo && alvo.k === k && alvo.w === w ? null : { k, w, palavra: wEl ? wEl.textContent : '' };
+    alvo = alvo && alvo.k === k && alvo.w === w ? null : { k, w, palavra: wEl && !wEl.dataset.fim ? wEl.textContent : '' };
     edAcompanhar(linhaCantada());
   };
   ta.addEventListener('input', () => { if (alvo && alvo.k >= linhasDe(ta.value).length) alvo = null; alvoMarca = null; edAcompanhar(linhaCantada()); });
@@ -2524,18 +2537,21 @@ async function telaEditor(id, listaId) {
     // linha escolhida com o dedo na letra: vale ela. Senão, música tocando e tempos marcados: a linha cantada agora
     const comAlvo = !!alvo && alvo.k < linhasDe(v).length;
     const cantada = comAlvo ? alvo.k : (!b.dataset.virar && edFonte && edFonte.tocando ? linhaCantada() : -1);
-    // palavra escolhida (não a primeira): a marcação entra NO MEIO da linha, como etiqueta antes dessa palavra
-    if (comAlvo && alvo.w > 0 && /^!/.test(ins) && !b.dataset.virar) {
-      const it = interpretar(v).itens.find(x => x.k === 'linha' && x.i === alvo.k);
-      if (it) {
-        const linhas = v.split('\n'), token = '{' + ins.slice(1).trim() + '}';
-        linhas[it.r] = inserirInline(linhas[it.r], alvo.w, token);
-        const tela = ta.closest('.rolagem'), rolTela = tela.scrollTop, rolTexto = ta.scrollTop;
-        ta.value = linhas.join('\n'); ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
-        aviso(`Marcação no meio da linha, antes de "${alvo.palavra}".`, 2500);
-        edAcompanhar(linhaCantada());
-        return;
-      }
+    // marcação da bateria ("!"): entra sempre DENTRO da linha, como etiqueta em cima da palavra escolhida (início, meio ou fim).
+    // Ouvindo a música sem ter escolhido palavra: entra no início da linha cantada agora.
+    if (/^!/.test(ins) && !b.dataset.virar) {
+      let k = comAlvo ? alvo.k : -1, w = comAlvo ? alvo.w : 0, nome = comAlvo ? alvo.palavra : '';
+      if (k < 0 && edFonte && edFonte.tocando) { k = linhaCantada(); w = 0; }
+      if (k < 0) { aviso('Toque na palavra da letra de cima onde a marcação entra (no começo, no meio ou em "+ fim") e depois no botão.', 7000); return; }
+      const it = interpretar(v).itens.find(x => x.k === 'linha' && x.i === k);
+      if (!it) return;
+      const nPal = it.txt.split(/\s+/).filter(Boolean).length, linhas = v.split('\n'), token = '{' + ins.slice(1).trim() + '}';
+      linhas[it.r] = inserirInline(linhas[it.r], w, token);
+      const tela = ta.closest('.rolagem'), rolTela = tela.scrollTop, rolTexto = ta.scrollTop;
+      ta.value = linhas.join('\n'); ta.scrollTop = rolTexto; tela.scrollTop = rolTela;
+      aviso(w >= nPal ? 'Marcação no FIM da linha.' : w === 0 ? 'Marcação no INÍCIO da linha.' : `Marcação no meio da linha, em cima de "${nome}".`, 2500);
+      edAcompanhar(linhaCantada());
+      return;
     }
     if (comAlvo && b.dataset.virar) { const p = inicioDaLinhaDeLetra(cantada); if (p >= 0) ini = p; }
     if (cantada >= 0) {

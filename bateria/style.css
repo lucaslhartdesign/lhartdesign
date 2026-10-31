@@ -427,12 +427,6 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .marcar .g-tipos.m-tipos-h .btn { flex: none; min-height: 46px; padding: 0 12px; font-size: .95rem; }
 .m-l.flash { --cor: var(--c-sobe); }
 
-/* marcação no meio da linha: etiqueta colorida no ponto exato */
-.chip { display: inline-flex; align-items: center; gap: .25em; padding: 0 .45em; margin: 0 .3em; border-radius: .5em; font-family: var(--f-deixa); font-size: .78em; font-weight: 700; line-height: 1.5; color: var(--cor); background: color-mix(in srgb, var(--cor) 16%, transparent); border: 1px solid color-mix(in srgb, var(--cor) 45%, transparent); vertical-align: .08em; white-space: nowrap; }
-.chip svg { width: 1em; height: 1em; flex: none; }
-.linha.atual .chip { background: color-mix(in srgb, var(--cor) 32%, transparent); }
-.ed-ac .chip { cursor: pointer; font-size: .8em; }
-.ed-ac .chip.escolhida { outline: 2px solid var(--cor); outline-offset: 1px; }
 
 /* começar de onde canta */
 
@@ -443,3 +437,27 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .canta-linha .btn[hidden] { display: none; }
 .canta-linha .btn { min-width: 0; white-space: normal; line-height: 1.15; font-size: .82rem; padding: 4px 6px; }
 .canta-linha { max-width: 100%; }
+
+/* marcação dentro da linha: etiqueta EM CIMA da palavra, como a cifra em cima da letra */
+.chip { display: inline-flex; align-items: center; gap: .25em; padding: 0 .5em; border-radius: .5em; font-family: var(--f-deixa); font-size: .62em; font-weight: 700; line-height: 1.55; color: var(--cor); background: color-mix(in srgb, var(--cor) 18%, var(--bg)); border: 1px solid color-mix(in srgb, var(--cor) 50%, transparent); white-space: nowrap; }
+.chip svg { width: 1em; height: 1em; flex: none; }
+.pal { position: relative; display: inline-block; line-height: 1.25; }
+.pal .anot { position: absolute; left: 0; bottom: 100%; margin-bottom: .1em; display: flex; gap: .25em; z-index: 2; }
+.pal.fim { width: 0; }
+.pal.fim .anot { left: auto; right: 0; }
+.linha.tem-nota { line-height: 2.7; }
+.linha.atual .chip { background: color-mix(in srgb, var(--cor) 40%, var(--bg)); }
+.ed-ac .l.tem-nota { line-height: 2.5; }
+.ed-ac .chip { cursor: pointer; font-size: .7em; }
+.ed-ac .chip.escolhida { outline: 2px solid var(--cor); outline-offset: 1px; }
+.ed-ac .w-fim { display: inline-block; margin-left: .4em; padding: 0 .5em; border: 1px dashed var(--c-sobe); border-radius: .5em; color: var(--c-sobe); font-size: .8em; }
+.ed-ac .w-fim.alvo { background: var(--c-sobe); color: #0b1a10; }
+.f-posicao { display: flex; margin: 0 0 8px; }
+.f-posicao button { flex: 1; }
+
+/* espaço só onde há etiqueta: a palavra com etiqueta ganha uma faixa em cima; as outras linhas ficam como estavam */
+.linha.tem-nota, .ed-ac .l.tem-nota { line-height: inherit; }
+.pal { padding-top: 1.15em; }
+.pal .anot { top: 0; bottom: auto; margin-bottom: 0; }
+.pal.fim .anot { top: 0; }
+.ed-ac .pal { padding-top: 1.3em; }
