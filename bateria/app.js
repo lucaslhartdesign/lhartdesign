@@ -866,7 +866,7 @@ function pararTudo() {
   if (P.fonte) P.fonte.destruir();
   if (P.pararClique) P.pararClique();
   app.classList.remove('tocando', 'anotando');
-  document.querySelectorAll('.folha, .fim-card, .contagem').forEach(f => f.remove());
+  document.querySelectorAll('.folha, .fim-card, .contagem, .parada-card').forEach(f => f.remove());
   pararMic();
   document.querySelectorAll('.menu-lado, .menu-fundo').forEach(x => { x.hidden = true; });
   try { P.lock && P.lock.release(); } catch {}
@@ -1158,6 +1158,12 @@ async function telaPalco(id, listaId) {
           <p class="dica" id="laco-info"></p>
         </section>
         <section>
+          <h3>Paradas: esperar até você voltar</h3>
+          <p class="dica">"Esperar aqui": a música para neste ponto e fica esperando. Quando for cantar, toque Continuar. Para repetir um trecho até você liberar (um refrão que se repete), marque o trecho em "Repetir um trecho" e toque o botão de baixo.</p>
+          <div class="acoes"><button class="btn" id="par-esperar" type="button">Esperar aqui</button><button class="btn" id="par-repetir" type="button">Repetir o trecho até eu liberar</button></div>
+          <ul class="paradas" id="par-lista"></ul>
+        </section>
+        <section>
           <h3>Som</h3>
           <button class="btn item" id="contagem" type="button" aria-pressed="false"><span>Contagem antes de tocar<small>Conta os tempos no BPM (1, 2, 3, 4) e só então a música começa</small></span></button>
         <label class="vol" id="vol-caixa" hidden>${ICONE.som}<span class="rotulo">Música</span>
@@ -1279,6 +1285,7 @@ async function telaPalco(id, listaId) {
         <button class="btn" data-t="livre" style="--cor:var(--c-livre)">${ICONE.livre}Pôr como nota</button>
         ${trocar != null ? '<button class="btn perigo" id="f-apagar">Apagar</button>' : ''}
         ${linha != null && tempos ? `<button class="btn" id="f-daqui">${ICONE.play}Tocar daqui</button>` : ''}
+        ${linha != null && tempos ? '<button class="btn" id="f-parar">Esperar antes desta linha</button>' : ''}
         <button class="btn" id="f-fechar">Fechar</button>
       </div>`;
     document.body.appendChild(el);
@@ -1304,6 +1311,8 @@ async function telaPalco(id, listaId) {
     if (trocar != null) $('#f-apagar', el).onclick = () => aplicar(null);
     const daqui = $('#f-daqui', el);
     if (daqui) daqui.onclick = () => { fecharFolha(); irPara(linha, true); if (!P.tocando) comecar(); };
+    const parar = $('#f-parar', el);
+    if (parar) parar.onclick = () => { const t = Math.max(0, tempos[linha] - 0.2); fecharFolha(); porParada(t); aviso(`Parada em ${mmss(t)}: a música espera antes desta linha.`); };
     $('#f-fechar', el).onclick = fecharFolha;
   }
   function fecharFolha() { document.querySelectorAll('.folha').forEach(f => f.remove()); }
@@ -1374,8 +1383,21 @@ async function telaPalco(id, listaId) {
 
   let arrastoT = null; // onde a marca verde está sendo arrastada
   const lacoAB = { a: null, b: null, on: false, espera: 0 }; // trecho repetido para treinar
+  // paradas (m.paradas = [{t, volta?}]): a música para em t e espera; com "volta" repete de volta até t até liberar
+  const par = { ultT: null, preso: null, libera: null, esperando: null };
   function desenhar() {
     desenharEnergia(faixa, { ...m, energia: ehYT() ? null : m.energia, duracao: duracao() }, P.modo === 'manual' ? null : tempoAtual(), tempos, m.marcas);
+    if (m.paradas && m.paradas.length && duracao()) {
+      const g = faixa.getContext('2d'), w = faixa.clientWidth, h = faixa.clientHeight, dur = duracao();
+      g.save(); g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--c-prato').trim() || '#e6a';
+      m.paradas.forEach(p => {
+        const x = p.t / dur * w;
+        if (p.volta != null) { g.globalAlpha = 0.25; g.fillRect(p.volta / dur * w, 0, Math.max(2, x - p.volta / dur * w), h); g.globalAlpha = 1; }
+        g.fillRect(x - 1.5, 0, 3, h);
+        g.fillRect(x - 6, h - 5, 12, 5);
+      });
+      g.restore();
+    }
     if (lacoAB.a != null && duracao()) {
       const g = faixa.getContext('2d'), w = faixa.clientWidth, h = faixa.clientHeight, dur = duracao();
       const x1 = lacoAB.a / dur * w, x2 = (lacoAB.b ?? lacoAB.a) / dur * w;
@@ -1435,6 +1457,15 @@ async function telaPalco(id, listaId) {
     if (lacoAB.on && P.tocando && P.modo !== 'manual' && agora() > lacoAB.espera && tempoAtual() >= lacoAB.b) {
       lacoAB.espera = agora() + 600; pularPara(lacoAB.a); P.alvoT = null;
     }
+    // paradas: passou naturalmente por uma (não foi pulo): para e espera, ou volta e repete até liberar
+    if (P.tocando && P.modo !== 'manual') {
+      const tNow = tempoAtual(), antes = par.ultT; par.ultT = tNow;
+      if (antes != null && tNow - antes < 3 && m.paradas) {
+        const x = m.paradas.find(p => antes < p.t && p.t <= tNow && par.libera !== p.t);
+        if (x) dispararParada(x);
+      }
+      if (par.libera != null && tNow > par.libera + 1) par.libera = null;
+    } else par.ultT = null;
     if (P.tocando && tempos && P.modo !== 'manual') {
       const t = tempoAtual() + 0.35; // um pouco adiantado: a marcação aparece antes de acontecer
       let i = -1; while (i + 1 < nLinhas && tempos[i + 1] <= t) i++;
@@ -1455,6 +1486,7 @@ async function telaPalco(id, listaId) {
   let avisouSemSom = false;
   // pula a música (ou o cronômetro) para t segundos e lembra: o Tocar seguinte começa daí, não do começo
   function pularPara(t) {
+    par.ultT = null;
     P.alvoT = t;
     if (P.modo === 'audio' && P.fonte) { try { P.fonte.t = t; } catch {} }
     else { P.base = t; P.t0 = agora(); }
@@ -1482,6 +1514,44 @@ async function telaPalco(id, listaId) {
     }
     else P.t0 = agora();
     P.tocando = true; rotularPlay(); manterTela();
+    if (par.esperando) { par.esperando = null; document.querySelectorAll('.parada-card').forEach(e => e.remove()); }
+  }
+  function dispararParada(x) {
+    const repete = x.volta != null && x.volta < x.t;
+    if (repete) { par.preso = x; pularPara(x.volta); P.alvoT = null; }
+    else { pausar(); pularPara(x.t + 0.05); par.esperando = x; }
+    cartaoParada(x, repete);
+  }
+  function cartaoParada(x, repete) {
+    document.querySelectorAll('.parada-card').forEach(e => e.remove());
+    const el = document.createElement('div'); el.className = 'fim-card parada-card';
+    el.innerHTML = repete
+      ? `<b>Repetindo ${mmss(x.volta)} → ${mmss(x.t)}</b><span>Toque Seguir quando for cantar.</span><div class="acoes"><button class="btn primario" type="button">Seguir</button></div>`
+      : `<b>Parada: aguardando</b><span>Toque Continuar quando for cantar.</span><div class="acoes"><button class="btn primario" type="button">Continuar</button></div>`;
+    document.body.appendChild(el);
+    el.querySelector('button').onclick = () => {
+      el.remove();
+      if (repete) { par.preso = null; par.libera = x.t; }
+      else { par.esperando = null; if (!P.tocando) comecar(); }
+    };
+  }
+  function mostrarParadas() {
+    const ul = $('#par-lista'), ps = (m.paradas || []).slice().sort((a, b) => a.t - b.t);
+    ul.innerHTML = ps.length ? ps.map(p => `<li><button class="btn" data-ir="${p.t}">${p.volta != null ? `Repete ${mmss(p.volta)} → ${mmss(p.t)}` : `Espera em ${mmss(p.t)}`}</button>
+      <button class="btn icone perigo" data-del="${p.t}" aria-label="Apagar parada">${ICONE.fechar}</button></li>`).join('') : '<li class="dica">Nenhuma parada ainda.</li>';
+    ul.querySelectorAll('[data-ir]').forEach(b => b.onclick = () => { pularPara(Math.max(0, +b.dataset.ir - 4)); desenhar(); });
+    ul.querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+      m.paradas = (m.paradas || []).filter(p => p.t !== +b.dataset.del); if (!m.paradas.length) delete m.paradas;
+      par.preso = null; par.esperando = null; document.querySelectorAll('.parada-card').forEach(e => e.remove());
+      guardarAjuste(); mostrarParadas(); desenhar();
+    });
+  }
+  function porParada(t, volta) {
+    t = Math.round(t * 10) / 10;
+    m.paradas = (m.paradas || []).filter(p => Math.abs(p.t - t) > 0.3);
+    m.paradas.push(volta != null ? { t, volta: Math.round(volta * 10) / 10 } : { t });
+    m.paradas.sort((a, b) => a.t - b.t);
+    guardarAjuste(); mostrarParadas(); desenhar();
   }
   function pausar() {
     if (!P) return;
@@ -1790,6 +1860,17 @@ async function telaPalco(id, listaId) {
   };
   $('#laco-limpar').onclick = () => { lacoAB.a = lacoAB.b = null; lacoAB.on = false; mostrarLaco(); desenhar(); };
   mostrarLaco();
+  $('#par-esperar').onclick = () => {
+    if (P.modo === 'manual') { aviso('Para usar paradas, use o modo Música ou Tempo.'); return; }
+    porParada(tempoAtual()); aviso(`Parada em ${mmss(tempoAtual())}: a música vai esperar aqui.`);
+  };
+  $('#par-repetir').onclick = () => {
+    if (lacoAB.a == null || lacoAB.b == null) { aviso('Marque o começo e o fim em "Repetir um trecho" antes.'); return; }
+    porParada(lacoAB.b, lacoAB.a);
+    lacoAB.a = lacoAB.b = null; lacoAB.on = false; mostrarLaco();
+    aviso('Pronto: ao chegar no fim do trecho a música volta ao começo e repete até você tocar Seguir.', 8000);
+  };
+  mostrarParadas();
   $('#contagem').setAttribute('aria-pressed', !!dados.prefs.contagem);
   $('#contagem').onclick = () => {
     if (!m.bpm) { aviso('Informe o BPM (em Editar ou no + e − do clique) para a contagem funcionar.'); return; }
