@@ -122,7 +122,8 @@ function linhaAnotada(it, fw, cx) {
   const em = w => ms.map((mk, ci) => mk.pos === w ? cx(mk, ci) : '').join('');
   const corpo = pal.map((p, w) => { const c = em(w); return c ? `<span class="pal"><span class="anot">${c}</span>${fw(p, w)}</span>` : fw(p, w); }).join(' ');
   const fim = ms.map((mk, ci) => mk.pos >= pal.length ? cx(mk, ci) : '').join('');
-  return corpo + (fim ? ` <span class="pal fim"><span class="anot">${fim}</span></span>` : '');
+  // no fim da linha: à direita do texto, na mesma linha, uma ao lado da outra (nunca por cima da letra)
+  return corpo + (fim ? ` <span class="fim-marcas">${fim}</span>` : '');
 }
 function linhaHtml(it) {
   if (!it.inline || !it.inline.length) return esc(it.txt);

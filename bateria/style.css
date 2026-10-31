@@ -461,3 +461,11 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .pal .anot { top: 0; bottom: auto; margin-bottom: 0; }
 .pal.fim .anot { top: 0; }
 .ed-ac .pal { padding-top: 1.3em; }
+
+/* marcação no fim da linha: à direita do texto, lado a lado */
+.fim-marcas { display: inline-flex; flex-wrap: wrap; gap: .3em; margin-left: .45em; vertical-align: .12em; }
+.fim-marcas .chip { font-size: .62em; }
+.ed-ac .fim-marcas .chip { font-size: .7em; }
+.linha.atual .fim-marcas .chip { background: color-mix(in srgb, var(--cor) 40%, var(--bg)); }
+/* duas etiquetas em palavras vizinhas não podem se sobrepor: a de cima de cada palavra fica na própria palavra */
+.pal .anot { flex-wrap: nowrap; }
