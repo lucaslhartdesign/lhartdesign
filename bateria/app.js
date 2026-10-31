@@ -2672,11 +2672,13 @@ async function marcarTempos(linhas, m, fim) {
   el.innerHTML = `
     <div class="yt" id="m-yt" hidden></div>
     <div class="m-topo"><span id="m-cont"></span><span id="m-tempo">0:00</span></div>
-    <p class="m-prox" id="m-prox"></p>
-    <p class="m-depois" id="m-depois"></p>
+    <div class="m-progresso" aria-hidden="true"><i id="m-prog"></i></div>
+    <p class="m-info" id="m-info" aria-live="polite"></p>
+    <div class="m-lista" id="m-lista" aria-label="Letra com os tempos marcados"></div>
+    <div class="m-edicao" id="m-edicao" hidden></div>
     <button class="btn primario enorme" id="m-toque"></button>
     <button class="btn" id="m-solo" type="button" hidden></button>
-    <div class="g-tipos" id="m-tipos">${TIPOS_GRAVAR.map(t => `<button class="btn" type="button" data-t="${t}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}</div>
+    <div class="g-tipos m-tipos-h" id="m-tipos">${TIPOS_GRAVAR.map(t => `<button class="btn" type="button" data-t="${t}" style="--cor:var(--c-${t})">${ICONE[t]}${TIPOS[t]}</button>`).join('')}</div>
     <p class="m-depois" id="m-marcas"></p>
     <div class="m-controle" id="m-controle" hidden>
       <input type="range" id="m-pos" min="0" max="0" step="0.1" value="0" aria-label="Ponto da música">
@@ -2704,19 +2706,98 @@ async function marcarTempos(linhas, m, fim) {
   toque.disabled = false;
   if (fonte) fonte.volume(dados.prefs.volume / 100);
   const t = () => fonte ? fonte.t : t0 == null ? 0 : (agora() - t0) / 1000;
+  // ---- a letra à vista: cada linha mostra quando começa e quanto durou; a cor vai preenchendo conforme ele marca ----
+  const dec = x => mmss(x) + ',' + Math.floor((x % 1) * 10);
+  const seg = x => x.toFixed(1).replace('.', ',') + ' s';
+  const lista = $('#m-lista', el), edicao = $('#m-edicao', el);
+  let sel = -1, ultimo = '', piscar = -1; // sel = linha já marcada que ele escolheu para ajustar
+  const pct = d => Math.max(4, Math.min(100, d / 10 * 100)) + '%'; // barra: 10 s = linha cheia
+  function desenharLista() {
+    const k = tempos.length, soloDe = new Map(solos.map(x => [x.k, x]));
+    lista.innerHTML = linhas.map((txt, i) => {
+      const marcada = i < k, proxima = i === k;
+      const durou = marcada && i + 1 < k ? tempos[i + 1] - tempos[i] : null;
+      const est = marcada ? (i === k - 1 ? 'cantando' : 'feita') : proxima ? 'proxima' : 'pendente';
+      const s0 = soloDe.get(i);
+      let pre = '';
+      if (s0) { const d = tempos[i] - s0.t; pre = `<div class="m-l solo feita"><i class="fill" style="width:${pct(d)}"></i><span class="n">♪</span><span class="tx">Solo / instrumental</span><span class="tm">${dec(s0.t)}</span><span class="dd">durou ${seg(d)}</span></div>`; }
+      else if (proxima && solo) pre = `<div class="m-l solo vivo"><i class="fill" style="width:4%"></i><span class="n">♪</span><span class="tx">Instrumental…</span><span class="tm">${dec(solo.t)}</span><span class="dd">há 0,0 s</span></div>`;
+      const dd = durou != null ? `durou ${seg(durou)}` : est === 'cantando' ? 'há 0,0 s' : '';
+      const tm = marcada ? dec(tempos[i]) : proxima ? '← agora?' : '';
+      const largura = durou != null ? pct(durou) : est === 'cantando' ? '4%' : '0';
+      return pre + `<div class="m-l ${est}${sel === i ? ' sel' : ''}${piscar === i ? ' flash' : ''}" data-i="${i}"><i class="fill" style="width:${largura}"></i><span class="n">${i + 1}</span><span class="tx">${esc(txt)}</span><span class="tm">${tm}</span><span class="dd">${dd}</span></div>`;
+    }).join('');
+    piscar = -1;
+    if (sel < 0) { // mantém a linha da vez à vista
+      const alvo = lista.querySelector('.m-l.proxima') || lista.querySelector('.m-l.cantando');
+      if (alvo) lista.scrollTop = Math.max(0, alvo.offsetTop - lista.clientHeight * 0.4);
+    }
+  }
+  // enquanto a linha canta, o tempo e a barra crescem ao vivo
+  function atualizarVivo() {
+    if (!comecou || !(fonte ? fonte.tocando : true)) return;
+    const k = tempos.length;
+    const v = lista.querySelector('.m-l.cantando'), sv = lista.querySelector('.m-l.solo.vivo');
+    if (v && k > 0) { const d = Math.max(0, t() - tempos[k - 1]); v.querySelector('.dd').textContent = 'há ' + seg(d); v.querySelector('.fill').style.width = pct(d); }
+    if (sv && solo) { const d = Math.max(0, t() - solo.t); sv.querySelector('.dd').textContent = 'há ' + seg(d); sv.querySelector('.fill').style.width = pct(d); }
+  }
+  function mostrarEdicao() {
+    if (sel < 0 || sel >= tempos.length) { sel = -1; edicao.hidden = true; return; }
+    edicao.hidden = false;
+    edicao.innerHTML = `<span>Linha ${sel + 1} começa em <b>${dec(tempos[sel])}</b>. Ajuste, ouça ou refaça dali.</span>
+      <div class="m-ed-bts">
+        <button class="btn" type="button" data-d="-0.5">−0,5 s</button><button class="btn" type="button" data-d="-0.1">−0,1</button>
+        <button class="btn" type="button" data-d="0.1">+0,1</button><button class="btn" type="button" data-d="0.5">+0,5 s</button>
+        <button class="btn" type="button" data-a="ouvir">Ouvir daqui</button>
+        <button class="btn perigo" type="button" data-a="refazer">Refazer a partir daqui</button>
+        <button class="btn" type="button" data-a="fechar">Fechar</button>
+      </div>`;
+  }
+  lista.onclick = ev => {
+    const r = ev.target.closest('.m-l[data-i]'); if (!r) return;
+    const i = +r.dataset.i; if (i >= tempos.length) return; // só dá para mexer nas já marcadas
+    sel = sel === i ? -1 : i; desenharLista(); mostrarEdicao();
+  };
+  edicao.onclick = ev => {
+    const b = ev.target.closest('button'); if (!b || sel < 0) return;
+    if (b.dataset.d) {
+      tempos[sel] = Math.max(0, Math.round((tempos[sel] + parseFloat(b.dataset.d)) * 100) / 100);
+      solos.forEach(x => { if (x.k === sel) x.fim = tempos[sel]; });
+      piscar = sel; desenharLista(); mostrarEdicao(); return;
+    }
+    const a = b.dataset.a;
+    if (a === 'fechar') { sel = -1; desenharLista(); mostrarEdicao(); return; }
+    if (a === 'ouvir') {
+      if (!fonte) { aviso('Sem música para ouvir aqui: este modo é só o cronômetro.'); return; }
+      fonte.t = Math.max(0, tempos[sel] - 1.5); fonte.play().catch(() => {}); return;
+    }
+    if (a === 'refazer') {
+      const de = sel, ref = Math.max(0, tempos[de] - 3);
+      tempos.length = de;
+      for (let j = solos.length - 1; j >= 0; j--) if (solos[j].k >= de) solos.splice(j, 1);
+      hist.length = 0; solo = null; sel = -1; ultimo = '';
+      if (fonte) { fonte.t = ref; fonte.play().catch(() => {}); } else t0 = agora() - ref * 1000;
+      comecou = true; mostrar(); mostrarEdicao();
+      aviso(`Voltei uns 3 s antes da linha ${de + 1}. Toque quando o cantor começar essa linha.`, 5000);
+    }
+  };
   function mostrar() {
     const k = tempos.length;
-    $('#m-cont', el).textContent = `Linha ${Math.min(k + 1, linhas.length)} de ${linhas.length}`;
-    $('#m-prox', el).textContent = linhas[k] || 'Todas as linhas marcadas.';
-    $('#m-depois', el).textContent = linhas[k + 1] ? 'depois: ' + linhas[k + 1] : '';
+    $('#m-cont', el).textContent = `${Math.min(k, linhas.length)} de ${linhas.length} linhas marcadas`;
+    $('#m-prog', el).style.width = (linhas.length ? k / linhas.length * 100 : 0) + '%';
+    const guia = !comecou ? 'Como funciona: 1) toque no botão grande para a música começar. 2) Quando o cantor começar cada linha, toque de novo. A linha fica verde e mostra quanto durou. Errou? Toque na linha marcada para ajustar ou refazer dali.'
+      : solo ? 'Instrumental rolando. Toque quando o cantor voltar a cantar.'
+      : k < linhas.length ? 'Toque quando o cantor começar a linha com a borda amarela.' : 'Todas as linhas marcadas! Toque em Concluir.';
+    $('#m-info', el).innerHTML = (ultimo ? `<b>${esc(ultimo)}</b> ` : '') + esc(guia);
     toque.textContent = !comecou ? (fonte ? 'Tocar a música' : 'Começar quando a música começar')
-      : solo ? 'Instrumental… toque quando voltar a cantar' : k < linhas.length ? 'Toque quando cantar esta linha' : 'Concluir';
+      : solo ? 'Voltou a cantar: toque agora' : k < linhas.length ? 'Toque quando cantar a linha' : 'Concluir';
     const bs = $('#m-solo', el);
     bs.hidden = !comecou || k >= linhas.length;
     bs.textContent = solo ? 'Cancelar o solo' : 'Solo / instrumental: segurar o tempo';
     bs.classList.toggle('ativo', !!solo);
     const novas = marcas.length - antigas, ult = marcas[marcas.length - 1];
     $('#m-marcas', el).textContent = novas > 0 ? `${novas} marcação(ões) da bateria nesta passada. Última: ${TIPOS[ult.tipo]} em ${mmss(ult.t)}.` : 'Bateria: toque o botão da mudança na hora em que ela acontece.';
+    desenharLista();
   }
   const pos = $('#m-pos', el), pausa = $('#m-pausa', el);
   let arrastandoPos = false;
@@ -2728,6 +2809,7 @@ async function marcarTempos(linhas, m, fim) {
       pos.value = t();
     }
     if (fonte && comecou) pausa.textContent = fonte.tocando ? 'Pausar' : 'Continuar';
+    atualizarVivo();
     raf = requestAnimationFrame(relogio);
   }
   // pular para outro ponto (ou pausar e continuar) sem perder o que já foi marcado
@@ -2761,6 +2843,9 @@ async function marcarTempos(linhas, m, fim) {
     const fechou = solo; // o toque que volta a cantar fecha o solo: ele dura do botão Solo até aqui
     if (solo) { solos.push({ t: Math.round(solo.t * 100) / 100, k: tempos.length - 1, fim: tempos[tempos.length - 1] }); solo = null; }
     hist.push({ a: 'l', solo: fechou });
+    const n = tempos.length;
+    ultimo = `Linha ${n} marcada em ${dec(tempos[n - 1])}${n > 1 ? ` (a anterior durou ${seg(tempos[n - 1] - tempos[n - 2])})` : ''}.`;
+    sel = -1; edicao.hidden = true; piscar = n - 1;
     if (tempos.length >= linhas.length && fonte) fonte.pause();
     mostrar();
   }
@@ -2783,6 +2868,7 @@ async function marcarTempos(linhas, m, fim) {
     if (h.a === 'm') marcas.pop();
     else if (h.a === 's') solo = null;
     else { tempos.pop(); if (h.solo) { solos.pop(); solo = h.solo; hist.push({ a: 's' }); } } // desfez o toque que fechou o solo: o solo volta a esperar
+    sel = -1; edicao.hidden = true; ultimo = h.a === 'l' ? 'Desfiz a última linha.' : '';
     mostrar();
   };
   $('#m-cancelar', el).onclick = () => sair(null);

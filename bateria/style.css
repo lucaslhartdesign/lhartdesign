@@ -335,7 +335,7 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .marcar { overflow-y: auto; gap: 8px; }
 .marcar .m-prox { font-size: 1.6rem; font-weight: 700; line-height: 1.2; min-height: 2.4em; }
 .marcar .m-depois { color: var(--muted); font-size: 1.05rem; min-height: 1.4em; }
-.marcar .enorme { flex: 1 0 auto; min-height: 22dvh; font-size: 1.6rem; border-radius: 18px; white-space: normal; text-align: center; line-height: 1.2; padding: 12px 16px; }
+.marcar .enorme { flex: none; min-height: 14dvh; font-size: 1.6rem; border-radius: 18px; white-space: normal; text-align: center; line-height: 1.2; padding: 12px 16px; }
 .marcar .acoes { justify-content: space-between; }
 .marcar .m-controle { display: flex; flex-direction: column; gap: 6px; }
 .marcar .m-controle[hidden] { display: none; }
@@ -397,3 +397,33 @@ textarea { min-height: 55dvh; line-height: 1.55; resize: vertical; }
 .ed-ac.com-alvo .l.agora::after { content: ''; }
 .ed-ac .d { cursor: pointer; }
 .ed-ac .d.escolhida { background: color-mix(in srgb, var(--cor) 22%, transparent); outline: 1px solid var(--cor); outline-offset: -1px; border-radius: 4px; }
+
+/* marcar tempos: letra à vista com o tempo de cada linha */
+.m-progresso { height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; flex: none; }
+.m-progresso i { display: block; height: 100%; width: 0; background: var(--c-sobe); transition: width .2s; }
+.m-info { margin: 0; flex: none; font-size: .92rem; line-height: 1.3; color: var(--muted); min-height: 2.6em; }
+.m-info b { color: var(--text); }
+.m-lista { flex: 1 1 0; min-height: 110px; overflow-y: auto; position: relative; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); -webkit-overflow-scrolling: touch; }
+.m-l { position: relative; display: grid; grid-template-columns: 26px 1fr auto; grid-template-areas: "n tx tm" "n tx dd"; column-gap: 8px; align-items: start; padding: 8px 10px; border-bottom: 1px solid var(--line); overflow: hidden; color: var(--muted); cursor: default; }
+.m-l .n { grid-area: n; text-align: right; font-size: .8rem; padding-top: 3px; position: relative; z-index: 1; }
+.m-l .tx { grid-area: tx; font-size: 1.05rem; line-height: 1.25; position: relative; z-index: 1; }
+.m-l .tm { grid-area: tm; text-align: right; font-family: var(--f-deixa); font-size: 1rem; position: relative; z-index: 1; white-space: nowrap; }
+.m-l .dd { grid-area: dd; text-align: right; font-size: .78rem; position: relative; z-index: 1; white-space: nowrap; }
+.m-l .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: color-mix(in srgb, var(--c-sobe) 26%, transparent); z-index: 0; transition: width .15s linear; }
+.m-l.feita, .m-l.cantando { color: var(--text); cursor: pointer; }
+.m-l.feita .tm, .m-l.cantando .tm { color: var(--c-sobe); }
+.m-l.cantando { color: #fff; font-weight: 700; outline: 2px solid var(--c-sobe); outline-offset: -2px; }
+.m-l.proxima { color: #fff; outline: 2px dashed var(--c-prato); outline-offset: -2px; background: color-mix(in srgb, var(--c-prato) 14%, transparent); }
+.m-l.proxima .tm { color: var(--c-prato); }
+.m-l.pendente { opacity: .55; }
+.m-l.sel { outline: 2px solid var(--c-virada); outline-offset: -2px; background: color-mix(in srgb, var(--c-virada) 18%, transparent); }
+.m-l.solo { color: var(--c-livre); }
+.m-l.solo .fill { background: color-mix(in srgb, var(--c-livre) 24%, transparent); }
+.m-l.flash { animation: bateu .45s ease-out; }
+.m-edicao { flex: none; display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border: 1px solid var(--c-virada); border-radius: 10px; background: color-mix(in srgb, var(--c-virada) 12%, var(--surface)); font-size: .92rem; }
+.m-edicao[hidden] { display: none; }
+.m-ed-bts { display: flex; gap: 6px; flex-wrap: wrap; }
+.m-ed-bts .btn { min-height: 40px; padding: 0 10px; font-size: .9rem; }
+.marcar .g-tipos.m-tipos-h { display: flex; overflow-x: auto; gap: 6px; padding-bottom: 2px; flex: none; }
+.marcar .g-tipos.m-tipos-h .btn { flex: none; min-height: 46px; padding: 0 12px; font-size: .95rem; }
+.m-l.flash { --cor: var(--c-sobe); }
