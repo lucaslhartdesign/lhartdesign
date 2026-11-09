@@ -39,6 +39,23 @@
     document.head.appendChild(st);
   }
 
+  // ?embed=1 — dentro de previa/restaurante.html: a página de fora cuida das
+  // abas, das setas e do "ver um pedido completo". Some o cabeçalho da demo
+  // (título, idiomas, links ↗) e a barra de abas de baixo. O #da-btn continua
+  // existindo (escondido) para a página de fora clicar.
+  var embed = p.get('embed') === '1';
+  if (embed) {
+    var em = document.createElement('style');
+    em.textContent = '.demo{display:none!important}' +
+      // fora da vista, mas existindo: o "pedido completo" troca de tela clicando nela
+      '#mt{position:fixed!important;left:-9999px!important;top:0!important;bottom:auto!important}' +
+      '.stage{padding-top:6px!important;padding-bottom:16px!important}' +
+      'body{background:transparent!important}' +
+      (mesa !== null ? '#col-motoboy{display:none!important}' +
+        '@media(min-width:1201px){.stage{grid-template-columns:372px minmax(0,1fr)!important;max-width:1100px!important}}' : '');
+    document.head.appendChild(em);
+  }
+
   window.LHP = function (CFG) {
     if (clean) {
       CFG.accent = '#9184d9';
@@ -114,6 +131,21 @@
           var s = d.querySelector('span');
           if (s && s.textContent.trim() === 'Entrega') d.style.display = 'none';
         });
+        return r;
+      };
+      // Na cozinha, o pedido pronto da mesa é servido, não sai com motoboy.
+      var TROCA_COZ = [[/🛵\s*Saiu p\/ entrega/g, '🍽 Servido na mesa'], [/Saiu p\/ entrega/g, 'Servido na mesa'], [/🛵\s*$/g, '🍽 '], [/^Em rota$/g, 'Servidos'],
+                       [/Chamar motoboy/g, 'Servir na mesa']];
+      var desenharCoz = cozinha;
+      cozinha = function () {
+        var r = desenharCoz.apply(this, arguments), el = document.getElementById('cozinha');
+        if (!el) return r;
+        var it = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), n;
+        while ((n = it.nextNode())) {
+          var t = n.nodeValue, t0 = t;
+          TROCA_COZ.forEach(function (x) { t = t.replace(x[0], x[1]); });
+          if (t !== t0) n.nodeValue = t;
+        }
         return r;
       };
       // Os pedidos de exemplo da cozinha também vêm de mesas, não de endereços.
