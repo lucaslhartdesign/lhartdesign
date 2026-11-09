@@ -30,7 +30,8 @@ window.LHD = (() => {
 
   /* ---------------- lanche em camadas (cada camada é desenhada com y = topo da camada) ---------------- */
   // gradientes e filtros: #gX / #fXX viram #<id>X na hora de montar (cada desenho tem os seus)
-  const F = { tx: 'url(#fTX)', tx2: 'url(#fTX2)', sh: 'url(#fSH)', rg: 'url(#fRG)' };
+  /* Sem filtros SVG (luz, textura, sombra): em alguns celulares, principalmente iPhone, eles pintam o lanche de preto. A sombra vem do CSS. */
+  const F = { tx: 'none', tx2: 'none', sh: 'none', rg: 'none' };
   const CAM = {
     pao: [30, (y) => `<g filter="${F.tx}"><path d="M34 ${y} h192 q8 0 8 8 v6 q0 16 -16 16 h-176 q-16 0 -16 -16 v-6 q0 -8 8 -8z" fill="url(#gB)"/>
       <path d="M36 ${y + 22} q94 14 188 0 v3 q0 5 -16 5 h-156 q-16 0 -16 -5z" fill="#6b3a12" fill-opacity=".38"/>
@@ -137,7 +138,7 @@ window.LHD = (() => {
     const id = 'v' + (++uid), H = 300, base = H - 30;
     const svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('viewBox', `0 0 260 ${H}`); svg.setAttribute('class', 'lanche vivo'); svg.setAttribute('aria-hidden', 'true');
-    svg.innerHTML = `${defs(id)}<ellipse cx="130" cy="${H - 18}" rx="126" ry="15" fill="#000" fill-opacity=".45" filter="url(#${id}SH)"/>
+    svg.innerHTML = `${defs(id)}<ellipse cx="130" cy="${H - 18}" rx="126" ry="15" fill="#000" fill-opacity=".45"/>
       <ellipse cx="130" cy="${H - 26}" rx="120" ry="13.5" fill="url(#${id}L)" stroke="#6b5b50" stroke-width="1.2"/>
       <ellipse cx="130" cy="${H - 28.5}" rx="108" ry="9" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="1.4"/><g class="pilha"></g>`;
     const pilha = svg.querySelector('.pilha');
@@ -221,8 +222,8 @@ window.LHD = (() => {
         <feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="3" seed="6" result="n"/>
         <feDiffuseLighting in="n" lighting-color="#fff" surfaceScale="2.4" diffuseConstant="1.2" result="l"><feDistantLight azimuth="225" elevation="58"/></feDiffuseLighting>
         <feComposite in="l" in2="SourceAlpha" operator="in" result="lm"/><feBlend in="SourceGraphic" in2="lm" mode="multiply" result="b"/><feComposite in="b" in2="SourceAlpha" operator="in"/></filter></defs>
-      <ellipse cx="132" cy="142" rx="124" ry="114" fill="#000" fill-opacity=".38" filter="url(#${id}SH)"/>
-      <g filter="url(#${id}MS)"><circle cx="130" cy="128" r="117" fill="url(#${id}M2)" stroke="#a9691f" stroke-width="2"/>${bolhas}
+      <ellipse cx="132" cy="142" rx="124" ry="114" fill="#000" fill-opacity=".38"/>
+      <g><circle cx="130" cy="128" r="117" fill="url(#${id}M2)" stroke="#a9691f" stroke-width="2"/>${bolhas}
       <circle cx="130" cy="128" r="103" fill="none" stroke="#fff3d0" stroke-opacity=".28" stroke-width="3"/>
       <circle cx="130" cy="128" r="98" fill="url(#${id}S2)"/>${Array.from({ length: 26 }, () => `<circle cx="${(130 + (r0() - .5) * 170).toFixed(1)}" cy="${(128 + (r0() - .5) * 170).toFixed(1)}" r="${1 + r0() * 2.4}" fill="#7d1d10" fill-opacity=".28"/>`).join('')}</g>
       <circle cx="130" cy="128" r="98" fill="none" stroke="#6e170c" stroke-opacity=".4" stroke-width="3"/>
@@ -239,7 +240,7 @@ window.LHD = (() => {
         html += `<g class="pc" style="transform:translate(${x.toFixed(1)}px,${y.toFixed(1)}px)"><g class="pi" style="transition-delay:${i * 35}ms">${PECA[k](r)}</g></g>`;
       }
       g.innerHTML = unico(html, id);
-      g.setAttribute('data-k', k); g.setAttribute('filter', `url(#${id}PT)`);
+      g.setAttribute('data-k', k);
       return g;
     }
     function set(lista) {
