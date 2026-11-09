@@ -26,7 +26,7 @@ button{font-family:inherit}
 .top{position:sticky;top:0;z-index:30;background:#161826e6;backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
 .top .wrap{display:flex;align-items:center;gap:16px;height:60px}
 .logo{font:400 26px 'Bebas Neue',sans-serif;letter-spacing:.06em;text-decoration:none;flex:none}
-.logo b{color:var(--ac);font-weight:400}
+.logo img{display:block;height:40px;width:auto}
 .menu{display:flex;gap:2px;margin-left:auto}
 .menu a{padding:8px 12px;border-radius:99px;color:var(--mu);font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap}
 .menu a:hover,.menu a:focus-visible{color:var(--ink);background:var(--p2)}
@@ -139,8 +139,9 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
   .aba .n{display:none}
 }
 </style>
+<link rel="icon" href="../assets/favicon.png" type="image/png">
 </head><body>
-<div class="top"><div class="wrap"><a class="logo" href="#inicio">LHART <b>DESIGN</b></a>
+<div class="top"><div class="wrap"><a class="logo" href="#inicio" aria-label="Lhart Design"><img src="../assets/logo.png" alt="Lhart Design"></a>
 <nav class="menu" id="menu" aria-label="Partes da página"></nav>
 <a class="btn wa" href="#">Falar com o Lucas</a></div></div>
 <main id="conteudo"></main>

@@ -148,7 +148,7 @@
   var rc = D.recado || {}, ct = D.contato || {};
   h += '<footer><div class="r-recado"><div class="r-col">' + (rc.texto ? '<q>' + esc(rc.texto) + '</q><cite>' + esc(rc.assinatura || '') + '</cite>' : '') +
     (ct.whatsapp ? '<a class="r-botao" href="https://wa.me/' + esc(ct.whatsapp) + '?text=' + encodeURIComponent(ct.mensagem || 'Oi! Vi o relatório e quero conversar.') + '" target="_blank" rel="noopener">' + esc(ct.botao || 'Falar com a Lhart no WhatsApp') + '</a>' : '') + '</div></div>' +
-    '<div class="r-rodape"><div class="r-col"><span>Lhart Design</span><span>' + esc(D.periodo || '') + (D.atualizado ? ' · atualizado em ' + esc(D.atualizado) : '') + '</span></div></div></footer>';
+    '<div class="r-rodape"><div class="r-col"><span class="r-lh"><img src="/assets/logo.png" alt="Lhart Design"></span><span>' + esc(D.periodo || '') + (D.atualizado ? ' · atualizado em ' + esc(D.atualizado) : '') + '</span></div></div></footer>';
 
   raiz.innerHTML = h;
   document.title = (cl.nome ? cl.nome + ': ' : '') + 'resultados' + (periodoCurto ? ' de ' + periodoCurto : '') + ' | Lhart Design';
