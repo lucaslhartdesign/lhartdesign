@@ -63,6 +63,8 @@ h2 em{font-style:normal;color:var(--ac)}
 .num{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e4e0ff,#9184d9);color:#161826;font:800 15px Inter;box-shadow:0 0 18px #9184d966}
 .roteiro b{display:block;font-size:16px;margin-bottom:4px}
 .roteiro span{color:var(--mu);font-size:14px;line-height:1.45}
+/* O número da bolinha também é um <span>: sem isto ele herdava o cinza do texto e ficava apagado. */
+.roteiro .num,.comecar .num,.tit .num{color:#0b0c14;font-weight:900;font-size:16px}
 .vale{color:var(--mu);font-size:14px}
 
 /* ── Seções */
