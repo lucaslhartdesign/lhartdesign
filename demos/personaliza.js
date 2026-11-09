@@ -13,9 +13,10 @@
       .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
   }
 
-  // ?tema=clean — o app por dentro limpo: branco, cinzas suaves, Inter e um
-  // destaque só, no roxo da Lhart. Em qualquer modelo (o Burger Neon é rosa
-  // neon). Pedido do Lucas, 09/11/2026: "dentro do app deixa algo mais clean".
+  // ?tema=clean — o app por dentro sem neon, no ESCURO com as cores do pedido
+  // na mesa (mesa.html): fundo #161826, painéis grafite, roxo da Lhart e o
+  // verde dos confirmados. Pedido do Lucas, 09/11/2026: "deixa o app com tema
+  // escuro, que tá refletindo, não claro, seguindo as cores do pedido na mesa".
   var clean = p.get('tema') === 'clean';
   if (clean) {
     var f = document.createElement('link');
@@ -23,19 +24,26 @@
     f.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap';
     document.head.appendChild(f);
     var st = document.createElement('style');
-    st.textContent = ':root{--page:#f3f4f7;--pcard:#ffffff;--pink:#15161c;--pmu:#6b6f7d;--pline:#e6e7ec;' +
-      '--bg:#ffffff;--card:#f6f7f9;--ink:#15161c;--mu:#6b6f7d;--line:#ececf1;--ac:#6c5fd3;--ac2:#9184d9;' +
-      '--acink:#fff;--price:#15161c;--rad:14px;--f1:Inter,sans-serif;--f2:Inter,sans-serif}' +
+    st.textContent = ':root{--page:#161826;--pcard:#1c1e2e;--pink:#e9e9ed;--pmu:#9397ab;--pline:#34374a;' +
+      '--bg:#1c1e2e;--card:#232532;--ink:#e9e9ed;--mu:#9397ab;--line:#34374a;--ac:#9184d9;--ac2:#b5abfc;' +
+      '--acink:#161826;--price:#d2cefd;--rad:14px;--f1:Inter,sans-serif;--f2:Inter,sans-serif;color-scheme:dark}' +
       // tira o brilho neon que alguns modelos desenham fora das variáveis
-      '*{text-shadow:none!important}';
+      '*{text-shadow:none!important}' +
+      // o prato branco da capa e o fundo branco atrás de cada prato
+      '.cover .plate{background:radial-gradient(circle at 35% 30%,#34374a,#2a2c3f 60%,#232532)!important}' +
+      '.art{background:radial-gradient(circle at 35% 28%,#34374a,#2a2c3f 55%,#232532)!important;' +
+      'box-shadow:inset 0 -6px 14px #0003,0 10px 20px #0004!important}' +
+      // as peças claras pequenas: filtro ativo, selo "Mais pedido", aviso
+      '.chip.on,.it .bg{background:#9184d9!important;color:#161826!important;border-color:#9184d9!important}' +
+      '.toast{background:#232532!important;color:#e9e9ed!important;border:1px solid #34374a}';
     document.head.appendChild(st);
   }
 
   window.LHP = function (CFG) {
     if (clean) {
-      CFG.accent = '#6c5fd3';
-      CFG.mapBg = '#eef0f4';
-      CFG.road = '#ffffff';
+      CFG.accent = '#9184d9';
+      CFG.mapBg = '#232532';
+      CFG.road = '#34374a';
       // Os nomes "neon" do modelo de hambúrguer viram nomes de cardápio comum.
       var NOMES = { bn1: 'Clássico da Casa', bn2: 'Bacon Barbecue', bn3: 'Gorgonzola',
                     bn4: 'Veggie', bn5: 'Batata Rústica' };
@@ -97,6 +105,10 @@
           TROCA.forEach(function (x) { t = t.replace(x[0], x[1]); });
           if (t !== n.nodeValue) n.nodeValue = t;
         }
+        // O "Grátis · Entrega" do cartão da loja: na mesa não há entrega.
+        el.querySelectorAll('.meta > div').forEach(function (d) {
+          if (/entrega/i.test(d.textContent)) d.style.display = 'none';
+        });
         // A linha "Entrega · Grátis" do resumo e da sacola.
         el.querySelectorAll('.sum > div').forEach(function (d) {
           var s = d.querySelector('span');
