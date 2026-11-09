@@ -19,6 +19,14 @@
   .door:active{transform:scale(.985)}
   .door::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-52%);font:300 30px/1 Inter,sans-serif;color:#b5abfc}
   .door .ic{display:grid;place-items:center;grid-row:1/4;grid-column:1;width:62px;height:62px;border-radius:18px;font-style:normal;font-size:31px;background:var(--g,#6e5fd6);box-shadow:0 12px 24px -12px var(--g1,#6e5fd6)}
+  .doors .door{background-size:cover;background-position:right center;background-repeat:no-repeat;isolation:isolate}
+  .doors .door::before{z-index:2}
+  .doors .door:nth-child(1){--foto:url(assets/home-social.jpg)}
+  .doors .door:nth-child(2){--foto:url(assets/home-delivery.jpg)}
+  .doors .door:nth-child(3){--foto:url(assets/home-game.jpg)}
+  .doors .door{background-image:linear-gradient(90deg,#161826 0%,rgba(22,24,38,.94) 42%,rgba(22,24,38,.55) 72%,rgba(22,24,38,.28) 100%),var(--foto)}
+  .door h2,.door p,.door .tag{text-shadow:0 1px 12px #000a}
+  .door p{color:#d4d6e6!important}
   .doors .door:nth-child(1){--g:linear-gradient(135deg,#ff8a5b,#d6479b);--g1:#d6479b}
   .doors .door:nth-child(2){--g:linear-gradient(135deg,#2fd3a6,#6e5fd6);--g1:#2fd3a6}
   .doors .door:nth-child(3){--g:linear-gradient(135deg,#8a7be6,#2f7ae5);--g1:#2f7ae5}
