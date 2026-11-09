@@ -144,8 +144,10 @@ body.single .dev{height:100vh;border:0;border-radius:0;max-width:520px;margin:au
 <div class="col" id="col-motoboy"><div class="lb"><i></i>App do motoboy</div><div class="dev mdev" id="motoboy"></div></div>
 </div>
 <div class="mt" id="mt"><button data-a="tab" data-t="cliente">🍔 Cliente</button><button data-a="tab" data-t="cozinha">👨‍🍳 Cozinha</button><button data-a="tab" data-t="motoboy">🛵 Motoboy</button></div>
+<script src="personaliza.js?v=1"></script>
 <script>
 const CFG={"slug": "delivery-sushi-zen", "accent": "#b8322a", "mapBg": "#efe8da", "road": "#fffaf0", "store": {"name": "Sushi Zen", "tag": "Culinária japonesa · combinados e hot rolls", "emoji": "🍣", "rating": "4,9", "eta": "40-55 min", "fee": 8.9, "pay": 9.0, "addr": "Rua Liberdade, 300 - São Paulo"}, "menu": [{"name": "Combinados", "items": [{"id": "sz1", "name": "Combinado Zen 20 peças", "desc": "Sushis, sashimis e uramakis variados", "price": 79.9, "e": "🍱", "a": "#fbe3d3", "b": "#e9a58e"}, {"id": "sz2", "name": "Combinado Família 40 peças", "desc": "Ideal para 3 a 4 pessoas", "price": 139.9, "e": "🍣", "a": "#f7d6c8", "b": "#d87f6a"}]}, {"name": "Hot Rolls", "items": [{"id": "sz3", "name": "Hot Philadelphia 8un", "desc": "Salmão, cream cheese, empanado", "price": 38.9, "e": "🍤", "a": "#ffe0b5", "b": "#e8944d"}, {"id": "sz4", "name": "Hot Skin 8un", "desc": "Pele de salmão crocante", "price": 34.9, "e": "🍘", "a": "#ffd9a8", "b": "#d9823b"}]}, {"name": "Entradas e bebidas", "items": [{"id": "sz5", "name": "Gyoza 6un", "desc": "Pastel japonês de carne grelhado", "price": 27.9, "e": "🥟", "a": "#f5e6c8", "b": "#d9b878"}, {"id": "sz6", "name": "Temaki Salmão", "desc": "Cone de alga com salmão e cebolinha", "price": 29.9, "e": "🍙", "a": "#e6f0dc", "b": "#9dc27a"}, {"id": "sz7", "name": "Chá Verde Gelado", "desc": "500ml", "price": 9.9, "e": "🍵", "a": "#dff0d4", "b": "#8ec07c"}]}]};
+window.LHP&&LHP(CFG);
 const KEY='dlv3-'+CFG.slug,ROUTE_MS=42000,PIX_MS=6000;
 const $=id=>document.getElementById(id),qa=(s,r=document)=>[...r.querySelectorAll(s)];
 const R=v=>'R$ '+v.toFixed(2).replace('.',',');
@@ -291,6 +293,7 @@ if(v&&['cliente','cozinha','motoboy'].includes(v)){document.body.classList.add('
 const wide=()=>matchMedia('(min-width:1201px)').matches;
 if(!v&&wide())qa('.col').forEach(c=>c.classList.add('on'));
 addEventListener('resize',()=>{if(v)return;if(wide())qa('.col').forEach(c=>c.classList.add('on'));else setTab((qa('.col.on')[0]||{id:'col-cliente'}).id.slice(4))});
+window.LHP_pos&&LHP_pos();
 if(L.my&&find(L.my))L.screen='track';
 renderAll();
 setInterval(()=>{const now=Date.now();qa('[data-since]').forEach(s=>{const ms=now-(+s.dataset.since);s.textContent=mmss(ms);s.classList.toggle('late',ms>15*60000)});qa('[data-ex]').forEach(s=>{s.textContent=mmss(600000-(now-(+s.dataset.ex)))});moveCouriers();

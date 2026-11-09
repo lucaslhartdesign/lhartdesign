@@ -4,6 +4,9 @@
   var host = document.getElementById('mzscene');
   if (!host) return;
   var T = function (s) { return (window.LH && LH.t) ? LH.t(s) : s; };
+  // 09/11/2026 — previa/restaurante.html põe o nome do estabelecimento aqui.
+  var NOME = window.LH_NOME ? String(window.LH_NOME).toUpperCase().replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }) : 'BRASA &amp; PONTO';
   var reduzido = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var INI = [0, 4900, 13300, 17100], FIM = 22800;
   var tm = [], step = -1, vis = false, st, box, cap, chips, k = 1;
@@ -106,7 +109,7 @@
           '<div class="mz-row r2" style="top:392px"><i class="th">🍟</i><div class="tx"><b>' + T('BATATA RÚSTICA') + '</b><span>R$ 22,90</span></div><i class="ad2">+</i></div>' +
           '<div class="mz-row" style="top:476px"><i class="th">🧅</i><div class="tx"><b>' + T('ANÉIS DE CEBOLA') + '</b><span>R$ 24,90</span></div><i class="ad2">+</i></div>' +
           '<div class="mz-row" style="top:560px"><i class="th">🥤</i><div class="tx"><b>' + T('REFRIGERANTE') + '</b><span>R$ 6,50</span></div><i class="ad2">+</i></div></div>' +
-          '<div class="mz-mh"><span>BRASA &amp; PONTO</span><i>' + T('MESA 7') + '</i></div>' +
+          '<div class="mz-mh"><span>' + NOME + '</span><i>' + T('MESA 7') + '</i></div>' +
           '<div class="mz-bag"><span class="l b1"><b>1</b>' + T('VER SACOLA') + '</span><span class="l b2"><b>2</b>' + T('FINALIZAR') + '</span><span class="r p1">R$ 32,90</span><span class="r p2">R$ 55,80</span></div>' +
           '<div class="mz-sent"><b>✓ ' + T('PEDIDO ENVIADO') + '</b><small>' + T('A cozinha já recebeu') + '</small></div></div></div>' +
         '<div class="mz-finger">👆</div><div class="mz-pk"></div>' +
