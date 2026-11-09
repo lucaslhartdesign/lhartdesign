@@ -1,0 +1,10 @@
+/* Tela de carregamento (mesma da página de Social): logo piscando e barrinha. Some sozinha quando a página terminou de carregar. */
+html.pl-on{overflow:hidden!important;background:#161826}
+#site-preloader{position:fixed;inset:0;z-index:2147483000;background:#161826;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .5s ease}
+#site-preloader img{width:min(220px,40vw);height:auto;animation:plPulse 1.6s ease-in-out infinite}
+#site-preloader .preloader-bar{width:160px;height:2px;background:#2a2d3d;border-radius:2px;overflow:hidden}
+#site-preloader .preloader-bar span{display:block;height:100%;width:40%;background:#9184d9;animation:plSlide 1.1s ease-in-out infinite}
+#site-preloader.is-hidden{opacity:0;pointer-events:none}
+@keyframes plPulse{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes plSlide{0%{transform:translateX(-100%)}100%{transform:translateX(360%)}}
+@media(prefers-reduced-motion:reduce){#site-preloader img,#site-preloader .preloader-bar span{animation:none}#site-preloader{transition:none}}
