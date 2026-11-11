@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="pt-BR"><head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="../preloader.css?v=1"><script src="../preloader.js?v=2"></script><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../preloader.css?v=1"><script src="../preloader.js?v=2"></script>
+<script src="../i18n-pages.js"></script><script src="../i18n-delivery.js"></script><script src="../i18n-delivery-extra.js"></script><script src="../i18n-delivery-mesa.js?v=5"></script><script src="../i18n-mesa-nfc.js?v=1"></script><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#161826">
 <title>Seu app de pedidos — Lhart Design</title>
@@ -36,7 +37,10 @@ button{font-family:inherit}
 .btn.g{background:#ffffff0d;color:var(--ink);border:1px solid #ffffff26;box-shadow:none}
 .btn.g:hover{background:#ffffff17}
 .top .btn{padding:9px 16px;font-size:14px;flex:none;box-shadow:none}
-@media(max-width:860px){.menu{display:none}.top .btn{margin-left:auto}}
+.lang{flex:none;padding:7px 12px;border:1px solid #ffffff33;border-radius:99px;color:var(--mu);font-size:13px;font-weight:800;text-decoration:none;letter-spacing:.04em}
+.lang:hover,.lang:focus-visible{color:var(--ink);border-color:#b5abfc}
+.menu+.lang{margin-left:0}
+@media(max-width:860px){.menu{display:none}.lang{margin-left:auto}.top .btn{margin-left:0}}
 
 /* ── Topo da página: mais brilho e destaque */
 .hero{position:relative;overflow:hidden;padding:64px 0 54px;isolation:isolate}
@@ -146,9 +150,9 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
 </head><body>
 <div class="top"><div class="wrap"><a class="logo" href="#inicio" aria-label="Lhart Design"><img src="../assets/logo.png" alt="Lhart Design"></a>
 <nav class="menu" id="menu" aria-label="Partes da página"></nav>
-<a class="btn wa" href="#">Falar com o Lucas</a></div></div>
+<a class="lang" id="trocaLang" href="#" hidden>EN</a><a class="btn wa" id="btnTopo" href="#">Falar com o Lucas</a></div></div>
 <main id="conteudo"></main>
-<div class="fim">Demonstração com pedidos de mentira e cardápio de exemplo · nada é cobrado · Lhart Design</div>
+<div class="fim" id="rodape">Demonstração com pedidos de mentira e cardápio de exemplo · nada é cobrado · Lhart Design</div>
 
 <script>
 (function () {
@@ -168,11 +172,24 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
       var j = JSON.parse(new TextDecoder().decode(bytes));
       var nome = String(j.n || '').replace(/\s+/g, ' ').trim().slice(0, 40);
       if (!nome) return null;
-      return { nome: nome, modelo: MODELOS.indexOf(j.m) >= 0 ? j.m : 'burger-neon', ate: String(j.a || '') };
+      var forca = new URLSearchParams(location.search).get('lang');
+      var lang = (forca === 'en' || forca === 'pt') ? forca : (j.l === 'en' ? 'en' : 'pt');
+      return { nome: nome, modelo: MODELOS.indexOf(j.m) >= 0 ? j.m : 'burger-neon', ate: String(j.a || ''), lang: lang };
     } catch (e) { return null; }
   }
 
   var c = ler(), main = document.getElementById('conteudo');
+  var EN = !!(c && c.lang === 'en');
+  function tr(pt, en) { return EN ? en : pt; }
+  document.documentElement.lang = EN ? 'en' : 'pt-BR';
+  try { if (window.LH) LH.set(EN ? 'en' : 'pt', true); } catch (e) {}   // a animacao da mesa usa o mesmo motor de traducao do site
+  if (EN) {
+    document.querySelector('meta[name=description]').setAttribute('content', 'A demo of the ordering app made for your restaurant: table ordering, delivery and tracking, with your name on it.');
+    document.getElementById('btnTopo').textContent = 'Talk to Lucas';
+    document.getElementById('rodape').textContent = 'Demo with fake orders and a sample menu · nothing is charged · Lhart Design';
+    document.getElementById('menu').setAttribute('aria-label', 'Page sections');
+  }
+  if (c) { var tl = document.getElementById('trocaLang'), u = new URL(location.href); u.searchParams.set('lang', EN ? 'pt' : 'en'); tl.href = u.toString(); tl.textContent = EN ? 'PT' : 'EN'; tl.hidden = false; tl.setAttribute('aria-label', EN ? 'Ver em português' : 'View in English'); }
   var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
   var limite = c && /^\d{4}-\d{2}-\d{2}$/.test(c.ate) ? new Date(c.ate + 'T23:59:59') : null;
   var vencida = !c || !limite || limite < hoje;
@@ -184,25 +201,34 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
   }
 
   if (vencida) {
-    document.title = 'Demonstração expirada — Lhart Design';
-    main.innerHTML = '<section class="expirou hero" id="inicio"><div class="wrap"><span class="eyebrow"><i></i>Demonstração</span>' +
-      '<h1>Esta demonstração <em>expirou</em></h1><p class="lead">Ela fica no ar por 7 dias. Me chama que eu monto outra com o nome de vocês na hora.</p>' +
-      '<a class="btn wa" href="#">Pedir uma nova</a></div></section>';
-    ligarWhats('Oi Lucas! Abri o link da demonstração do app, mas ela expirou. Pode me mandar outra?');
+    document.title = tr('Demonstração expirada — Lhart Design', 'Demo expired — Lhart Design');
+    main.innerHTML = '<section class="expirou hero" id="inicio"><div class="wrap"><span class="eyebrow"><i></i>' + tr('Demonstração', 'Demo') + '</span>' +
+      '<h1>' + tr('Esta demonstração <em>expirou</em>', 'This demo has <em>expired</em>') + '</h1><p class="lead">' + tr('Ela fica no ar por 7 dias. Me chama que eu monto outra com o nome de vocês na hora.', 'It stays online for 7 days. Message me and I will build another one with your name on it right away.') + '</p>' +
+      '<a class="btn wa" href="#">' + tr('Pedir uma nova', 'Ask for a new one') + '</a></div></section>';
+    ligarWhats(tr('Oi Lucas! Abri o link da demonstração do app, mas ela expirou. Pode me mandar outra?', 'Hi Lucas! I opened the app demo link but it has expired. Could you send me a new one?'));
     return;
   }
 
   var N = esc(c.nome), q = encodeURIComponent(c.nome);
   // lang=pt: sem ele a demo abre no idioma do navegador (o sushi saiu em inglês).
-  var demo = '../demos/delivery-' + c.modelo + '.html?tema=clean&lang=pt&embed=1&nome=' + q;
-  var dia = limite.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-  document.title = c.nome + ' · app de pedidos — Lhart Design';
+  var demo = '../demos/delivery-' + c.modelo + '.html?tema=clean&lang=' + (EN ? 'en' : 'pt') + '&embed=1&nome=' + q;
+  var dia = limite.toLocaleDateString(EN ? 'en-US' : 'pt-BR', EN ? { month: 'short', day: 'numeric' } : { day: '2-digit', month: '2-digit' });
+  document.title = c.nome + tr(' · app de pedidos — Lhart Design', ' · ordering app — Lhart Design');
   window.LH_NOME = c.nome;
 
-  var PARTES = [['mesa', 'Pedido na mesa'], ['delivery', 'Delivery'], ['ganhos', 'O que ganham'], ['duvidas', 'Dúvidas'], ['comecar', 'Como começar']];
+  var PARTES = [['mesa', tr('Pedido na mesa', 'Table ordering')], ['delivery', 'Delivery'], ['ganhos', tr('O que ganham', 'What you get')], ['duvidas', tr('Dúvidas', 'FAQ')], ['comecar', tr('Como começar', 'How to start')]];
   document.getElementById('menu').innerHTML = PARTES.map(function (p) { return '<a href="#' + p[0] + '">' + p[1] + '</a>'; }).join('');
 
-  var faq = [
+  var faq = EN ? [
+    ['Do customers need to download an app?', 'No. The menu opens in the phone browser: from the QR Code on the table, by tapping the phone on the sticker, or from the link you send on WhatsApp and Instagram.'],
+    ['Do you charge a commission per order?', 'No. There is no percentage on sales, and the payment for each order goes straight to ' + N + '’s account.'],
+    ['How much does it cost?', 'I will give you the price directly, after seeing your menu and how many tables you have. Just message me on WhatsApp.'],
+    ['Will the menu look like this one?', 'No. This is a sample menu. Yours will have ' + N + '’s dishes, prices, photos and brand. If you are missing dish photos, we can take them.'],
+    ['Can I change prices and the menu later?', 'Yes. If a price changes or an item runs out, you update it in the dashboard and it applies instantly, at the table and for delivery.'],
+    ['Do I need delivery drivers?', 'For delivery, yes: the driver is yours, and through the app they get the job and follow the route while the customer tracks the delivery. Table ordering needs none of that.'],
+    ['What about tourists?', 'The menu opens in Portuguese, English and Spanish.'],
+    ['Are these orders real?', 'No. Everything on this page is a demo: place as many orders as you like, nothing is charged and nothing reaches your kitchen.']
+  ] : [
     ['O cliente precisa baixar aplicativo?', 'Não. O cardápio abre no navegador do celular: pelo QR Code da mesa, encostando o celular no adesivo, ou pelo link que vocês mandam no WhatsApp e no Instagram.'],
     ['Vocês cobram comissão por pedido?', 'Não. Não tem porcentagem sobre as vendas, e o Pix de cada pedido cai direto na conta do ' + N + '.'],
     ['Quanto custa?', 'O valor eu passo direto com vocês, depois de ver o cardápio e quantas mesas vocês têm. É só me chamar no WhatsApp.'],
@@ -216,66 +242,69 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
   function blocoTeste(id, titulo, texto) {
     return '<div class="teste" id="' + id + '"><h3>' + titulo + '</h3><p>' + texto + '</p>' +
       '<div class="abas" role="tablist"></div>' +
-      '<div class="moldura"><iframe title="Demonstração do app" loading="lazy"></iframe></div>' +
+      '<div class="moldura"><iframe title="' + tr('Demonstração do app', 'App demo') + '" loading="lazy"></iframe></div>' +
       '<div class="legenda" aria-live="polite"><b class="n">1</b><span></span></div>' +
-      '<div class="navega"><button type="button" class="ant" aria-label="Tela anterior">←</button>' +
+      '<div class="navega"><button type="button" class="ant" aria-label="' + tr('Tela anterior', 'Previous screen') + '">←</button>' +
       '<button type="button" class="prox"><span class="rot"></span><span class="seta" aria-hidden="true">→</span></button></div>' +
-      '<div class="deslize">👆 Ou deslize o dedo para o lado em cima da tela</div>' +
-      '<div class="auto"><button type="button" class="btn g ver">▶ Ver um pedido completo</button><small>mostra tudo andando sozinho</small></div></div>';
+      '<div class="deslize">' + tr('👆 Ou deslize o dedo para o lado em cima da tela', '👆 Or swipe sideways over the screen') + '</div>' +
+      '<div class="auto"><button type="button" class="btn g ver">' + tr('▶ Ver um pedido completo', '▶ Watch a full order') + '</button><small>' + tr('mostra tudo andando sozinho', 'plays everything on its own') + '</small></div></div>';
   }
 
   main.innerHTML =
-    '<section class="hero" id="inicio"><div class="wrap"><span class="eyebrow"><i></i>Feito para ' + N + '</span>' +
-    '<h1>O app de pedidos do <em>' + N + '</em></h1>' +
-    '<p class="lead">O cardápio de vocês no celular do cliente. Ele pede <b>sentado na mesa</b> ou <b>de casa</b>, paga pelo Pix, e o pedido chega direto na cozinha.</p>' +
-    '<ul class="selos"><li>Sem comissão por pedido</li><li>Pix cai na conta de vocês</li><li>Cliente não baixa aplicativo</li></ul>' +
-    '<div class="acoes-hero"><a class="btn" href="#mesa">▶ Testar o app agora</a><a class="btn g" href="#comecar">Como começar</a></div>' +
+    '<section class="hero" id="inicio"><div class="wrap"><span class="eyebrow"><i></i>' + tr('Feito para ', 'Made for ') + N + '</span>' +
+    '<h1>' + tr('O app de pedidos do <em>' + N + '</em>', 'The ordering app for <em>' + N + '</em>') + '</h1>' +
+    '<p class="lead">' + tr('O cardápio de vocês no celular do cliente. Ele pede <b>sentado na mesa</b> ou <b>de casa</b>, paga pelo Pix, e o pedido chega direto na cozinha.',
+      'Your menu on the customer’s phone. They order <b>from the table</b> or <b>from home</b>, pay with Pix (Brazil’s instant payment), and the order goes straight to the kitchen.') + '</p>' +
+    '<ul class="selos"><li>' + tr('Sem comissão por pedido', 'No commission per order') + '</li><li>' + tr('Pix cai na conta de vocês', 'Pix goes to your account') + '</li><li>' + tr('Cliente não baixa aplicativo', 'No app to download') + '</li></ul>' +
+    '<div class="acoes-hero"><a class="btn" href="#mesa">' + tr('▶ Testar o app agora', '▶ Try the app now') + '</a><a class="btn g" href="#comecar">' + tr('Como começar', 'How to start') + '</a></div>' +
     '<ul class="roteiro">' +
-    '<li><a href="#mesa"><span class="num">1</span><div><b>Pedido na mesa</b><span>O cliente pede sentado, e a cozinha recebe com o número da mesa.</span></div></a></li>' +
-    '<li><a href="#delivery"><span class="num">2</span><div><b>Delivery</b><span>Do pedido em casa até o motoboy entregar.</span></div></a></li>' +
-    '<li><a href="#comecar"><span class="num">3</span><div><b>Como começar</b><span>O que a gente precisa de vocês para colocar no ar.</span></div></a></li></ul>' +
-    '<div class="vale">Demonstração feita para o ' + N + ', no ar até ' + dia + '.</div></div></section>' +
+    '<li><a href="#mesa"><span class="num">1</span><div><b>' + tr('Pedido na mesa', 'Table ordering') + '</b><span>' + tr('O cliente pede sentado, e a cozinha recebe com o número da mesa.', 'The customer orders from their seat, and the kitchen gets it with the table number.') + '</span></div></a></li>' +
+    '<li><a href="#delivery"><span class="num">2</span><div><b>Delivery</b><span>' + tr('Do pedido em casa até o motoboy entregar.', 'From the order at home to the driver delivering it.') + '</span></div></a></li>' +
+    '<li><a href="#comecar"><span class="num">3</span><div><b>' + tr('Como começar', 'How to start') + '</b><span>' + tr('O que a gente precisa de vocês para colocar no ar.', 'What we need from you to put it online.') + '</span></div></a></li></ul>' +
+    '<div class="vale">' + tr('Demonstração feita para o ' + N + ', no ar até ' + dia + '.', 'Demo made for ' + N + ', online until ' + dia + '.') + '</div></div></section>' +
 
     '<section class="sec alt" id="mesa"><div class="wrap">' +
-    '<div class="tit"><span class="num">1</span><h2>Pedido na <em>mesa</em></h2></div>' +
-    '<p class="s">Cada mesa tem um QR Code (ou um adesivo de encostar o celular). O cliente abre o cardápio do ' + N + ', escolhe, envia, e o pedido chega na cozinha <b>já com o número da mesa</b>. Sem esperar o garçom e sem erro de anotação.</p>' +
+    '<div class="tit"><span class="num">1</span><h2>' + tr('Pedido na <em>mesa</em>', 'Table <em>ordering</em>') + '</h2></div>' +
+    '<p class="s">' + tr('Cada mesa tem um QR Code (ou um adesivo de encostar o celular). O cliente abre o cardápio do ' + N + ', escolhe, envia, e o pedido chega na cozinha <b>já com o número da mesa</b>. Sem esperar o garçom e sem erro de anotação.',
+      'Every table has a QR Code (or a tap-to-open sticker). The customer opens ' + N + '’s menu, chooses, sends, and the order reaches the kitchen <b>already tagged with the table number</b>. No waiting for the waiter and no order-taking mistakes.') + '</p>' +
     '<div class="cena"><div class="mz-scene" id="mzscene"></div></div>' +
-    blocoTeste('teste-mesa', 'Agora teste você mesmo', 'Você está sentado na Mesa 7. Faça o pedido no celular e depois passe para a cozinha para ver ele chegar.') +
+    blocoTeste('teste-mesa', tr('Agora teste você mesmo', 'Now try it yourself'), tr('Você está sentado na Mesa 7. Faça o pedido no celular e depois passe para a cozinha para ver ele chegar.', 'You are sitting at Table 7. Place the order on the phone, then switch to the kitchen to see it arrive.')) +
     '</div></section>' +
 
     '<section class="sec" id="delivery"><div class="wrap">' +
-    '<div class="tit"><span class="num">2</span><h2>Delivery <em>até a entrega</em></h2></div>' +
-    '<p class="s">O mesmo app faz o delivery. O cliente pede de casa e paga pelo Pix, a cozinha prepara, e o motoboy de vocês recebe a corrida com a rota. <b>O cliente acompanha a entrega no mapa</b>, do preparo até a porta.</p>' +
-    blocoTeste('teste-delivery', 'Siga um pedido do começo ao fim', 'São as três telas do dia a dia: o cliente, a cozinha e o motoboy. Use as setas para passar de uma para a outra.') +
+    '<div class="tit"><span class="num">2</span><h2>' + tr('Delivery <em>até a entrega</em>', 'Delivery <em>to the door</em>') + '</h2></div>' +
+    '<p class="s">' + tr('O mesmo app faz o delivery. O cliente pede de casa e paga pelo Pix, a cozinha prepara, e o motoboy de vocês recebe a corrida com a rota. <b>O cliente acompanha a entrega no mapa</b>, do preparo até a porta.',
+      'The same app handles delivery. The customer orders from home and pays with Pix, the kitchen prepares it, and your driver gets the job with the route. <b>The customer follows the delivery on the map</b>, from the kitchen to the door.') + '</p>' +
+    blocoTeste('teste-delivery', tr('Siga um pedido do começo ao fim', 'Follow an order from start to finish'), tr('São as três telas do dia a dia: o cliente, a cozinha e o motoboy. Use as setas para passar de uma para a outra.', 'These are the three everyday screens: the customer, the kitchen and the driver. Use the arrows to move from one to the next.')) +
     '</div></section>' +
 
-    '<section class="sec alt" id="ganhos"><div class="wrap"><h2>O que o ' + N + ' <em>ganha</em></h2><p class="s" style="margin-top:12px">Em resumo, o que muda no dia a dia:</p>' +
+    '<section class="sec alt" id="ganhos"><div class="wrap"><h2>' + tr('O que o ' + N + ' <em>ganha</em>', 'What ' + N + ' <em>gets</em>') + '</h2><p class="s" style="margin-top:12px">' + tr('Em resumo, o que muda no dia a dia:', 'In short, what changes day to day:') + '</p>' +
     '<div class="ganhos">' +
-    '<div><i>💸</i><h4>Sem comissão por pedido</h4><p>Não tem porcentagem sobre cada venda. O Pix cai direto na conta de vocês.</p></div>' +
-    '<div><i>⏱</i><h4>Cliente pede na hora</h4><p>Na mesa, ele não espera o garçom passar. Em casa, pede direto com vocês.</p></div>' +
-    '<div><i>✅</i><h4>Menos erro de anotação</h4><p>O pedido vai do celular do cliente para a cozinha do jeito que ele escolheu.</p></div>' +
-    '<div><i>🧑‍🍳</i><h4>Equipe focada em servir</h4><p>O garçom leva os pratos e atende, em vez de anotar e digitar pedido.</p></div>' +
-    '<div><i>📈</i><h4>Pedido maior</h4><p>O cardápio sugere bebida e sobremesa na hora de pedir.</p></div>' +
-    '<div><i>🏷</i><h4>A marca é de vocês</h4><p>O cliente vê o nome, o cardápio e as fotos do ' + N + ', não de um aplicativo de terceiros.</p></div>' +
+    '<div><i>💸</i><h4>' + tr('Sem comissão por pedido', 'No commission per order') + '</h4><p>' + tr('Não tem porcentagem sobre cada venda. O Pix cai direto na conta de vocês.', 'No percentage on each sale. The payment goes straight to your account.') + '</p></div>' +
+    '<div><i>⏱</i><h4>' + tr('Cliente pede na hora', 'Customers order right away') + '</h4><p>' + tr('Na mesa, ele não espera o garçom passar. Em casa, pede direto com vocês.', 'At the table, they do not wait for the waiter to come by. At home, they order directly from you.') + '</p></div>' +
+    '<div><i>✅</i><h4>' + tr('Menos erro de anotação', 'Fewer order mistakes') + '</h4><p>' + tr('O pedido vai do celular do cliente para a cozinha do jeito que ele escolheu.', 'The order goes from the customer’s phone to the kitchen exactly as they chose it.') + '</p></div>' +
+    '<div><i>🧑‍🍳</i><h4>' + tr('Equipe focada em servir', 'A team focused on serving') + '</h4><p>' + tr('O garçom leva os pratos e atende, em vez de anotar e digitar pedido.', 'Waiters carry dishes and take care of guests instead of writing down and typing orders.') + '</p></div>' +
+    '<div><i>📈</i><h4>' + tr('Pedido maior', 'Bigger orders') + '</h4><p>' + tr('O cardápio sugere bebida e sobremesa na hora de pedir.', 'The menu suggests a drink and dessert while ordering.') + '</p></div>' +
+    '<div><i>🏷</i><h4>' + tr('A marca é de vocês', 'The brand is yours') + '</h4><p>' + tr('O cliente vê o nome, o cardápio e as fotos do ' + N + ', não de um aplicativo de terceiros.', 'Customers see ' + N + '’s name, menu and photos, not a third-party app’s.') + '</p></div>' +
     '</div></div></section>' +
 
-    '<section class="sec" id="duvidas"><div class="wrap"><h2>Dúvidas <em>comuns</em></h2><p class="s" style="margin-top:12px">Toque na pergunta para ver a resposta.</p>' +
+    '<section class="sec" id="duvidas"><div class="wrap"><h2>' + tr('Dúvidas <em>comuns</em>', 'Common <em>questions</em>') + '</h2><p class="s" style="margin-top:12px">' + tr('Toque na pergunta para ver a resposta.', 'Tap a question to see the answer.') + '</p>' +
     '<div class="faq">' + faq.map(function (f, i) { return '<details' + (i === 0 ? ' open' : '') + '><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>'; }).join('') + '</div>' +
     '</div></section>' +
 
     '<section class="sec alt" id="comecar"><div class="wrap">' +
-    '<div class="tit"><span class="num">3</span><h2>Como <em>começar</em></h2></div>' +
-    '<p class="s">É só me mandar estas informações pelo WhatsApp. A gente monta tudo e entrega pronto para usar:</p>' +
+    '<div class="tit"><span class="num">3</span><h2>' + tr('Como <em>começar</em>', 'How to <em>start</em>') + '</h2></div>' +
+    '<p class="s">' + tr('É só me mandar estas informações pelo WhatsApp. A gente monta tudo e entrega pronto para usar:', 'Just send me this information on WhatsApp. We build everything and hand it over ready to use:') + '</p>' +
     '<ul class="comecar">' +
-    '<li><span class="num">1</span><div><b>Cardápio</b><span>Pratos, preços e fotos (se não tiver foto, a gente faz).</span></div></li>' +
-    '<li><span class="num">2</span><div><b>Número de mesas</b><span>Para gerar o QR Code de cada uma, pronto para imprimir.</span></div></li>' +
-    '<li><span class="num">3</span><div><b>Chave Pix</b><span>Para o dinheiro dos pedidos cair na conta de vocês.</span></div></li>' +
-    '<li><span class="num">4</span><div><b>Quem fica na cozinha</b><span>A equipe que vai receber os pedidos no tablet ou no computador.</span></div></li></ul>' +
-    '<div class="cta"><h2>Quer o do <em>' + N + '</em> no ar?</h2><p>Me chama no WhatsApp com o cardápio e o número de mesas, e eu te respondo com o prazo e o valor.</p>' +
-    '<a class="btn wa" href="#">Chamar o Lucas no WhatsApp</a></div>' +
+    '<li><span class="num">1</span><div><b>' + tr('Cardápio', 'Menu') + '</b><span>' + tr('Pratos, preços e fotos (se não tiver foto, a gente faz).', 'Dishes, prices and photos (if you have no photos, we take them).') + '</span></div></li>' +
+    '<li><span class="num">2</span><div><b>' + tr('Número de mesas', 'Number of tables') + '</b><span>' + tr('Para gerar o QR Code de cada uma, pronto para imprimir.', 'So we can generate a QR Code for each one, ready to print.') + '</span></div></li>' +
+    '<li><span class="num">3</span><div><b>' + tr('Chave Pix', 'Pix key') + '</b><span>' + tr('Para o dinheiro dos pedidos cair na conta de vocês.', 'So the money from orders lands in your account.') + '</span></div></li>' +
+    '<li><span class="num">4</span><div><b>' + tr('Quem fica na cozinha', 'Who works in the kitchen') + '</b><span>' + tr('A equipe que vai receber os pedidos no tablet ou no computador.', 'The team that will receive orders on a tablet or computer.') + '</span></div></li></ul>' +
+    '<div class="cta"><h2>' + tr('Quer o do <em>' + N + '</em> no ar?', 'Want ' + N + '’s <em>online</em>?') + '</h2><p>' + tr('Me chama no WhatsApp com o cardápio e o número de mesas, e eu te respondo com o prazo e o valor.', 'Message me on WhatsApp with your menu and number of tables, and I will reply with the timeline and the price.') + '</p>' +
+    '<a class="btn wa" href="#">' + tr('Chamar o Lucas no WhatsApp', 'Message Lucas on WhatsApp') + '</a></div>' +
     '</div></section>';
 
-  ligarWhats('Oi Lucas! Vi o app do ' + c.nome + ' e quero saber mais.');
+  ligarWhats(tr('Oi Lucas! Vi o app do ' + c.nome + ' e quero saber mais.', 'Hi Lucas! I saw the app made for ' + c.nome + ' and I would like to know more.'));
 
   // ════ As telas de teste ════
   // Computador (≥ 900px de largura): a demo abre larga, com as telas lado a
@@ -311,7 +340,7 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
       }
       ant.disabled = atual === 0;
       var ult = atual === cfg.telas.length - 1;
-      rot.textContent = ult ? 'Voltar para o ' + cfg.telas[0][2].toLowerCase() : 'Próximo: ' + cfg.telas[atual + 1][2];
+      rot.textContent = ult ? tr('Voltar para o ', 'Back to the ') + cfg.telas[0][2].toLowerCase() : tr('Próximo: ', 'Next: ') + cfg.telas[atual + 1][2];
     }
 
     function ir(i, deFora) {
@@ -378,8 +407,8 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
     ant.addEventListener('click', function () { ir(atual - 1); });
     prox.addEventListener('click', function () { ir(atual + 1); });
     ver.addEventListener('click', function () { cfg.rodar({ win: win, doc: doc, ir: ir, texto: texto, largo: function () { return largo; },
-      inicio: function () { rodando = true; ver.disabled = true; ver.textContent = '… Rodando'; },
-      fim: function () { rodando = false; ver.disabled = false; ver.textContent = '↺ Ver de novo'; desenhar(); } }); });
+      inicio: function () { rodando = true; ver.disabled = true; ver.textContent = tr('… Rodando', '… Playing'); },
+      fim: function () { rodando = false; ver.disabled = false; ver.textContent = tr('↺ Ver de novo', '↺ Watch again'); desenhar(); } }); });
 
     addEventListener('resize', ajustar);
     ajustar();
@@ -393,7 +422,7 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
     api.inicio();
     if (!api.largo()) api.ir(0, true);
     b.click();
-    api.texto('▶', 'Acompanhe a legenda em cima da tela: o pedido vai do cliente para a cozinha e para o motoboy.');
+    api.texto('▶', tr('Acompanhe a legenda em cima da tela: o pedido vai do cliente para a cozinha e para o motoboy.', 'Follow the caption above the screen: the order goes from the customer to the kitchen and to the driver.'));
     setTimeout(api.fim, 36000);
   }
 
@@ -404,36 +433,36 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
     var passos = [], t = 0;
     function em(ms, f) { t += ms; passos.push(setTimeout(f, t)); }
     function clica(sel) { var e = d.querySelector(sel); if (e) e.click(); return !!e; }
-    function daMesa() { return [].slice.call(d.querySelectorAll('#cozinha .ko')).filter(function (k) { return /Mesa 7/.test(k.innerText); })[0]; }
+    function daMesa() { return [].slice.call(d.querySelectorAll('#cozinha .ko')).filter(function (k) { return /(Mesa|Table) 7/.test(k.innerText); })[0]; }
     api.inicio();
     try {
       w.eval("S=seed();S.orders.forEach(function(o,i){o.cust='Mesa '+(i+2);o.addr='No salão';o.fee=0});S.mesaPronto=1;" +
              "save();L.my=null;L.screen='menu';L.cart={};L.seen=null;localStorage.removeItem(KEY+'-my');renderAll()");
     } catch (e) {}
-    em(300, function () { api.ir(0, true); api.texto(1, 'Na Mesa 7, o cliente escolhe o prato no celular.'); });
+    em(300, function () { api.ir(0, true); api.texto(1, tr('Na Mesa 7, o cliente escolhe o prato no celular.', 'At Table 7, the customer picks a dish on their phone.')); });
     em(1400, function () { clica('#cliente [data-a="add"] .ad') || clica('#cliente .it[data-a="add"]'); });
-    em(1200, function () { clica('#cliente [data-a="cart"]'); api.texto(2, 'Ele envia o pedido e paga pelo Pix, sem chamar ninguém.'); });
+    em(1200, function () { clica('#cliente [data-a="cart"]'); api.texto(2, tr('Ele envia o pedido e paga pelo Pix, sem chamar ninguém.', 'They send the order and pay with Pix, without calling anyone.')); });
     em(1600, function () { clica('#cliente [data-a="order"]'); });
     em(2000, function () { clica('#cliente [data-a="paynow"]'); });
-    em(1400, function () { api.ir(1, true); api.texto(3, 'A cozinha recebe na hora, com o número da mesa.'); });
-    em(2200, function () { var k = daMesa(); if (k) { var b = k.querySelector('[data-a="k"]'); if (b) b.click(); } api.texto(4, 'Ela prepara…'); });
-    em(2200, function () { var k = daMesa(); if (k) { var b = k.querySelector('[data-a="k"]'); if (b) b.click(); } api.texto(5, '…e marca como pronto.'); });
-    em(1800, function () { api.ir(0, true); api.texto(6, 'No celular do cliente: o garçom já leva na mesa.'); });
+    em(1400, function () { api.ir(1, true); api.texto(3, tr('A cozinha recebe na hora, com o número da mesa.', 'The kitchen gets it instantly, with the table number.')); });
+    em(2200, function () { var k = daMesa(); if (k) { var b = k.querySelector('[data-a="k"]'); if (b) b.click(); } api.texto(4, tr('Ela prepara…', 'They prepare it…')); });
+    em(2200, function () { var k = daMesa(); if (k) { var b = k.querySelector('[data-a="k"]'); if (b) b.click(); } api.texto(5, tr('…e marca como pronto.', '…and mark it as ready.')); });
+    em(1800, function () { api.ir(0, true); api.texto(6, tr('No celular do cliente: o garçom já leva na mesa.', 'On the customer’s phone: the waiter is already bringing it to the table.')); });
     em(4000, api.fim);
   }
 
   montarTeste(document.getElementById('teste-mesa'), {
     src: demo + '&mesa=7', largura: 1240, altura: 860, alturaCel: 700, rodar: rodarMesa,
-    juntas: 'O celular da Mesa 7 e a cozinha, lado a lado. Faça um pedido no celular e veja ele chegar na cozinha.',
-    telas: [['cliente', '📱', 'Celular', 'Toque num prato, depois em “Ver sacola”, “Fazer pedido” e “Simular pagamento”.'],
-            ['cozinha', '👨‍🍳', 'Cozinha', 'Chegou a Mesa 7! Toque em “Preparar” e depois em “Pronto”. Depois volte ao celular.']]
+    juntas: tr('O celular da Mesa 7 e a cozinha, lado a lado. Faça um pedido no celular e veja ele chegar na cozinha.', 'The Table 7 phone and the kitchen, side by side. Place an order on the phone and watch it arrive in the kitchen.'),
+    telas: [['cliente', '📱', tr('Celular', 'Phone'), tr('Toque num prato, depois em “Ver sacola”, “Fazer pedido” e “Simular pagamento”.', 'Tap a dish, then “View bag”, “Place order” and “Simulate payment”.')],
+            ['cozinha', '👨‍🍳', tr('Cozinha', 'Kitchen'), tr('Chegou a Mesa 7! Toque em “Preparar” e depois em “Pronto”. Depois volte ao celular.', 'Table 7 just arrived! Tap “Start” and then “Ready”. Then go back to the phone.')]]
   });
   montarTeste(document.getElementById('teste-delivery'), {
     src: demo, largura: 1440, altura: 860, alturaCel: 700, rodar: rodarDelivery,
-    juntas: 'As três telas do dia a dia, lado a lado: faça um pedido no cliente e acompanhe na cozinha e no motoboy.',
-    telas: [['cliente', '📱', 'Cliente', 'Faça um pedido: toque num prato, “Ver sacola”, “Fazer pedido” e “Simular pagamento”.'],
-            ['cozinha', '👨‍🍳', 'Cozinha', 'O pedido chegou pago. Toque em “Preparar” e depois em “Pronto”.'],
-            ['motoboy', '🛵', 'Motoboy', 'Ative o GPS, aceite a corrida e toque em “Retirei o pedido”. O cliente vê no mapa.']]
+    juntas: tr('As três telas do dia a dia, lado a lado: faça um pedido no cliente e acompanhe na cozinha e no motoboy.', 'The three everyday screens, side by side: place an order as the customer and follow it in the kitchen and the driver.'),
+    telas: [['cliente', '📱', tr('Cliente', 'Customer'), tr('Faça um pedido: toque num prato, “Ver sacola”, “Fazer pedido” e “Simular pagamento”.', 'Place an order: tap a dish, then “View bag”, “Place order” and “Simulate payment”.')],
+            ['cozinha', '👨‍🍳', tr('Cozinha', 'Kitchen'), tr('O pedido chegou pago. Toque em “Preparar” e depois em “Pronto”.', 'The order arrived paid. Tap “Start” and then “Ready”.')],
+            ['motoboy', '🛵', tr('Motoboy', 'Driver'), tr('Ative o GPS, aceite a corrida e toque em “Retirei o pedido”. O cliente vê no mapa.', 'Turn on GPS, accept the job and tap “I picked up the order”. The customer sees it on the map.')]]
   });
 
   // A animação da mesa só sobe depois que o #mzscene existe e o nome está definido.

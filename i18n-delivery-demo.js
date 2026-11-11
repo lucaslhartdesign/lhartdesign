@@ -1341,3 +1341,19 @@ LH.add([
 "Coca, Guaraná o Fanta"
 ]
 ]);
+
+/* Pedido na mesa (demos/personaliza.js, ?mesa=): frases que a demo troca por salão e a cozinha com as mesas. */
+LH.add([
+  ["Mesa {}", "Table {}", "Mesa {}"],
+  ["Mesa {} · no salão", "Table {} · dine-in", "Mesa {} · en el salón"],
+  ["No salão", "Dine-in", "En el salón"],
+  ["Servidos", "Served", "Servidos"],
+  ["Servido", "Served", "Servido"],
+  ["Servido na mesa", "Served at the table", "Servido en la mesa"],
+  ["🍽 Servido na mesa", "🍽 Served at the table", "🍽 Servido en la mesa"],
+  ["Servir na mesa", "Serve at the table", "Servir en la mesa"],
+  ["Indo para a mesa", "On its way to the table", "Yendo a la mesa"],
+  ["Pronto, indo para a mesa", "Ready, on its way to the table", "Listo, yendo a la mesa"],
+  ["O garçom já leva na sua mesa", "The waiter is already bringing it to your table", "El mesero ya lo lleva a tu mesa"],
+  ["Seu pedido está indo para a mesa", "Your order is on its way to the table", "Tu pedido va camino a la mesa"]
+]);
