@@ -117,6 +117,11 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
 
 /* ── O resto */
 .ganhos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.aviso{display:flex;gap:12px;align-items:flex-start;margin:0 0 20px;padding:14px 16px;border-radius:16px;background:#f2c66d14;border:1px solid #f2c66d55;border-left:4px solid #f2c66d;color:#f0e3c2;font-size:15px;line-height:1.55;max-width:70ch}
+.aviso b{color:#ffd98a}
+.opc{display:inline-block;vertical-align:middle;margin-left:10px;padding:5px 12px;border-radius:99px;border:1px solid #f2c66d66;background:#f2c66d14;color:#ffd98a;font:800 12px Inter;letter-spacing:.08em;text-transform:uppercase}
+.mais .ganhos div{padding:18px}.mais .ganhos h4{margin:8px 0 4px}
+.mais .ver-mais{margin-top:18px}
 .ganhos div{padding:22px;border-radius:20px;background:linear-gradient(160deg,#ffffff08,#232532);border:1px solid var(--ln)}
 .ganhos i{font-style:normal;font-size:28px}
 .ganhos h4{margin:10px 0 6px;font-size:17px}
@@ -259,7 +264,7 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
     '<div class="acoes-hero"><a class="btn" href="#mesa">' + tr('▶ Testar o app agora', '▶ Try the app now') + '</a><a class="btn g" href="#comecar">' + tr('Como começar', 'How to start') + '</a></div>' +
     '<ul class="roteiro">' +
     '<li><a href="#mesa"><span class="num">1</span><div><b>' + tr('Pedido na mesa', 'Table ordering') + '</b><span>' + tr('O cliente pede sentado, e a cozinha recebe com o número da mesa.', 'The customer orders from their seat, and the kitchen gets it with the table number.') + '</span></div></a></li>' +
-    '<li><a href="#delivery"><span class="num">2</span><div><b>Delivery</b><span>' + tr('Do pedido em casa até o motoboy entregar.', 'From the order at home to the driver delivering it.') + '</span></div></a></li>' +
+    '<li><a href="#delivery"><span class="num">2</span><div><b>Delivery <small style="color:#ffd98a;font-weight:700">(' + tr('opcional', 'optional') + ')</small></b><span>' + tr('Só se vocês têm motoboy: do pedido em casa até a entrega.', 'Only if you have a driver: from the order at home to the delivery.') + '</span></div></a></li>' +
     '<li><a href="#comecar"><span class="num">3</span><div><b>' + tr('Como começar', 'How to start') + '</b><span>' + tr('O que a gente precisa de vocês para colocar no ar.', 'What we need from you to put it online.') + '</span></div></a></li></ul>' +
     '<div class="vale">' + tr('Demonstração feita para o ' + N + ', no ar até ' + dia + '.', 'Demo made for ' + N + ', online until ' + dia + '.') + '</div></div></section>' +
 
@@ -272,7 +277,10 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
     '</div></section>' +
 
     '<section class="sec" id="delivery"><div class="wrap">' +
-    '<div class="tit"><span class="num">2</span><h2>' + tr('Delivery <em>até a entrega</em>', 'Delivery <em>to the door</em>') + '</h2></div>' +
+    '<div class="tit"><span class="num">2</span><h2>' + tr('Delivery <em>até a entrega</em>', 'Delivery <em>to the door</em>') + '<span class="opc">' + tr('opcional', 'optional') + '</span></h2></div>' +
+    '<div class="aviso" role="note"><span aria-hidden="true">⚠️</span><div><b>' + tr('Aviso:', 'Heads-up:') + '</b> ' +
+    tr('esta parte é só para quem entrega com motoboy próprio. A maioria dos restaurantes não tem, e tudo bem: o pedido na mesa e a retirada no balcão funcionam do mesmo jeito, sem motoboy.',
+       'this part is only for restaurants with their own delivery driver. Most do not have one, and that is fine: table ordering and counter pickup work the same way, with no driver.') + '</div></div>' +
     '<p class="s">' + tr('O mesmo app faz o delivery. O cliente pede de casa e paga pelo Pix, a cozinha prepara, e o motoboy de vocês recebe a corrida com a rota. <b>O cliente acompanha a entrega no mapa</b>, do preparo até a porta.',
       'The same app handles delivery. The customer orders from home and pays with Pix, the kitchen prepares it, and your driver gets the job with the route. <b>The customer follows the delivery on the map</b>, from the kitchen to the door.') + '</p>' +
     blocoTeste('teste-delivery', tr('Siga um pedido do começo ao fim', 'Follow an order from start to finish'), tr('São as três telas do dia a dia: o cliente, a cozinha e o motoboy. Use as setas para passar de uma para a outra.', 'These are the three everyday screens: the customer, the kitchen and the driver. Use the arrows to move from one to the next.')) +
@@ -287,6 +295,14 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
     '<div><i>📈</i><h4>' + tr('Pedido maior', 'Bigger orders') + '</h4><p>' + tr('O cardápio sugere bebida e sobremesa na hora de pedir.', 'The menu suggests a drink and dessert while ordering.') + '</p></div>' +
     '<div><i>🏷</i><h4>' + tr('A marca é de vocês', 'The brand is yours') + '</h4><p>' + tr('O cliente vê o nome, o cardápio e as fotos do ' + N + ', não de um aplicativo de terceiros.', 'Customers see ' + N + '’s name, menu and photos, not a third-party app’s.') + '</p></div>' +
     '</div></div></section>' +
+
+    '<section class="sec mais" id="clientes"><div class="wrap"><h2>' + tr('Além do app: <em>mais clientes</em> chegando', 'Beyond the app: <em>more customers</em> coming in') + '</h2>' +
+    '<p class="s" style="margin-top:12px">' + tr('O app organiza o pedido. Para chegar mais gente até ele, a Lhart também cuida da divulgação:', 'The app organizes the orders. To bring more people to it, Lhart also takes care of promotion:') + '</p>' +
+    '<div class="ganhos">' +
+    '<div><i>📸</i><h4>' + tr('Fotos', 'Photos') + '</h4><p>' + tr('Fotos profissionais dos pratos do ' + N + ', para o cardápio e para o Instagram.', 'Professional photos of ' + N + '’s dishes, for the menu and for Instagram.') + '</p></div>' +
+    '<div><i>🎬</i><h4>' + tr('Vídeos', 'Videos') + '</h4><p>' + tr('Vídeos curtos dos pratos e do ambiente, prontos para Reels e anúncios.', 'Short videos of the dishes and the place, ready for Reels and ads.') + '</p></div>' +
+    '<div><i>📣</i><h4>' + tr('Tráfego pago', 'Paid traffic') + '</h4><p>' + tr('Anúncios no Instagram e no Google para quem está por perto escolhendo onde comer, levando direto ao cardápio.', 'Instagram and Google ads for people nearby deciding where to eat, taking them straight to the menu.') + '</p></div>' +
+    '</div><a class="btn g wa ver-mais" href="#">' + tr('Quero saber mais, chamar no WhatsApp', 'I want to know more, message on WhatsApp') + '</a></div></section>' +
 
     '<section class="sec" id="duvidas"><div class="wrap"><h2>' + tr('Dúvidas <em>comuns</em>', 'Common <em>questions</em>') + '</h2><p class="s" style="margin-top:12px">' + tr('Toque na pergunta para ver a resposta.', 'Tap a question to see the answer.') + '</p>' +
     '<div class="faq">' + faq.map(function (f, i) { return '<details' + (i === 0 ? ' open' : '') + '><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>'; }).join('') + '</div>' +
