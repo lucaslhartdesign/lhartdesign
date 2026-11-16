@@ -64,6 +64,37 @@ h2 em{font-style:normal;color:var(--ac)}
 .op .btn{width:100%}
 .obs{margin-top:22px;padding:16px 18px;border-radius:16px;background:var(--p2);border:1px solid var(--ln);color:#d6d8e3;font-size:15px;line-height:1.55;white-space:pre-line}
 .fim{color:var(--mu);font-size:13px;text-align:center;padding:26px 16px 40px;border-top:1px solid var(--ln)}
+/* Por que vale a pena (16/11/2026): o que o valor cobre + "em quanto tempo se paga" */
+.vale-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:6px 0 30px}
+.vale-cards div{padding:22px;border-radius:20px;background:linear-gradient(160deg,#ffffff08,#232532);border:1px solid var(--ln)}
+.vale-cards i{font-style:normal;font-size:30px}
+.vale-cards h4{margin:10px 0 6px;font-size:18px}
+.vale-cards p{margin:0;color:#c9cbd6;font-size:15px;line-height:1.55}
+.calc{padding:clamp(18px,4vw,30px);border-radius:24px;background:linear-gradient(160deg,#9184d91f,#1c1e2e 55%);border:1px solid #9184d966}
+.calc h3{margin:0 0 6px;font:400 clamp(28px,4vw,40px)/1 'Bebas Neue',sans-serif;letter-spacing:.02em}
+.calc>p{margin:0 0 18px;color:var(--mu);font-size:15px;line-height:1.5}
+.ticket{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 20px;font-weight:700;font-size:16px}
+.ticket .campo{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:14px;background:#0f1019;border:1px solid #b5abfc77}
+.ticket input{width:110px;background:transparent;border:0;color:#fff;font:800 22px Inter;outline:none}
+.ticket input::-webkit-inner-spin-button{opacity:.4}
+.cops{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.cop{padding:18px;border-radius:18px;background:#0f1019;border:1px solid var(--ln)}
+.cop.dest{border-color:#b5abfc}
+.cop b{font:400 26px/1 'Bebas Neue',sans-serif;letter-spacing:.03em}
+.cop .pv{color:var(--mu);font-size:13px;margin-left:6px}
+.cop .n{display:block;margin:10px 0 2px;font:800 clamp(34px,6vw,44px)/1 Inter;color:var(--gr);letter-spacing:-.02em}
+.cop .n small{font-size:15px;font-weight:600;color:#d6d8e3;letter-spacing:0;margin-left:6px}
+.cop .dia{color:var(--mu);font-size:14px;margin:0 0 12px}
+.barra{height:10px;border-radius:99px;background:#ffffff12;overflow:hidden;margin:0 0 12px}
+.barra i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#4be39a,#b5abfc);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.gente{display:flex;flex-wrap:wrap;gap:4px;min-height:22px}
+.gente span{width:14px;height:14px;border-radius:50% 50% 40% 40%;background:#4be39a;opacity:0;transform:translateY(6px) scale(.6);transition:opacity .35s,transform .35s}
+.gente span.on{opacity:1;transform:none}
+.gente em{font-style:normal;color:var(--mu);font-size:13px;margin-left:4px}
+.calc .nota{margin:16px 0 0;color:var(--mu);font-size:13px;line-height:1.5}
+.trabalhos{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:26px;padding:18px 20px;border-radius:18px;background:var(--p2);border:1px solid var(--ln)}
+.trabalhos span{flex:1 1 260px;color:#d6d8e3;font-size:15px;line-height:1.5}
+@media (prefers-reduced-motion:reduce){.barra i,.gente span{transition:none}}
 .cta{text-align:center;padding:34px 18px;border-radius:26px;background:radial-gradient(60% 90% at 50% 0%,#9184d933,transparent),#1c1e2e;border:1px solid #9184d955}
 .cta p{color:var(--mu);font-size:17px;margin:12px auto 22px;max-width:52ch;line-height:1.55}
 .expirou{min-height:70vh;display:flex;align-items:center}
@@ -138,6 +169,44 @@ h2 em{font-style:normal;color:var(--ac)}
     } catch (e) { return null; }
   }
 
+  // O "por que vale a pena": só o que é verdade. Sem resultado inventado; a
+  // conta da calculadora é de faturamento, com o gasto médio que o dono ajusta.
+  var V = {
+    pt: { tit: 'Por que <em>vale a pena</em>', sub: 'Antes dos valores, o que eles cobrem e quando se pagam.',
+      c: [['🎬', 'Uma equipe inteira por mês', 'Foto, vídeo, drone, edição e anúncios, feitos por quem faz isso todo dia. Vocês não precisam contratar nem treinar ninguém.'],
+          ['📲', 'Cliente direto com vocês', 'Quem chega pelo anúncio fala direto com vocês, no WhatsApp ou no Instagram, sem intermediário ficando com parte da venda.'],
+          ['📊', 'Vocês veem o resultado', 'Todo mês um relatório simples: quantas pessoas viram, quantas chamaram, o que funcionou melhor.']],
+      calc: 'Em quanto tempo <em>se paga</em>', calcS: 'Coloque quanto um cliente gasta, em média, numa visita, reserva ou passeio. A conta mostra quantos clientes novos por mês pagam cada plano.',
+      tk: 'Um cliente gasta, em média:', cli: 'clientes novos no mês', dia: function (n) { var d = n / 30; return d >= 1 ? 'cerca de ' + Math.round(d) + ' por dia' : 'menos de 1 por dia (1 a cada ' + Math.max(1, Math.round(30 / n)) + ' dias)'; },
+      nota: 'É uma conta de faturamento, não uma promessa: mostra quantos clientes novos cobrem o plano. Daí para frente, cada cliente novo é ganho.',
+      trab: 'Quer ver o que já fizemos? Fotos, vídeos e anúncios de trabalhos reais.', trabB: 'Ver nossos trabalhos' },
+    en: { tit: 'Why it <em>pays off</em>', sub: 'Before the prices: what they cover and when they pay for themselves.',
+      c: [['🎬', 'A whole team, every month', 'Photo, video, drone, editing and ads, done by people who do it every day. No hiring, no training.'],
+          ['📲', 'Customers come straight to you', 'People who come from the ads talk to you directly, on WhatsApp or Instagram, with no middleman taking a cut.'],
+          ['📊', 'You see the results', 'A simple report every month: how many people saw it, how many reached out, what worked best.']],
+      calc: 'How fast it <em>pays for itself</em>', calcS: 'Enter how much one customer spends on average per visit, booking or trip. The math shows how many new customers a month cover each plan.',
+      tk: 'One customer spends, on average:', cli: 'new customers a month', dia: function (n) { var d = n / 30; return d >= 1 ? 'about ' + Math.round(d) + ' a day' : 'less than 1 a day (1 every ' + Math.max(1, Math.round(30 / n)) + ' days)'; },
+      nota: "This is revenue math, not a promise: it shows how many new customers cover the plan. Every new customer after that is a gain.",
+      trab: 'Want to see what we have done? Photos, videos and ads from real projects.', trabB: 'See our work' },
+    es: { tit: 'Por qué <em>vale la pena</em>', sub: 'Antes de los valores: qué cubren y cuándo se pagan.',
+      c: [['🎬', 'Un equipo completo cada mes', 'Foto, video, dron, edición y anuncios, hechos por quien lo hace todos los días. Sin contratar ni capacitar a nadie.'],
+          ['📲', 'El cliente llega directo a ustedes', 'Quien llega por el anuncio habla directo con ustedes, por WhatsApp o Instagram, sin intermediario quedándose con parte.'],
+          ['📊', 'Ustedes ven el resultado', 'Cada mes un informe simple: cuántas personas lo vieron, cuántas escribieron, qué funcionó mejor.']],
+      calc: 'En cuánto tiempo <em>se paga</em>', calcS: 'Ponga cuánto gasta un cliente, en promedio, por visita, reserva o paseo. La cuenta muestra cuántos clientes nuevos al mes pagan cada plan.',
+      tk: 'Un cliente gasta, en promedio:', cli: 'clientes nuevos al mes', dia: function (n) { var d = n / 30; return d >= 1 ? 'cerca de ' + Math.round(d) + ' por día' : 'menos de 1 por día (1 cada ' + Math.max(1, Math.round(30 / n)) + ' días)'; },
+      nota: 'Es una cuenta de facturación, no una promesa: muestra cuántos clientes nuevos cubren el plan. De ahí en adelante, cada cliente nuevo es ganancia.',
+      trab: '¿Quiere ver lo que ya hicimos? Fotos, videos y anuncios de trabajos reales.', trabB: 'Ver nuestros trabajos' }
+  };
+
+  // "1.100" / "1,500" / "700" -> número
+  function numero(v) {
+    var t = String(v || '').replace(/[^\d.,]/g, '');
+    if (/^\d{1,3}([.,]\d{3})+$/.test(t)) t = t.replace(/[.,]/g, '');
+    else t = t.replace(',', '.');
+    var n = parseFloat(t);
+    return isFinite(n) ? n : 0;
+  }
+
   var c = ler(), main = document.getElementById('conteudo');
   var lang = c && L[c.l] ? c.l : 'pt';
   var T = L[lang], ix = IDX[lang];
@@ -160,6 +229,68 @@ h2 em{font-style:normal;color:var(--ac)}
   var onde = [c.s, c.c].filter(Boolean).map(esc).join(' · ');
   var destaque = typeof c.r === 'number' ? c.r : (c.o.length === 3 ? 1 : -1);
 
+  var VV = V[lang] || V.en;
+  var ticket0 = numero(c.k) || 0;
+  function valorHTML() {
+    var cartoes = VV.c.map(function (x) { return '<div><i>' + x[0] + '</i><h4>' + x[1] + '</h4><p>' + x[2] + '</p></div>'; }).join('');
+    var calc = '';
+    if (ticket0 > 0) {
+      calc = '<div class="calc" id="calc"><h3>' + VV.calc + '</h3><p>' + VV.calcS + '</p>' +
+        '<label class="ticket">' + VV.tk + ' <span class="campo">' + moeda + ' <input id="ticket" type="number" min="1" step="1" inputmode="decimal" value="' + ticket0 + '" aria-label="' + VV.tk + '"></span></label>' +
+        '<div class="cops">' + c.o.map(function (o, k) {
+          return '<div class="cop' + (k === destaque ? ' dest' : '') + '" data-v="' + numero(o.v) + '"><b>' + esc(o.t) + '</b><span class="pv">' + moeda + ' ' + esc(o.v) + esc(o.p || '') + '</span>' +
+            '<span class="n"><span class="q">0</span><small>' + VV.cli + '</small></span><div class="dia"></div>' +
+            '<div class="barra"><i></i></div><div class="gente" aria-hidden="true"></div></div>';
+        }).join('') + '</div><p class="nota">' + VV.nota + '</p></div>';
+    }
+    var trab = '<div class="trabalhos"><span>' + VV.trab + '</span><a class="btn g" target="_blank" rel="noopener" href="https://www.lhartdesign.com/social.html?lang=' + lang + '#cases">' + VV.trabB + '</a></div>';
+    return '<section class="sec" id="vale"><div class="wrap"><h2>' + VV.tit + '</h2><p class="s">' + VV.sub + '</p>' +
+      '<div class="vale-cards">' + cartoes + '</div>' + calc + trab + '</div></section>';
+  }
+
+  // A calculadora: conta, enche a barra e faz os bonequinhos aparecerem um a um.
+  var reduzido = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function calcular(animar) {
+    var box = document.getElementById('calc');
+    if (!box) return;
+    var t = numero(document.getElementById('ticket').value);
+    var cops = [].slice.call(box.querySelectorAll('.cop'));
+    var ns = cops.map(function (el) { var v = +el.dataset.v; return t > 0 && v > 0 ? Math.ceil(v / t) : 0; });
+    var maior = Math.max.apply(null, ns.concat([1]));
+    cops.forEach(function (el, k) {
+      var n = ns[k], q = el.querySelector('.q');
+      el.querySelector('.dia').textContent = n ? VV.dia(n) : '';
+      el.querySelector('.barra i').style.width = (animar === false ? 0 : Math.max(6, n / maior * 100)) + '%';
+      var g = el.querySelector('.gente'), mostrar = Math.min(n, 40);
+      g.innerHTML = new Array(mostrar + 1).join('<span></span>') + (n > 40 ? '<em>+' + (n - 40) + '</em>' : '');
+      var bonecos = [].slice.call(g.querySelectorAll('span'));
+      if (reduzido || animar === 'ja') {
+        q.textContent = n;
+        bonecos.forEach(function (b) { b.classList.add('on'); });
+        return;
+      }
+      if (animar === false) { q.textContent = '0'; return; }
+      var ini = performance.now(), dur = 900;
+      (function passo(agora) {
+        var f = Math.min(1, (agora - ini) / dur);
+        q.textContent = Math.round(n * (1 - Math.pow(1 - f, 3)));
+        if (f < 1) requestAnimationFrame(passo);
+      })(ini);
+      bonecos.forEach(function (b, i) { setTimeout(function () { b.classList.add('on'); }, 120 + i * 35); });
+    });
+  }
+  function ligarCalculadora() {
+    var box = document.getElementById('calc');
+    if (!box) return;
+    calcular(false);
+    var visto = false;
+    var go = function () { if (!visto) { visto = true; calcular(true); } };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es, ob) { if (es.some(function (e) { return e.isIntersecting; })) { go(); ob.disconnect(); } }, { threshold: .35 }).observe(box);
+    } else { go(); }
+    document.getElementById('ticket').addEventListener('input', function () { visto = true; calcular('ja'); });
+  }
+
   var cards = c.o.map(function (o, k) {
     var itens = (o.i || []).map(function (cod) { return ITENS[cod] ? '<li>' + esc(ITENS[cod][ix]) + '</li>' : ''; }).join('');
     var bonus = o.b && ITENS[o.b] ? '<div class="bonus"><b>' + T.bonus + '</b> ' + esc(ITENS[o.b][ix]) + '</div>' : '';
@@ -179,6 +310,7 @@ h2 em{font-style:normal;color:var(--ac)}
     '<p class="lead">' + T.lead + '</p>' +
     '<div class="para">' + (onde ? onde + ' · ' : '') + T.valida + ' ' + dia + '</div></div></section>' +
 
+    valorHTML() +
     '<section class="sec alt" id="opcoes"><div class="wrap"><h2>' + T.opcoes + '</h2>' +
     '<div class="opcoes" style="margin-top:28px">' + cards + '</div>' +
     (c.x ? '<div class="obs"><b>' + T.obs + ':</b> ' + esc(c.x) + '</div>' : '') +
@@ -195,6 +327,7 @@ h2 em{font-style:normal;color:var(--ac)}
 
     '<section class="sec alt"><div class="wrap"><div class="cta"><h2>' + T.duvida + '</h2><p>' + T.duvidaT + '</p>' +
     '<a class="btn" target="_blank" rel="noopener" href="' + wa(T.msgD.replace('{n}', c.n)) + '">' + T.falar + '</a></div></div></section>';
+  ligarCalculadora();
 })();
 </script>
 </body></html>
