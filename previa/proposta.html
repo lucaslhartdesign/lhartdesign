@@ -142,7 +142,13 @@ h2 em{font-style:normal;color:var(--ac)}
     atendimento: ['Atendimento automático no WhatsApp e Instagram, 24 horas', 'Automatic replies on WhatsApp and Instagram, 24/7', 'Atención automática en WhatsApp e Instagram, 24 horas'],
     site: ['Site próprio com reserva ou pedido direto', 'Your own website with direct booking or ordering', 'Sitio propio con reserva o pedido directo'],
     app: ['Cardápio online e delivery próprio, sem comissão por pedido', 'Online menu and your own delivery, no commission per order', 'Menú online y delivery propio, sin comisión por pedido'],
-    mesa: ['Pedido na mesa por QR Code e adesivo NFC', 'Table ordering by QR code and NFC sticker', 'Pedido en la mesa por QR y sticker NFC']
+    mesa: ['Pedido na mesa por QR Code e adesivo NFC', 'Table ordering by QR code and NFC sticker', 'Pedido en la mesa por QR y sticker NFC'],
+    // 16/11/2026 — o plano Digital, sem gravação no local.
+    sem_gravacao: ['Sem gravação no local: vocês enviam as fotos e a gente cuida do resto', 'No on-site shoot: you send the photos, we handle the rest', 'Sin grabación en el lugar: ustedes envían las fotos y nosotros hacemos el resto'],
+    artes: ['Artes para posts e anúncios feitas com as fotos de vocês', 'Designs for posts and ads made from your photos', 'Artes para posts y anuncios hechas con sus fotos'],
+    video_fotos: ['Vídeos montados com as fotos de vocês, para Reels e anúncios', 'Videos made from your photos, for Reels and ads', 'Videos hechos con sus fotos, para Reels y anuncios'],
+    meta: ['Anúncios no Facebook e no Instagram', 'Ads on Facebook and Instagram', 'Anuncios en Facebook e Instagram'],
+    google_ads: ['Anúncios no Google para aparecer na 1ª página quando procurarem pelo que vocês vendem', 'Google Ads to show up on the first page when people search for what you sell', 'Anuncios en Google para aparecer en la 1ª página cuando busquen lo que venden']
   };
   var L = {
     pt: { priv: '🔒 Proposta privada', para: 'Proposta para', prep: 'Preparada para', valida: 'Válida até', lead: 'Montamos as opções abaixo para o momento de vocês. Escolha a que faz mais sentido e me chame no WhatsApp.',
@@ -358,13 +364,33 @@ h2 em{font-style:normal;color:var(--ac)}
 
   var appUrl = linkDoApp();
   var FF = F[lang] || F.en;
+  // Plano sem gravação (Digital): se TODAS as opções são assim, a etapa 2 vira
+  // "vocês enviam as fotos"; se só uma é, a nota avisa.
+  var GRAVA = ['foto', 'reels', 'video4k', 'drone'];
+  var semGravacao = c.o.map(function (o) {
+    return (o.i || []).indexOf('sem_gravacao') >= 0 || !(o.i || []).some(function (x) { return GRAVA.indexOf(x) >= 0; });
+  });
+  var soDigital = semGravacao.every(Boolean), algumDigital = semGravacao.some(Boolean);
+  var ENVIA = {
+    pt: ['📸', 'Vocês enviam as fotos', 'Vocês mandam as fotos que já têm (do lugar, dos produtos, da equipe) e a gente escolhe as melhores para as artes e os vídeos.'],
+    en: ['📸', 'You send the photos', 'You send the photos you already have (of the place, the products, the team) and we pick the best ones for the designs and videos.'],
+    es: ['📸', 'Ustedes envían las fotos', 'Ustedes mandan las fotos que ya tienen (del lugar, los productos, el equipo) y elegimos las mejores para las artes y los videos.']
+  };
+  var NOTA_DIGITAL = {
+    pt: ' No plano sem gravação, vocês enviam as fotos e a gente faz as artes e os vídeos com elas.',
+    en: ' In the plan without an on-site shoot, you send the photos and we make the designs and videos from them.',
+    es: ' En el plan sin grabación, ustedes envían las fotos y hacemos las artes y los videos con ellas.'
+  };
   function feitoHTML() {
+    var etapas = FF.e.slice();
+    if (soDigital) etapas[1] = ENVIA[lang] || ENVIA.en;
+    var nota = FF.nota + (algumDigital && !soDigital ? (NOTA_DIGITAL[lang] || NOTA_DIGITAL.en) : '');
     return '<section class="sec alt" id="feito"><div class="wrap"><h2>' + FF.tit + '</h2><p class="s">' + FF.sub + '</p>' +
       '<ol class="linha" id="linha"><span class="fio" aria-hidden="true"></span>' +
-      FF.e.map(function (x, i) {
+      etapas.map(function (x, i) {
         return '<li class="etapa" data-n="' + (i + 1) + '"><h4><span aria-hidden="true">' + x[0] + '</span>' + x[1] + '</h4><p>' +
           esc(x[2]).replace('{n}', N) + '</p></li>';
-      }).join('') + '</ol><p class="feito-nota">' + FF.nota + '</p></div></section>';
+      }).join('') + '</ol><p class="feito-nota">' + nota + '</p></div></section>';
   }
   // As etapas aparecem uma a uma, e o fio desce junto, quando a linha entra na tela.
   function ligarLinha() {
