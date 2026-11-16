@@ -56,6 +56,12 @@ h2 em{font-style:normal;color:var(--ac)}
 .preco{font:800 clamp(30px,5vw,40px)/1 Inter;margin:0 0 4px;letter-spacing:-.02em}
 .preco small{font-size:15px;font-weight:600;color:var(--mu);margin-left:4px;letter-spacing:0}
 .verba{color:var(--gr);font-size:14px;font-weight:700;margin:0 0 16px}
+/* 16/11/2026 — a verba dos anúncios é à parte do plano */
+.anuncio-aviso{display:flex;gap:14px;align-items:flex-start;margin:22px 0 0;padding:18px 20px;border-radius:18px;background:#ffb02014;border:1px solid #ffb02066}
+.anuncio-aviso i{flex:none;font-style:normal;font-size:26px;line-height:1}
+.anuncio-aviso b{display:block;margin-bottom:4px;font-size:16px;color:#ffd27a}
+.anuncio-aviso span{color:#e3e4ee;font-size:15px;line-height:1.55}
+.mais-verba{margin:2px 0 14px;color:#ffd27a;font-size:13px;font-weight:700}
 .op ul{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:10px;flex:1;align-content:start}
 .op li{display:flex;gap:10px;font-size:15px;line-height:1.45;color:#e3e4ee}
 .op li::before{content:"✓";flex:none;display:grid;place-items:center;width:20px;height:20px;margin-top:1px;border-radius:50%;background:#4be39a26;color:var(--gr);font-size:12px;font-weight:900}
@@ -256,6 +262,14 @@ h2 em{font-style:normal;color:var(--ac)}
       btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
 
+  // 16/11/2026, o Lucas: "precisa deixar explicado que além do nosso valor tem o
+  // investimento do tráfego para ter resultado, que é conforme o conversado".
+  var ANUNCIO = {
+    pt: { t: 'Além do plano: o investimento em anúncios', s: 'O valor do plano é o nosso trabalho. Os anúncios precisam de uma verba própria, à parte, que é o que vai para o Google, o Facebook e o Instagram mostrarem o anúncio às pessoas. Sem ela o anúncio não roda. O valor dessa verba é o que combinarmos com vocês.', l: '+ investimento em anúncios, à parte', c: ' A conta é do plano e não inclui a verba dos anúncios, que é à parte.' },
+    en: { t: 'On top of the plan: the ad budget', s: 'The plan price is our work. The ads need their own budget, on top of it: that is what goes to Google, Facebook and Instagram to show the ads to people. Without it, the ads do not run. The budget amount is what we agree on with you.', l: '+ ad budget, separate', c: ' This is the plan only and does not include the ad budget, which is separate.' },
+    es: { t: 'Además del plan: la inversión en anuncios', s: 'El valor del plan es nuestro trabajo. Los anuncios necesitan un presupuesto propio, aparte: es lo que va a Google, Facebook e Instagram para mostrar el anuncio a las personas. Sin él, el anuncio no corre. El monto es el que acordemos con ustedes.', l: '+ inversión en anuncios, aparte', c: ' La cuenta es solo del plan y no incluye el presupuesto de anuncios, que es aparte.' }
+  };
+
   // "1.100" / "1,500" / "700" -> número
   function numero(v) {
     var t = String(v || '').replace(/[^\d.,]/g, '');
@@ -299,7 +313,7 @@ h2 em{font-style:normal;color:var(--ac)}
           return '<div class="cop' + (k === destaque ? ' dest' : '') + '" data-v="' + numero(o.v) + '"><b>' + esc(o.t) + '</b><span class="pv">' + moeda + ' ' + esc(o.v) + esc(o.p || '') + '</span>' +
             '<span class="n"><span class="q">0</span><small>' + VV.cli + '</small></span><div class="dia"></div>' +
             '<div class="barra"><i></i></div><div class="gente" aria-hidden="true"></div></div>';
-        }).join('') + '</div><p class="nota">' + VV.nota + '</p></div>';
+        }).join('') + '</div><p class="nota">' + VV.nota + (ANUNCIO[lang] || ANUNCIO.en).c + '</p></div>';
     }
     var trab = '<div class="trabalhos"><span>' + VV.trab + '</span><a class="btn g" target="_blank" rel="noopener" href="https://www.lhartdesign.com/social.html?lang=' + lang + '#cases">' + VV.trabB + '</a></div>';
     return '<section class="sec" id="vale"><div class="wrap"><h2>' + VV.tit + '</h2><p class="s">' + VV.sub + '</p>' +
@@ -357,7 +371,8 @@ h2 em{font-style:normal;color:var(--ac)}
     return '<article class="op' + (k === destaque ? ' dest' : '') + '">' +
       (k === destaque ? '<span class="selo">' + T.rec + '</span>' : '') +
       '<h3>' + esc(o.t) + '</h3>' +
-      '<div class="preco">' + moeda + ' ' + esc(o.v) + (o.p ? '<small>' + esc(o.p) + '</small>' : '') + '</div>' + verba +
+      '<div class="preco">' + moeda + ' ' + esc(o.v) + (o.p ? '<small>' + esc(o.p) + '</small>' : '') + '</div>' +
+      '<div class="mais-verba">' + (ANUNCIO[lang] || ANUNCIO.en).l + '</div>' + verba +
       '<ul>' + itens + '</ul>' + bonus +
       '<a class="btn' + (k === destaque ? '' : ' g') + '" target="_blank" rel="noopener" href="' + wa(msg) + '">' + T.quero + '</a></article>';
   }).join('');
@@ -416,6 +431,8 @@ h2 em{font-style:normal;color:var(--ac)}
     feitoHTML() +
     valorHTML() +
     '<section class="sec alt" id="opcoes"><div class="wrap"><h2>' + T.opcoes + '</h2>' +
+    '<div class="anuncio-aviso"><i aria-hidden="true">📣</i><div><b>' + (ANUNCIO[lang] || ANUNCIO.en).t + '</b><span>' +
+      (ANUNCIO[lang] || ANUNCIO.en).s + '</span></div></div>' +
     '<div class="opcoes" style="margin-top:28px">' + cards + '</div>' +
     (c.x ? '<div class="obs"><b>' + T.obs + ':</b> ' + esc(c.x) + '</div>' : '') +
     '</div></section>' +
