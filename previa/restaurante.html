@@ -179,7 +179,9 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
       if (!nome) return null;
       var forca = new URLSearchParams(location.search).get('lang');
       var lang = (forca === 'en' || forca === 'pt') ? forca : (j.l === 'en' ? 'en' : 'pt');
-      return { nome: nome, modelo: MODELOS.indexOf(j.m) >= 0 ? j.m : 'burger-neon', ate: String(j.a || ''), lang: lang };
+      // 16/11/2026 — veio da proposta? p = o link dela, para voltar com os planos.
+      var prop = (typeof j.p === 'string' && j.p.indexOf('https://www.lhartdesign.com/previa/proposta.html?d=') === 0) ? j.p : '';
+      return { nome: nome, modelo: MODELOS.indexOf(j.m) >= 0 ? j.m : 'burger-neon', ate: String(j.a || ''), lang: lang, proposta: prop };
     } catch (e) { return null; }
   }
 
@@ -261,7 +263,9 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
     '<p class="lead">' + tr('O cardápio de vocês no celular do cliente. Ele pede <b>sentado na mesa</b> ou <b>de casa</b>, paga pelo Pix, e o pedido chega direto na cozinha.',
       'Your menu on the customer’s phone. They order <b>from the table</b> or <b>from home</b>, pay with Pix (Brazil’s instant payment), and the order goes straight to the kitchen.') + '</p>' +
     '<ul class="selos"><li>' + tr('Sem comissão por pedido', 'No commission per order') + '</li><li>' + tr('Pix cai na conta de vocês', 'Pix goes to your account') + '</li><li>' + tr('Cliente não baixa aplicativo', 'No app to download') + '</li></ul>' +
-    '<div class="acoes-hero"><a class="btn" href="#mesa">' + tr('▶ Testar o app agora', '▶ Try the app now') + '</a><a class="btn g" href="#comecar">' + tr('Como começar', 'How to start') + '</a></div>' +
+    '<div class="acoes-hero"><a class="btn" href="#mesa">' + tr('▶ Testar o app agora', '▶ Try the app now') + '</a>' +
+    (c.proposta ? '<a class="btn g" href="' + esc(c.proposta) + '">📄 ' + tr('Ver a proposta com os planos', 'See the proposal and plans') + '</a>'
+                : '<a class="btn g" href="#comecar">' + tr('Como começar', 'How to start') + '</a>') + '</div>' +
     '<ul class="roteiro">' +
     '<li><a href="#mesa"><span class="num">1</span><div><b>' + tr('Pedido na mesa', 'Table ordering') + '</b><span>' + tr('O cliente pede sentado, e a cozinha recebe com o número da mesa.', 'The customer orders from their seat, and the kitchen gets it with the table number.') + '</span></div></a></li>' +
     '<li><a href="#delivery"><span class="num">2</span><div><b>Delivery <small style="color:#ffd98a;font-weight:700">(' + tr('opcional', 'optional') + ')</small></b><span>' + tr('Só se vocês têm motoboy: do pedido em casa até a entrega.', 'Only if you have a driver: from the order at home to the delivery.') + '</span></div></a></li>' +
@@ -317,7 +321,13 @@ h2{font:400 clamp(36px,5.4vw,58px)/1 'Bebas Neue',sans-serif;margin:0}
     '<li><span class="num">3</span><div><b>' + tr('Chave Pix', 'Pix key') + '</b><span>' + tr('Para o dinheiro dos pedidos cair na conta de vocês.', 'So the money from orders lands in your account.') + '</span></div></li>' +
     '<li><span class="num">4</span><div><b>' + tr('Quem fica na cozinha', 'Who works in the kitchen') + '</b><span>' + tr('A equipe que vai receber os pedidos no tablet ou no computador.', 'The team that will receive orders on a tablet or computer.') + '</span></div></li></ul>' +
     '<div class="cta"><h2>' + tr('Quer o do <em>' + N + '</em> no ar?', 'Want ' + N + '’s <em>online</em>?') + '</h2><p>' + tr('Me chama no WhatsApp com o cardápio e o número de mesas, e eu te respondo com o prazo e o valor.', 'Message me on WhatsApp with your menu and number of tables, and I will reply with the timeline and the price.') + '</p>' +
-    '<a class="btn wa" href="#">' + tr('Chamar o Lucas no WhatsApp', 'Message Lucas on WhatsApp') + '</a></div>' +
+    '<a class="btn wa" href="#">' + tr('Chamar o Lucas no WhatsApp', 'Message Lucas on WhatsApp') + '</a>' +
+    // 16/11/2026 — as duas páginas ligadas: quem veio da proposta volta a ela;
+    // quem chegou direto pede os planos e valores (o Lucas gera a proposta).
+    (c.proposta
+      ? '<div style="margin-top:12px"><a class="btn g" href="' + esc(c.proposta) + '">📄 ' + tr('Voltar para a proposta com os planos', 'Back to the proposal and plans') + '</a></div>'
+      : '<div style="margin-top:12px"><a class="btn g" target="_blank" rel="noopener" href="' + wa(tr('Oi Lucas! Vi o app do ' + c.nome + ' e quero ver os planos e valores.', 'Hi Lucas! I saw the app made for ' + c.nome + ' and I would like to see the plans and prices.')) + '">' + tr('Quero ver os planos e valores', 'I want to see the plans and prices') + '</a></div>') +
+    '</div>' +
     '</div></section>';
 
   ligarWhats(tr('Oi Lucas! Vi o app do ' + c.nome + ' e quero saber mais.', 'Hi Lucas! I saw the app made for ' + c.nome + ' and I would like to know more.'));

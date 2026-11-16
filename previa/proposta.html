@@ -95,6 +95,17 @@ h2 em{font-style:normal;color:var(--ac)}
 .trabalhos{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:26px;padding:18px 20px;border-radius:18px;background:var(--p2);border:1px solid var(--ln)}
 .trabalhos span{flex:1 1 260px;color:#d6d8e3;font-size:15px;line-height:1.5}
 @media (prefers-reduced-motion:reduce){.barra i,.gente span{transition:none}}
+/* Como vai ser feito (16/11/2026): linha do tempo que aparece etapa por etapa */
+.linha{position:relative;margin:8px 0 0;padding:0 0 0 34px;list-style:none}
+.linha::before{content:"";position:absolute;left:13px;top:6px;bottom:6px;width:2px;background:#ffffff14;border-radius:2px}
+.linha .fio{position:absolute;left:13px;top:6px;width:2px;height:0;background:linear-gradient(#4be39a,#b5abfc);border-radius:2px;transition:height 1.6s cubic-bezier(.2,.8,.2,1)}
+.etapa{position:relative;margin:0 0 16px;padding:18px 20px;border-radius:18px;background:linear-gradient(160deg,#ffffff08,#232532);border:1px solid var(--ln);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+.etapa.on{opacity:1;transform:none}
+.etapa::before{content:attr(data-n);position:absolute;left:-34px;top:16px;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#e4e0ff,#9184d9);color:#0b0c14;font:900 13px Inter;box-shadow:0 0 0 4px var(--bg)}
+.etapa h4{margin:0 0 6px;font-size:18px;display:flex;align-items:center;gap:8px}
+.etapa p{margin:0;color:#c9cbd6;font-size:15px;line-height:1.55}
+.feito-nota{margin:6px 0 0;color:var(--mu);font-size:14px}
+@media (prefers-reduced-motion:reduce){.etapa,.linha .fio{transition:none}}
 .cta{text-align:center;padding:34px 18px;border-radius:26px;background:radial-gradient(60% 90% at 50% 0%,#9184d933,transparent),#1c1e2e;border:1px solid #9184d955}
 .cta p{color:var(--mu);font-size:17px;margin:12px auto 22px;max-width:52ch;line-height:1.55}
 .expirou{min-height:70vh;display:flex;align-items:center}
@@ -197,6 +208,47 @@ h2 em{font-style:normal;color:var(--ac)}
       nota: 'Es una cuenta de facturación, no una promesa: muestra cuántos clientes nuevos cubren el plan. De ahí en adelante, cada cliente nuevo es ganancia.',
       trab: '¿Quiere ver lo que ya hicimos? Fotos, videos y anuncios de trabajos reales.', trabB: 'Ver nuestros trabajos' }
   };
+
+  // "Como vai ser feito" (16/11/2026, o Lucas: "falar mais de como vai ser feito o
+  // trabalho antes do cliente ver o valor"). Sem prazo em dias: quem marca é ele.
+  var F = {
+    pt: { tit: 'Como vai ser <em>feito</em>', sub: 'Antes dos valores, o trabalho passo a passo.',
+      nota: 'O que entra em cada etapa depende do plano escolhido.',
+      e: [['💬', 'Conversa rápida', 'Entendemos o {n}: o que mais vende, quem é o cliente de vocês e o que querem encher primeiro.'],
+          ['🎥', 'Gravação no local', 'Nossa equipe vai até vocês e grava fotos, vídeos e, quando faz sentido, imagens com drone. Tudo combinado antes, num horário que não atrapalha o atendimento.'],
+          ['✂️', 'Edição', 'Tratamos as fotos e editamos os vídeos no formato de cada lugar: Reels, TikTok, stories e anúncios. Vocês veem o material antes de ir ao ar.'],
+          ['📍', 'Perfil arrumado', 'Ajustamos o Instagram e o perfil do Google para quem chegar pelo anúncio encontrar tudo pronto: fotos, horários e contato.'],
+          ['📣', 'Anúncios no ar', 'Os anúncios mostram o material para quem está perto ou planejando a visita, e o contato cai direto no WhatsApp ou no Instagram de vocês.'],
+          ['📈', 'Todo mês', 'Acompanhamos os números, ajustamos o que rende mais e mandamos um relatório simples do mês.']] },
+    en: { tit: 'How the work <em>gets done</em>', sub: 'Before the prices, the work step by step.',
+      nota: 'What goes into each step depends on the plan you choose.',
+      e: [['💬', 'A quick conversation', 'We get to know {n}: what sells best, who your customers are and what you want to fill first.'],
+          ['🎥', 'On-site shoot', 'Our team comes to you and shoots photos, videos and, when it makes sense, drone footage. All scheduled ahead, at a time that does not get in the way of your service.'],
+          ['✂️', 'Editing', 'We retouch the photos and edit the videos for each place: Reels, TikTok, stories and ads. You see everything before it goes live.'],
+          ['📍', 'Profiles ready', 'We set up your Instagram and Google profile so people who come from the ads find everything ready: photos, hours and contact.'],
+          ['📣', 'Ads go live', 'The ads show your content to people nearby or planning their visit, and they reach you directly on WhatsApp or Instagram.'],
+          ['📈', 'Every month', 'We track the numbers, adjust what works best and send you a simple monthly report.']] },
+    es: { tit: 'Cómo se va a <em>hacer</em>', sub: 'Antes de los valores, el trabajo paso a paso.',
+      nota: 'Lo que entra en cada etapa depende del plan elegido.',
+      e: [['💬', 'Una conversación rápida', 'Conocemos {n}: qué vende más, quién es su cliente y qué quieren llenar primero.'],
+          ['🎥', 'Grabación en el lugar', 'Nuestro equipo va hasta ustedes y graba fotos, videos y, cuando tiene sentido, tomas con dron. Todo coordinado antes, en un horario que no interrumpe la atención.'],
+          ['✂️', 'Edición', 'Retocamos las fotos y editamos los videos para cada lugar: Reels, TikTok, stories y anuncios. Ustedes ven el material antes de publicarlo.'],
+          ['📍', 'Perfiles listos', 'Ajustamos el Instagram y el perfil de Google para que quien llegue por el anuncio encuentre todo listo: fotos, horarios y contacto.'],
+          ['📣', 'Anuncios al aire', 'Los anuncios muestran el material a la gente cercana o que planea la visita, y el contacto llega directo a su WhatsApp o Instagram.'],
+          ['📈', 'Cada mes', 'Seguimos los números, ajustamos lo que rinde más y enviamos un informe simple del mes.']] }
+  };
+
+  // O link da página do app (previa/restaurante.html) com o nome dele e o
+  // caminho de volta para ESTA proposta (campo p) — as duas páginas ligadas.
+  function linkDoApp() {
+    if (c.y && /^https:\/\/www\.lhartdesign\.com\//.test(c.y)) return c.y;
+    if (!c.am) return '';
+    var dados = { n: c.n, m: c.am, a: c.a, l: lang === 'pt' ? 'pt' : 'en', p: location.href };
+    var bytes = new TextEncoder().encode(JSON.stringify(dados)), bin = '';
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return 'https://www.lhartdesign.com/previa/restaurante.html?d=' +
+      btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
 
   // "1.100" / "1,500" / "700" -> número
   function numero(v) {
@@ -304,30 +356,53 @@ h2 em{font-style:normal;color:var(--ac)}
       '<a class="btn' + (k === destaque ? '' : ' g') + '" target="_blank" rel="noopener" href="' + wa(msg) + '">' + T.quero + '</a></article>';
   }).join('');
 
+  var appUrl = linkDoApp();
+  var FF = F[lang] || F.en;
+  function feitoHTML() {
+    return '<section class="sec alt" id="feito"><div class="wrap"><h2>' + FF.tit + '</h2><p class="s">' + FF.sub + '</p>' +
+      '<ol class="linha" id="linha"><span class="fio" aria-hidden="true"></span>' +
+      FF.e.map(function (x, i) {
+        return '<li class="etapa" data-n="' + (i + 1) + '"><h4><span aria-hidden="true">' + x[0] + '</span>' + x[1] + '</h4><p>' +
+          esc(x[2]).replace('{n}', N) + '</p></li>';
+      }).join('') + '</ol><p class="feito-nota">' + FF.nota + '</p></div></section>';
+  }
+  // As etapas aparecem uma a uma, e o fio desce junto, quando a linha entra na tela.
+  function ligarLinha() {
+    var linha = document.getElementById('linha');
+    if (!linha) return;
+    var etapas = [].slice.call(linha.querySelectorAll('.etapa')), fio = linha.querySelector('.fio');
+    var mostrar = function () {
+      etapas.forEach(function (e, i) { setTimeout(function () { e.classList.add('on'); }, reduzido ? 0 : i * 220); });
+      fio.style.height = (linha.scrollHeight - 12) + 'px';
+    };
+    if (reduzido || !('IntersectionObserver' in window)) { mostrar(); return; }
+    new IntersectionObserver(function (es, ob) {
+      if (es.some(function (e) { return e.isIntersecting; })) { mostrar(); ob.disconnect(); }
+    }, { threshold: .15 }).observe(linha);
+  }
+
   main.innerHTML =
     '<section class="hero"><div class="wrap"><span class="eyebrow"><i></i>' + T.prep + ' ' + N + '</span>' +
     '<h1>' + T.para + ' <em>' + N + '</em></h1>' +
     '<p class="lead">' + T.lead + '</p>' +
     '<div class="para">' + (onde ? onde + ' · ' : '') + T.valida + ' ' + dia + '</div></div></section>' +
 
+    feitoHTML() +
     valorHTML() +
     '<section class="sec alt" id="opcoes"><div class="wrap"><h2>' + T.opcoes + '</h2>' +
     '<div class="opcoes" style="margin-top:28px">' + cards + '</div>' +
     (c.x ? '<div class="obs"><b>' + T.obs + ':</b> ' + esc(c.x) + '</div>' : '') +
     '</div></section>' +
-    (c.y && /^https:\/\/www\.lhartdesign\.com\//.test(c.y) ?
+    (appUrl ?
       '<section class="sec" id="app"><div class="wrap"><div class="app"><span class="eyebrow"><i></i>App</span>' +
       '<h2 style="margin-top:14px">' + T.appT + '</h2><p class="s">' + T.appS + '</p>' +
-      '<div class="app-bt"><a class="btn" href="' + esc(c.y) + '" target="_blank" rel="noopener">📱 ' + T.appB + '</a>' +
+      '<div class="app-bt"><a class="btn" href="' + esc(appUrl) + '" target="_blank" rel="noopener">📱 ' + T.appB + '</a>' +
       '<a class="btn g" target="_blank" rel="noopener" href="' + wa(T.appM.replace('{n}', c.n)) + '">' + T.appQ + '</a></div></div></div></section>' : '') +
-
-    '<section class="sec"><div class="wrap"><h2>' + T.como + '</h2><ul class="passos" style="margin-top:22px">' +
-    T.passos.map(function (p, i) { return '<li><span class="num">' + (i + 1) + '</span><span>' + p + '</span></li>'; }).join('') +
-    '</ul></div></section>' +
 
     '<section class="sec alt"><div class="wrap"><div class="cta"><h2>' + T.duvida + '</h2><p>' + T.duvidaT + '</p>' +
     '<a class="btn" target="_blank" rel="noopener" href="' + wa(T.msgD.replace('{n}', c.n)) + '">' + T.falar + '</a></div></div></section>';
   ligarCalculadora();
+  ligarLinha();
 })();
 </script>
 </body></html>
