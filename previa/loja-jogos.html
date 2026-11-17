@@ -125,6 +125,14 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
 .lj-chat{margin-top:14px;padding:12px;border-radius:14px;background:#ffffff0b;font-size:13px;line-height:1.45}
 .lj-chat p{margin:0 0 8px}.lj-chat p:last-child{margin:0}
 .lj-chat b{color:var(--lj-b,#18f0ff)}
+/* 17/11/2026 — a loja de VERDADE do estilo dentro do celular (o Lucas: "não está
+   aparecendo no estilo da loja; é bom ele rolar a loja, ver o produto e ir até a compra"). */
+.lj-fr{position:absolute;left:0;top:0;width:390px;border:0;transform-origin:0 0;background:var(--lj-bg,#0d0b18)}
+.lj-folha{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;background:var(--lj-bg,#0d0b18);transform:translateY(102%);transition:transform .45s cubic-bezier(.2,.8,.2,1);box-shadow:0 -20px 40px #0008}
+.lj-folha.on{transform:none}
+.lj-fecha{margin-left:auto;width:34px;height:34px;border-radius:10px;border:0;background:#ffffff14;color:#fff;font-size:16px;cursor:pointer}
+.lj-dica{position:absolute;left:50%;bottom:16px;z-index:2;transform:translateX(-50%);padding:8px 14px;border-radius:99px;background:#000c;color:#fff;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;transition:opacity .3s}
+.lj-dica.some{opacity:0}
 .toque-dedo{position:absolute;z-index:5;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:#ffffffaa;box-shadow:0 0 0 8px #ffffff33;pointer-events:none;opacity:0;transition:left .45s ease,top .45s ease,opacity .2s}
 
 /* ── O Discord */
@@ -310,11 +318,12 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
     '<section class="sec alt" id="loja"><div class="wrap"><div class="tit"><span class="num">1</span><h2>' + tr('A <em>loja</em>', 'The <em>store</em>', 'La <em>tienda</em>') + '</h2></div>' +
     '<p class="s">' + tr('O site próprio do ' + N + ', no estilo ' + esc(EST[0]) + '. Toque em <b>Ver uma compra</b> ou nos produtos.', N + '\'s own website, in the ' + esc(EST[0]) + ' style. Tap <b>Watch a purchase</b> or the products.', 'El sitio propio de ' + N + ', en el estilo ' + esc(EST[0]) + '. Toca <b>Ver una compra</b> o los productos.') + '</p>' +
     '<div class="duas"><div class="cel" id="cel"><div class="tela"><div class="toque-dedo" id="dedo"></div>' +
-      '<div class="lj-top"><span class="lj-logo">' + esc(sigla) + '</span><div class="lj-nome">' + N + '<small>' + J + ' · ' + tr('loja oficial', 'official store', 'tienda oficial') + '</small></div><span class="lj-cart">🛒<b id="cartN">1</b></span></div>' +
+      '<iframe class="lj-fr" id="lojaFr" title="' + tr('Loja de ', 'Store of ', 'Tienda de ') + N + '"></iframe>' +
+      '<div class="lj-dica" id="dica">' + tr('Role a loja e toque num produto', 'Scroll the store and tap a product', 'Desliza la tienda y toca un producto') + '</div>' +
+      '<div class="lj-folha" id="folha">' +
+      '<div class="lj-top"><span class="lj-logo">' + esc(sigla) + '</span><div class="lj-nome">' + N + '<small>' + J + ' · ' + tr('loja oficial', 'official store', 'tienda oficial') + '</small></div><button class="lj-fecha" id="fechaFolha" aria-label="' + tr('Voltar à loja', 'Back to the store', 'Volver a la tienda') + '">✕</button></div>' +
       '<div class="lj-corpo">' +
-        '<div class="lj-v" id="v1"><div class="lj-banner"><b>' + tr('Entrega na hora', 'Instant delivery', 'Entrega al instante') + '</b><span>' + tr('Pagou, confirmou, recebeu.', 'Pay, confirm, receive.', 'Pagas, se confirma, recibes.') + '</span></div><div class="lj-grade">' +
-          PROD.map(function (p, i) { return '<button class="lj-p" data-p="' + i + '"><i>' + p[0] + '</i><b>' + esc(p[1]) + '</b><span>' + preco(p[2]) + '</span></button>'; }).join('') + '</div></div>' +
-        '<div class="lj-v fora" id="v2"><b style="font-size:17px">' + tr('Seu carrinho', 'Your cart', 'Tu carrito') + '</b><div class="lj-linha"><span id="cItem"></span><span id="cPreco"></span></div><div class="lj-linha"><span>' + tr('Entrega', 'Delivery', 'Entrega') + '</span><span style="color:var(--gr)">' + tr('automática', 'automatic', 'automática') + '</span></div>' +
+        '<div class="lj-v" id="v2"><b style="font-size:17px">' + tr('Seu carrinho', 'Your cart', 'Tu carrito') + '</b><div class="lj-linha"><span id="cItem"></span><span id="cPreco"></span></div><div class="lj-linha"><span>' + tr('Entrega', 'Delivery', 'Entrega') + '</span><span style="color:var(--gr)">' + tr('automática', 'automatic', 'automática') + '</span></div>' +
           '<button class="lj-bt" id="btPagar">' + (BR ? 'Pagar com Pix' : tr('', 'Pay now', 'Pagar ahora')) + '</button></div>' +
         '<div class="lj-v fora" id="v3" style="text-align:center"><b style="font-size:17px">' + (BR ? 'Pix' : tr('', 'Payment', 'Pago')) + '</b>' +
           (BR ? '<div class="qr" id="qr"></div><p style="font-size:12px;color:#c9bdea;margin:0 0 12px">' + 'Copia e cola: 00020126…' + '</p>'
@@ -322,7 +331,7 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
           '<div class="espera">' + tr('Esperando o pagamento…', 'Waiting for payment…', 'Esperando el pago…') + '</div></div>' +
         '<div class="lj-v fora" id="v4" style="text-align:center"><div class="ok-grande">✓</div><b style="font-size:18px">' + tr('Pagamento confirmado', 'Payment confirmed', 'Pago confirmado') + '</b><p style="font-size:13px;color:#c9bdea;margin:6px 0 0">' + tr('Ninguém precisou conferir nada.', 'No one had to check anything.', 'Nadie tuvo que revisar nada.') + '</p>' +
           '<div class="lj-chat" style="text-align:left"><p><b>' + N + ':</b> ' + tr('Pedido #1042 recebido! Já estou entregando.', 'Order #1042 received! Delivering now.', '¡Pedido #1042 recibido! Ya estoy entregando.') + '</p><p id="entregue" style="opacity:0;transition:opacity .4s"><b>' + N + ':</b> ' + tr('Entregue ✅ Bom jogo!', 'Delivered ✅ Have fun!', 'Entregado ✅ ¡Buen juego!') + '</p></div></div>' +
-      '</div></div></div>' +
+      '</div></div></div></div>' +
       '<div>' + lista('pL', passosLoja.filter(Boolean)) + '<div class="tocar"><button class="btn" id="verLoja">▶ ' + tr('Ver uma compra', 'Watch a purchase', 'Ver una compra') + '</button></div>' +
       '<p class="nota">' + tr('Produtos e valores de exemplo. Na loja de vocês entram os seus.', 'Sample products and prices. Your store gets yours.', 'Productos y valores de ejemplo. En su tienda van los suyos.') + '</p></div></div></div></section>' +
 
@@ -374,25 +383,127 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
   }
 
   // ── A loja: telas e o "Ver uma compra"
-  var telas = ['v1', 'v2', 'v3', 'v4'].map(function (id) { return document.getElementById(id); });
+  var telas = [null, 'v2', 'v3', 'v4'].map(function (id) { return id && document.getElementById(id); });
+  var folha = document.getElementById('folha'), dica = document.getElementById('dica');
   var pL = document.querySelectorAll('#pL li'), pD = document.querySelectorAll('#pD li');
   // Cada parte (loja, discord) tem os próprios tempos: rodar uma não corta a outra.
   var timers = { loja: [], dc: [] }, grupo = 'loja';
-  function limpar() { timers[grupo].forEach(clearTimeout); timers[grupo] = []; }
+  function limpar() { timers[grupo].forEach(clearTimeout); timers[grupo] = []; if (grupo === 'loja') rolando = null; }
   function em(ms, f) { timers[grupo].push(setTimeout(f, ms)); }
-  function tela(k) { telas.forEach(function (t, i) { t.className = 'lj-v' + (i < k ? ' atras' : (i > k ? ' fora' : '')); }); }
+  // 0 = a loja (a folha da compra fechada); 1 carrinho; 2 pagamento; 3 confirmado.
+  function tela(k) {
+    folha.classList.toggle('on', k > 0);
+    telas.forEach(function (t, i) { if (t) t.className = 'lj-v' + (i < k ? ' atras' : (i > k ? ' fora' : '')); });
+  }
   function passo(lista, k) { lista.forEach(function (li, i) { li.classList.toggle('on', i === k); }); }
   var dedo = document.getElementById('dedo'), cel = document.getElementById('cel');
-  function tocar(el) {
+  function tocar(el, noFrame) {
     if (!el) return;
-    var r = el.getBoundingClientRect(), base = cel.querySelector('.tela').getBoundingClientRect();
-    dedo.style.left = (r.left - base.left + r.width / 2) + 'px'; dedo.style.top = (r.top - base.top + r.height / 2) + 'px'; dedo.style.opacity = 1;
-    el.classList.add('toque'); setTimeout(function () { el.classList.remove('toque'); dedo.style.opacity = 0; }, 500);
+    var base = cel.querySelector('.tela').getBoundingClientRect(), r = el.getBoundingClientRect(), x, y;
+    if (noFrame) {
+      var f = fr.getBoundingClientRect();
+      x = f.left - base.left + (r.left + r.width / 2) * ESC; y = f.top - base.top + (r.top + r.height / 2) * ESC;
+    } else { x = r.left - base.left + r.width / 2; y = r.top - base.top + r.height / 2; }
+    dedo.style.left = x + 'px'; dedo.style.top = y + 'px'; dedo.style.opacity = 1;
+    el.classList.add('toque'); setTimeout(function () { el.classList.remove('toque'); dedo.style.opacity = 0; }, 550);
   }
-  function escolher(i) {
-    document.getElementById('cItem').textContent = PROD[i][1];
-    document.getElementById('cPreco').textContent = preco(PROD[i][2]);
-    document.getElementById('cartN').classList.add('v');
+
+  // ── A loja de verdade, no estilo escolhido, com o nome da loja.
+  var fr = document.getElementById('lojaFr'), ESC = 1, pronta = false, pendente = false, rolando = null;
+  function ajustarFr() {
+    var t = cel.querySelector('.tela');
+    ESC = t.clientWidth / 390;
+    fr.style.transform = 'scale(' + ESC + ')';
+    fr.style.height = Math.ceil(t.clientHeight / ESC) + 'px';
+  }
+  function win() { try { return fr.contentWindow; } catch (e) { return null; } }
+  function doc() { try { return fr.contentDocument; } catch (e) { return null; } }
+  var RX_PRECO = /(R\$|US\$|\$|€)\s?\d[\d.,]*/;
+  var RX_COMPRA = /comprar|adicionar|add to|buy|carrinho|detalhes|finalizar|ver oferta|pegar/i;
+  function trocarNome(d) {
+    // O logo: o 1º texto com letra vira o nome; o resto do logo some (ex.: NEON<b>ARENA</b>).
+    var logo = d.querySelector('.logo') || d.querySelector('header a');
+    if (logo) {
+      var w = d.createTreeWalker(logo, NodeFilter.SHOW_TEXT), n, primeiro = true;
+      while ((n = w.nextNode())) {
+        if (!/\p{L}/u.test(n.nodeValue)) continue;
+        if (primeiro) { n.nodeValue = c.nome; primeiro = false; } else n.nodeValue = '';
+      }
+    }
+    // O nome do estilo no resto da página (rodapé, títulos) vira o da loja.
+    var rx = new RegExp(EST[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    var w2 = d.createTreeWalker(d.body, NodeFilter.SHOW_TEXT), m;
+    while ((m = w2.nextNode())) { rx.lastIndex = 0; if (rx.test(m.nodeValue)) { rx.lastIndex = 0; m.nodeValue = m.nodeValue.replace(rx, c.nome); } }
+    d.title = c.nome;
+  }
+  function visivel(el) { var r = el.getBoundingClientRect(); return r.width > 20 && r.height > 14; }
+  function produtos(d) {
+    var bts = [].slice.call(d.querySelectorAll('button, a')).filter(function (el) {
+      return RX_COMPRA.test(el.textContent) && !el.closest('header, nav') && visivel(el);
+    });
+    if (bts.length) return bts;
+    // Loja sem botão de compra (só cards): o card que mostra um preço.
+    return [].slice.call(d.querySelectorAll('article, li, a, div')).filter(function (el) {
+      var r = el.getBoundingClientRect();
+      return r.height > 70 && r.height < 420 && r.width < 380 && RX_PRECO.test(el.textContent) && !el.closest('header, nav');
+    }).slice(0, 8);
+  }
+  var RX_NAO_NOME = /estoque|stock|comprar|adicionar|detalhes|carrinho|add|buy|%|avalia|entrega|^\W*$/i;
+  function infoDo(el) {
+    var card = el, k = 0;
+    while (card && k < 6 && !(RX_PRECO.test(card.textContent) && card.getBoundingClientRect().height > 60)) { card = card.parentElement; k++; }
+    var reserva = { nome: ESCOLHA[1], preco: preco(ESCOLHA[2]) };
+    if (!card || card.getBoundingClientRect().height > 600) return reserva;
+    // O nome: o título do card, ou o 1º texto curto que não é preço, estoque nem botão.
+    var nome = '', h = card.querySelector('h1, h2, h3, h4, h5');
+    if (h) nome = h.textContent.replace(/\s+/g, ' ').trim();
+    if (!nome) {
+      var folhas = [].slice.call(card.querySelectorAll('*')).filter(function (x) { return !x.children.length; });
+      for (var i = 0; i < folhas.length && !nome; i++) {
+        var t = folhas[i].textContent.replace(/\s+/g, ' ').trim();
+        if (t.length >= 3 && t.length <= 40 && /\p{L}{3}/u.test(t) && !RX_PRECO.test(t) && !RX_NAO_NOME.test(t)) nome = t;
+      }
+    }
+    var pr = (card.textContent.match(RX_PRECO) || [])[0];
+    // Sem o nome do produto, vai o exemplo inteiro (nome e preço juntos, nunca misturados).
+    if (!nome || !pr) return reserva;
+    return { nome: nome.slice(0, 32), preco: pr };
+  }
+  function prepararLoja() {
+    var d = doc();
+    if (!d || !d.body) return;
+    try { trocarNome(d); } catch (e) {}
+    // A loja de exemplo tem rolagem "suave" propria, que brigava com a animacao.
+    d.documentElement.style.scrollBehavior = 'auto';
+    // Toque num produto na loja → abre a compra aqui (a loja de exemplo não vende de verdade).
+    d.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      var alvo = e.target.closest('button, a, article, li, div');
+      var txt = alvo ? (alvo.textContent || '') : '';
+      var ehCompra = alvo && !alvo.closest('header, nav') && (RX_COMPRA.test(txt) || (RX_PRECO.test(txt) && alvo.getBoundingClientRect().height < 420));
+      if (ehCompra) { e.preventDefault(); e.stopPropagation(); grupo = 'loja'; limpar(); abrirCompra(infoDo(alvo)); return; }
+      if (a && !/^#/.test(a.getAttribute('href') || '')) e.preventDefault();   // nada de sair da demo
+    }, true);
+    win().addEventListener('scroll', function () { if (!rolando) dica.classList.add('some'); }, { passive: true });
+    pronta = true;
+    if (pendente) { pendente = false; rodarLoja(); }
+  }
+  function rolar(w, ate, ms) {
+    // Relogio comum (e nao requestAnimationFrame): anda mesmo com a aba sem foco.
+    var de = w.scrollY, t0 = Date.now(), meu = {};
+    rolando = meu;
+    var id = setInterval(function () {
+      if (rolando !== meu) { clearInterval(id); return; }
+      var p = Math.min(1, (Date.now() - t0) / ms), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      w.scrollTo(0, de + (ate - de) * e);
+      if (p >= 1) { clearInterval(id); rolando = null; }
+    }, 16);
+  }
+  function abrirCompra(info) {
+    document.getElementById('cItem').textContent = info.nome;
+    document.getElementById('cPreco').textContent = info.preco;
+    document.getElementById('entregue').style.opacity = 0;
+    dica.classList.add('some');
     tela(1); passo(pL, 0);
   }
   function pagar() {
@@ -401,16 +512,27 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
     em(2600, function () { tela(3); passo(pL, 2); });
     em(4400, function () { document.getElementById('entregue').style.opacity = 1; passo(pL, pL.length - 1); });
   }
-  document.querySelectorAll('.lj-p').forEach(function (b) { b.addEventListener('click', function () { grupo = 'loja'; limpar(); escolher(+b.dataset.p); }); });
   document.getElementById('btPagar').addEventListener('click', function () { grupo = 'loja'; limpar(); pagar(); });
+  document.getElementById('fechaFolha').addEventListener('click', function () { grupo = 'loja'; limpar(); tela(0); passo(pL, -1); });
   function rodarLoja() {
-    grupo = 'loja'; limpar(); tela(0); passo(pL, -1); document.getElementById('entregue').style.opacity = 0; document.getElementById('cartN').classList.remove('v');
-    var alvo = document.querySelector('.lj-p[data-p="2"]');
-    em(500, function () { tocar(alvo); });
-    em(1000, function () { escolher(2); });
-    em(2500, function () { tocar(document.getElementById('btPagar')); });
-    em(3000, function () { pagar(); });
+    grupo = 'loja'; limpar(); tela(0); passo(pL, -1);
+    if (!pronta) { pendente = true; return; }
+    var w = win(), d = doc(); if (!w || !d) return;
+    w.scrollTo(0, 0);
+    // O 1º produto que aparece INTEIRO na largura (carrossel deixa os outros fora da tela).
+    var lista = produtos(d), alvo = lista.filter(function (el) { var r = el.getBoundingClientRect(); return r.left >= 0 && r.right <= w.innerWidth; })[0] || lista[0];
+    var ate = alvo ? Math.max(0, alvo.getBoundingClientRect().top + w.scrollY - w.innerHeight * .45) : w.innerHeight;
+    em(500, function () { rolar(w, ate * .45, 1300); });
+    em(2100, function () { rolar(w, ate, 1300); });
+    em(3700, function () { if (alvo) tocar(alvo, true); });
+    em(4250, function () { abrirCompra(alvo ? infoDo(alvo) : { nome: ESCOLHA[1], preco: preco(ESCOLHA[2]) }); });
+    em(5700, function () { tocar(document.getElementById('btPagar')); });
+    em(6200, function () { pagar(); });
   }
+  ajustarFr();
+  addEventListener('resize', ajustarFr);
+  fr.addEventListener('load', prepararLoja);
+  fr.src = '../demos/' + c.estilo + '.html';
   document.getElementById('verLoja').addEventListener('click', rodarLoja);
 
   // ── O Discord
