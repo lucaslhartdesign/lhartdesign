@@ -112,8 +112,83 @@ async function monitor(redis) {
   return { ok: !ruins.length, acao, certDias, checagens: resultados };
 }
 
+// ── Link curto (16/11/2026) ──────────────────────────────────────────────
+// O Lucas: "os links ficaram gigantes, precisamos ter um encurtador". A proposta
+// e a página do app levam tudo no ?d= (sem banco); aqui o código ganha um
+// apelido de 7 letras: www.lhartdesign.com/p/abc1234 -> a página com o ?d=.
+//   POST /api/ops?a=curto  { pagina: 'proposta'|'restaurante', d }  -> { url }
+//   GET  /p/<id>  (vercel.json -> /api/ops?a=ir&id=<id>)             -> 302
+// Sem chave: só encurta link das NOSSAS duas páginas, com um ?d= que abre
+// (JSON com nome e validade) — quem forjar um, forja o link longo do mesmo
+// jeito. Limite por IP. O apelido vive até 30 dias depois da validade.
+const PAGINAS_CURTAS = { proposta: '/previa/proposta.html', restaurante: '/previa/restaurante.html' };
+const SITE = 'https://www.lhartdesign.com';
+
+function lerD(d) {
+  if (!/^[A-Za-z0-9_-]{8,6000}$/.test(String(d || ''))) return null;
+  try {
+    const j = JSON.parse(Buffer.from(d, 'base64url').toString('utf8'));
+    return j && typeof j === 'object' && typeof j.n === 'string' && j.n.trim()
+      && /^\d{4}-\d{2}-\d{2}$/.test(String(j.a || '')) ? j : null;
+  } catch { return null; }
+}
+
+function apelido(texto, tamanho) {
+  const h = crypto.createHash('sha256').update(texto).digest();
+  let n = BigInt('0x' + h.toString('hex').slice(0, 24));
+  let s = '';
+  const ab = 'abcdefghijkmnpqrstuvwxyz23456789';     // sem l, o, 0, 1 (não confundem)
+  while (s.length < tamanho) { s += ab[Number(n % 32n)]; n /= 32n; }
+  return s;
+}
+
+async function encurtar(req, res, redis) {
+  const b = bodyOf(req);
+  const pagina = String(b.pagina || '');
+  const d = String(b.d || '');
+  const j = lerD(d);
+  if (!PAGINAS_CURTAS[pagina] || !j) { res.status(400).json({ error: 'link' }); return; }
+  const { ipHash } = require('./_lib/util');
+  if (await limited(redis, 'rl:curto:' + ipHash(req), 120, 3600)) { res.status(429).json({ error: 'limite' }); return; }
+  const vence = Date.parse(j.a + 'T23:59:59Z');
+  const ttl = Math.max(86400, Math.min(86400 * 120, Math.round((vence - Date.now()) / 1000) + 86400 * 30));
+  const valor = pagina + '|' + d;
+  for (const tam of [7, 10, 14]) {
+    const id = apelido(valor, tam);
+    const atual = await redis.get('curto:' + id);
+    if (atual && atual !== valor) continue;           // colisão: apelido maior
+    await redis.set('curto:' + id, valor, { ex: ttl });
+    res.status(200).json({ ok: true, id, url: SITE + '/p/' + id });
+    return;
+  }
+  res.status(500).json({ error: 'colisao' });
+}
+
+async function ir(req, res, redis) {
+  const id = String((req.query && req.query.id) || '');
+  let valor = null;
+  if (/^[a-z0-9]{7,14}$/.test(id)) {
+    try { valor = await redis.get('curto:' + id); } catch { valor = null; }
+  }
+  const [pagina, d] = String(valor || '').split('|');
+  const destino = PAGINAS_CURTAS[pagina] && d ? PAGINAS_CURTAS[pagina] + '?d=' + d : '/social.html';
+  res.setHeader('Location', destino);
+  res.status(302).end();
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
+  const acao = (req.query && req.query.a) || '';
+  if (acao === 'ir' || (acao === 'curto' && req.method === 'POST')) {
+    let r;
+    try { r = getRedis(); } catch {
+      if (acao === 'ir') { res.setHeader('Location', '/social.html'); res.status(302).end(); return; }
+      res.status(503).json({ error: 'indisponivel' }); return;
+    }
+    try { await (acao === 'ir' ? ir(req, res, r) : encurtar(req, res, r)); }
+    catch (e) { res.status(500).json({ error: String((e && e.message) || e) }); }
+    return;
+  }
   if (!chaveOk(req)) { res.status(404).end(); return; }
   const a = (req.query && req.query.a) || '';
   let redis;
