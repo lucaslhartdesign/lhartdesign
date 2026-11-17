@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gramado Coins — Coins de FC 27 com entrega rápida</title>
+<!-- Demonstração da Lhart Design (17/11/2026): loja de coins de EA FC (Ultimate Team).
+     Dados, valores, pedidos e avaliações são FICTÍCIOS. Nenhum pagamento é real.
+     O fluxo segue o que lojas reais do ramo fazem: plataforma, quantidade, método de
+     entrega (Comfort Trade ou pelo jogador), pagamento confirmado sozinho, pedido
+     acompanhado com chat, venda de coins e o bot do Discord ligado à loja. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Anton&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060b08;--p:#0c1510;--p2:#12201a;--ln:#1f3a2b;--gr:#2bff88;--gr2:#b7ffd4;--ou:#f6c445;--ink:#eefcf3;--mu:#8fb3a0;--er:#ff5d6c;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.5 Inter,system-ui,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+.d{font-family:Anton,Impact,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+/* topo */
+header{position:sticky;top:0;z-index:20;background:#060b08e8;backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+header .wrap{display:flex;align-items:center;gap:12px;height:60px}
+.logo{font:400 24px Anton,sans-serif;letter-spacing:.04em;text-transform:uppercase}.logo b{color:var(--gr);font-weight:400}
+nav{display:flex;gap:18px;margin-left:auto;color:var(--mu);font-weight:600;font-size:14px}nav a:hover{color:var(--gr)}
+.carr{margin-left:12px;padding:8px 14px;border-radius:10px;border:1px solid var(--gr);background:#2bff8814;color:var(--gr);font-weight:800;font-size:14px}
+@media(max-width:760px){nav{display:none}.carr{margin-left:auto}}
+/* faixa de pedidos */
+.faixa{overflow:hidden;border-bottom:1px solid var(--ln);background:var(--p)}
+.faixa .rolo{display:flex;gap:10px;padding:9px 0;width:max-content;animation:rola 38s linear infinite}
+@keyframes rola{to{transform:translateX(-50%)}}
+.ped{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:#ffffff08;border:1px solid var(--ln);font-size:13px;white-space:nowrap}
+.ped b{color:var(--gr)}.ped small{color:var(--mu)}
+.ped::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gr);box-shadow:0 0 8px var(--gr)}
+/* hero */
+.hero{position:relative;padding:40px 0 30px;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.5;
+ background:radial-gradient(60% 50% at 80% 10%,#2bff8833,transparent 70%),
+ repeating-linear-gradient(90deg,#2bff880a 0 60px,#ffffff03 60px 120px)}
+.hero::after{content:"";position:absolute;left:50%;top:40px;width:420px;height:420px;margin-left:-210px;border:2px solid #2bff8822;border-radius:50%;z-index:-1}
+.selo{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:#f6c44518;border:1px solid #f6c44566;color:var(--ou);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+h1{font:400 clamp(40px,8vw,76px)/.95 Anton,sans-serif;text-transform:uppercase;margin:14px 0 12px}
+h1 em{font-style:normal;color:var(--gr);text-shadow:0 0 30px #2bff8855}
+.hero p{max-width:52ch;color:#c7e5d4;margin:0 0 18px}
+.provas{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.provas li{padding:7px 12px;border-radius:99px;background:#ffffff08;border:1px solid var(--ln);font-size:13px;font-weight:700}
+.provas li b{color:var(--gr)}
+/* abas comprar/vender e o card de compra */
+.palco{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:26px;align-items:start;padding:10px 0 40px}
+@media(max-width:900px){.palco{grid-template-columns:minmax(0,1fr)}}
+.palco>*,.compra *{min-width:0}
+.compra{padding:18px;border-radius:20px;background:linear-gradient(170deg,#12201a,#0b130f);border:1px solid var(--ln);box-shadow:0 30px 70px #000a,0 0 0 1px #2bff8811}
+.abas{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:14px;background:#050a07;border:1px solid var(--ln);margin-bottom:16px}
+.abas button{padding:11px;border:0;border-radius:10px;background:transparent;color:var(--mu);font-weight:800}
+.abas button.on{background:var(--gr);color:#03140a}
+.rot{display:block;margin:14px 0 8px;color:var(--mu);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.plats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.plats button{padding:12px 6px;border-radius:12px;border:1px solid var(--ln);background:#ffffff06;font-weight:800;font-size:14px}
+.plats button.on{border-color:var(--gr);background:#2bff8818;color:var(--gr)}
+.qtd{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:#050a07;border:1px solid var(--ln)}
+.qtd input{flex:1;min-width:0;background:transparent;border:0;color:var(--ink);font:800 22px Inter;outline:none}
+.qtd span{color:var(--ou);font-weight:900}
+input[type=range]{width:100%;margin:12px 0 4px;accent-color:#2bff88}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{padding:6px 11px;border-radius:99px;border:1px solid var(--ln);background:#ffffff06;font-size:13px;font-weight:700}
+.chips button:hover{border-color:var(--gr)}
+.metodos{display:grid;gap:8px}
+.met{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:12px;border:1px solid var(--ln);background:#ffffff05;text-align:left;width:100%}
+.met.on{border-color:var(--gr);background:#2bff8810}
+.met i{flex:none;width:20px;height:20px;margin-top:2px;border-radius:50%;border:2px solid var(--mu)}
+.met.on i{border-color:var(--gr);background:radial-gradient(circle,var(--gr) 45%,transparent 50%)}
+.met b{display:block;font-size:15px}.met small{display:block;color:var(--mu);font-size:13px;line-height:1.4}
+.met em{font-style:normal;color:var(--ou);font-size:12px;font-weight:800}
+.total{display:flex;align-items:flex-end;justify-content:space-between;margin:16px 0 12px;padding-top:14px;border-top:1px dashed var(--ln)}
+.total small{display:block;color:var(--mu);font-size:13px}
+.total strong{font:400 34px/1 Anton,sans-serif;color:var(--gr)}
+.total .eco{color:var(--ou);font-size:12px;font-weight:800}
+.bt{display:block;width:100%;padding:15px;border:0;border-radius:12px;background:var(--gr);color:#03140a;font-weight:900;font-size:16px;letter-spacing:.02em;box-shadow:0 12px 30px #2bff8840}
+.bt:hover{filter:brightness(1.08)}
+.bt.sec{background:transparent;border:1px solid var(--ln);color:var(--ink);box-shadow:none}
+.mini{margin-top:10px;color:var(--mu);font-size:12px;text-align:center}
+/* lado esquerdo */
+.lado h2{font:400 clamp(28px,4vw,40px)/1 Anton,sans-serif;text-transform:uppercase;margin:0 0 12px}
+.reqs{display:grid;gap:10px;margin:0 0 22px;padding:0;list-style:none;counter-reset:r}
+.reqs li{display:flex;gap:12px;padding:14px;border-radius:14px;background:#ffffff06;border:1px solid var(--ln);color:#cfe9da;font-size:15px;line-height:1.45}
+.reqs li::before{counter-increment:r;content:counter(r);flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--gr);color:#03140a;font-weight:900}
+.reqs li b{color:#fff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats div{padding:14px;border-radius:14px;background:#ffffff06;border:1px solid var(--ln);text-align:center}
+.stats b{display:block;font:400 26px Anton,sans-serif;color:var(--gr)}.stats span{color:var(--mu);font-size:12px}
+section{padding:46px 0;border-top:1px solid var(--ln)}
+.sv{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.sv a{display:block;padding:18px;border-radius:16px;background:#ffffff06;border:1px solid var(--ln);transition:border-color .15s,transform .15s}
+.sv a:hover{border-color:var(--gr);transform:translateY(-2px)}
+.sv i{font-style:normal;font-size:26px}.sv b{display:block;margin:8px 0 4px}.sv span{color:var(--mu);font-size:14px}
+.sv em{display:block;margin-top:10px;font-style:normal;color:var(--gr);font-weight:800;font-size:14px}
+.dc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:center}
+@media(max-width:800px){.dc{grid-template-columns:1fr}}
+.dcbox{border-radius:16px;background:#313338;border:1px solid #ffffff14;padding:14px;font-size:14px;color:#dbdee1}
+.dcbox .l{display:flex;gap:10px;margin-bottom:10px}
+.dcbox .av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:#4e5058;color:#fff;font-size:13px}
+.dcbox .av.bot{background:var(--gr);color:#03140a}
+.dcbox code{padding:1px 5px;border-radius:4px;background:#1e1f22;color:#c9cdfb}
+.dcbox .emb{margin-top:6px;padding:10px 12px;border-radius:6px;background:#2b2d31;border-left:4px solid #23a55a}
+.dcbox .emb b{color:#fff}
+.avs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.av1{padding:16px;border-radius:16px;background:#ffffff06;border:1px solid var(--ln)}
+.av1 .est{color:var(--ou);letter-spacing:2px}.av1 p{margin:8px 0;color:#cfe9da;font-size:14px}.av1 small{color:var(--mu)}
+details{border:1px solid var(--ln);border-radius:14px;background:#ffffff05;margin-bottom:8px}
+summary{padding:14px 16px;font-weight:800;cursor:pointer}
+details p{margin:0;padding:0 16px 16px;color:#cfe9da;line-height:1.55;font-size:15px}
+footer{padding:30px 0 40px;color:var(--mu);font-size:13px;text-align:center;border-top:1px solid var(--ln)}
+/* gaveta: checkout + acompanhamento */
+.veu{position:fixed;inset:0;z-index:40;background:#000a;opacity:0;pointer-events:none;transition:opacity .25s}
+.veu.on{opacity:1;pointer-events:auto}
+.gav{position:fixed;z-index:41;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;padding:18px 18px 26px;border-radius:22px 22px 0 0;background:#0b130f;border-top:1px solid var(--ln);transform:translateY(105%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.gav.on{transform:none}
+@media(min-width:760px){.gav{left:auto;right:20px;bottom:20px;width:420px;border-radius:22px;border:1px solid var(--ln)}}
+.gav h3{margin:0 0 4px;font:400 26px Anton,sans-serif;text-transform:uppercase}
+.gav .fx{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:10px;border:0;background:#ffffff12;font-size:16px}
+.lin{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--ln);font-size:14px}
+.lin span:first-child{color:var(--mu)}
+.campo{display:block;width:100%;margin-top:8px;padding:12px 14px;border-radius:12px;border:1px solid var(--ln);background:#050a07;color:var(--ink);font:500 15px Inter}
+.qr{width:170px;height:170px;margin:14px auto;padding:10px;border-radius:12px;background:#fff;display:grid;grid-template-columns:repeat(21,1fr);grid-template-rows:repeat(21,1fr)}
+.qr i{background:#111}.qr i.b{background:#fff}
+.esp{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--mu);font-size:14px}
+.esp::before{content:"";width:16px;height:16px;border-radius:50%;border:2px solid #ffffff22;border-top-color:var(--gr);animation:gira .8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+.trilha{display:grid;gap:8px;margin:14px 0;padding:0;list-style:none}
+.trilha li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:#ffffff05;border:1px solid var(--ln);color:var(--mu);font-size:14px;transition:all .3s}
+.trilha li::before{content:"";flex:none;width:14px;height:14px;border-radius:50%;border:2px solid var(--mu)}
+.trilha li.on{color:var(--ink);border-color:var(--gr)}
+.trilha li.on::before{border-color:var(--gr);background:var(--gr);box-shadow:0 0 10px var(--gr)}
+.barra{height:10px;border-radius:99px;background:#ffffff10;overflow:hidden;margin:6px 0 4px}
+.barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2bff88,#f6c445);transition:width .5s}
+.chat{margin-top:12px;padding:12px;border-radius:12px;background:#050a07;border:1px solid var(--ln);font-size:14px}
+.chat p{margin:0 0 8px}.chat p:last-child{margin:0}.chat b{color:var(--gr)}
+.toast{position:fixed;left:50%;bottom:24px;z-index:60;transform:translate(-50%,40px);opacity:0;padding:12px 16px;border-radius:12px;background:var(--gr);color:#03140a;font-weight:800;transition:all .3s}
+.toast.on{transform:translate(-50%,0);opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header><div class="wrap"><a class="logo" href="#">GRAMADO<b>COINS</b></a>
+<nav><a href="#comprar">Comprar</a><a href="#servicos">Serviços</a><a href="#discord">Discord</a><a href="#duvidas">Dúvidas</a></nav>
+<button class="carr" id="abrirPedido">Meu pedido</button></div></header>
+<div class="faixa" aria-label="Pedidos pagos recentemente"><div class="rolo" id="rolo"></div></div>
+
+<div class="hero"><div class="wrap">
+  <span class="selo">⚽ Coins de FC 27 já disponíveis</span>
+  <h1>Coins de FC 27 <em>na sua conta</em> em minutos</h1>
+  <p>Escolha a plataforma e a quantidade, pague no Pix e acompanhe a entrega pelo próprio pedido. O pagamento confirma sozinho e a entrega começa na hora.</p>
+  <ul class="provas"><li><b>15 min</b> de entrega média</li><li>Taxa de 5% da EA <b>coberta</b></li><li><b>24h</b> por dia</li><li>Pedido com <b>chat</b></li></ul>
+</div></div>
+
+<div class="wrap palco" id="comprar">
+  <div class="compra">
+    <div class="abas" role="tablist"><button class="on" id="tabC" role="tab">Comprar coins</button><button id="tabV" role="tab">Vender coins</button></div>
+    <div id="formC">
+      <span class="rot">Plataforma</span>
+      <div class="plats" id="plats"><button data-p="ps" class="on">PS4/PS5</button><button data-p="xb">Xbox</button><button data-p="pc">PC</button></div>
+      <span class="rot">Quantidade de coins</span>
+      <div class="qtd"><input id="qtd" inputmode="numeric" value="1.000.000" aria-label="Quantidade de coins"><span>COINS</span></div>
+      <input type="range" id="slider" min="1" max="100" value="20" aria-label="Quantidade">
+      <div class="chips" id="chips"><button data-q="100000">100K</button><button data-q="500000">500K</button><button data-q="1000000">1M</button><button data-q="3000000">3M</button><button data-q="5000000">5M</button></div>
+      <span class="rot">Como você quer receber</span>
+      <div class="metodos" id="metodos">
+        <button class="met on" data-m="comfort"><i></i><span><b>Comfort Trade <em>RECOMENDADO</em></b><small>A gente entra na sua conta EA e entrega pelo mercado. Mais rápido, sem limite por dia.</small></span></button>
+        <button class="met" data-m="jogador"><i></i><span><b>Pelo jogador</b><small>Você não passa a senha: lista um jogador e a gente compra. Até 1M por dia.</small></span></button>
+      </div>
+      <div class="total"><div><small>Total a pagar</small><strong id="preco">R$ 0</strong></div><div style="text-align:right"><small id="por100">R$ 0 a cada 100K</small><span class="eco" id="eco"></span></div></div>
+      <button class="bt" id="btComprar" data-lh-compra>Comprar no Pix</button>
+      <div class="mini">Pagamento confirmado na hora · entrega começa sozinha</div>
+    </div>
+    <div id="formV" hidden>
+      <span class="rot">Plataforma</span>
+      <div class="plats"><button class="on">PS4/PS5</button><button>Xbox</button><button>PC</button></div>
+      <span class="rot">Quantas coins você quer vender</span>
+      <div class="qtd"><input id="qtdV" inputmode="numeric" value="500.000" aria-label="Coins para vender"><span>COINS</span></div>
+      <div class="total"><div><small>Você recebe no Pix</small><strong id="precoV">R$ 0</strong></div></div>
+      <button class="bt" id="btVender">Quero vender</button>
+      <div class="mini">A gente confere as coins e paga no Pix</div>
+    </div>
+  </div>
+  <div class="lado">
+    <h2>Antes de comprar</h2>
+    <ol class="reqs">
+      <li><span><b>Mercado liberado:</b> o mercado de transferências precisa abrir no Web App ou no Companion.</span></li>
+      <li><span><b>Algumas coins no clube:</b> pelo menos 1.300, para a entrega correr sem travar.</span></li>
+      <li><span><b>Fique fora do jogo:</b> não entre no FC, no Web App nem no app enquanto a entrega acontece.</span></li>
+      <li><span><b>Códigos de segurança:</b> no Comfort Trade, tenha à mão os códigos de backup da conta EA.</span></li>
+    </ol>
+    <div class="stats"><div><b id="nPed">12.480</b><span>pedidos entregues</span></div><div><b>4,9★</b><span>avaliação média</span></div><div><b>15 min</b><span>entrega média</span></div></div>
+  </div>
+</div>
+
+<section id="servicos"><div class="wrap">
+  <h2 class="d" style="font-size:clamp(28px,4vw,40px);margin:0 0 16px">Mais que coins</h2>
+  <div class="sv">
+    <a href="#comprar"><i>🏆</i><b>Weekend League</b><span>Nossos jogadores disputam a sua WL e você fica com as recompensas.</span><em>Pedir orçamento →</em></a>
+    <a href="#comprar"><i>🧩</i><b>DME resolvido</b><span>Desafios de montar elenco prontos, do seu jeito.</span><em>Ver DMEs →</em></a>
+    <a href="#comprar"><i>🃏</i><b>Draft</b><span>Draft jogado do começo ao fim.</span><em>Pedir →</em></a>
+    <a href="#comprar"><i>👤</i><b>Contas prontas</b><span>Contas com elenco e saldo, com os dados conferidos antes da compra.</span><em>Ver contas →</em></a>
+  </div>
+</div></section>
+
+<section id="discord"><div class="wrap dc">
+  <div>
+    <h2 class="d" style="font-size:clamp(28px,4vw,40px);margin:0 0 10px">Compre também pelo Discord</h2>
+    <p style="color:#c7e5d4;margin:0 0 16px">O nosso bot vende, gera o Pix, confirma o pagamento e acompanha a entrega dentro do servidor. É o mesmo pedido da loja: estoque, histórico e suporte num lugar só.</p>
+    <a class="bt" style="display:inline-block;width:auto;padding:13px 22px" href="#discord">Entrar no Discord</a>
+  </div>
+  <div class="dcbox">
+    <div class="l"><span class="av">R</span><div><b style="color:#fff">rafa_fut</b><div><code>/comprar</code> 1M coins PS5</div></div></div>
+    <div class="l"><span class="av bot">G</span><div><b style="color:#fff">Gramado Coins Bot</b><div class="emb"><b>✅ Pagamento confirmado</b><br>Pedido #2207 · 1M coins · PS5<br>Entrega começou: acompanhe por <code>/pedido 2207</code></div></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2 class="d" style="font-size:clamp(28px,4vw,40px);margin:0 0 16px">Quem comprou</h2>
+  <div class="avs">
+    <div class="av1"><div class="est">★★★★★</div><p>Pedi 2M de madrugada e chegou antes de eu acordar. Acompanhei tudo pelo chat do pedido.</p><small>Lucas M. · avaliação de exemplo</small></div>
+    <div class="av1"><div class="est">★★★★★</div><p>Usei o método pelo jogador porque não queria passar a senha. Deu certo e foi rápido.</p><small>Pedro H. · avaliação de exemplo</small></div>
+    <div class="av1"><div class="est">★★★★★</div><p>Comprei pelo Discord mesmo, o bot gerou o Pix e já começou a entrega.</p><small>Bruno S. · avaliação de exemplo</small></div>
+  </div>
+</div></section>
+
+<section id="duvidas"><div class="wrap" style="max-width:820px">
+  <h2 class="d" style="font-size:clamp(28px,4vw,40px);margin:0 0 16px">Dúvidas</h2>
+  <details open><summary>Quanto tempo demora?</summary><p>A média é de 15 minutos. Pedidos grandes, ou com o mercado lento, podem levar algumas horas. Você acompanha cada etapa no pedido.</p></details>
+  <details><summary>Qual a diferença entre os métodos?</summary><p>No Comfort Trade a gente entra na sua conta e entrega pelo mercado: é o mais rápido e sem limite por dia. Pelo jogador, você lista um jogador e a gente compra: você não passa a senha, mas existe um limite por dia.</p></details>
+  <details><summary>Tem risco para a minha conta?</summary><p>A compra de coins vai contra os termos da EA, e nenhum método é 100% livre de risco. Para reduzir, a entrega é feita aos poucos e pedimos que você fique fora do jogo enquanto ela acontece.</p></details>
+  <details><summary>Como pago?</summary><p>No Pix. O pagamento confirma sozinho e a entrega começa na hora, sem precisar mandar comprovante.</p></details>
+</div></section>
+
+<footer>Gramado Coins · loja de demonstração da Lhart Design · valores, pedidos e avaliações fictícios · não vinculada à EA</footer>
+
+<div class="veu" id="veu"></div>
+<div class="gav" id="gav" role="dialog" aria-modal="true" aria-labelledby="gavT">
+  <button class="fx" id="fecha" aria-label="Fechar">✕</button>
+  <div id="g1"><h3 id="gavT">Seu pedido</h3>
+    <div class="lin"><span>Coins</span><span id="rQ"></span></div><div class="lin"><span>Plataforma</span><span id="rP"></span></div><div class="lin"><span>Entrega</span><span id="rM"></span></div><div class="lin"><span>Total</span><b id="rT" style="color:var(--gr)"></b></div>
+    <input class="campo" placeholder="Seu e-mail (para acompanhar o pedido)" aria-label="E-mail" value="cliente@exemplo.com">
+    <button class="bt" id="gerarPix" style="margin-top:14px">Gerar o Pix</button></div>
+  <div id="g2" hidden style="text-align:center"><h3>Pague no Pix</h3><div class="qr" id="qr"></div><p class="mini">Copia e cola: 00020126… (demonstração)</p><div class="esp">Esperando o pagamento…</div>
+    <button class="bt sec" id="simular" style="margin-top:14px">Simular pagamento (demonstração)</button></div>
+  <div id="g3" hidden><h3>Pedido #2208</h3><p class="mini" style="text-align:left;margin:0">Pagamento confirmado automaticamente ✅</p>
+    <ol class="trilha" id="trilha"><li>Pagamento confirmado</li><li>Pedido na fila de entrega</li><li>Entregando as coins</li><li>Entregue</li></ol>
+    <div class="barra"><i id="barra"></i></div><div class="mini" style="text-align:left" id="prog">0 de 0 coins</div>
+    <div class="chat" id="chat"><p><b>Suporte:</b> Recebemos o seu pedido! Fique fora do jogo até avisarmos, combinado?</p></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  var PRECO100 = { ps: 31.9, xb: 31.9, pc: 36.9 };         // valores de exemplo, por 100K
+  var NOME_P = { ps: 'PS4/PS5', xb: 'Xbox', pc: 'PC' };
+  var st = { p: 'ps', q: 1000000, m: 'comfort' };
+  var $ = function (id) { return document.getElementById(id); };
+  var brl = function (v) { return 'R$ ' + v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
+  var num = function (v) { return v.toLocaleString('pt-BR'); };
+  var curto = function (q) { return q >= 1e6 ? (q / 1e6).toString().replace('.', ',') + 'M' : Math.round(q / 1e3) + 'K'; };
+  function toast(t) { var e = $('toast'); e.textContent = t; e.classList.add('on'); setTimeout(function () { e.classList.remove('on'); }, 2200); }
+  // A quantidade: slider em escala (50K a 10M), com os atalhos.
+  function deSlider(v) { return Math.round(Math.pow(10, 4.7 + (v / 100) * 2.3) / 50000) * 50000 || 50000; }
+  function paraSlider(q) { return Math.round(((Math.log10(q) - 4.7) / 2.3) * 100); }
+  function desconto(q) { return q >= 3e6 ? .08 : q >= 1e6 ? .05 : 0; }
+  function total() { var bruto = st.q / 1e5 * PRECO100[st.p], d = desconto(st.q); return { v: bruto * (1 - d), eco: bruto * d, d: d }; }
+  function desenhar() {
+    var t = total();
+    $('preco').textContent = brl(t.v);
+    $('por100').textContent = brl(PRECO100[st.p] * (1 - t.d)) + ' a cada 100K';
+    $('eco').textContent = t.d ? 'Você economiza ' + brl(t.eco) + ' (' + Math.round(t.d * 100) + '%)' : '';
+    $('qtd').value = num(st.q);
+    $('slider').value = paraSlider(st.q);
+    $('btComprar').textContent = 'Comprar ' + curto(st.q) + ' no Pix';
+    // Para a página da Lhart (previa/loja-jogos.html) saber o que está sendo comprado.
+    $('btComprar').dataset.lhNome = curto(st.q) + ' coins · ' + NOME_P[st.p];
+    $('btComprar').dataset.lhPreco = brl(t.v);
+  }
+  $('plats').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; st.p = b.dataset.p; [].forEach.call(this.children, function (x) { x.classList.toggle('on', x === b); }); desenhar(); });
+  $('slider').addEventListener('input', function () { st.q = deSlider(+this.value); desenhar(); });
+  $('qtd').addEventListener('change', function () { var v = parseInt(this.value.replace(/\D/g, ''), 10) || 50000; st.q = Math.min(1e7, Math.max(50000, Math.round(v / 50000) * 50000)); desenhar(); });
+  $('chips').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { st.q = +b.dataset.q; desenhar(); } });
+  $('metodos').addEventListener('click', function (e) { var b = e.target.closest('.met'); if (!b) return; st.m = b.dataset.m; [].forEach.call(this.children, function (x) { x.classList.toggle('on', x === b); }); });
+  // Comprar / vender
+  $('tabC').onclick = function () { $('tabC').classList.add('on'); $('tabV').classList.remove('on'); $('formC').hidden = false; $('formV').hidden = true; };
+  $('tabV').onclick = function () { $('tabV').classList.add('on'); $('tabC').classList.remove('on'); $('formV').hidden = false; $('formC').hidden = true; venda(); };
+  function venda() { var q = parseInt($('qtdV').value.replace(/\D/g, ''), 10) || 0; $('precoV').textContent = brl(q / 1e5 * 19.9); }
+  $('qtdV').addEventListener('input', venda);
+  $('btVender').onclick = function () { toast('Pedido de venda registrado (demonstração)'); };
+  // A faixa de pedidos pagos (fictícios)
+  var P = [['170K', 'PS5', 4], ['1M', 'Xbox', 9], ['300K', 'PC', 13], ['2M', 'PS5', 21], ['500K', 'PS5', 27], ['90K', 'Xbox', 34], ['3M', 'PC', 48], ['750K', 'PS5', 55]];
+  var html = P.map(function (p) { return '<span class="ped"><b>' + p[0] + '</b> coins · ' + p[1] + ' <small>há ' + p[2] + ' min</small></span>'; }).join('');
+  $('rolo').innerHTML = html + html;
+  // QR de desenho (não é código de pagamento)
+  (function () { var s = '', T = 21; function fd(x, y) { if (x > 6 || y > 6) return null; return x === 0 || x === 6 || y === 0 || y === 6 || (x >= 2 && x <= 4 && y >= 2 && y <= 4); }
+    for (var y = 0; y < T; y++) for (var x = 0; x < T; x++) { var v = fd(x, y); if (v === null) v = fd(T - 1 - x, y); if (v === null) v = fd(x, T - 1 - y); if (v === null) v = ((Math.sin((x * 31 + y * 17) * 12.9898) * 43758.5453) % 1 + 1) % 1 > .5; s += '<i' + (v ? '' : ' class="b"') + '></i>'; }
+    $('qr').innerHTML = s; })();
+  // A gaveta: pedido → Pix → acompanhamento
+  var tempos = [];
+  function passo(n) { ['g1', 'g2', 'g3'].forEach(function (id, i) { $(id).hidden = i !== n; }); }
+  function abrir() { $('veu').classList.add('on'); $('gav').classList.add('on'); }
+  function fechar() { $('veu').classList.remove('on'); $('gav').classList.remove('on'); }
+  $('fecha').onclick = fechar; $('veu').onclick = fechar;
+  $('btComprar').onclick = function () {
+    tempos.forEach(clearTimeout); tempos = [];
+    var t = total();
+    $('rQ').textContent = num(st.q); $('rP').textContent = NOME_P[st.p];
+    $('rM').textContent = st.m === 'comfort' ? 'Comfort Trade' : 'Pelo jogador'; $('rT').textContent = brl(t.v);
+    passo(0); abrir();
+  };
+  $('gerarPix').onclick = function () { passo(1); tempos.push(setTimeout(pago, 4000)); };
+  $('simular').onclick = function () { tempos.forEach(clearTimeout); pago(); };
+  $('abrirPedido').onclick = function () { if (!$('g3').hidden) abrir(); else toast('Você ainda não tem pedido aberto'); };
+  function pago() {
+    passo(2);
+    var li = $('trilha').children, chat = $('chat'), q = st.q, feito = 0;
+    [].forEach.call(li, function (x) { x.classList.remove('on'); });
+    li[0].classList.add('on');
+    chat.innerHTML = '<p><b>Suporte:</b> Recebemos o seu pedido! Fique fora do jogo até avisarmos, combinado?</p>';
+    $('barra').style.width = '0'; $('prog').textContent = '0 de ' + num(q) + ' coins';
+    tempos.push(setTimeout(function () { li[1].classList.add('on'); }, 1200));
+    tempos.push(setTimeout(function () {
+      li[2].classList.add('on');
+      chat.innerHTML += '<p><b>Suporte:</b> Começamos a entrega pelo mercado. Já já chega tudo.</p>';
+      var id = setInterval(function () {
+        feito = Math.min(q, feito + q / 8);
+        $('barra').style.width = (feito / q * 100) + '%';
+        $('prog').textContent = num(Math.round(feito)) + ' de ' + num(q) + ' coins';
+        if (feito >= q) {
+          clearInterval(id); li[3].classList.add('on');
+          chat.innerHTML += '<p><b>Suporte:</b> Entregue ✅ Pode entrar no jogo. Bom jogo!</p>';
+          $('nPed').textContent = '12.481';
+        }
+      }, 450);
+      tempos.push(id);
+    }, 2600));
+  }
+  desenhar();
+})();
+</script>
+</body></html>

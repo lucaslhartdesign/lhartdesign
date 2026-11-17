@@ -207,6 +207,8 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var wa = function (t) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(t); };
   var ESTILOS = {
+    // 17/11/2026 — a loja focada em coins de EA FC (plataforma, quantidade, Comfort Trade).
+    'gramado-fc': ['Gramado Coins', 'Coins de FC: plataforma, quantidade e entrega acompanhada', '#2bff88', '#f6c445', '#060b08'],
     'neon-arena': ['Neon Arena', 'Moedas e itens em clima neon', '#ff2bd6', '#18f0ff', '#0d0718'],
     'magma-cubo': ['Magma Cubo', 'Blocos e lava, para Roblox e Minecraft', '#ff6a1a', '#ffd23f', '#170a05'],
     'gamepass-galaxy': ['Gamepass Galaxy', 'Diamantes e passes, clima espacial', '#8b5cff', '#3ee6ff', '#0a0820'],
@@ -215,7 +217,7 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
     'loja-cofre-arcano': ['Cofre Arcano', 'Itens e contas de vários jogos', '#a855f7', '#22d3ee', '#0c0816'],
     'reliquia-bazar': ['Relíquia Bazar', 'Gold e itens de MMO, clima medieval', '#e0a84f', '#7dd3a8', '#120e08']
   };
-  var OUTROS = ['neon-arena', 'magma-cubo', 'gamepass-galaxy', 'apex-boost-hub', 'barao-dos-cards', 'loja-cofre-arcano', 'reliquia-bazar'];
+  var OUTROS = ['gramado-fc', 'neon-arena', 'magma-cubo', 'gamepass-galaxy', 'apex-boost-hub', 'barao-dos-cards', 'loja-cofre-arcano', 'reliquia-bazar'];
 
   // ?d= é base64url de {"n","j","i","e","l","a"} (ver o comentário no topo).
   function ler() {
@@ -438,6 +440,9 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
   }
   function visivel(el) { var r = el.getBoundingClientRect(); return r.width > 20 && r.height > 14; }
   function produtos(d) {
+    // A loja marcou o botão de compra (data-lh-compra): é ele.
+    var marcados = [].slice.call(d.querySelectorAll('[data-lh-compra]')).filter(visivel);
+    if (marcados.length) return marcados;
     var bts = [].slice.call(d.querySelectorAll('button, a')).filter(function (el) {
       return RX_COMPRA.test(el.textContent) && !el.closest('header, nav') && visivel(el);
     });
@@ -450,6 +455,8 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
   }
   var RX_NAO_NOME = /estoque|stock|comprar|adicionar|detalhes|carrinho|add|buy|%|avalia|entrega|^\W*$/i;
   function infoDo(el) {
+    var m = el.closest && el.closest('[data-lh-compra]');
+    if (m && m.dataset.lhNome) return { nome: m.dataset.lhNome.slice(0, 32), preco: m.dataset.lhPreco || preco(ESCOLHA[2]) };
     var card = el, k = 0;
     while (card && k < 6 && !(RX_PRECO.test(card.textContent) && card.getBoundingClientRect().height > 60)) { card = card.parentElement; k++; }
     var reserva = { nome: ESCOLHA[1], preco: preco(ESCOLHA[2]) };
@@ -480,7 +487,10 @@ h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
       var a = e.target.closest('a[href]');
       var alvo = e.target.closest('button, a, article, li, div');
       var txt = alvo ? (alvo.textContent || '') : '';
-      var ehCompra = alvo && !alvo.closest('header, nav') && (RX_COMPRA.test(txt) || (RX_PRECO.test(txt) && alvo.getBoundingClientRect().height < 420));
+      var marcada = d.querySelector('[data-lh-compra]');
+      var ehCompra = marcada ? !!e.target.closest('[data-lh-compra]')
+        : alvo && !alvo.closest('header, nav') && (RX_COMPRA.test(txt) || (RX_PRECO.test(txt) && alvo.getBoundingClientRect().height < 420));
+      if (ehCompra && marcada) alvo = e.target.closest('[data-lh-compra]');
       if (ehCompra) { e.preventDefault(); e.stopPropagation(); grupo = 'loja'; limpar(); abrirCompra(infoDo(alvo)); return; }
       if (a && !/^#/.test(a.getAttribute('href') || '')) e.preventDefault();   // nada de sair da demo
     }, true);
