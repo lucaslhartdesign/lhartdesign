@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../preloader.css?v=1"><script src="../preloader.js?v=2"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#161826">
+<title>Sua loja de jogos — Lhart Design</title>
+<meta name="description" content="Demonstração da loja e do bot do Discord feitos para a sua loja de jogos, com o nome de vocês e o pagamento confirmando sozinho.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- Página gerada pelo SniperLeads (17/11/2026), irmã de previa/restaurante.html.
+     O link traz ?d=<código>: base64url de {"n": nome da loja, "j": jogo, "i": o que vende
+     (coins, robux, diamantes...), "e": estilo da demo, "l": pt|en|es, "a": validade AAAA-MM-DD}.
+     Nada é salvo no servidor. Regras do kit de jogos: tudo é DEMONSTRAÇÃO com dados fictícios,
+     nenhum preço nosso, nenhuma menção a IA. Fora do Brasil não existe Pix: o pagamento é o
+     do gateway que a loja usa. Pensada primeiro para o celular. -->
+<style>
+:root{--bg:#161826;--p:#1c1e2e;--p2:#232532;--ln:#34374a;--gold:#9184d9;--gold2:#d2cefd;--ac:#b5abfc;--gr:#4be39a;--ink:#f1f1f5;--mu:#a3a7ba;--dc:#5865f2;--dcbg:#313338;--dcbg2:#2b2d31;--dcbg3:#1e1f22;--brilho:0 0 0 1px #9184d955,0 18px 50px #9184d933;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+button{font-family:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* ── Topo */
+.top{position:sticky;top:0;z-index:30;background:#161826e6;backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:60px}
+.logo{flex:none}.logo img{display:block;height:40px;width:auto}
+.menu{display:flex;gap:2px;margin-left:auto}
+.menu a{padding:8px 12px;border-radius:99px;color:var(--mu);font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap}
+.menu a:hover,.menu a:focus-visible{color:var(--ink);background:var(--p2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 26px;border-radius:99px;background:var(--gr);color:#0d1a13;font-weight:800;font-size:16px;text-decoration:none;border:0;cursor:pointer;box-shadow:0 10px 30px #4be39a40;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 14px 36px #4be39a55}
+.btn.g{background:#ffffff0d;color:var(--ink);border:1px solid #ffffff26;box-shadow:none}
+.btn.g:hover{background:#ffffff17}
+.top .btn{padding:9px 16px;font-size:14px;flex:none;box-shadow:none}
+.lang{flex:none;display:flex;gap:4px}
+.lang a{padding:6px 10px;border:1px solid #ffffff33;border-radius:99px;color:var(--mu);font-size:12px;font-weight:800;text-decoration:none}
+.lang a.on{color:var(--ink);border-color:#b5abfc;background:#9184d929}
+@media(max-width:860px){.menu{display:none}.lang{margin-left:auto}}
+@media(max-width:420px){.top .btn{display:none}}
+
+/* ── Topo da página */
+.hero{position:relative;overflow:hidden;padding:56px 0 48px;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-30% -10% auto -10%;height:120%;z-index:-1;
+  background:radial-gradient(45% 55% at 18% 35%,#9184d955,transparent 70%),radial-gradient(35% 45% at 85% 20%,#5865f233,transparent 70%),radial-gradient(40% 50% at 70% 90%,#4be39a22,transparent 70%)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;
+  background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(70% 70% at 30% 30%,#000,transparent);mask-image:radial-gradient(70% 70% at 30% 30%,#000,transparent)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:99px;background:#9184d929;border:1px solid #b5abfc66;color:var(--gold2);font:800 12px Inter;letter-spacing:.09em;text-transform:uppercase}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--gr);box-shadow:0 0 10px var(--gr)}
+h1{font:400 clamp(44px,8vw,88px)/.92 'Bebas Neue',sans-serif;margin:18px 0 16px;overflow-wrap:anywhere}
+h1 em,h2 em{font-style:normal;background:linear-gradient(100deg,#d2cefd,#b5abfc 35%,#9184d9 85%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{max-width:60ch;color:#d9dbe6;font-size:clamp(17px,2.2vw,19px);line-height:1.6;margin:0 0 22px}
+.lead b{color:#fff}
+.selos{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px;padding:0;list-style:none}
+.selos li{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:99px;background:#ffffff0b;border:1px solid #ffffff1f;font-size:14px;font-weight:600}
+.selos li::before{content:"✓";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--gr);color:#0d1a13;font-size:12px;font-weight:900}
+.roteiro{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.roteiro a{display:flex;gap:14px;align-items:flex-start;height:100%;padding:18px;border:1px solid #9184d944;border-radius:20px;text-decoration:none;background:linear-gradient(160deg,#9184d91f,#1c1e2e 55%);transition:border-color .15s,transform .15s}
+.roteiro a:hover{border-color:#b5abfc;transform:translateY(-2px)}
+.num{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e4e0ff,#9184d9);color:#0b0c14;font:900 16px Inter}
+.roteiro b{display:block;font-size:16px;margin-bottom:4px}
+.roteiro span{color:var(--mu);font-size:14px;line-height:1.45}
+/* O número da bolinha também é um <span>: sem isto herda o cinza e fica apagado. */
+.roteiro .num,.comecar .num,.tit .num{color:#0b0c14;font-weight:900;font-size:16px}
+.tit .num{font-size:18px}
+
+/* ── Seções */
+.sec{padding:60px 0;border-top:1px solid var(--ln)}
+.sec.alt{background:linear-gradient(180deg,#1c1e2e,#191b29)}
+.tit{display:flex;gap:14px;align-items:center;margin:0 0 12px}
+.tit .num{width:44px;height:44px;font-size:18px}
+h2{font:400 clamp(34px,5.4vw,56px)/1 'Bebas Neue',sans-serif;margin:0}
+.s{color:#c3c6d4;font-size:17px;line-height:1.6;max-width:64ch;margin:0 0 24px}
+.s b{color:#fff}
+.duas{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:34px;align-items:center}
+.duas.dcx{grid-template-columns:minmax(0,1fr) minmax(0,360px)}
+@media(max-width:900px){.duas,.duas.dcx{grid-template-columns:1fr}}
+.passos{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:p}
+.passos li{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:#ffffff08;border:1px solid var(--ln);color:#d9dbe6;line-height:1.45;font-size:15px;transition:border-color .3s,background .3s}
+.passos li::before{counter-increment:p;content:counter(p);flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#ffffff14;font-weight:800;font-size:13px}
+.passos li.on{border-color:var(--gr);background:#4be39a12}
+.passos li.on::before{background:var(--gr);color:#0d1a13}
+.passos li b{color:#fff}
+.tocar{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.nota{color:var(--mu);font-size:13px;margin-top:12px}
+
+/* ── O celular com a loja */
+.cel{position:relative;width:min(100%,360px);margin:0 auto;aspect-ratio:9/18.5;border-radius:42px;padding:12px;background:linear-gradient(160deg,#3a3d52,#14151f);box-shadow:0 40px 90px #000a,0 0 0 1px #ffffff1a,0 0 90px #9184d930}
+.tela{position:relative;height:100%;border-radius:32px;overflow:hidden;background:var(--lj-bg,#0d0b18);color:#f3eaff;display:flex;flex-direction:column}
+.lj-top{display:flex;align-items:center;gap:10px;padding:16px 16px 12px;border-bottom:1px solid #ffffff14}
+.lj-logo{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--lj-a,#ff2bd6),var(--lj-b,#18f0ff));color:#0b0618;font:900 15px Inter;flex:none}
+.lj-nome{font:800 15px Inter;line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lj-nome small{display:block;font:600 11px Inter;color:#b9a9df}
+.lj-cart{margin-left:auto;position:relative;width:36px;height:36px;border-radius:10px;background:#ffffff12;display:grid;place-items:center;font-size:17px}
+.lj-cart b{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;border-radius:9px;background:var(--lj-a,#ff2bd6);color:#fff;font-size:11px;display:grid;place-items:center;transform:scale(0);transition:transform .25s}
+.lj-cart b.v{transform:scale(1)}
+.lj-corpo{position:relative;flex:1;overflow:hidden}
+.lj-v{position:absolute;inset:0;padding:14px;overflow:auto;transition:transform .35s ease,opacity .35s}
+.lj-v.fora{transform:translateX(100%);opacity:0;pointer-events:none}
+.lj-v.atras{transform:translateX(-30%);opacity:0;pointer-events:none}
+.lj-banner{padding:16px;border-radius:16px;background:linear-gradient(135deg,#ffffff14,#ffffff05);border:1px solid #ffffff1a;margin-bottom:12px}
+.lj-banner b{display:block;font:400 26px/1 'Bebas Neue';letter-spacing:.03em}
+.lj-banner span{font-size:12px;color:#c9bdea}
+.lj-grade{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lj-p{padding:12px;border-radius:14px;background:#ffffff0d;border:1px solid #ffffff17;text-align:left;color:inherit;cursor:pointer;transition:transform .15s,border-color .15s}
+.lj-p:hover,.lj-p.toque{border-color:var(--lj-b,#18f0ff);transform:translateY(-2px)}
+.lj-p i{display:block;font-size:26px;font-style:normal;margin-bottom:6px}
+.lj-p b{display:block;font-size:14px}
+.lj-p span{display:block;margin-top:4px;font-weight:800;color:var(--lj-b,#18f0ff);font-size:13px}
+.lj-linha{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed #ffffff22;font-size:14px}
+.lj-bt{display:block;width:100%;margin-top:14px;padding:13px;border:0;border-radius:12px;background:var(--lj-a,#ff2bd6);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.lj-bt.toque{filter:brightness(1.2);transform:scale(.98)}
+.qr{width:150px;height:150px;margin:12px auto;border-radius:12px;background:#fff;padding:10px;display:grid;grid-template-columns:repeat(21,1fr);grid-template-rows:repeat(21,1fr)}
+.qr i{background:#111}.qr i.b{background:#fff}
+.espera{display:flex;align-items:center;justify-content:center;gap:8px;color:#c9bdea;font-size:13px}
+.espera::before{content:"";width:14px;height:14px;border-radius:50%;border:2px solid #ffffff33;border-top-color:var(--lj-b,#18f0ff);animation:gira .8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+.ok-grande{display:grid;place-items:center;width:84px;height:84px;margin:24px auto 12px;border-radius:50%;background:var(--gr);color:#0d1a13;font-size:44px;font-weight:900;box-shadow:0 0 40px #4be39a88;animation:pula .5s ease}
+@keyframes pula{0%{transform:scale(.3)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+.lj-chat{margin-top:14px;padding:12px;border-radius:14px;background:#ffffff0b;font-size:13px;line-height:1.45}
+.lj-chat p{margin:0 0 8px}.lj-chat p:last-child{margin:0}
+.lj-chat b{color:var(--lj-b,#18f0ff)}
+.toque-dedo{position:absolute;z-index:5;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:#ffffffaa;box-shadow:0 0 0 8px #ffffff33;pointer-events:none;opacity:0;transition:left .45s ease,top .45s ease,opacity .2s}
+
+/* ── O Discord */
+.dc{border-radius:20px;overflow:hidden;background:var(--dcbg);border:1px solid #ffffff14;box-shadow:0 40px 90px #0009,0 0 80px #5865f22b;display:grid;grid-template-columns:200px minmax(0,1fr);min-height:440px;font-size:14px}
+@media(max-width:700px){.dc{grid-template-columns:1fr}.dc-lado{display:none}}
+.dc-lado{background:var(--dcbg2);padding:12px 8px;border-right:1px solid #0003}
+.dc-srv{display:flex;align-items:center;gap:8px;padding:6px 8px 12px;border-bottom:1px solid #0004;margin-bottom:10px;font-weight:800;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.dc-srv .lj-logo{width:28px;height:28px;font-size:11px;border-radius:9px}
+.dc-cat{padding:10px 8px 4px;color:#949ba4;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.dc-can{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:6px;color:#949ba4;font-weight:600}
+.dc-can.on{background:#404249;color:#f2f3f5}
+.dc-can .pt{margin-left:auto;width:8px;height:8px;border-radius:50%;background:#f23f43;display:none}
+.dc-can.novo .pt{display:block}
+.dc-main{display:flex;flex-direction:column;min-width:0}
+.dc-head{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid #0004;font-weight:800;color:#f2f3f5}
+.dc-head span{color:#80848e;font-weight:400}
+.dc-head .tab{margin-left:auto;display:flex;gap:4px}
+.dc-head .tab button{padding:5px 10px;border-radius:6px;border:0;background:#ffffff0d;color:#b5bac1;font-size:12px;font-weight:700;cursor:pointer}
+.dc-head .tab button.on{background:var(--dc);color:#fff}
+.dc-msgs{flex:1;padding:12px 16px 16px;overflow:auto;max-height:430px;display:flex;flex-direction:column;gap:12px}
+.dc-m{display:flex;gap:12px;animation:entra .35s ease}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.dc-av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;color:#fff;background:#4e5058}
+.dc-av.bot{background:linear-gradient(135deg,var(--lj-a,#ff2bd6),var(--lj-b,#18f0ff));color:#0b0618}
+.dc-m .quem{font-weight:700;color:#f2f3f5}
+.dc-m .quem small{margin-left:6px;padding:1px 5px;border-radius:4px;background:var(--dc);color:#fff;font-size:10px;font-weight:800;vertical-align:1px}
+.dc-m .quem time{margin-left:6px;color:#949ba4;font-size:11px;font-weight:400}
+.dc-m .txt{color:#dbdee1;line-height:1.45;margin-top:2px;overflow-wrap:anywhere}
+.dc-m .txt code{padding:1px 5px;border-radius:4px;background:#1e1f22;color:#c9cdfb;font-size:13px}
+.emb{margin-top:6px;max-width:440px;padding:12px 14px;border-radius:6px;background:var(--dcbg2);border-left:4px solid var(--dc);color:#dbdee1;line-height:1.45}
+.emb.ok{border-left-color:#23a55a}.emb.aviso{border-left-color:#f0b232}
+.emb b{display:block;color:#f2f3f5;margin-bottom:4px}
+.emb .campos{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:8px;font-size:13px}
+.emb .campos span{color:#949ba4;display:block;font-size:11px;font-weight:700;text-transform:uppercase}
+.dc-bts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.dc-bts span{padding:7px 14px;border-radius:4px;background:var(--dc);color:#fff;font-weight:600;font-size:13px}
+.dc-bts span.cinza{background:#4e5058}.dc-bts span.verde{background:#248046}
+.dc-dig{margin:0 16px 14px;padding:11px 14px;border-radius:8px;background:#383a40;color:#80848e}
+.dc-dig.escreve{color:#dbdee1}
+
+/* ── Ganhos, exemplos, começar */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{padding:20px;border-radius:20px;background:#ffffff08;border:1px solid var(--ln)}
+.card i{font-style:normal;font-size:28px}
+.card b{display:block;margin:10px 0 6px;font-size:17px}
+.card span{color:var(--mu);line-height:1.5;font-size:15px}
+.ex{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.ex a{display:block;padding:18px;border-radius:18px;text-decoration:none;border:1px solid #9184d944;background:linear-gradient(160deg,#9184d91f,#1c1e2e 60%);transition:border-color .15s,transform .15s}
+.ex a:hover{border-color:#b5abfc;transform:translateY(-2px)}
+.ex a b{display:block;font-size:17px;margin-bottom:4px}
+.ex a span{color:var(--mu);font-size:14px;line-height:1.45}
+.ex a em{display:inline-block;margin-top:10px;font-style:normal;color:var(--ac);font-weight:700;font-size:14px}
+.ex a.seu{border-color:var(--gr);background:linear-gradient(160deg,#4be39a1c,#1c1e2e 60%)}
+.selo-seu{display:inline-block;margin-bottom:8px;padding:3px 9px;border-radius:99px;background:var(--gr);color:#0d1a13;font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+.comecar{padding:clamp(20px,4vw,34px);border-radius:26px;background:linear-gradient(160deg,#9184d926,#1c1e2e 55%);border:1px solid #9184d966}
+.comecar ol{display:grid;gap:10px;margin:0 0 22px;padding:0;list-style:none}
+.comecar li{display:flex;gap:12px;align-items:flex-start;color:#d9dbe6;line-height:1.5}
+.fim{padding:30px 16px 40px;text-align:center;color:var(--mu);font-size:13px;border-top:1px solid var(--ln)}
+.expirou{padding:90px 0}
+</style>
+<link rel="icon" href="../assets/favicon.png" type="image/png">
+</head><body>
+<div class="top"><div class="wrap"><a class="logo" href="#inicio" aria-label="Lhart Design"><img src="../assets/logo.png" alt="Lhart Design"></a>
+<nav class="menu" id="menu" aria-label="Partes da página"></nav>
+<div class="lang" id="langs" hidden></div><a class="btn wa" id="btnTopo" href="#">Falar com o Lucas</a></div></div>
+<main id="conteudo"></main>
+<div class="fim" id="rodape">Demonstração com dados fictícios · nenhuma compra é real · Lhart Design</div>
+
+<script>
+(function () {
+  var WA = '5511989304239';
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var wa = function (t) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(t); };
+  var ESTILOS = {
+    'neon-arena': ['Neon Arena', 'Moedas e itens em clima neon', '#ff2bd6', '#18f0ff', '#0d0718'],
+    'magma-cubo': ['Magma Cubo', 'Blocos e lava, para Roblox e Minecraft', '#ff6a1a', '#ffd23f', '#170a05'],
+    'gamepass-galaxy': ['Gamepass Galaxy', 'Diamantes e passes, clima espacial', '#8b5cff', '#3ee6ff', '#0a0820'],
+    'apex-boost-hub': ['Apex Boost Hub', 'Contas e elo boost, competitivo', '#ff3355', '#ffb020', '#110a0c'],
+    'barao-dos-cards': ['Barão dos Cards', 'Gift cards com cara de carteira premium', '#d4af37', '#f5e6a8', '#0f0d07'],
+    'loja-cofre-arcano': ['Cofre Arcano', 'Itens e contas de vários jogos', '#a855f7', '#22d3ee', '#0c0816'],
+    'reliquia-bazar': ['Relíquia Bazar', 'Gold e itens de MMO, clima medieval', '#e0a84f', '#7dd3a8', '#120e08']
+  };
+  var OUTROS = ['neon-arena', 'magma-cubo', 'gamepass-galaxy', 'apex-boost-hub', 'barao-dos-cards', 'loja-cofre-arcano', 'reliquia-bazar'];
+
+  // ?d= é base64url de {"n","j","i","e","l","a"} (ver o comentário no topo).
+  function ler() {
+    var d = new URLSearchParams(location.search).get('d') || '';
+    try {
+      var b = d.replace(/-/g, '+').replace(/_/g, '/');
+      while (b.length % 4) b += '=';
+      var bin = atob(b), bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      var j = JSON.parse(new TextDecoder().decode(bytes));
+      var nome = String(j.n || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+      if (!nome) return null;
+      var forca = new URLSearchParams(location.search).get('lang');
+      var lang = ['pt', 'en', 'es'].indexOf(forca) >= 0 ? forca : (['pt', 'en', 'es'].indexOf(j.l) >= 0 ? j.l : 'pt');
+      return { nome: nome, jogo: String(j.j || '').slice(0, 30), itens: String(j.i || '').slice(0, 30).toLowerCase(),
+               estilo: ESTILOS[j.e] ? j.e : 'neon-arena', ate: String(j.a || ''), lang: lang };
+    } catch (e) { return null; }
+  }
+
+  var c = ler(), main = document.getElementById('conteudo');
+  var L = c ? c.lang : 'pt';
+  function tr(pt, en, es) { return L === 'en' ? en : (L === 'es' ? (es || en) : pt); }
+  document.documentElement.lang = { pt: 'pt-BR', en: 'en', es: 'es' }[L];
+  document.title = (c ? c.nome + ' — ' : '') + tr('Sua loja de jogos', 'Your game store', 'Tu tienda de juegos') + ' · Lhart Design';
+  var BR = L === 'pt';      // fora do Brasil não há Pix: o pagamento é o gateway dele
+  document.getElementById('btnTopo').textContent = tr('Falar com o Lucas', 'Talk to Lucas', 'Hablar con Lucas');
+  document.getElementById('rodape').textContent = tr('Demonstração com dados fictícios · nenhuma compra é real · Lhart Design',
+    'Demo with sample data · no purchase is real · Lhart Design', 'Demostración con datos de ejemplo · ninguna compra es real · Lhart Design');
+  if (c) {
+    var ls = document.getElementById('langs');
+    ls.innerHTML = ['pt', 'en', 'es'].map(function (x) { var u = new URL(location.href); u.searchParams.set('lang', x); return '<a href="' + u + '"' + (x === L ? ' class="on" aria-current="true"' : '') + '>' + x.toUpperCase() + '</a>'; }).join('');
+    ls.hidden = false;
+  }
+  function ligarWhats(t) { document.querySelectorAll('.wa').forEach(function (a) { a.href = wa(t); a.target = '_blank'; a.rel = 'noopener'; }); }
+
+  var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+  var venceu = c && c.ate && new Date(c.ate + 'T23:59:59') < hoje;
+  if (!c || venceu) {
+    main.innerHTML = '<section class="expirou hero" id="inicio"><div class="wrap"><span class="eyebrow"><i></i>' + tr('Demonstração', 'Demo', 'Demostración') + '</span>' +
+      '<h1>' + (venceu ? tr('Esta demonstração <em>expirou</em>', 'This demo has <em>expired</em>', 'Esta demo <em>expiró</em>') : tr('Link <em>incompleto</em>', 'Incomplete <em>link</em>', 'Enlace <em>incompleto</em>')) + '</h1>' +
+      '<p class="lead">' + tr('Fale com o Lucas que ele gera uma nova para a sua loja.', 'Message Lucas and he will make a new one for your shop.', 'Escríbele a Lucas y te arma una nueva para tu tienda.') + '</p>' +
+      '<p><a class="btn wa" href="#">' + tr('Falar com o Lucas', 'Talk to Lucas', 'Hablar con Lucas') + '</a></p>' +
+      '<p style="margin-top:26px"><a class="btn g" href="../vitrine.html#galeria">' + tr('Ver os estilos de loja', 'See the store styles', 'Ver los estilos de tienda') + '</a></p></div></section>';
+    ligarWhats(tr('Oi Lucas! Quero ver a demonstração da loja de jogos.', 'Hi Lucas! I want to see the game store demo.', '¡Hola Lucas! Quiero ver la demo de la tienda de juegos.'));
+    return;
+  }
+
+  var N = esc(c.nome), J = esc(c.jogo || tr('jogos', 'games', 'juegos'));
+  var EST = ESTILOS[c.estilo];
+  var raiz = document.documentElement.style;
+  raiz.setProperty('--lj-a', EST[2]); raiz.setProperty('--lj-b', EST[3]); raiz.setProperty('--lj-bg', EST[4]);
+  var sigla = c.nome.replace(/[^\p{L}\p{N} ]/gu, ' ').trim().split(/\s+/).slice(0, 2).map(function (p) { return p[0]; }).join('').toUpperCase() || 'LJ';
+
+  // Os produtos de exemplo, pelo que a loja vende. Valores fictícios.
+  var M = BR ? 'R$ ' : '$';
+  function preco(v) { return M + (BR ? v.toFixed(2).replace('.', ',') : (v / 5).toFixed(2)); }
+  var it = c.itens;
+  var PROD = /robux/.test(it) ? [['💎', '400 Robux', 19.9], ['💎', '800 Robux', 37.9], ['💎', '1.700 Robux', 74.9], ['💎', '4.500 Robux', 189.9]]
+    : /diamante/.test(it) ? [['💠', '100 ' + tr('diamantes', 'diamonds', 'diamantes'), 4.9], ['💠', '310 ' + tr('diamantes', 'diamonds', 'diamantes'), 14.9], ['💠', '520 ' + tr('diamantes', 'diamonds', 'diamantes'), 23.9], ['💠', '1.060 ' + tr('diamantes', 'diamonds', 'diamantes'), 47.9]]
+    : /coin|moeda|currency|gold|prata|zeny|lock|uc/.test(it) ? [['🪙', '100K coins', 9.9], ['🪙', '500K coins', 44.9], ['🪙', '1M coins', 84.9], ['🪙', '3M coins', 239.9]]
+    : /gift/.test(it) ? [['🎁', 'Gift card 50', 52.9], ['🎁', 'Gift card 100', 104.9], ['🎁', 'Gift card 200', 207.9], ['🎁', 'Gift card 500', 515.9]]
+    : /conta|boost|skin/.test(it) ? [['🛡️', tr('Conta nível 30', 'Level 30 account', 'Cuenta nivel 30'), 39.9], ['⚔️', tr('Boost de elo', 'Rank boost', 'Boost de elo'), 59.9], ['🎨', tr('Conta com skins', 'Account with skins', 'Cuenta con skins'), 129.9], ['👑', tr('Conta top', 'Top account', 'Cuenta top'), 299.9]]
+    : [['📦', tr('Pacote P', 'Pack S', 'Pack S'), 9.9], ['📦', tr('Pacote M', 'Pack M', 'Pack M'), 29.9], ['📦', tr('Pacote G', 'Pack L', 'Pack L'), 59.9], ['📦', tr('Pacote GG', 'Pack XL', 'Pack XL'), 119.9]];
+  var ESCOLHA = PROD[2];
+  var PAG = BR ? 'Pix' : tr('pagamento', 'payment', 'pago');
+
+  var PARTES = [['loja', tr('A loja', 'The store', 'La tienda')], ['discord', tr('O bot do Discord', 'The Discord bot', 'El bot de Discord')],
+                ['ganhos', tr('O que muda', 'What changes', 'Qué cambia')], ['exemplos', tr('Mais estilos', 'More styles', 'Más estilos')], ['comecar', tr('Como começar', 'How to start', 'Cómo empezar')]];
+  document.getElementById('menu').innerHTML = PARTES.map(function (p) { return '<a href="#' + p[0] + '">' + p[1] + '</a>'; }).join('');
+
+  var passosLoja = [
+    tr('O cliente entra na <b>loja do ' + N + '</b> e escolhe ' + esc(ESCOLHA[1]) + '.', 'The customer opens <b>' + N + '\'s store</b> and picks ' + esc(ESCOLHA[1]) + '.', 'El cliente entra en la <b>tienda de ' + N + '</b> y elige ' + esc(ESCOLHA[1]) + '.'),
+    BR ? 'Paga com <b>Pix</b>, pelo QR Code ou copia e cola.' : tr('', 'Pays with <b>the payment method you already use</b> (card, PayPal, crypto…).', 'Paga con <b>el medio de pago que ya usas</b> (tarjeta, PayPal, cripto…).'),
+    tr('O pagamento <b>confirma sozinho</b>, sem ninguém conferir comprovante.', 'The payment <b>confirms on its own</b>, no one checks receipts.', 'El pago <b>se confirma solo</b>, nadie revisa comprobantes.'),
+    tr('O estoque baixa e o pedido abre com <b>chat de entrega</b> dentro da loja.', 'Stock updates and the order opens with a <b>delivery chat</b> inside the store.', 'El stock baja y el pedido abre con <b>chat de entrega</b> dentro de la tienda.')
+  ];
+  var passosDc = [
+    tr('No Discord do ' + N + ', o cliente digita <b>/comprar</b>.', 'In ' + N + '\'s Discord, the customer types <b>/buy</b>.', 'En el Discord de ' + N + ', el cliente escribe <b>/comprar</b>.'),
+    tr('O bot mostra os produtos e gera o ' + PAG + ' na hora.', 'The bot shows the products and creates the payment right away.', 'El bot muestra los productos y genera el pago al instante.'),
+    tr('Pagou, o bot <b>confirma sozinho</b> e entrega o pedido.', 'Once paid, the bot <b>confirms it automatically</b> and delivers.', 'Pagó, el bot <b>confirma solo</b> y entrega el pedido.'),
+    tr('A equipe recebe o aviso de venda e de <b>estoque baixo</b> no canal da equipe.', 'The team gets sale and <b>low stock</b> alerts in the staff channel.', 'El equipo recibe aviso de venta y de <b>stock bajo</b> en el canal del equipo.')
+  ];
+  function lista(id, itens) { return '<ol class="passos" id="' + id + '">' + itens.map(function (t) { return '<li><span>' + t + '</span></li>'; }).join('') + '</ol>'; }
+
+  var exemplos = [c.estilo].concat(OUTROS.filter(function (e) { return e !== c.estilo; }).slice(0, 3));
+
+  main.innerHTML =
+    '<section class="hero" id="inicio"><div class="wrap"><span class="eyebrow"><i></i>' + tr('Feito para ', 'Made for ', 'Hecho para ') + N + '</span>' +
+    '<h1>' + tr('A loja do <em>' + N + '</em> vendendo sozinha', '<em>' + N + '</em>\'s store selling on its own', 'La tienda de <em>' + N + '</em> vendiendo sola') + '</h1>' +
+    '<p class="lead">' + tr('Montei esta página com o nome de vocês para mostrar como fica: o <b>site da loja</b> e o <b>bot do Discord</b>, os dois ligados, com o pagamento confirmando sozinho e a entrega no automático. Toque para ver funcionando.',
+      'I built this page with your name to show how it looks: your <b>store website</b> and your <b>Discord bot</b>, connected, with payments confirming on their own and automatic delivery. Tap to see it working.',
+      'Armé esta página con su nombre para mostrar cómo queda: el <b>sitio de la tienda</b> y el <b>bot de Discord</b>, conectados, con el pago confirmándose solo y la entrega automática. Toca para verlo funcionando.') + '</p>' +
+    '<ul class="selos"><li>' + tr(BR ? 'Pix que confirma sozinho' : 'Pagamento automático', 'Automatic payments', 'Pago automático') + '</li><li>' + tr('Entrega com chat', 'Delivery chat', 'Entrega con chat') + '</li><li>' + tr('Bot no Discord', 'Discord bot', 'Bot en Discord') + '</li><li>' + tr('Sem comissão de marketplace', 'No marketplace fees', 'Sin comisión de marketplace') + '</li></ul>' +
+    '<ul class="roteiro">' +
+      '<li><a href="#loja"><span class="num">1</span><div><b>' + tr('A loja', 'The store', 'La tienda') + '</b><span>' + tr('Uma compra do começo ao fim, no celular.', 'A purchase from start to finish, on the phone.', 'Una compra de principio a fin, en el celular.') + '</span></div></a></li>' +
+      '<li><a href="#discord"><span class="num">2</span><div><b>' + tr('O bot do Discord', 'The Discord bot', 'El bot de Discord') + '</b><span>' + tr('Vendendo e entregando dentro do servidor.', 'Selling and delivering inside your server.', 'Vendiendo y entregando dentro del servidor.') + '</span></div></a></li>' +
+      '<li><a href="#exemplos"><span class="num">3</span><div><b>' + tr('Mais estilos', 'More styles', 'Más estilos') + '</b><span>' + tr('Outros visuais para a loja de vocês.', 'Other looks for your store.', 'Otros diseños para su tienda.') + '</span></div></a></li>' +
+    '</ul></div></section>' +
+
+    '<section class="sec alt" id="loja"><div class="wrap"><div class="tit"><span class="num">1</span><h2>' + tr('A <em>loja</em>', 'The <em>store</em>', 'La <em>tienda</em>') + '</h2></div>' +
+    '<p class="s">' + tr('O site próprio do ' + N + ', no estilo ' + esc(EST[0]) + '. Toque em <b>Ver uma compra</b> ou nos produtos.', N + '\'s own website, in the ' + esc(EST[0]) + ' style. Tap <b>Watch a purchase</b> or the products.', 'El sitio propio de ' + N + ', en el estilo ' + esc(EST[0]) + '. Toca <b>Ver una compra</b> o los productos.') + '</p>' +
+    '<div class="duas"><div class="cel" id="cel"><div class="tela"><div class="toque-dedo" id="dedo"></div>' +
+      '<div class="lj-top"><span class="lj-logo">' + esc(sigla) + '</span><div class="lj-nome">' + N + '<small>' + J + ' · ' + tr('loja oficial', 'official store', 'tienda oficial') + '</small></div><span class="lj-cart">🛒<b id="cartN">1</b></span></div>' +
+      '<div class="lj-corpo">' +
+        '<div class="lj-v" id="v1"><div class="lj-banner"><b>' + tr('Entrega na hora', 'Instant delivery', 'Entrega al instante') + '</b><span>' + tr('Pagou, confirmou, recebeu.', 'Pay, confirm, receive.', 'Pagas, se confirma, recibes.') + '</span></div><div class="lj-grade">' +
+          PROD.map(function (p, i) { return '<button class="lj-p" data-p="' + i + '"><i>' + p[0] + '</i><b>' + esc(p[1]) + '</b><span>' + preco(p[2]) + '</span></button>'; }).join('') + '</div></div>' +
+        '<div class="lj-v fora" id="v2"><b style="font-size:17px">' + tr('Seu carrinho', 'Your cart', 'Tu carrito') + '</b><div class="lj-linha"><span id="cItem"></span><span id="cPreco"></span></div><div class="lj-linha"><span>' + tr('Entrega', 'Delivery', 'Entrega') + '</span><span style="color:var(--gr)">' + tr('automática', 'automatic', 'automática') + '</span></div>' +
+          '<button class="lj-bt" id="btPagar">' + (BR ? 'Pagar com Pix' : tr('', 'Pay now', 'Pagar ahora')) + '</button></div>' +
+        '<div class="lj-v fora" id="v3" style="text-align:center"><b style="font-size:17px">' + (BR ? 'Pix' : tr('', 'Payment', 'Pago')) + '</b>' +
+          (BR ? '<div class="qr" id="qr"></div><p style="font-size:12px;color:#c9bdea;margin:0 0 12px">' + 'Copia e cola: 00020126…' + '</p>'
+              : '<p style="font-size:13px;color:#c9bdea;margin:22px 0">' + tr('', 'Card · PayPal · crypto: the gateway you already use', 'Tarjeta · PayPal · cripto: el que ya usas') + '</p>') +
+          '<div class="espera">' + tr('Esperando o pagamento…', 'Waiting for payment…', 'Esperando el pago…') + '</div></div>' +
+        '<div class="lj-v fora" id="v4" style="text-align:center"><div class="ok-grande">✓</div><b style="font-size:18px">' + tr('Pagamento confirmado', 'Payment confirmed', 'Pago confirmado') + '</b><p style="font-size:13px;color:#c9bdea;margin:6px 0 0">' + tr('Ninguém precisou conferir nada.', 'No one had to check anything.', 'Nadie tuvo que revisar nada.') + '</p>' +
+          '<div class="lj-chat" style="text-align:left"><p><b>' + N + ':</b> ' + tr('Pedido #1042 recebido! Já estou entregando.', 'Order #1042 received! Delivering now.', '¡Pedido #1042 recibido! Ya estoy entregando.') + '</p><p id="entregue" style="opacity:0;transition:opacity .4s"><b>' + N + ':</b> ' + tr('Entregue ✅ Bom jogo!', 'Delivered ✅ Have fun!', 'Entregado ✅ ¡Buen juego!') + '</p></div></div>' +
+      '</div></div></div>' +
+      '<div>' + lista('pL', passosLoja.filter(Boolean)) + '<div class="tocar"><button class="btn" id="verLoja">▶ ' + tr('Ver uma compra', 'Watch a purchase', 'Ver una compra') + '</button></div>' +
+      '<p class="nota">' + tr('Produtos e valores de exemplo. Na loja de vocês entram os seus.', 'Sample products and prices. Your store gets yours.', 'Productos y valores de ejemplo. En su tienda van los suyos.') + '</p></div></div></div></section>' +
+
+    '<section class="sec" id="discord"><div class="wrap"><div class="tit"><span class="num">2</span><h2>' + tr('O bot do <em>Discord</em>', 'The <em>Discord</em> bot', 'El bot de <em>Discord</em>') + '</h2></div>' +
+    '<p class="s">' + tr('O mesmo estoque e os mesmos pedidos da loja, dentro do servidor do ' + N + '. Quem já vende pelo Discord pode começar só pelo bot.', 'The same stock and orders as the store, inside ' + N + '\'s server. If you already sell on Discord, you can start with just the bot.', 'El mismo stock y los mismos pedidos de la tienda, dentro del servidor de ' + N + '. Si ya vendes por Discord, puedes empezar solo con el bot.') + '</p>' +
+    '<div class="duas dcx"><div class="dc"><div class="dc-lado"><div class="dc-srv"><span class="lj-logo">' + esc(sigla) + '</span>' + N + '</div>' +
+      '<div class="dc-cat">' + tr('Loja', 'Store', 'Tienda') + '</div><div class="dc-can on" id="canLoja"># ' + tr('comprar', 'buy', 'comprar') + '</div><div class="dc-can"># ' + tr('avaliações', 'reviews', 'reseñas') + '</div>' +
+      '<div class="dc-cat">' + tr('Equipe', 'Staff', 'Equipo') + '</div><div class="dc-can" id="canEq"># ' + tr('vendas', 'sales', 'ventas') + '<span class="pt"></span></div><div class="dc-can"># tickets</div></div>' +
+      '<div class="dc-main"><div class="dc-head"># <b id="dcCanal">' + tr('comprar', 'buy', 'comprar') + '</b><span>· ' + N + '</span><div class="tab"><button class="on" data-c="loja">' + tr('Cliente', 'Customer', 'Cliente') + '</button><button data-c="eq">' + tr('Equipe', 'Staff', 'Equipo') + '</button></div></div>' +
+      '<div class="dc-msgs" id="dcLoja"></div><div class="dc-msgs" id="dcEq" hidden></div><div class="dc-dig" id="dcDig">' + tr('Conversar em #comprar', 'Message #buy', 'Escribir en #comprar') + '</div></div></div>' +
+      '<div>' + lista('pD', passosDc) + '<div class="tocar"><button class="btn" id="verDc">▶ ' + tr('Ver o bot vendendo', 'Watch the bot sell', 'Ver el bot vendiendo') + '</button></div></div></div></div></section>' +
+
+    '<section class="sec alt" id="ganhos"><div class="wrap"><h2>' + tr('O que muda para o <em>' + N + '</em>', 'What changes for <em>' + N + '</em>', 'Qué cambia para <em>' + N + '</em>') + '</h2><p class="s" style="margin-top:12px">' + tr('No dia a dia da loja:', 'In the store\'s day to day:', 'En el día a día de la tienda:') + '</p><div class="cards">' +
+      [['⏱️', tr('Vende de madrugada', 'Sells while you sleep', 'Vende de madrugada'), tr('O pagamento confirma e a entrega começa mesmo com ninguém online.', 'Payment confirms and delivery starts even with no one online.', 'El pago se confirma y la entrega empieza aunque nadie esté conectado.')],
+       ['🧾', tr('Fim do comprovante na mão', 'No more manual receipts', 'Adiós al comprobante a mano'), tr('Ninguém confere print de pagamento: o sistema confirma sozinho.', 'No one checks payment screenshots: the system confirms on its own.', 'Nadie revisa capturas de pago: el sistema confirma solo.')],
+       ['🏪', tr('Cara de loja grande', 'Looks like a big store', 'Cara de tienda grande'), tr('Site próprio com o nome e o logo de vocês passa confiança para quem compra pela primeira vez.', 'Your own site with your name and logo builds trust with first-time buyers.', 'Un sitio propio con su nombre y logo da confianza a quien compra por primera vez.')],
+       ['💸', tr('Sem comissão por venda', 'No fee per sale', 'Sin comisión por venta'), tr('A venda é de vocês, sem marketplace ficando com uma parte de cada pedido.', 'The sale is yours, no marketplace taking a cut of every order.', 'La venta es suya, sin marketplace quedándose con parte de cada pedido.')],
+       ['📦', tr('Estoque sempre certo', 'Stock always right', 'Stock siempre al día'), tr('Baixa no pagamento, e o bot avisa a equipe quando está acabando.', 'It updates on payment, and the bot warns the team when it\'s running low.', 'Baja con el pago, y el bot avisa al equipo cuando se está acabando.')],
+       ['🔐', tr('Os dados ficam com vocês', 'Your data stays yours', 'Los datos son suyos'), tr('Clientes e pedidos são de vocês, com cópia de segurança todo dia.', 'Customers and orders are yours, backed up every day.', 'Clientes y pedidos son suyos, con copia de seguridad diaria.')]]
+      .map(function (k) { return '<div class="card"><i>' + k[0] + '</i><b>' + k[1] + '</b><span>' + k[2] + '</span></div>'; }).join('') + '</div></div></section>' +
+
+    '<section class="sec" id="exemplos"><div class="wrap"><div class="tit"><span class="num">3</span><h2>' + tr('Mais <em>estilos</em>', 'More <em>styles</em>', 'Más <em>estilos</em>') + '</h2></div>' +
+    '<p class="s">' + tr('Cada um é uma loja de demonstração funcionando. Abra e teste: o visual pode ser qualquer um destes, com o logo e o nome de vocês.', 'Each one is a working demo store. Open and try it: your look can be any of these, with your logo and name.', 'Cada uno es una tienda de demostración funcionando. Ábrela y pruébala: el diseño puede ser cualquiera de estos, con su logo y nombre.') + '</p>' +
+    '<div class="ex">' + exemplos.map(function (e, i) { var x = ESTILOS[e]; return '<a href="../demos/' + e + '.html" target="_blank" rel="noopener"' + (i === 0 ? ' class="seu"' : '') + '>' + (i === 0 ? '<span class="selo-seu">' + tr('O que eu faria para vocês', 'The one I\'d build for you', 'El que haría para ustedes') + '</span>' : '') + '<b>' + esc(x[0]) + '</b><span>' + esc(tr(x[1], x[1], x[1])) + '</span><br><em>' + tr('Abrir a loja ↗', 'Open the store ↗', 'Abrir la tienda ↗') + '</em></a>'; }).join('') +
+    '<a href="../vitrine.html#galeria" target="_blank" rel="noopener"><b>' + tr('Todos os 26 estilos', 'All 26 styles', 'Los 26 estilos') + '</b><span>' + tr('A galeria completa, com lojas e bots.', 'The full gallery, with stores and bots.', 'La galería completa, con tiendas y bots.') + '</span><br><em>' + tr('Ver a galeria ↗', 'See the gallery ↗', 'Ver la galería ↗') + '</em></a></div></div></section>' +
+
+    '<section class="sec alt" id="comecar"><div class="wrap"><div class="comecar"><h2>' + tr('Como <em>começar</em>', 'How to <em>start</em>', 'Cómo <em>empezar</em>') + '</h2><p class="s" style="margin-top:12px">' + tr('Sem compromisso:', 'No commitment:', 'Sin compromiso:') + '</p><ol>' +
+      '<li><span class="num">1</span><span>' + tr('Você escolhe o estilo que mais combina com a loja.', 'You pick the style that best fits your store.', 'Eliges el estilo que mejor va con tu tienda.') + '</span></li>' +
+      '<li><span class="num">2</span><span>' + tr('Eu monto um teste com o <b>logo e o nome</b> do ' + N + '.', 'I build a test with <b>' + N + '\'s logo and name</b>.', 'Armo una prueba con el <b>logo y el nombre</b> de ' + N + '.') + '</span></li>' +
+      '<li><span class="num">3</span><span>' + tr('Gostou, a gente combina o que entra e o prazo.', 'If you like it, we agree on what goes in and the timeline.', 'Si te gusta, acordamos qué incluye y el plazo.') + '</span></li></ol>' +
+      '<a class="btn wa" href="#">' + tr('Quero o teste com o meu logo', 'I want the test with my logo', 'Quiero la prueba con mi logo') + '</a></div></div></section>';
+
+  ligarWhats(tr('Oi Lucas! Vi a demonstração da loja do ' + c.nome + ' e quero o teste com o meu logo.', 'Hi Lucas! I saw the demo for ' + c.nome + ' and I want the test with my logo.', '¡Hola Lucas! Vi la demo de ' + c.nome + ' y quiero la prueba con mi logo.'));
+
+  // ── O QR de mentira (desenho, não é código de pagamento)
+  var qr = document.getElementById('qr');
+  if (qr) {
+    var s = '', T = 21;
+    function fd(x, y) {   // um dos três quadrados de canto (7x7)
+      if (x > 6 || y > 6) return null;
+      return x === 0 || x === 6 || y === 0 || y === 6 || (x >= 2 && x <= 4 && y >= 2 && y <= 4);
+    }
+    for (var y = 0; y < T; y++) for (var x = 0; x < T; x++) {
+      var v = fd(x, y); if (v === null) v = fd(T - 1 - x, y); if (v === null) v = fd(x, T - 1 - y);
+      if (v === null) v = (x === 7 || y === 7 || x === T - 8 || y === T - 8) && (x < 8 || y < 8 || (x < 8 && y > T - 9)) ? false : ((Math.sin((x * 31 + y * 17) * 12.9898) * 43758.5453) % 1 + 1) % 1 > .5;
+      s += '<i' + (v ? '' : ' class="b"') + '></i>';
+    }
+    qr.innerHTML = s;
+  }
+
+  // ── A loja: telas e o "Ver uma compra"
+  var telas = ['v1', 'v2', 'v3', 'v4'].map(function (id) { return document.getElementById(id); });
+  var pL = document.querySelectorAll('#pL li'), pD = document.querySelectorAll('#pD li');
+  // Cada parte (loja, discord) tem os próprios tempos: rodar uma não corta a outra.
+  var timers = { loja: [], dc: [] }, grupo = 'loja';
+  function limpar() { timers[grupo].forEach(clearTimeout); timers[grupo] = []; }
+  function em(ms, f) { timers[grupo].push(setTimeout(f, ms)); }
+  function tela(k) { telas.forEach(function (t, i) { t.className = 'lj-v' + (i < k ? ' atras' : (i > k ? ' fora' : '')); }); }
+  function passo(lista, k) { lista.forEach(function (li, i) { li.classList.toggle('on', i === k); }); }
+  var dedo = document.getElementById('dedo'), cel = document.getElementById('cel');
+  function tocar(el) {
+    if (!el) return;
+    var r = el.getBoundingClientRect(), base = cel.querySelector('.tela').getBoundingClientRect();
+    dedo.style.left = (r.left - base.left + r.width / 2) + 'px'; dedo.style.top = (r.top - base.top + r.height / 2) + 'px'; dedo.style.opacity = 1;
+    el.classList.add('toque'); setTimeout(function () { el.classList.remove('toque'); dedo.style.opacity = 0; }, 500);
+  }
+  function escolher(i) {
+    document.getElementById('cItem').textContent = PROD[i][1];
+    document.getElementById('cPreco').textContent = preco(PROD[i][2]);
+    document.getElementById('cartN').classList.add('v');
+    tela(1); passo(pL, 0);
+  }
+  function pagar() {
+    grupo = 'loja';
+    tela(2); passo(pL, 1);
+    em(2600, function () { tela(3); passo(pL, 2); });
+    em(4400, function () { document.getElementById('entregue').style.opacity = 1; passo(pL, pL.length - 1); });
+  }
+  document.querySelectorAll('.lj-p').forEach(function (b) { b.addEventListener('click', function () { grupo = 'loja'; limpar(); escolher(+b.dataset.p); }); });
+  document.getElementById('btPagar').addEventListener('click', function () { grupo = 'loja'; limpar(); pagar(); });
+  function rodarLoja() {
+    grupo = 'loja'; limpar(); tela(0); passo(pL, -1); document.getElementById('entregue').style.opacity = 0; document.getElementById('cartN').classList.remove('v');
+    var alvo = document.querySelector('.lj-p[data-p="2"]');
+    em(500, function () { tocar(alvo); });
+    em(1000, function () { escolher(2); });
+    em(2500, function () { tocar(document.getElementById('btPagar')); });
+    em(3000, function () { pagar(); });
+  }
+  document.getElementById('verLoja').addEventListener('click', rodarLoja);
+
+  // ── O Discord
+  var dcLoja = document.getElementById('dcLoja'), dcEq = document.getElementById('dcEq'), dig = document.getElementById('dcDig');
+  var hora = function () { var d = new Date(); return tr('Hoje às ', 'Today at ', 'Hoy a las ') + d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); };
+  function msg(onde, bot, quem, html) {
+    var m = document.createElement('div'); m.className = 'dc-m';
+    m.innerHTML = '<span class="dc-av' + (bot ? ' bot' : '') + '">' + (bot ? esc(sigla) : 'J') + '</span><div style="min-width:0"><div class="quem">' + quem + (bot ? '<small>BOT</small>' : '') + '<time>' + hora() + '</time></div><div class="txt">' + html + '</div></div>';
+    onde.appendChild(m); onde.scrollTop = onde.scrollHeight;
+  }
+  function verCanal(qual) {
+    var eq = qual === 'eq';
+    dcLoja.hidden = eq; dcEq.hidden = !eq;
+    document.getElementById('dcCanal').textContent = eq ? tr('vendas', 'sales', 'ventas') : tr('comprar', 'buy', 'comprar');
+    document.getElementById('canLoja').classList.toggle('on', !eq); document.getElementById('canEq').classList.toggle('on', eq);
+    if (eq) document.getElementById('canEq').classList.remove('novo');
+    document.querySelectorAll('.dc-head .tab button').forEach(function (b) { b.classList.toggle('on', b.dataset.c === qual); });
+  }
+  document.querySelectorAll('.dc-head .tab button').forEach(function (b) { b.addEventListener('click', function () { verCanal(b.dataset.c); }); });
+  var BOTN = esc(c.nome) + ' Bot', CMD = tr('/comprar', '/buy', '/comprar');
+  function rodarDc() {
+    grupo = 'dc'; limpar(); dcLoja.innerHTML = ''; dcEq.innerHTML = ''; verCanal('loja'); passo(pD, -1);
+    dig.className = 'dc-dig'; dig.textContent = tr('Conversar em #comprar', 'Message #buy', 'Escribir en #comprar');
+    em(400, function () { dig.className = 'dc-dig escreve'; dig.textContent = CMD + ' ' + ESCOLHA[1]; passo(pD, 0); });
+    em(1500, function () { dig.className = 'dc-dig'; dig.textContent = tr('Conversar em #comprar', 'Message #buy', 'Escribir en #comprar'); msg(dcLoja, false, 'jogador_77', '<code>' + CMD + '</code> ' + esc(ESCOLHA[1])); });
+    em(2700, function () {
+      passo(pD, 1);
+      msg(dcLoja, true, BOTN, '<div class="emb"><b>🛒 ' + esc(ESCOLHA[1]) + '</b>' + tr('Pedido #1042 criado. Pague para receber na hora.', 'Order #1042 created. Pay to receive it instantly.', 'Pedido #1042 creado. Paga para recibirlo al instante.') +
+        '<div class="campos"><div><span>' + tr('Valor', 'Total', 'Valor') + '</span>' + preco(ESCOLHA[2]) + '</div><div><span>' + tr('Pagamento', 'Payment', 'Pago') + '</span>' + (BR ? 'Pix' : tr('', 'Card / PayPal / crypto', 'Tarjeta / PayPal / cripto')) + '</div></div>' +
+        '<div class="dc-bts"><span>' + (BR ? 'Copiar Pix' : tr('', 'Pay now', 'Pagar ahora')) + '</span><span class="cinza">' + tr('Cancelar', 'Cancel', 'Cancelar') + '</span></div></div>');
+    });
+    em(5200, function () {
+      passo(pD, 2);
+      msg(dcLoja, true, BOTN, '<div class="emb ok"><b>✅ ' + tr('Pagamento confirmado', 'Payment confirmed', 'Pago confirmado') + '</b>' + tr('Pedido #1042 entregue: ' + esc(ESCOLHA[1]) + '. Bom jogo!', 'Order #1042 delivered: ' + esc(ESCOLHA[1]) + '. Have fun!', 'Pedido #1042 entregado: ' + esc(ESCOLHA[1]) + '. ¡Buen juego!') + '<div class="dc-bts"><span class="verde">⭐ ' + tr('Avaliar a compra', 'Rate the purchase', 'Calificar la compra') + '</span></div></div>');
+      msg(dcEq, true, BOTN, '<div class="emb ok"><b>💰 ' + tr('Nova venda', 'New sale', 'Nueva venta') + '</b>#1042 · ' + esc(ESCOLHA[1]) + ' · ' + preco(ESCOLHA[2]) + ' · ' + tr('entregue automaticamente', 'delivered automatically', 'entregado automáticamente') + '</div>');
+      document.getElementById('canEq').classList.add('novo');
+    });
+    em(6800, function () {
+      msg(dcEq, true, BOTN, '<div class="emb aviso"><b>⚠️ ' + tr('Estoque baixo', 'Low stock', 'Stock bajo') + '</b>' + esc(ESCOLHA[1]) + ': ' + tr('restam 3. Reponha no painel.', '3 left. Restock in the dashboard.', 'quedan 3. Repón en el panel.') + '</div>');
+    });
+    em(8000, function () { passo(pD, 3); verCanal('eq'); });
+  }
+  document.getElementById('verDc').addEventListener('click', rodarDc);
+
+  // Começa sozinho quando a parte aparece na tela (uma vez cada).
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var feito = {};
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting || feito[e.target.id]) return;
+        feito[e.target.id] = 1;
+        if (e.target.id === 'cel') rodarLoja(); else rodarDc();
+      });
+    }, { threshold: .55 });
+    io.observe(cel); io.observe(document.querySelector('.dc'));
+  }
+})();
+</script>
+</body></html>

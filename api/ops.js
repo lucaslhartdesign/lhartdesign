@@ -121,7 +121,7 @@ async function monitor(redis) {
 // Sem chave: só encurta link das NOSSAS duas páginas, com um ?d= que abre
 // (JSON com nome e validade) — quem forjar um, forja o link longo do mesmo
 // jeito. Limite por IP. O apelido vive até 30 dias depois da validade.
-const PAGINAS_CURTAS = { proposta: '/previa/proposta.html', restaurante: '/previa/restaurante.html' };
+const PAGINAS_CURTAS = { proposta: '/previa/proposta.html', restaurante: '/previa/restaurante.html', jogos: '/previa/loja-jogos.html' };
 const SITE = 'https://www.lhartdesign.com';
 
 function lerD(d) {
