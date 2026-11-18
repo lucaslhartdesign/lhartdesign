@@ -164,6 +164,70 @@ async function encurtar(req, res, redis) {
   res.status(500).json({ error: 'colisao' });
 }
 
+// ── Aviso no celular com respostas prontas (18/11/2026) ─────────────────────
+// O Lucas: "avisar no meu WhatsApp quando alguém tiver interesse, se eu não vir,
+// e me dar as opções de resposta já com a tradução, para ele enviar".
+//   POST /api/ops?a=alerta    (OPS_KEY) { id, texto, opcoes: [str] } -> manda no
+//        Telegram e no WhatsApp (CallMeBot), cada opção com um link de um toque.
+//   GET  /r/<tok>/<n>         (público: o tok de 16 bytes é a chave) -> guarda a escolha.
+//   POST /api/ops?a=escolhas  (OPS_KEY) -> o programa pega as escolhas e envia.
+async function alerta(req, res, redis) {
+  const b = bodyOf(req);
+  const id = clean(b.id, 60).replace(/[^\w:-]/g, '');
+  const texto = clean(b.texto, 1500).trim();
+  const opcoes = (Array.isArray(b.opcoes) ? b.opcoes : []).slice(0, 3).map(function (o) { return clean(o, 900).trim(); }).filter(Boolean);
+  if (!id || !texto) { res.status(400).json({ error: 'dados' }); return; }
+  if (await limited(redis, 'rl:ops:alerta', 60, 3600)) { res.status(429).json({ error: 'limite' }); return; }
+  const tok = crypto.randomBytes(12).toString('base64url');
+  await redis.set('alerta:' + tok, JSON.stringify({ id: id, n: opcoes.length }), { ex: 86400 * 3 });
+  var corpo = texto;
+  opcoes.forEach(function (o, i) {
+    corpo += '\n\n' + (i + 1) + ') ' + o + '\n👉 Enviar a ' + (i + 1) + ': ' + SITE + '/r/' + tok + '/' + (i + 1);
+  });
+  if (corpo.length > 3900) corpo = corpo.slice(0, 3890) + '…';
+  const enviado = await avisar(redis, corpo, true);
+  res.status(200).json({ ok: true, enviado: enviado, tok: tok });
+}
+
+function paginaEscolha(res, ok, titulo, texto) {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.status(ok ? 200 : 410).end('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">' +
+    '<title>' + titulo + '</title><body style="margin:0;min-height:100vh;display:grid;place-items:center;background:#161826;color:#f1f1f5;font:16px/1.5 system-ui,sans-serif;text-align:center;padding:24px">' +
+    '<div><div style="font-size:64px">' + (ok ? '✅' : '⏳') + '</div><h1 style="font-size:22px;margin:10px 0">' + titulo + '</h1><p style="color:#a3a7ba;max-width:30ch;margin:0 auto">' + texto + '</p></div></body>');
+}
+
+async function escolher(req, res, redis) {
+  const tok = String((req.query && req.query.t) || '').replace(/[^\w-]/g, '').slice(0, 32);
+  const n = parseInt((req.query && req.query.n) || '0', 10);
+  let dados = null;
+  try { dados = tok ? JSON.parse(await redis.get('alerta:' + tok) || 'null') : null; } catch { dados = null; }
+  if (dados && typeof dados === 'string') { try { dados = JSON.parse(dados); } catch { dados = null; } }
+  if (!dados || !(n >= 1 && n <= dados.n)) { paginaEscolha(res, false, 'Este link não vale mais', 'Ele já foi usado ou venceu. Responda pela Caixa de entrada do programa.'); return; }
+  // ⚠ O WhatsApp e o Telegram ABREM o link sozinhos para montar a prévia: um GET
+  // não pode escolher nada. O GET mostra o botão; só o toque nele (POST) conta.
+  if (req.method !== 'POST') {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(200).end('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">' +
+      '<title>Enviar a opção ' + n + '</title><body style="margin:0;min-height:100vh;display:grid;place-items:center;background:#161826;color:#f1f1f5;font:16px/1.5 system-ui,sans-serif;text-align:center;padding:24px">' +
+      '<form method="post"><div style="font-size:56px">💬</div><h1 style="font-size:22px;margin:10px 0">Enviar a opção ' + n + ' ao cliente?</h1>' +
+      '<p style="color:#a3a7ba;max-width:30ch;margin:0 auto 22px">O programa manda a resposta pelo WhatsApp ou Instagram dele e te confirma aqui.</p>' +
+      '<button style="padding:16px 30px;border:0;border-radius:99px;background:#4be39a;color:#0d1a13;font:800 17px system-ui">Enviar esta resposta</button></form></body>');
+    return;
+  }
+  // Um toque só: o link morre ao ser usado (não manda duas vezes a mesma resposta).
+  const primeiro = await redis.set('alerta:usado:' + tok, '1', { ex: 86400 * 3, nx: true });
+  if (!primeiro) { paginaEscolha(res, false, 'Você já escolheu', 'A resposta deste aviso já foi escolhida. O programa envia (ou já enviou) e te avisa aqui.'); return; }
+  await redis.rpush('alerta:escolhas', JSON.stringify({ id: dados.id, n: n, em: Date.now() }));
+  await redis.expire('alerta:escolhas', 86400 * 3);
+  paginaEscolha(res, true, 'Opção ' + n + ' escolhida', 'O programa envia para o cliente em até 1 minuto (com ele aberto) e te confirma no celular.');
+}
+
+async function escolhas(req, res, redis) {
+  const lista = (await redis.lrange('alerta:escolhas', 0, 49)) || [];
+  if (lista.length) await redis.ltrim('alerta:escolhas', lista.length, -1);
+  res.status(200).json({ ok: true, escolhas: lista.map(function (x) { return typeof x === 'string' ? JSON.parse(x) : x; }) });
+}
+
 async function ir(req, res, redis) {
   const id = String((req.query && req.query.id) || '');
   let valor = null;
@@ -179,6 +243,12 @@ async function ir(req, res, redis) {
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   const acao = (req.query && req.query.a) || '';
+  if (acao === 'escolher') {
+    let r;
+    try { r = getRedis(); } catch { paginaEscolha(res, false, 'Fora do ar', 'Tente de novo em instantes.'); return; }
+    try { await escolher(req, res, r); } catch (e) { paginaEscolha(res, false, 'Não deu certo', 'Tente de novo em instantes.'); }
+    return;
+  }
   if (acao === 'ir' || (acao === 'curto' && req.method === 'POST')) {
     let r;
     try { r = getRedis(); } catch {
@@ -205,6 +275,8 @@ module.exports = async (req, res) => {
       res.status(200).json({ ok: true, enviado });
       return;
     }
+    if (a === 'alerta' && req.method === 'POST') { await alerta(req, res, redis); return; }
+    if (a === 'escolhas' && req.method === 'POST') { await escolhas(req, res, redis); return; }
     res.status(400).json({ error: 'acao' });
   } catch (e) {
     res.status(500).json({ error: String((e && e.message) || e) });
