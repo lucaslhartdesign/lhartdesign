@@ -45,13 +45,12 @@ async function avisa(redis, meta, text) {
     if (dest) tarefas.push(tg('sendMessage', { chat_id: dest, text: resumo, disable_web_page_preview: true }));
   }
 
-  if (process.env.CALLMEBOT_PHONE && process.env.CALLMEBOT_KEY) {
+  const cmb = require('./_lib/callmebot');
+  if (cmb.ligado()) {
     let pode = false;
     try { pode = !(await limited(redis, 'rl:wa:hora', 20, 3600)); } catch { pode = false; }
     if (pode) {
-      const u = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(String(process.env.CALLMEBOT_PHONE).replace(/\D/g, '')) +
-        '&text=' + encodeURIComponent(resumo) + '&apikey=' + encodeURIComponent(process.env.CALLMEBOT_KEY);
-      tarefas.push(chamar(u));
+      tarefas.push(chamar(cmb.url(resumo)));
     }
   }
   await Promise.allSettled(tarefas); // um aviso que falha não derruba os outros nem a mensagem do visitante

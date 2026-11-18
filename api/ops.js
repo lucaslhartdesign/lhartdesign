@@ -58,12 +58,12 @@ async function avisar(redis, texto, urgente) {
     const dest = await tgChatId(redis);
     if (dest) tarefas.push(tg('sendMessage', { chat_id: dest, text: texto, disable_web_page_preview: true }));
   }
-  if (urgente && process.env.CALLMEBOT_PHONE && process.env.CALLMEBOT_KEY) {
+  const cmb = require('./_lib/callmebot');
+  if (urgente && cmb.ligado()) {
     let pode = false;
     try { pode = !(await limited(redis, 'rl:wa:hora', 20, 3600)); } catch { pode = false; }
     if (pode) {
-      const u = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(String(process.env.CALLMEBOT_PHONE).replace(/\D/g, '')) +
-        '&text=' + encodeURIComponent(texto) + '&apikey=' + encodeURIComponent(process.env.CALLMEBOT_KEY);
+      const u = cmb.url(texto);
       const ctl = new AbortController();
       setTimeout(() => ctl.abort(), 4000);
       tarefas.push(fetch(u, { signal: ctl.signal }).catch(() => null));

@@ -12,7 +12,8 @@ const { token, webhookSecret, tg, chatId } = require('../_lib/telegram');
 module.exports = async (req, res) => {
   if (!(await requireAuth(req, res))) return;
   res.setHeader('Cache-Control', 'no-store');
-  const whatsapp = !!(process.env.CALLMEBOT_PHONE && process.env.CALLMEBOT_KEY);
+  const cmb = require('../_lib/callmebot');
+  const whatsapp = cmb.ligado();
   let redis;
   try { redis = getRedis(); } catch { res.status(503).json({ error: 'indisponivel' }); return; }
   try {
@@ -51,8 +52,7 @@ module.exports = async (req, res) => {
         try {
           const ctl = new AbortController();
           const t = setTimeout(() => ctl.abort(), 8000);
-          const u = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(String(process.env.CALLMEBOT_PHONE).replace(/\D/g, '')) +
-            '&text=' + encodeURIComponent('🔔 Teste: os avisos do site da Lhart Design estão chegando aqui.') + '&apikey=' + encodeURIComponent(process.env.CALLMEBOT_KEY);
+          const u = cmb.url('🔔 Teste: os avisos do site da Lhart Design estão chegando aqui.');
           const r = await fetch(u, { signal: ctl.signal });
           clearTimeout(t);
           out.whatsapp = r.ok ? 'enviado' : 'recusado (' + r.status + ')';
