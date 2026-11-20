@@ -228,6 +228,82 @@ async function escolhas(req, res, redis) {
   res.status(200).json({ ok: true, escolhas: lista.map(function (x) { return typeof x === 'string' ? JSON.parse(x) : x; }) });
 }
 
+// ── Caixa no celular (20/11/2026) ───────────────────────────────────────────
+// O Lucas quer mandar a resposta pronta (ou gerar a do app e enviar) pelo celular,
+// com o PC ligado. O programa (SniperLeads, caixa_remota.py) traz a lista de quem
+// espera a cada ~1 min e busca o que ele tocou a cada 20 s; o envio sai do PC.
+//   GET  /caixa?k=<chave>              -> a página (k = HMAC da OPS_KEY; não fica guardada)
+//   GET  /api/ops?a=caixa_dados&k=     -> lista + resultados + quando o PC falou por último
+//   POST /api/ops?a=caixa_cmd&k=       -> { acao, phone, texto, tipo, rascunho_id } entra na fila
+//   POST /api/ops?a=caixa_sync (OPS_KEY) -> o PC entrega lista/resultados e leva a fila
+const CAIXA_HTML = require('./_lib/caixa_html');
+const CAIXA_ACOES = ['enviar', 'material', 'escrever', 'rascunhar', 'descartar'];
+
+function chaveCaixa() {
+  const k = String(process.env.OPS_KEY || '');
+  if (k.length < 16) return '';
+  return crypto.createHmac('sha256', k).update('caixa-celular').digest('base64url').slice(0, 32);
+}
+
+function caixaOk(req) {
+  const esperado = chaveCaixa();
+  const dado = String((req.query && req.query.k) || (req.headers && req.headers['x-caixa']) || '');
+  if (!esperado || dado.length !== esperado.length) return false;
+  return crypto.timingSafeEqual(Buffer.from(dado), Buffer.from(esperado));
+}
+
+function lido(v) {
+  if (v == null) return null;
+  if (typeof v === 'string') { try { return JSON.parse(v); } catch { return v; } }
+  return v;
+}
+
+async function caixaSync(req, res, redis) {
+  const b = bodyOf(req);
+  const tarefas = [redis.set('caixa:vivo', String(Date.now()), { ex: 86400 * 3 })];
+  if (Array.isArray(b.itens)) {
+    const v = JSON.stringify({ itens: b.itens.slice(0, 40), em: Date.now(), estado: b.estado || {} });
+    if (v.length < 900000) tarefas.push(redis.set('caixa:itens', v, { ex: 86400 * 2 }));
+  }
+  if (b.resultados && typeof b.resultados === 'object') {
+    const v = JSON.stringify(b.resultados);
+    if (v.length < 200000) tarefas.push(redis.set('caixa:res', v, { ex: 86400 * 2 }));
+  }
+  await Promise.all(tarefas);
+  const lista = (await redis.lrange('caixa:cmds', 0, 19)) || [];
+  if (lista.length) await redis.ltrim('caixa:cmds', lista.length, -1);
+  res.status(200).json({ ok: true, cmds: lista.map(lido).filter(Boolean) });
+}
+
+async function caixaDados(req, res, redis) {
+  const [itens, resultados, vivo, fila] = await Promise.all([
+    redis.get('caixa:itens'), redis.get('caixa:res'), redis.get('caixa:vivo'), redis.llen('caixa:cmds')]);
+  res.status(200).json({ ok: true, dados: lido(itens) || { itens: [] }, resultados: lido(resultados) || {},
+    vivo: parseInt(vivo || '0', 10) || 0, agora: Date.now(), na_fila: fila || 0 });
+}
+
+async function caixaCmd(req, res, redis) {
+  const b = bodyOf(req);
+  const acao = clean(b.acao, 20);
+  if (CAIXA_ACOES.indexOf(acao) < 0) { res.status(400).json({ error: 'acao' }); return; }
+  if (await limited(redis, 'rl:ops:caixa_cmd', 120, 3600)) { res.status(429).json({ error: 'limite' }); return; }
+  const cmd = {
+    id: crypto.randomBytes(8).toString('base64url'), acao: acao,
+    phone: clean(b.phone, 40), texto: clean(b.texto, 2000).trim(), tipo: clean(b.tipo, 30),
+    rascunho_id: parseInt(b.rascunho_id || '0', 10) || null, em: Date.now(),
+  };
+  await redis.rpush('caixa:cmds', JSON.stringify(cmd));
+  await redis.expire('caixa:cmds', 86400);
+  res.status(200).json({ ok: true, id: cmd.id });
+}
+
+function caixaPagina(res) {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  res.status(200).end(CAIXA_HTML);
+}
+
 async function ir(req, res, redis) {
   const id = String((req.query && req.query.id) || '');
   let valor = null;
@@ -259,6 +335,18 @@ module.exports = async (req, res) => {
     catch (e) { res.status(500).json({ error: String((e && e.message) || e) }); }
     return;
   }
+  if (acao === 'caixa' || acao === 'caixa_dados' || acao === 'caixa_cmd') {
+    if (!caixaOk(req)) { paginaEscolha(res, false, 'Link sem permissão', 'Abra pelo link que o programa mandou no seu WhatsApp/Telegram.'); return; }
+    if (acao === 'caixa') { caixaPagina(res); return; }
+    let r;
+    try { r = getRedis(); } catch { res.status(503).json({ error: 'indisponivel' }); return; }
+    try {
+      if (acao === 'caixa_dados') { await caixaDados(req, res, r); return; }
+      if (req.method !== 'POST') { res.status(405).json({ error: 'metodo' }); return; }
+      await caixaCmd(req, res, r);
+    } catch (e) { res.status(500).json({ error: String((e && e.message) || e) }); }
+    return;
+  }
   if (!chaveOk(req)) { res.status(404).end(); return; }
   const a = (req.query && req.query.a) || '';
   let redis;
@@ -277,6 +365,7 @@ module.exports = async (req, res) => {
     }
     if (a === 'alerta' && req.method === 'POST') { await alerta(req, res, redis); return; }
     if (a === 'escolhas' && req.method === 'POST') { await escolhas(req, res, redis); return; }
+    if (a === 'caixa_sync' && req.method === 'POST') { await caixaSync(req, res, redis); return; }
     res.status(400).json({ error: 'acao' });
   } catch (e) {
     res.status(500).json({ error: String((e && e.message) || e) });
