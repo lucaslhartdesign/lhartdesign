@@ -237,7 +237,9 @@ async function escolhas(req, res, redis) {
 //   POST /api/ops?a=caixa_cmd&k=       -> { acao, phone, texto, tipo, rascunho_id } entra na fila
 //   POST /api/ops?a=caixa_sync (OPS_KEY) -> o PC entrega lista/resultados e leva a fila
 const CAIXA_HTML = require('./_lib/caixa_html');
-const CAIXA_ACOES = ['enviar', 'material', 'escrever', 'rascunhar', 'descartar'];
+const CAIXA_ACOES = ['enviar', 'material', 'escrever', 'rascunhar', 'descartar',
+  // 21/11/2026: e-mail, recusou (motivo), buscar clientes, criar página, piloto e atendente
+  'email', 'recusar', 'buscar', 'pagina', 'piloto', 'atendente'];
 
 function chaveCaixa() {
   const k = String(process.env.OPS_KEY || '');
@@ -290,6 +292,7 @@ async function caixaCmd(req, res, redis) {
   const cmd = {
     id: crypto.randomBytes(8).toString('base64url'), acao: acao,
     phone: clean(b.phone, 40), texto: clean(b.texto, 2000).trim(), tipo: clean(b.tipo, 30),
+    para: clean(b.para, 120).trim(), nome: clean(b.nome, 60).trim(), idioma: clean(b.idioma, 5),
     rascunho_id: parseInt(b.rascunho_id || '0', 10) || null, em: Date.now(),
   };
   await redis.rpush('caixa:cmds', JSON.stringify(cmd));
