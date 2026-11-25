@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR" data-lp="restaurantes"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#161826">
+<title>Mais clientes e pedidos para o seu restaurante — Lhart Design</title>
+<meta name="description" content="Cardápio digital com QR Code na mesa, fotos e vídeos que dão fome e anúncios no Instagram para o seu restaurante. Sem comissão por pedido.">
+<meta property="og:type" content="website"><meta property="og:title" content="Mais clientes e pedidos para o seu restaurante — Lhart Design">
+<meta property="og:description" content="Cardápio por QR Code, fotos, vídeos e anúncios no Instagram. Sem comissão por pedido.">
+<meta property="og:image" content="https://www.lhartdesign.com/assets/og-lhart.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#161826;--p:#1c1e2e;--p2:#232532;--ln:#34374a;--gold:#9184d9;--gold2:#d2cefd;--ac:#b5abfc;--gr:#4be39a;--am:#ffd98a;--ink:#f1f1f5;--mu:#a3a7ba;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+.top{position:sticky;top:0;z-index:30;background:#161826ec;backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.top img{display:block;height:38px;width:auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 26px;border-radius:99px;background:var(--gr);color:#0d1a13;font:800 16px Inter,sans-serif;text-decoration:none;border:0;cursor:pointer;box-shadow:0 10px 30px #4be39a40;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}
+.btn.g{background:#ffffff0d;color:var(--ink);border:1px solid #ffffff2e;box-shadow:none}
+.top .btn{min-height:42px;padding:0 18px;font-size:14px;box-shadow:none}
+h1,h2,h3{margin:0}
+h1{font:400 clamp(46px,9vw,88px)/.94 'Bebas Neue',sans-serif;letter-spacing:.01em;overflow-wrap:anywhere}
+h1 em,h2 em{font-style:normal;background:linear-gradient(100deg,#d2cefd,#b5abfc 40%,#9184d9);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font:400 clamp(34px,5.6vw,54px)/1 'Bebas Neue',sans-serif}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;background:#9184d929;border:1px solid #b5abfc66;color:var(--gold2);font:800 12px Inter;letter-spacing:.09em;text-transform:uppercase}
+.hero{position:relative;overflow:hidden;padding:48px 0 44px;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-30% -10% auto -10%;height:120%;z-index:-1;background:radial-gradient(45% 55% at 18% 35%,#9184d955,transparent 70%),radial-gradient(35% 45% at 85% 20%,#4be39a22,transparent 70%)}
+.hero .cols{display:grid;gap:30px;align-items:center}
+.hero h1{margin:18px 0 16px}
+.lead{max-width:56ch;color:#dcdeea;font-size:clamp(17px,2.3vw,19px);line-height:1.6;margin:0 0 22px}
+.lead b{color:#fff}
+.selos{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;padding:0;list-style:none}
+.selos li{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:99px;background:#ffffff0b;border:1px solid #ffffff1f;font-size:14px;font-weight:600}
+.selos li::before{content:"✓";display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--gr);color:#0d1a13;font-size:11px;font-weight:900}
+.acoes{display:flex;flex-wrap:wrap;gap:10px}
+.foto{display:none;border-radius:24px;overflow:hidden;border:1px solid #9184d955;box-shadow:0 30px 80px #0008}
+.foto img{display:block;width:100%;height:auto}
+@media(min-width:860px){.hero .cols{grid-template-columns:1.25fr .75fr}.foto{display:block}}
+.sec{padding:56px 0;border-top:1px solid var(--ln)}
+.sec.alt{background:linear-gradient(180deg,#1c1e2e,#191b29)}
+.s{color:#c3c6d4;font-size:17px;line-height:1.6;max-width:62ch;margin:12px 0 28px}
+.s b{color:#fff}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{position:relative;display:flex;flex-direction:column;padding:22px;border-radius:22px;background:linear-gradient(160deg,#ffffff08,#232532);border:1px solid var(--ln)}
+.card.dest{border-color:#b5abfc88;box-shadow:0 0 0 1px #9184d955,0 18px 50px #9184d92e}
+.card i{font-style:normal;font-size:30px}
+.card h3{margin:10px 0 6px;font-size:19px}
+.card p{margin:0 0 12px;color:var(--mu);font-size:15px;line-height:1.5}
+.card ul{margin:0 0 16px;padding:0;list-style:none;display:grid;gap:8px}
+.card li{display:flex;gap:9px;font-size:15px;line-height:1.4;color:#dcdeea}
+.card li::before{content:"✓";color:var(--gr);font-weight:900}
+.preco{margin-top:auto;padding-top:14px;border-top:1px solid var(--ln)}
+.preco small{display:block;color:var(--mu);font-size:13px}
+.preco b{font:400 36px/1.1 'Bebas Neue',sans-serif;letter-spacing:.02em;color:var(--gold2)}
+.preco b span{font:600 15px Inter;color:var(--mu);letter-spacing:0}
+.bonus{margin:0 0 16px;padding:11px 13px;border-radius:14px;background:#4be39a14;border:1px solid #4be39a55;color:#c9f7df;font-size:14px;line-height:1.45}
+.bonus b{color:#fff}
+.opc{display:inline-block;margin-left:8px;padding:3px 10px;border-radius:99px;border:1px solid #f2c66d66;background:#f2c66d14;color:var(--am);font:800 11px Inter;letter-spacing:.08em;text-transform:uppercase;vertical-align:middle}
+.aviso{margin:0 0 16px;padding:11px 13px;border-radius:14px;background:#f2c66d14;border:1px solid #f2c66d55;border-left:4px solid #f2c66d;color:#f0e3c2;font-size:14px;line-height:1.5}
+.extra{margin-top:14px;padding:18px 22px;border-radius:18px;background:var(--p2);border:1px solid var(--ln);display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+.extra b{font-size:17px}.extra span{color:var(--mu);font-size:15px}
+.passos{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:0;padding:0;list-style:none}
+.passos li{display:flex;gap:14px;padding:18px;border-radius:18px;background:var(--p2);border:1px solid var(--ln)}
+.passos .n{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e4e0ff,#9184d9);color:#0b0c14;font:900 16px Inter}
+.passos b{display:block;margin-bottom:3px}.passos span{color:var(--mu);font-size:15px;line-height:1.45}
+.mais{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.mais div{padding:20px;border-radius:20px;background:var(--p2);border:1px solid var(--ln)}
+.mais i{font-style:normal;font-size:28px}.mais h3{margin:8px 0 4px;font-size:17px}.mais p{margin:0;color:var(--mu);font-size:15px;line-height:1.5}
+.faq{display:grid;gap:10px;max-width:800px}
+.faq details{border:1px solid var(--ln);border-radius:16px;background:var(--p2)}
+.faq details[open]{border-color:#9184d977}
+.faq summary{cursor:pointer;list-style:none;padding:17px 20px;font-weight:700;font-size:16px;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';color:var(--ac);font-size:22px;line-height:1}
+.faq details[open] summary::after{content:'−'}
+.faq p{margin:0;padding:0 20px 17px;color:#c9cbd6;line-height:1.55}
+.cta{text-align:center;padding:36px 18px;border-radius:26px;background:radial-gradient(60% 90% at 50% 0%,#9184d933,transparent),#1c1e2e;border:1px solid #9184d955}
+.cta p{color:var(--mu);font-size:17px;margin:12px auto 24px;max-width:50ch;line-height:1.55}
+.fim{color:var(--mu);font-size:13px;text-align:center;padding:24px 16px 96px}
+.fixo{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:#161826f2;border-top:1px solid var(--ln);display:none}
+.fixo .btn{width:100%}
+@media(max-width:700px){.fixo{display:block}.top .btn{display:none}}
+/* no celular o botão fixo do WhatsApp é o caminho principal: o balão do chat só atrapalharia */
+@media(max-width:700px){#lhc-btn{display:none!important}}
+</style>
+</head><body>
+<div class="top"><div class="wrap"><a href="restaurantes.html" aria-label="Lhart Design"><img src="assets/logo.png" alt="Lhart Design" width="120" height="38"></a>
+<a class="btn wa" href="#">Chamar no WhatsApp</a></div></div>
+
+<main>
+<section class="hero"><div class="wrap cols"><div>
+  <span class="eyebrow">Para restaurantes, bares e lanchonetes</span>
+  <h1>Mais clientes e <em>mais pedidos</em> para o seu restaurante</h1>
+  <p class="lead"><b>Cardápio digital com QR Code na mesa</b>, fotos e vídeos que dão fome e anúncios no Instagram que trazem gente nova. O pedido cai direto na cozinha, <b>sem comissão por pedido</b>.</p>
+  <ul class="selos"><li>Sem comissão por pedido</li><li>Cliente não baixa aplicativo</li><li>Pix cai direto na sua conta</li></ul>
+  <div class="acoes"><a class="btn wa" href="#">💬 Chamar no WhatsApp</a><a class="btn g" href="cardapio.html">▶ Ver um cardápio funcionando</a></div>
+</div>
+<div class="foto"><img src="assets/lp-restaurant.jpg" alt="Foto de prato feita pela Lhart Design para um restaurante" width="640" height="800" fetchpriority="high"></div>
+</div></section>
+
+<section class="sec alt" id="planos"><div class="wrap">
+  <h2>O que a gente faz <em>pelo seu restaurante</em></h2>
+  <p class="s">Você pode começar só pelo cardápio digital e contratar o resto depois. <b>Cada parte funciona sozinha.</b></p>
+  <div class="cards">
+    <article class="card dest"><i>📱</i><h3>Cardápio digital com QR Code</h3>
+      <p>O cliente aponta o celular para o QR da mesa, escolhe e envia o pedido.</p>
+      <ul><li>Pedido na mesa chega na cozinha com o número da mesa</li><li>Você muda preço e prato quando quiser, no painel</li><li>Pix cai direto na sua conta, sem comissão</li></ul>
+      <div class="bonus"><b>Fechou o cardápio?</b> Ganha <b>1 mês de teste do app de delivery</b>, se o restaurante faz entrega.</div>
+      <div class="preco"><small>Cardápio digital</small><b>R$ 400</b></div></article>
+    <article class="card"><i>📸</i><h3>Fotos, vídeos e tráfego pago</h3>
+      <p>Social media completa para encher o salão e o delivery.</p>
+      <ul><li>Fotos e vídeos dos pratos, com edição</li><li>Anúncios no Instagram para quem mora por perto</li><li>Conversas chegando direto no seu WhatsApp</li></ul>
+      <ul><li>Silver, Gold ou Diamond: você escolhe o tamanho</li><li>1º mês inclui a produção inicial (a partir de R$ 1.100)</li><li>O valor dos anúncios é pago por você direto ao Instagram</li></ul>
+      <div class="preco"><small>Mensalidade a partir do 2º mês</small><b>R$ 700 a R$ 2.200 <span>/mês</span></b></div></article>
+    <article class="card"><i>🛵</i><h3>App de delivery<span class="opc">opcional</span></h3>
+      <p>Pedido de casa, pagamento por Pix e acompanhamento da entrega.</p>
+      <div class="aviso"><b>Só para quem tem entregador próprio.</b> A maioria dos restaurantes não tem, e tudo bem: o cardápio com QR Code e a retirada no balcão funcionam do mesmo jeito.</div>
+      <ul><li>Cliente, cozinha e motoboy no mesmo sistema</li><li>Sem comissão por pedido</li></ul>
+      <div class="preco"><small>1º mês R$ 150, depois</small><b>R$ 250 <span>/mês fixo</span></b></div></article>
+  </div>
+  <div class="extra"><div><b>Precisa de um site para o restaurante?</b><br><span>Site profissional feito sob medida, de R$ 1.200 a R$ 3.000 conforme o projeto.</span></div><a class="btn g wa" href="#">Pedir orçamento do site</a></div>
+</div></section>
+
+<section class="sec" id="como"><div class="wrap">
+  <h2>Como <em>funciona</em></h2>
+  <p class="s">Simples para o seu dia a dia. A gente monta, você só usa.</p>
+  <ol class="passos">
+    <li><span class="n">1</span><div><b>Você manda o cardápio</b><span>Pratos, preços e fotos. Sem foto? A gente faz.</span></div></li>
+    <li><span class="n">2</span><div><b>A gente monta e entrega pronto</b><span>Cardápio no ar e QR Code de cada mesa, pronto para imprimir.</span></div></li>
+    <li><span class="n">3</span><div><b>O cliente pede, a cozinha recebe</b><span>Sem esperar o garçom e sem erro de anotação.</span></div></li>
+  </ol>
+  <p style="margin:26px 0 0"><a class="btn g" href="cardapio.html">▶ Abrir o cardápio de exemplo no celular</a></p>
+</div></section>
+
+<section class="sec alt" id="clientes"><div class="wrap">
+  <h2>Além do cardápio: <em>mais gente chegando</em></h2>
+  <p class="s">O cardápio organiza o pedido. Para chegar mais gente até ele, a Lhart também cuida da divulgação.</p>
+  <div class="mais">
+    <div><i>📸</i><h3>Fotos</h3><p>Fotos profissionais dos seus pratos, para o cardápio e para o Instagram.</p></div>
+    <div><i>🎬</i><h3>Vídeos</h3><p>Vídeos curtos dos pratos e do ambiente, prontos para Reels e anúncios.</p></div>
+    <div><i>📣</i><h3>Tráfego pago</h3><p>Anúncios no Instagram e no Google para quem está perto escolhendo onde comer, levando direto ao seu cardápio.</p></div>
+  </div>
+</div></section>
+
+<section class="sec" id="duvidas"><div class="wrap">
+  <h2>Dúvidas <em>comuns</em></h2>
+  <p class="s">Toque na pergunta para ver a resposta.</p>
+  <div class="faq">
+    <details open><summary>O cliente precisa baixar aplicativo?</summary><p>Não. O cardápio abre no navegador do celular, pelo QR Code da mesa ou pelo link que você manda no WhatsApp e no Instagram.</p></details>
+    <details><summary>Vocês cobram comissão por pedido?</summary><p>Não. Não existe porcentagem sobre as vendas, e o Pix de cada pedido cai direto na sua conta.</p></details>
+    <details><summary>E se eu não tenho motoboy?</summary><p>Sem problema. O delivery é opcional. O cardápio com QR Code na mesa e a retirada no balcão funcionam sem motoboy.</p></details>
+    <details><summary>Posso contratar só as fotos, os vídeos e os anúncios?</summary><p>Pode. O social media (fotos, vídeos, edição e tráfego pago) funciona separado do cardápio digital.</p></details>
+    <details><summary>Dá para mudar preço e cardápio depois?</summary><p>Dá. Mudou o preço ou acabou um item, você atualiza no painel e vale na hora.</p></details>
+  </div>
+</div></section>
+
+<section class="sec alt"><div class="wrap">
+  <div class="cta"><h2>Vamos colocar o seu restaurante <em>no ar</em>?</h2>
+  <p>Me chama no WhatsApp com o cardápio e o número de mesas. Eu respondo com o prazo e os próximos passos.</p>
+  <a class="btn wa" href="#">💬 Chamar o Lucas no WhatsApp</a></div>
+</div></section>
+</main>
+<div class="fim">© 2026 Lhart Design · Santos/SP</div>
+<div class="fixo"><a class="btn wa" href="#">💬 Chamar no WhatsApp</a></div>
+
+<script>
+(function () {
+  /* WhatsApp com a origem na mensagem: se o link do anúncio traz utm_campaign, a conversa já chega dizendo de qual anúncio veio. */
+  var q = new URLSearchParams(location.search), camp = (q.get('utm_campaign') || '').replace(/[^\w\- ]/g, '').slice(0, 40);
+  var texto = 'Oi Lucas! Vi o anúncio e quero saber mais sobre o cardápio digital para o meu restaurante.' + (camp ? ' (campanha: ' + camp + ')' : '');
+  var href = 'https://wa.me/5511989304239?text=' + encodeURIComponent(texto);
+  [].forEach.call(document.querySelectorAll('a.wa'), function (a) { a.href = href; a.target = '_blank'; a.rel = 'noopener'; });
+})();
+</script>
+<script src="pixel.js?v=1" defer></script>
+<script src="lh-site.js?v=2" defer data-bottom="84"></script>
+</body></html>

@@ -174,7 +174,7 @@
     if (state.enviando) return; state.enviando = true;
     fetch('/api/chat?a=send', { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ vid: vid, name: nome, contact: contato, text: texto, page: location.pathname + location.hash, hp: hp }) })
-      .then(function (r) { state.enviando = false; if (r.status === 429) { cb(false, t('many')); return; } if (!r.ok) { cb(false, t('err')); return; } cb(true); })
+      .then(function (r) { state.enviando = false; if (r.status === 429) { cb(false, t('many')); return; } if (!r.ok) { cb(false, t('err')); return; } if (!window.__lhLead) { window.__lhLead = 1; try { window.LH_EVT && window.LH_EVT('Lead', { content_name: 'chat' }); } catch (e) {} } cb(true); })
       .catch(function () { state.enviando = false; cb(false, t('err')); });
   }
 
