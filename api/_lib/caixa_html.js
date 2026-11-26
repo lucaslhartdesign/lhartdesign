@@ -147,6 +147,9 @@ function card(i){
   }else{
     h+='<div class="botoes"><button class="b" data-acao="abrir_escrever">✍️ Escrever a minha</button></div>';
   }
+  // 26/11/2026 — passar para o Diego/Denis: abre o WhatsApp do Lucas com o
+  // resumo pronto; ele escolhe o contato. Nenhum número fica guardado.
+  if(i.passagem&&i.passagem.texto){h+='<div class="botoes"><button class="b prim" data-acao="passar">📞 Passar para '+esc(i.passagem.quem||'o sócio')+'</button></div>'}
   // E-mail e "recusou": guardados numa dobra para o cartão não ficar enorme.
   var em=emails[i.phone]!=null?emails[i.phone]:(i.email||'');
   h+='<details class="dobra"'+(abertas['m'+i.phone]?' open':'')+' data-dobra="m'+esc(i.phone)+'"><summary>Mais: e-mail · recusou</summary>';
@@ -243,6 +246,7 @@ document.addEventListener('click',function(ev){
   var phone=c.getAttribute('data-p');
   var item=((dados&&dados.dados&&dados.dados.itens)||[]).filter(function(i){return i.phone===phone})[0];if(!item)return;
   if(acao==='conv'){abertas[phone]=!abertas[phone];desenhar();return}
+  if(acao==='passar'){if(item.passagem&&item.passagem.texto){window.open('https://wa.me/?text='+encodeURIComponent(item.passagem.texto),'_blank')}return}
   if(acao==='abrir_escrever'){escrevendo[phone]=true;desenhar();var t=document.querySelector('.card[data-p="'+CSS.escape(phone)+'"] textarea[data-campo="minha"]');if(t)t.focus();return}
   if(acao==='enviar'){var tx=(c.querySelector('textarea[data-campo="pronta"]')||{}).value||'';tx=tx.trim();
     if(!tx){toast('A resposta está vazia');return}

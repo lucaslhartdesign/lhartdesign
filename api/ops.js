@@ -307,6 +307,35 @@ function caixaPagina(res) {
   res.status(200).end(CAIXA_HTML);
 }
 
+// ── Quem abriu a proposta (26/11/2026) ─────────────────────────────────────
+// O Lucas: "pode fazer tudo" — o aviso "o JW Marriott abriu a proposta 3 vezes
+// hoje, hora de ligar". O /p/<id> já passa por aqui; cada abertura de GENTE vira
+// uma linha na lista 'aberturas' (últimas 500), que o programa lê com a chave.
+// O WhatsApp, o Instagram e o Facebook abrem o link sozinhos para montar a
+// prévia — esses ficam de fora pelo user-agent, senão todo envio seria "abriu".
+const UA_ROBO = /bot|crawler|spider|preview|whatsapp|facebookexternalhit|facebot|telegram|slack|discord|twitter|skype|linkedinbot|embedly|curl|python|wget|headless|vercel/i;
+
+async function anotarAbertura(redis, req, id, pagina, d) {
+  const ua = String((req.headers && req.headers['user-agent']) || '');
+  if (!ua || UA_ROBO.test(ua)) return;
+  const j = lerD(d);
+  const item = JSON.stringify({ id, p: pagina, n: j ? String(j.n).slice(0, 80) : '', t: Date.now() });
+  await redis.lpush('aberturas', item);
+  await redis.ltrim('aberturas', 0, 499);
+}
+
+async function aberturas(req, res, redis) {
+  const desde = Number((req.query && req.query.desde) || 0) || 0;
+  const brutos = (await redis.lrange('aberturas', 0, 499)) || [];
+  const lista = [];
+  for (const b of brutos) {
+    let x = b;
+    if (typeof x === 'string') { try { x = JSON.parse(x); } catch { continue; } }
+    if (x && Number(x.t) > desde) lista.push(x);
+  }
+  res.status(200).json({ ok: true, aberturas: lista });
+}
+
 async function ir(req, res, redis) {
   const id = String((req.query && req.query.id) || '');
   let valor = null;
@@ -314,6 +343,9 @@ async function ir(req, res, redis) {
     try { valor = await redis.get('curto:' + id); } catch { valor = null; }
   }
   const [pagina, d] = String(valor || '').split('|');
+  if (PAGINAS_CURTAS[pagina] && d) {
+    try { await anotarAbertura(redis, req, id, pagina, d); } catch { /* o redirect vem antes de tudo */ }
+  }
   const destino = PAGINAS_CURTAS[pagina] && d ? PAGINAS_CURTAS[pagina] + '?d=' + d : '/social.html';
   res.setHeader('Location', destino);
   res.status(302).end();
@@ -369,6 +401,7 @@ module.exports = async (req, res) => {
     if (a === 'alerta' && req.method === 'POST') { await alerta(req, res, redis); return; }
     if (a === 'escolhas' && req.method === 'POST') { await escolhas(req, res, redis); return; }
     if (a === 'caixa_sync' && req.method === 'POST') { await caixaSync(req, res, redis); return; }
+    if (a === 'aberturas' && req.method === 'GET') { await aberturas(req, res, redis); return; }
     res.status(400).json({ error: 'acao' });
   } catch (e) {
     res.status(500).json({ error: String((e && e.message) || e) });
