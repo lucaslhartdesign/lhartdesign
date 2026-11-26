@@ -156,8 +156,8 @@ function card(i){
   h+='<div class="rot">✉️ Apresentação por e-mail</div>';
   if(est.email_ok===false)h+='<div class="nota">O e-mail do programa não está configurado no PC (Configurações → E-mail de apresentação).</div>';
   h+='<input type="email" inputmode="email" autocomplete="off" data-campo="email" placeholder="e-mail do cliente" value="'+esc(em)+'"><div class="botoes"><button class="b" data-acao="email">✉️ Mandar a apresentação por e-mail</button></div>';
-  h+='<div class="rot">Recusou</div><div class="botoes"><button class="b" data-acao="recusar" data-tipo="robo">🤖 É robô</button><button class="b" data-acao="recusar" data-tipo="nao_quis">🙅 Não quis</button><button class="b" data-acao="recusar" data-tipo="sem_interesse">🚫 Sem interesse</button></div>';
-  h+='<div class="nota">É robô: volta para a régua. Não quis: manda um obrigado com o site e encerra. Sem interesse: encerra sem mandar nada.</div></details>';
+  h+='<div class="rot">Recusou</div><div class="botoes"><button class="b" data-acao="recusar" data-tipo="nao_quis">🙅 Recusou (agradece e manda o site)</button><button class="b" data-acao="recusar" data-tipo="robo">🤖 Robô / msg automática</button><button class="b" data-acao="recusar" data-tipo="sem_interesse">🚫 Sem interesse (não manda nada)</button></div>';
+  h+='<div class="nota">Recusou: agradece, diz que se precisar dos nossos serviços é só chamar, manda o site e encerra. Robô/automática: se a mensagem trouxe um e-mail, a apresentação vai por e-mail; sem e-mail, volta para a régua. Sem interesse: encerra sem mandar nada.</div></details>';
   h+=estadoDe(i.phone)+'</div>';
   return h;
 }
