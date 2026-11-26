@@ -72,7 +72,7 @@ button.b:disabled{opacity:.5}
 .toast{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));background:var(--txt);color:var(--bg);padding:13px 16px;border-radius:14px;font-weight:700;text-align:center;transform:translateY(150%);transition:transform .25s;z-index:9}
 .toast.v{transform:none}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
-</style>
+.log{max-height:340px;overflow:auto;font:12px/1.45 ui-monospace,Consolas,monospace;color:var(--fraco)}.log .linha{padding:3px 0;border-bottom:1px solid var(--linha)}</style>
 </head>
 <body>
 <header>
@@ -116,7 +116,7 @@ function caixaEstado(ultimo){
   if(r.ok){
     var extra='';
     if(ultimo.acao==='pagina'&&r.texto)extra='<a class="link" href="'+esc(r.texto)+'" target="_blank" rel="noopener">'+esc(r.texto)+'</a><div class="botoes"><button class="b" data-acao="copiar" data-v="'+esc(r.texto)+'">📋 Copiar o link</button><button class="b" data-acao="compartilhar" data-v="'+esc(r.texto)+'">↗️ Compartilhar</button></div>';
-    else if(r.texto&&(ultimo.acao==='buscar'||ultimo.acao==='recusar'||ultimo.acao==='email'))extra='<div class="nota">'+esc(r.texto)+'</div>';
+    else if(r.texto&&(ultimo.acao==='buscar'||ultimo.acao==='recusar'||ultimo.acao==='email'||ultimo.acao==='controle'))extra='<div class="nota">'+esc(r.texto)+'</div>';
     return'<div class="estado ok">✅ '+nome+' '+(FEITO[ultimo.acao]||'feito')+' às '+esc(r.em)+'.'+extra+'</div>'}
   return'<div class="estado erro">⚠️ Não deu: '+esc(r.erro||'erro')+'</div>';
 }
@@ -170,6 +170,8 @@ function painel(){
   if(at.proximos&&at.proximos.length){h+='<div class="rot">Depois</div>';at.proximos.forEach(function(p){h+='<div class="linha"><b>'+esc(p[0])+'</b> · '+esc(p[1])+'</div>'})}
   if(at.historico&&at.historico.length){h+='<div class="rot">Últimas ações</div>';at.historico.forEach(function(p){h+='<div class="linha"><b>'+esc(p[0])+'</b> · '+esc(p[1])+'</div>'})}
   h+='</div>';
+  h+='<div class="card" data-p=""><div class="nome">🎛️ Controle</div><div class="nota">'+(est.pausado?'<b style="color:var(--amarelo)">Pausado.</b> Nada novo começa até retomar.':'Rodando.')+'</div><div class="botoes">'+(est.pausado?'<button class="b prim" data-acao="controle" data-tipo="retomar">▶️ Retomar</button>':'<button class="b perigo" data-acao="controle" data-tipo="pausar">⏸ Pausar tudo</button>')+'<button class="b" data-acao="controle" data-tipo="ler">👂 Ler as conversas agora</button><button class="b" data-acao="controle" data-tipo="cobrar">🔁 Cobrar quem não respondeu</button><button class="b" data-acao="controle" data-tipo="disparar">🚀 1ª mensagem para os novos</button></div>'+doPainel(['controle'])+'</div>';
+  if(est.log&&est.log.length){h+='<div class="card"><div class="nome">📜 O que está acontecendo (log)</div><div class="log">';est.log.slice().reverse().forEach(function(l){h+='<div class="linha">'+esc(l)+'</div>'});h+='</div></div>'}
   h+='<div class="card" data-p=""><div class="nome">🔁 Piloto automático</div><div class="nota">'+(est.piloto?'<b style="color:var(--verde)">Ligado.</b> ':'Desligado. ')+'A cada volta: responde quem falou (até quem disse não), cobra quem não respondeu, manda a 1ª mensagem para a base que nunca recebeu e devolve à fila quem ficou em silêncio. Robôs ficam de fora.</div>'+doPainel(['piloto']);
   h+='<div class="botoes"><button class="b '+(est.piloto?'perigo':'prim')+'" data-acao="piloto" data-tipo="'+(est.piloto?'desligar':'ligar')+'">'+(est.piloto?'Desligar o piloto':'Ligar o piloto')+'</button></div>';
   h+='<div class="rot">Respostas do atendente</div><div class="seg">';
@@ -226,6 +228,7 @@ function mandar(item,acao,extra){
 function painelClique(b,acao){
   var tipo=b.getAttribute('data-tipo');
   if(acao==='pag_tipo'){pag.tipo=tipo;if(tipo==='app'&&pag.idioma==='es')pag.idioma='pt';desenhar();return}
+  if(acao==='controle'){var q={pausar:'Pausar tudo? O que está no meio termina e nada novo começa.',retomar:'Retomar o programa?',ler:'Ler as conversas agora?',cobrar:'Cobrar agora quem não respondeu?',disparar:'Mandar a 1ª mensagem para os leads novos selecionados?'}[tipo];if(!confirm(q))return;mandar(null,'controle',{tipo:tipo});return}
   if(acao==='piloto'){if(!confirm(tipo==='ligar'?'Ligar o piloto automático? Ele responde, cobra e manda a 1ª mensagem sozinho.':'Desligar o piloto automático?'))return;mandar(null,'piloto',{tipo:tipo});return}
   if(acao==='atendente'){var t={desligado:'Desligar o atendente?',sombra:'Atendente escreve e espera você aprovar?',ligado:'Atendente responde sozinho o que é seguro?'}[tipo];if(!confirm(t))return;mandar(null,'atendente',{tipo:tipo});return}
   if(acao==='buscar'){if(!confirm('Buscar "'+b.textContent.trim()+'" e mandar a 1ª mensagem para quem a busca pegar?'))return;mandar(null,'buscar',{tipo:tipo});return}

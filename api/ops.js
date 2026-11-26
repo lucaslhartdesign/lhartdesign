@@ -239,7 +239,7 @@ async function escolhas(req, res, redis) {
 const CAIXA_HTML = require('./_lib/caixa_html');
 const CAIXA_ACOES = ['enviar', 'material', 'escrever', 'rascunhar', 'descartar',
   // 21/11/2026: e-mail, recusou (motivo), buscar clientes, criar página, piloto e atendente
-  'email', 'recusar', 'buscar', 'pagina', 'piloto', 'atendente'];
+  'email', 'recusar', 'buscar', 'pagina', 'piloto', 'atendente', 'controle'];
 
 function chaveCaixa() {
   const k = String(process.env.OPS_KEY || '');
