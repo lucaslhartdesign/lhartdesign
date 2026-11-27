@@ -3,29 +3,29 @@ en: {
   nav: { home: 'Home', method: 'How it works', cases: 'Our work', services: 'What we do', client: 'Client area', threed: '3D', plans: 'Plans', games: 'Game sites', delivery: 'Delivery apps', cta: 'Get your plan' },
   appband: { kicker: 'Also for restaurants', title: 'We also build delivery apps for restaurants.', note: 'Your own ordering app, with no marketplace taking a big cut of every order. The same restaurants we film and promote can take orders directly: customer app, kitchen screen and courier app, all in sync.', cta: 'See the delivery apps', qrTitle: 'Scan it or click: this is a real menu.', qrCap: 'It opens a live restaurant menu, already seated at table 7. Place a test order and watch the kitchen get it. Nothing is charged.', p1t: 'QR Code (and NFC) menu on every table', p1d: 'Customers scan or tap the table, order and pay by Pix. The kitchen gets it with the table number.', p2t: 'Your own delivery app', p2d: 'Customer app, kitchen screen and courier app in sync, with your brand and no marketplace commission.', p3t: 'A burger the customer builds', p3d: 'Customers watch the burger form as they pick toppings, and the order gets bigger.', ctaMesa: 'See table ordering', qrBtn: 'Open the live menu' },
   hero: {
-    line1: 'We Don\u2019t Just Create Content.', line2: 'We Build Revenue Engines.',
-    leftTag: 'The Most Complete Media & Growth Platform.', rightTag: 'Our focus is to make your brand the first choice in your market — bringing in more customers, sales and bookings through cinematic media, targeted ads and our own AI system.',
-    sub: 'High-end cinematic production, data-driven traffic, and AI-powered automation to scale your business.',
-    ctaPrimary: 'Get your plan', ctaGhost: 'See our work'
+    line1: 'We Bring Customers', line2: 'to Your Business.',
+    leftTag: 'Photos, video, ads and AI working for your sales.', rightTag: 'More customers, more sales, more bookings. That\u2019s what we deliver: we make your business the first choice in your market.',
+    sub: 'You run your business. We handle everything that brings customers to you, and show you the results in numbers every month.',
+    ctaPrimary: 'I want more customers', ctaGhost: 'See real results'
   },
   method: {
-    kicker: 'How it works', title: 'Four simple steps to more customers.',
-    s1t: 'We capture what makes you special', s1c: 'High-end 4K video, cinematic photography and, where it fits, aerial drone coverage — shot directly at your restaurant, hotel, property, vehicles or team.',
-    s2t: 'We build your visual identity', s2c: 'That footage is transformed into high-converting website assets, vertical reels, and social content built to make you the first choice in your market.',
-    s3t: 'We reach the right customers', s3c: 'Strategic Meta & Google ad campaigns designed to reach high-value customers right when they’re ready to buy, book or visit.',
-    s4t: 'You get direct customers', s4c: 'More confirmed sales and reservations, higher margins, and a simple monthly performance report showing your exact ROI.'
+    kicker: 'How it works', title: 'How we bring you customers.',
+    s1t: 'We show what makes you special', s1c: 'We film and photograph your business, in 4K and with a drone when it helps, so people see why they should choose you.',
+    s2t: 'We make you the obvious choice', s2c: 'That material becomes reels, posts and pages built to turn people who see you into people who buy.',
+    s3t: 'We put you in front of buyers', s3c: 'Ads on Instagram, Facebook and Google reach people ready to buy, book or visit, right when they\u2019re looking.',
+    s4t: 'You get customers and see the numbers', s4c: 'More sales and bookings coming straight to you, plus a simple monthly report showing what came in.'
   },
   aud: {
-    kicker: 'Who we help', title: 'One system, built around your industry.', note: 'Whatever you sell, the goal is the same: get the right people to choose you. Here’s what we do for each type of business.',
-    a1t: 'Restaurants & Bars', a1l1: 'Cinematic food, drinks and atmosphere on video and photo', a1l2: 'Local paid traffic that fills tables — especially on slow days', a1l3: 'Instagram, Google Business and WhatsApp set up to convert',
-    a2t: 'Hotels, Tourism & Yachts', a2l1: 'Cinematic video and aerial drone that sells the experience', a2l2: 'Ads that reach travelers while they plan their trip', a2l3: 'More direct bookings, fewer commissions',
+    kicker: 'Who we help', title: 'Whatever you sell, we bring you buyers.', note: 'Here\u2019s what we do for each type of business, and what you get out of it.',
+    a1t: 'Restaurants & Bars', a1l1: 'Food and drinks on video that make people want to come', a1l2: 'Local paid traffic that fills tables — especially on slow days', a1l3: 'Instagram, Google and WhatsApp ready to turn views into bookings',
+    a2t: 'Hotels, Tourism & Yachts', a2l1: 'Video and drone that sell the experience before the trip', a2l2: 'Ads that reach travelers while they plan their trip', a2l3: 'More direct bookings, fewer commissions',
     a3t: 'Real Estate & Construction', a3l1: 'Photo, video and drone for listings and developments', a3l2: 'Realistic 3D previews before it’s built', a3l3: 'Ads that reach qualified buyers and investors',
-    a4t: 'Automotive', a4l1: 'Professional vehicle photo editing and retouching', a4l2: 'Ad banners and creatives for dealers and marketplaces', a4l3: 'Cinematic video that makes every car stand out',
+    a4t: 'Automotive', a4l1: 'Car photos edited to sell faster', a4l2: 'Ad banners and creatives for dealers and marketplaces', a4l3: 'Cinematic video that makes every car stand out',
     a5t: 'Sports & Talent', a5l1: 'Professional photos and video of athletes and academies', a5l2: 'Audience growth and paid traffic to get discovered', a5l3: 'Content that puts athletes in front of clubs and scouts',
-    a6t: 'Local Businesses & Brands', a6l1: 'Brand identity, content and social media management', a6l2: 'Paid traffic on Meta and Google, with monthly reports', a6l3: 'A steady flow of new customers, month after month'
+    a6t: 'Local Businesses & Brands', a6l1: 'Brand, content and social media done for you', a6l2: 'Paid traffic on Meta and Google, with monthly reports', a6l3: 'A steady flow of new customers, month after month'
   },
   ai: {
-    kicker: 'Plus: our own AI', title: 'Our own AI system that captures customers for you — worldwide.',
+    kicker: 'Plus: our own AI', title: 'Our own AI finds customers for you, anywhere in the world.',
     body: 'On top of video and paid traffic, we run a proprietary AI system built to find and capture potential customers for your business, from anywhere in the world.',
     p1t: 'Customers from anywhere', p1c: 'Reach people in the markets that matter to your business, not just your city.',
     p2t: 'Always on', p2c: 'It works around the clock, so no opportunity waits until Monday.',
@@ -33,7 +33,7 @@ en: {
     cta: 'Ask us how it works'
   },
   cases: {
-    kicker: 'Our work', title: 'See it for yourself.', note: 'A few examples of the video and results we\u2019ve created for real clients.',
+    kicker: 'Our work', title: 'The work behind these results.', note: 'Real videos, made for real clients.',
     c1: '🚤 Luxury Yacht Charters', c1m: 'Watch on Instagram',
     c2: '🍷 Restaurant & Beach Club Growth', c2m: 'Watch on Instagram',
     c3: '📈 Paid Campaign Performance', c3m: 'Watch full video',
@@ -43,12 +43,12 @@ en: {
     more: 'See more on Behance'
   },
   services: {
-    kicker: 'What we do', title: 'Everything you need, in one place.', note: 'You don\u2019t have to piece this together yourself — we handle it all as one service.',
-    s1t: 'Video & photos', s1c: 'Professional, cinematic video and photos of your business — your space, products, food, vehicles, drone shots, your team.',
+    kicker: 'What we do', title: 'Everything that brings you customers, done by us.', note: 'No juggling freelancers and agencies: one team takes care of it all and answers for the results.',
+    s1t: 'Photos and videos that sell', s1c: 'Professional, cinematic video and photos of your business — your space, products, food, vehicles, drone shots, your team.',
     s2t: 'Bringing you customers', s2c: 'We run online ads that put you in front of people who are ready to buy, book or visit \u2014 locally and around the world.',
-    s3t: 'Social media', s3c: 'We post and manage your Instagram and Facebook using the video and photos we shoot for you.',
-    s4t: 'Simple reports', s4c: 'Every month you get a plain, easy report showing new customers and results — no confusing numbers.',
-    s5t: '3D building previews', s5c: 'For real estate and construction clients: realistic 3D previews of buildings and homes before they\u2019re built.'
+    s3t: 'Your social media, handled', s3c: 'We post and manage your Instagram and Facebook using the video and photos we shoot for you.',
+    s4t: 'Results you can see', s4c: 'Every month you get a plain, easy report showing new customers and results — no confusing numbers.',
+    s5t: '3D previews that sell before it\u2019s built', s5c: 'For real estate and construction clients: realistic 3D previews of buildings and homes before they\u2019re built.'
   },
   testi: {
     kicker: 'Results', title: 'What clients say.',
@@ -70,8 +70,8 @@ en: {
     t8n: 'Amanda Cole — Island Dream Weddings', t8l: 'Anguilla'
   },
   plans: {
-    kicker: 'Plans', title: 'What we build for you, at every level.',
-    intro: 'However you\u2019re starting — pick the level that matches where your business is today. Every plan pulls from the same cinematic system; you just choose how much scale you want on day one.',
+    kicker: 'Plans', title: 'Choose your plan. We bring the customers.',
+    intro: 'Every plan has the same goal: more customers for you. What changes is how fast and how far we take it.',
     p1badge: 'Getting started', p1t: 'Silver',
     p1l1: 'Professional photography of your products, venue or property', p1l2: 'Complete Instagram setup & visual identity', p1l3: 'Basic paid traffic (targeted local ads)',
     p1bonus: 'Free bonus: custom highlight covers & brand board',
@@ -81,10 +81,10 @@ en: {
     p3badge: 'Full scale', p3t: 'Diamond',
     p3l1: 'Everything in Gold, plus full premium production', p3l2: 'Advanced audience-targeted ad campaigns', p3l3: 'AI automation for 24/7 lead capture & bookings',
     p3bonus: 'Free bonus: full AI assistant integration for customer inquiries',
-    cta: 'Get your custom pricing'
+    cta: 'I want this plan'
   },
   threed: {
-    kicker: '3D / Archviz', title: 'Before it\u2019s built, see it real.', note: 'Realistic 3D previews for real estate and construction clients \u2014 a complementary line alongside our film work.',
+    kicker: '3D / Archviz', title: 'Sell the property before it\u2019s built.', note: 'Realistic 3D previews so buyers and investors see the finished project today.',
     t3d2: 'High-End Interior 3D Rendering: Transforming Bathrooms into Luxury Private Spas.', t3d3: 'Day-to-Night Architectural 3D Simulation: Showcasing Properties in Every Light.', t3d4: 'Modular Architecture Visualization: Modern, Efficient, and High-End 3D Design.', t3d5: 'Interactive Modular 3D: Watch Lighting & Architecture Awaken from Day to Night.'
   },
   impact: {
@@ -94,8 +94,8 @@ en: {
     kicker: 'The impact', title: 'What changes when we take over.', note: 'Illustrative example \u2014 your real numbers will differ, this shows the kind of shift we aim for.',
     exampleTag: 'Illustrative example', viewsTitle: 'Page & profile views', calTitle: 'A fuller calendar', before: 'Before', after: 'With us'
   },
-  results: { kicker: 'Real results', title: 'This isn\u2019t a hypothesis. It already happened.', note: 'Numbers shared by the clients themselves, from real businesses we\u2019ve worked with.' },
-  aerial: { kicker: 'Behind the lens', title: 'Your business, from above.', note: 'Drone footage that makes any location stand out \u2014 coastlines, venues, properties, developments.',
+  results: { kicker: 'Real results', title: 'Real clients, real numbers.', note: 'Numbers shared by the clients themselves, from real businesses we\u2019ve worked with.' },
+  aerial: { kicker: 'Behind the lens', title: 'Drone footage that makes people want to be there.', note: 'Drone footage that makes any location stand out \u2014 coastlines, venues, properties, developments.',
     a1t: 'Luxury Charters & Yachts', a1: 'Elevate Your Journey: Cinematic Aerial Views of Luxury On the Water.',
     a2t: 'Tropical Destinations', a2: 'Immersive Tropical Cinematography that Turns Locations into Destinations.',
     a3t: 'Ocean & Coastal Real Estate', a3: 'Beyond the Horizon: Visual Assets Designed to Convert.',
@@ -111,7 +111,7 @@ en: {
     demoAlert: 'This is a preview of the client area. Your real access arrives when you join.'
   },
   close: {
-    kicker: 'Get started', title: 'Let\u2019s grow your business.', sub: 'Tell us about your business and we\u2019ll send you a simple plan — no jargon, just what we\u2019d do and what it costs.',
+    kicker: 'Get started', title: 'Let\u2019s bring customers to your business.', sub: 'Tell us about your business and we\u2019ll send a simple plan: what we\u2019ll do, the result we\u2019re aiming for and what it costs.',
     name: 'Name', contact: 'Email or WhatsApp', type: 'Type of business', typePh: 'Restaurant, hotel, real estate, dealership…',
     location: 'Location', locationPh: 'City, country', cta: 'Send via WhatsApp'
   },
@@ -123,29 +123,29 @@ es: {
   nav: { home: 'Inicio', method: 'Cómo funciona', cases: 'Nuestro trabajo', services: 'Qué hacemos', client: 'Área de clientes', threed: '3D', plans: 'Planes', games: 'Sitios para juegos', delivery: 'Apps de delivery', cta: 'Ver mi plan' },
   appband: { kicker: 'También para restaurantes', title: 'También creamos apps de delivery para restaurantes.', note: 'Tu propia app de pedidos, sin un marketplace quedándose con una gran parte de cada pedido. Los mismos restaurantes que filmamos y promocionamos pueden recibir pedidos directo: app del cliente, pantalla de cocina y app del repartidor, todo sincronizado.', cta: 'Ver las apps de delivery', qrTitle: 'Apunta la cámara o haz clic: es un menú de verdad.', qrCap: 'Abre un menú en vivo, ya sentado en la mesa 7. Haz un pedido de prueba y mira cómo lo recibe la cocina. No se cobra nada.', p1t: 'Menú con QR (y NFC) en cada mesa', p1d: 'El cliente apunta o acerca el celular a la mesa, pide y paga por Pix. La cocina lo recibe con el número de mesa.', p2t: 'App de delivery propia', p2d: 'Cliente, cocina y motoboy sincronizados, con tu marca y sin comisión de marketplace.', p3t: 'Hamburguesa que el cliente arma', p3d: 'El cliente ve cómo se forma la hamburguesa mientras elige ingredientes, y el pedido crece.', ctaMesa: 'Ver pedido en la mesa', qrBtn: 'Abrir el menú en vivo' },
   hero: {
-    line1: 'No Solo Creamos Contenido.', line2: 'Construimos Motores de Ingresos.',
-    leftTag: 'La Plataforma Más Completa de Medios y Crecimiento.', rightTag: 'Nuestro enfoque es convertir tu marca en la primera opción de tu mercado — generando más clientes, ventas y reservas con medios cinematográficos, anuncios segmentados y nuestro propio sistema de IA.',
-    sub: 'Producción cinematográfica de alto nivel, tráfico basado en datos y automatización con IA para escalar tu negocio.',
-    ctaPrimary: 'Quiero mi plan', ctaGhost: 'Ver nuestro trabajo'
+    line1: 'Traemos Clientes', line2: 'a Tu Negocio.',
+    leftTag: 'Foto, video, anuncios e IA trabajando por tus ventas.', rightTag: 'Más clientes, más ventas, más reservas. Eso es lo que entregamos: hacemos de tu negocio la primera opción de tu mercado.',
+    sub: 'Tú te ocupas de tu negocio. Nosotros, de todo lo que te trae clientes, y te mostramos el resultado en números cada mes.',
+    ctaPrimary: 'Quiero más clientes', ctaGhost: 'Ver resultados reales'
   },
   method: {
-    kicker: 'Cómo funciona', title: 'Cuatro pasos simples para conseguir más clientes.',
-    s1t: 'Capturamos lo que te hace especial', s1c: 'Video 4K de alta gama, fotografía cinematográfica y, cuando encaja, cobertura aérea con dron — grabada directamente en tu restaurante, hotel, propiedad, vehículos o equipo.',
-    s2t: 'Creamos tu identidad visual', s2c: 'Ese material se transforma en contenido web de alta conversión, reels verticales y contenido para redes que te convierten en la primera opción de tu mercado.',
-    s3t: 'Llegamos a los clientes correctos', s3c: 'Campañas estratégicas en Meta y Google diseñadas para llegar a clientes de alto valor justo cuando están listos para comprar, reservar o visitar.',
-    s4t: 'Consigues clientes directos', s4c: 'Más ventas y reservas confirmadas, mejores márgenes, y un reporte mensual simple que muestra tu ROI exacto.'
+    kicker: 'Cómo funciona', title: 'Cómo te traemos clientes.',
+    s1t: 'Mostramos lo que te hace especial', s1c: 'Filmamos y fotografiamos tu negocio, en 4K y con dron cuando suma, para que la gente vea por qué elegirte.',
+    s2t: 'Hacemos que seas la opción obvia', s2c: 'Ese material se convierte en reels, posts y páginas hechos para que quien te ve, te compre.',
+    s3t: 'Te ponemos frente a quien compra', s3c: 'Anuncios en Instagram, Facebook y Google llegan a quien está listo para comprar, reservar o visitar, justo cuando busca.',
+    s4t: 'Recibes clientes y ves los números', s4c: 'Más ventas y reservas llegando directo a ti, y un informe mensual simple que muestra lo que entró.'
   },
   aud: {
-    kicker: 'A quién ayudamos', title: 'Un sistema, construido alrededor de tu industria.', note: 'Venda lo que vendas, el objetivo es el mismo: que las personas correctas te elijan. Esto es lo que hacemos por cada tipo de negocio.',
-    a1t: 'Restaurantes y Bares', a1l1: 'Comida, bebidas y ambiente en video y foto cinematográficos', a1l2: 'Tráfico pago local que llena mesas — sobre todo en los días flojos', a1l3: 'Instagram, Google Business y WhatsApp listos para convertir',
-    a2t: 'Hoteles, Turismo y Yates', a2l1: 'Video cinematográfico y dron que venden la experiencia', a2l2: 'Anuncios que llegan a viajeros mientras planean su viaje', a2l3: 'Más reservas directas, menos comisiones',
+    kicker: 'A quién ayudamos', title: 'Sea cual sea tu negocio, te traemos a quien compra.', note: 'Mira lo que hacemos para cada tipo de negocio y lo que ganas con eso.',
+    a1t: 'Restaurantes y Bares', a1l1: 'Platos y tragos en video que dan ganas de ir', a1l2: 'Tráfico pago local que llena mesas — sobre todo en los días flojos', a1l3: 'Instagram, Google y WhatsApp listos para convertir visitas en reservas',
+    a2t: 'Hoteles, Turismo y Yates', a2l1: 'Video y dron que venden la experiencia antes del viaje', a2l2: 'Anuncios que llegan a viajeros mientras planean su viaje', a2l3: 'Más reservas directas, menos comisiones',
     a3t: 'Bienes Raíces y Construcción', a3l1: 'Foto, video y dron para propiedades y desarrollos', a3l2: 'Vistas previas 3D realistas antes de construir', a3l3: 'Anuncios que llegan a compradores e inversionistas calificados',
-    a4t: 'Automotriz', a4l1: 'Edición y retoque profesional de fotos de vehículos', a4l2: 'Banners y creativos publicitarios para concesionarios y marketplaces', a4l3: 'Video cinematográfico que hace destacar cada auto',
+    a4t: 'Automotriz', a4l1: 'Fotos de autos editadas para vender más rápido', a4l2: 'Banners y creativos publicitarios para concesionarios y marketplaces', a4l3: 'Video cinematográfico que hace destacar cada auto',
     a5t: 'Deportes y Talento', a5l1: 'Fotos y video profesionales de atletas y academias', a5l2: 'Crecimiento de audiencia y tráfico pago para ser descubierto', a5l3: 'Contenido que pone a los atletas frente a clubes y ojeadores',
-    a6t: 'Negocios Locales y Marcas', a6l1: 'Identidad de marca, contenido y gestión de redes sociales', a6l2: 'Tráfico pago en Meta y Google, con reportes mensuales', a6l3: 'Un flujo constante de clientes nuevos, mes tras mes'
+    a6t: 'Negocios Locales y Marcas', a6l1: 'Marca, contenido y redes sociales hechos por nosotros', a6l2: 'Tráfico pago en Meta y Google, con reportes mensuales', a6l3: 'Un flujo constante de clientes nuevos, mes tras mes'
   },
   ai: {
-    kicker: 'Además: nuestra propia IA', title: 'Nuestro propio sistema de IA que capta clientes para ti — en todo el mundo.',
+    kicker: 'Además: nuestra propia IA', title: 'Nuestra propia IA encuentra clientes para ti, en cualquier parte del mundo.',
     body: 'Además del video y el tráfico pago, operamos un sistema de IA propio creado para encontrar y captar clientes potenciales para tu negocio, desde cualquier parte del mundo.',
     p1t: 'Clientes de cualquier lugar', p1c: 'Llega a personas en los mercados que importan a tu negocio, no solo en tu ciudad.',
     p2t: 'Siempre activo', p2c: 'Trabaja las 24 horas, así que ninguna oportunidad espera hasta el lunes.',
@@ -153,7 +153,7 @@ es: {
     cta: 'Pregúntanos cómo funciona'
   },
   cases: {
-    kicker: 'Nuestro trabajo', title: 'Míralo tú mismo.', note: 'Algunos ejemplos del video y los resultados que hemos creado para clientes reales.',
+    kicker: 'Nuestro trabajo', title: 'El trabajo detrás de estos resultados.', note: 'Videos reales, hechos para clientes reales.',
     c1: 'Video de charter de yates', c1m: 'Ver en Instagram',
     c2: 'Restaurante, más reservas', c2m: 'Ver en Instagram',
     c3: 'Black Massai — campaña promocional', c3m: 'Ver video completo',
@@ -163,12 +163,12 @@ es: {
     more: 'Ver más en Behance'
   },
   services: {
-    kicker: 'Qué hacemos', title: 'Todo lo que necesitas, en un solo lugar.', note: 'No tienes que armar esto tú mismo — nosotros nos encargamos de todo como un solo servicio.',
-    s1t: 'Video y fotos', s1c: 'Video y fotos profesionales y cinematográficas de tu negocio — tu espacio, productos, comida, vehículos, dron, tu equipo.',
+    kicker: 'Qué hacemos', title: 'Todo lo que te trae clientes, hecho por nosotros.', note: 'Sin juntar freelancers y agencias: un solo equipo se encarga de todo y responde por el resultado.',
+    s1t: 'Fotos y videos que venden', s1c: 'Video y fotos profesionales y cinematográficas de tu negocio — tu espacio, productos, comida, vehículos, dron, tu equipo.',
     s2t: 'Te traemos clientes', s2c: 'Publicamos anuncios que te ponen frente a personas listas para comprar, reservar o visitar — localmente y en todo el mundo.',
-    s3t: 'Redes sociales', s3c: 'Publicamos y gestionamos tu Instagram y Facebook usando el video y las fotos que grabamos para ti.',
-    s4t: 'Reportes simples', s4c: 'Cada mes recibes un reporte claro y fácil con los nuevos clientes y resultados — sin números confusos.',
-    s5t: 'Vistas previas 3D', s5c: 'Para clientes de bienes raíces y construcción: vistas previas realistas en 3D de edificios y casas antes de construirlos.'
+    s3t: 'Tus redes, a nuestro cargo', s3c: 'Publicamos y gestionamos tu Instagram y Facebook usando el video y las fotos que grabamos para ti.',
+    s4t: 'Resultados que ves', s4c: 'Cada mes recibes un reporte claro y fácil con los nuevos clientes y resultados — sin números confusos.',
+    s5t: 'Previas 3D que venden antes de construir', s5c: 'Para clientes de bienes raíces y construcción: vistas previas realistas en 3D de edificios y casas antes de construirlos.'
   },
   testi: {
     kicker: 'Resultados', title: 'Lo que dicen los clientes.',
@@ -190,8 +190,8 @@ es: {
     t8n: 'Amanda Cole — Island Dream Weddings', t8l: 'Anguila'
   },
   plans: {
-    kicker: 'Planes', title: 'Lo que construimos para ti, en cada nivel.',
-    intro: 'Sea cual sea tu punto de partida, elige el nivel que corresponde a tu negocio hoy. Todos los planes parten del mismo sistema cinematográfico; solo eliges cuánta escala quieres desde el día uno.',
+    kicker: 'Planes', title: 'Elige tu plan. Nosotros traemos los clientes.',
+    intro: 'Todos los planes tienen el mismo objetivo: más clientes para ti. Lo que cambia es la velocidad y el alcance.',
     p1badge: 'Para empezar', p1t: 'Silver',
     p1l1: 'Fotografía profesional de tus productos, local o propiedad', p1l2: 'Configuración completa de Instagram e identidad visual', p1l3: 'Tráfico pago básico (anuncios locales dirigidos)',
     p1bonus: 'Bono gratis: portadas de historias personalizadas y guía de marca',
@@ -201,10 +201,10 @@ es: {
     p3badge: 'Escala total', p3t: 'Diamond',
     p3l1: 'Todo lo de Gold, más producción premium completa', p3l2: 'Campañas de anuncios avanzadas dirigidas a tu audiencia', p3l3: 'Automatización con IA para captar clientes y reservas 24/7',
     p3bonus: 'Bono gratis: integración completa de asistente de IA para consultas de clientes',
-    cta: 'Solicita tu precio personalizado'
+    cta: 'Quiero este plan'
   },
   threed: {
-    kicker: '3D / Archviz', title: 'Antes de construir, véalo real.', note: 'Vistas previas 3D realistas para clientes de bienes raíces y construcción \u2014 una línea complementaria junto a nuestro trabajo audiovisual.',
+    kicker: '3D / Archviz', title: 'Vende el inmueble antes de que esté listo.', note: 'Previas 3D realistas para que compradores e inversores vean hoy el proyecto terminado.',
     t3d2: 'Renderizado 3D de interiores: transformando baños en spas privados de lujo.', t3d3: 'Simulación arquitectónica 3D día-noche: mostrando propiedades en cada luz.', t3d4: 'Visualización de arquitectura modular: diseño 3D moderno, eficiente y de alto nivel.', t3d5: 'Módulo 3D interactivo: mira la luz y la arquitectura despertar del día a la noche.'
   },
   impact: {
@@ -214,8 +214,8 @@ es: {
     kicker: 'El impacto', title: 'Lo que cambia cuando nos encargamos.', note: 'Ejemplo ilustrativo \u2014 tus números reales serán distintos, esto muestra el tipo de cambio que buscamos.',
     exampleTag: 'Ejemplo ilustrativo', viewsTitle: 'Vistas de página y perfil', calTitle: 'Una agenda más llena', before: 'Antes', after: 'Con nosotros'
   },
-  results: { kicker: 'Resultados reales', title: 'No es una hipótesis. Ya sucedió.', note: 'Números compartidos por los propios clientes, de negocios reales con los que hemos trabajado.' },
-  aerial: { kicker: 'Detrás de las cámaras', title: 'Tu negocio, desde arriba.', note: 'Video de dron que hace destacar cualquier lugar \u2014 costas, locales, propiedades, desarrollos.',
+  results: { kicker: 'Resultados reales', title: 'Clientes reales, números reales.', note: 'Números compartidos por los propios clientes, de negocios reales con los que hemos trabajado.' },
+  aerial: { kicker: 'Detrás de las cámaras', title: 'Imágenes de dron que dan ganas de estar ahí.', note: 'Video de dron que hace destacar cualquier lugar \u2014 costas, locales, propiedades, desarrollos.',
     a1t: 'Charters de Lujo y Yates', a1: 'Eleva tu Experiencia: Vistas Aéreas Cinematográficas del Lujo en el Agua.',
     a2t: 'Destinos Tropicales', a2: 'Cinematografía Tropical Inmersiva que Convierte Lugares en Destinos.',
     a3t: 'Bienes Raíces Costeros', a3: 'Más Allá del Horizonte: Activos Visuales Diseñados para Convertir.',
@@ -231,7 +231,7 @@ es: {
     demoAlert: 'Esta es una vista previa del área de clientes. Tu acceso real llega cuando te unes.'
   },
   close: {
-    kicker: 'Comencemos', title: 'Hagamos crecer tu negocio.', sub: 'Cuéntanos sobre tu negocio y te enviamos un plan simple — sin tecnicismos, solo qué haríamos y cuánto cuesta.',
+    kicker: 'Comencemos', title: 'Vamos a traer clientes a tu negocio.', sub: 'Cuéntanos de tu negocio y te enviamos un plan simple: qué vamos a hacer, el resultado que buscamos y cuánto cuesta.',
     name: 'Nombre', contact: 'Correo o WhatsApp', type: 'Tipo de negocio', typePh: 'Restaurante, hotel, inmobiliaria, concesionario…',
     location: 'Ubicación', locationPh: 'Ciudad, país', cta: 'Enviar por WhatsApp'
   },
@@ -243,29 +243,29 @@ pt: {
   nav: { home: 'Início', method: 'Como funciona', cases: 'Nosso trabalho', services: 'O que fazemos', client: 'Área do cliente', threed: '3D', plans: 'Planos', games: 'Sites para Games', delivery: 'Apps de delivery', cta: 'Ver meu plano' },
   appband: { kicker: 'Também para restaurantes', title: 'Também criamos apps de delivery para restaurantes.', note: 'Seu app próprio de pedidos, sem um marketplace ficando com uma parte grande de cada pedido. Os mesmos restaurantes que filmamos e divulgamos podem receber pedidos direto: app do cliente, tela da cozinha e app do motoboy, tudo sincronizado.', cta: 'Ver os apps de delivery', qrTitle: 'Aponte a câmera ou clique: é um cardápio de verdade.', qrCap: 'Abre um cardápio ao vivo, já sentado na mesa 7. Faça um pedido de teste e veja a cozinha receber. Nada é cobrado.', p1t: 'Cardápio com QR Code (e NFC) em cada mesa', p1d: 'O cliente aponta ou encosta o celular na mesa, pede e paga no Pix. A cozinha recebe com o número da mesa.', p2t: 'App de delivery próprio', p2d: 'Cliente, cozinha e motoboy sincronizados, com a sua marca e sem comissão para marketplace.', p3t: 'Lanche que o cliente monta', p3d: 'O cliente vê o lanche se formar enquanto escolhe os ingredientes, e o pedido fica maior.', ctaMesa: 'Ver pedido na mesa', qrBtn: 'Abrir o cardápio ao vivo' },
   hero: {
-    line1: 'Não Criamos Apenas Conteúdo.', line2: 'Construímos Motores de Receita.',
-    leftTag: 'A Plataforma Mais Completa de Mídia e Crescimento.', rightTag: 'Nosso foco é fazer da sua marca a primeira escolha do seu mercado — trazendo mais clientes, vendas e reservas com mídia cinematográfica, anúncios segmentados e nosso próprio sistema de IA.',
-    sub: 'Produção cinematográfica de alto nível, tráfego orientado a dados e automação com IA para escalar seu negócio.',
-    ctaPrimary: 'Quero meu plano', ctaGhost: 'Ver nosso trabalho'
+    line1: 'Trazemos Clientes', line2: 'para o Seu Negócio.',
+    leftTag: 'Foto, vídeo, anúncios e IA trabalhando pelas suas vendas.', rightTag: 'Mais clientes, mais vendas, mais reservas. É isso que entregamos: fazemos o seu negócio ser a primeira escolha do seu mercado.',
+    sub: 'Você cuida do seu negócio. A gente cuida de tudo o que traz cliente até você e mostra o resultado em números, todo mês.',
+    ctaPrimary: 'Quero mais clientes', ctaGhost: 'Ver resultados reais'
   },
   method: {
-    kicker: 'Como funciona', title: 'Quatro passos simples para ter mais clientes.',
-    s1t: 'Capturamos o que te torna especial', s1c: 'Vídeo 4K de alto padrão, fotografia cinematográfica e, quando faz sentido, cobertura aérea com drone — gravados direto no seu restaurante, hotel, imóvel, veículos ou equipe.',
-    s2t: 'Construímos sua identidade visual', s2c: 'Esse material vira ativos de alta conversão para o site, reels verticais e conteúdo social feito para te tornar a primeira escolha do seu mercado.',
-    s3t: 'Chegamos nos clientes certos', s3c: 'Campanhas estratégicas no Meta e Google feitas para alcançar clientes de alto valor bem na hora em que estão prontos para comprar, reservar ou visitar.',
-    s4t: 'Você recebe clientes diretos', s4c: 'Mais vendas e reservas confirmadas, margens maiores, e um relatório mensal simples mostrando seu ROI exato.'
+    kicker: 'Como funciona', title: 'Como trazemos clientes para você.',
+    s1t: 'Mostramos o que te torna especial', s1c: 'Filmamos e fotografamos o seu negócio, em 4K e com drone quando faz sentido, para as pessoas verem por que escolher você.',
+    s2t: 'Fazemos de você a escolha óbvia', s2c: 'Esse material vira reels, posts e páginas feitos para transformar quem te vê em quem compra.',
+    s3t: 'Colocamos você na frente de quem compra', s3c: 'Anúncios no Instagram, Facebook e Google chegam em quem está pronto para comprar, reservar ou visitar, na hora em que está procurando.',
+    s4t: 'Você recebe clientes e vê os números', s4c: 'Mais vendas e reservas chegando direto em você, e um relatório mensal simples mostrando o que entrou.'
   },
   aud: {
-    kicker: 'Quem ajudamos', title: 'Um sistema, construído em torno do seu setor.', note: 'Não importa o que você vende, o objetivo é o mesmo: fazer as pessoas certas escolherem você. Veja o que fazemos por cada tipo de negócio.',
-    a1t: 'Restaurantes e Bares', a1l1: 'Comida, bebidas e ambiente em vídeo e foto cinematográficos', a1l2: 'Tráfego pago local que enche as mesas — principalmente nos dias fracos', a1l3: 'Instagram, Google Meu Negócio e WhatsApp prontos para converter',
-    a2t: 'Hotéis, Turismo e Iates', a2l1: 'Vídeo cinematográfico e drone que vendem a experiência', a2l2: 'Anúncios que chegam nos viajantes enquanto planejam a viagem', a2l3: 'Mais reservas diretas, menos comissões',
+    kicker: 'Quem ajudamos', title: 'Seja qual for o seu negócio, trazemos quem compra.', note: 'Veja o que fazemos para cada tipo de negócio e o que você ganha com isso.',
+    a1t: 'Restaurantes e Bares', a1l1: 'Pratos e drinks em vídeo que dão vontade de ir', a1l2: 'Tráfego pago local que enche as mesas — principalmente nos dias fracos', a1l3: 'Instagram, Google e WhatsApp prontos para transformar visita em reserva',
+    a2t: 'Hotéis, Turismo e Iates', a2l1: 'Vídeo e drone que vendem a experiência antes da viagem', a2l2: 'Anúncios que chegam nos viajantes enquanto planejam a viagem', a2l3: 'Mais reservas diretas, menos comissões',
     a3t: 'Imóveis e Construção', a3l1: 'Foto, vídeo e drone para imóveis e empreendimentos', a3l2: 'Prévias 3D realistas antes de construir', a3l3: 'Anúncios que chegam em compradores e investidores qualificados',
-    a4t: 'Automotivo', a4l1: 'Edição e tratamento profissional de fotos de veículos', a4l2: 'Banners e criativos de anúncio para concessionárias e marketplaces', a4l3: 'Vídeo cinematográfico que faz cada carro se destacar',
+    a4t: 'Automotivo', a4l1: 'Fotos de carros tratadas para vender mais rápido', a4l2: 'Banners e criativos de anúncio para concessionárias e marketplaces', a4l3: 'Vídeo cinematográfico que faz cada carro se destacar',
     a5t: 'Esportes e Talentos', a5l1: 'Fotos e vídeos profissionais de atletas e escolinhas', a5l2: 'Crescimento de audiência e tráfego pago para ser descoberto', a5l3: 'Conteúdo que coloca atletas na frente de clubes e olheiros',
-    a6t: 'Negócios Locais e Marcas', a6l1: 'Identidade de marca, conteúdo e gestão de redes sociais', a6l2: 'Tráfego pago no Meta e Google, com relatórios mensais', a6l3: 'Um fluxo constante de clientes novos, mês após mês'
+    a6t: 'Negócios Locais e Marcas', a6l1: 'Marca, conteúdo e redes sociais feitos por nós', a6l2: 'Tráfego pago no Meta e Google, com relatórios mensais', a6l3: 'Um fluxo constante de clientes novos, mês após mês'
   },
   ai: {
-    kicker: 'Além disso: nossa própria IA', title: 'Nosso próprio sistema de IA que capta clientes para você — no mundo todo.',
+    kicker: 'Além disso: nossa própria IA', title: 'Nossa própria IA encontra clientes para você, em qualquer lugar do mundo.',
     body: 'Além do vídeo e do tráfego pago, operamos um sistema de IA próprio, criado para encontrar e captar clientes em potencial para o seu negócio, de qualquer lugar do mundo.',
     p1t: 'Clientes de qualquer lugar', p1c: 'Alcance pessoas nos mercados que importam para o seu negócio, não só na sua cidade.',
     p2t: 'Sempre ligado', p2c: 'Trabalha 24 horas por dia, então nenhuma oportunidade espera até segunda-feira.',
@@ -273,7 +273,7 @@ pt: {
     cta: 'Pergunte como funciona'
   },
   cases: {
-    kicker: 'Nosso trabalho', title: 'Veja com seus próprios olhos.', note: 'Alguns exemplos do vídeo e dos resultados que criamos para clientes reais.',
+    kicker: 'Nosso trabalho', title: 'O trabalho por trás desses resultados.', note: 'Vídeos reais, feitos para clientes reais.',
     c1: 'Vídeo de charter de iates', c1m: 'Assistir no Instagram',
     c2: 'Restaurante, mais reservas', c2m: 'Assistir no Instagram',
     c3: 'Campanha promocional', c3m: 'Assistir vídeo completo',
@@ -283,12 +283,12 @@ pt: {
     more: 'Ver mais no Behance'
   },
   services: {
-    kicker: 'O que fazemos', title: 'Tudo o que você precisa, em um só lugar.', note: 'Você não precisa organizar isso sozinho — a gente cuida de tudo como um único serviço.',
-    s1t: 'Vídeo e fotos', s1c: 'Vídeo e fotos profissionais e cinematográficas do seu negócio — seu espaço, produtos, comida, veículos, drone, sua equipe.',
+    kicker: 'O que fazemos', title: 'Tudo o que traz cliente, feito por nós.', note: 'Sem juntar freelancer e agência: uma equipe só cuida de tudo e responde pelo resultado.',
+    s1t: 'Fotos e vídeos que vendem', s1c: 'Vídeo e fotos profissionais e cinematográficas do seu negócio — seu espaço, produtos, comida, veículos, drone, sua equipe.',
     s2t: 'Trazemos clientes até você', s2c: 'Colocamos anúncios que te põem na frente de quem está pronto para comprar, reservar ou visitar — localmente e no mundo todo.',
-    s3t: 'Redes sociais', s3c: 'Publicamos e cuidamos do seu Instagram e Facebook usando o vídeo e as fotos que gravamos para você.',
-    s4t: 'Relatórios simples', s4c: 'Todo mês você recebe um relatório simples e claro mostrando novos clientes e resultados — sem números confusos.',
-    s5t: 'Prévias 3D de imóveis', s5c: 'Para clientes de imóveis e construção: prévias 3D realistas de prédios e casas antes de serem construídos.'
+    s3t: 'Suas redes sociais em dia', s3c: 'Publicamos e cuidamos do seu Instagram e Facebook usando o vídeo e as fotos que gravamos para você.',
+    s4t: 'Resultado que você vê', s4c: 'Todo mês você recebe um relatório simples e claro mostrando novos clientes e resultados — sem números confusos.',
+    s5t: 'Prévias 3D que vendem antes de construir', s5c: 'Para clientes de imóveis e construção: prévias 3D realistas de prédios e casas antes de serem construídos.'
   },
   testi: {
     kicker: 'Resultados', title: 'O que os clientes dizem.',
@@ -310,8 +310,8 @@ pt: {
     t8n: 'Amanda Cole — Island Dream Weddings', t8l: 'Anguilla'
   },
   plans: {
-    kicker: 'Planos', title: 'O que construímos para você, em cada nível.',
-    intro: 'Não importa onde você está começando — escolha o nível que combina com o momento do seu negócio hoje. Todos os planos partem do mesmo sistema cinematográfico; você só escolhe quanta escala quer desde o primeiro dia.',
+    kicker: 'Planos', title: 'Escolha o plano. A gente traz os clientes.',
+    intro: 'Todo plano tem o mesmo objetivo: mais clientes para você. O que muda é a velocidade e o alcance.',
     p1badge: 'Começando', p1t: 'Silver',
     p1l1: 'Fotografia profissional dos seus produtos, local ou imóvel', p1l2: 'Configuração completa do Instagram e identidade visual', p1l3: 'Tráfego pago básico (anúncios locais segmentados)',
     p1bonus: 'Brinde grátis: capas de destaque personalizadas e guia de marca',
@@ -321,10 +321,10 @@ pt: {
     p3badge: 'Escala total', p3t: 'Diamond',
     p3l1: 'Tudo do Gold, mais produção premium completa', p3l2: 'Campanhas de anúncios avançadas segmentadas por público', p3l3: 'Automação com IA para captar clientes e reservas 24h',
     p3bonus: 'Brinde grátis: integração completa de assistente de IA para dúvidas de clientes',
-    cta: 'Peça seu preço personalizado'
+    cta: 'Quero este plano'
   },
   threed: {
-    kicker: '3D / Archviz', title: 'Antes de construir, veja de verdade.', note: 'Prévias 3D realistas para clientes de imóveis e construção \u2014 uma linha complementar ao nosso trabalho audiovisual.',
+    kicker: '3D / Archviz', title: 'Venda o imóvel antes de ele ficar pronto.', note: 'Prévias 3D realistas para compradores e investidores verem hoje o projeto pronto.',
     t3d2: 'Renderização 3D de interiores: transformando banheiros em spas privados de luxo.', t3d3: 'Simulação arquitetônica 3D dia-noite: mostrando o imóvel em cada luz.', t3d4: 'Visualização de arquitetura modular: design 3D moderno, eficiente e premium.', t3d5: 'Módulo 3D interativo: veja a luz e a arquitetura despertarem do dia para a noite.'
   },
   impact: {
@@ -334,8 +334,8 @@ pt: {
     kicker: 'O impacto', title: 'O que muda quando assumimos.', note: 'Exemplo ilustrativo \u2014 seus números reais vão variar, isso mostra o tipo de mudança que buscamos.',
     exampleTag: 'Exemplo ilustrativo', viewsTitle: 'Visualizações de página e perfil', calTitle: 'Uma agenda mais cheia', before: 'Antes', after: 'Com a gente'
   },
-  results: { kicker: 'Resultados reais', title: 'Não é hipótese. Já aconteceu.', note: 'Números informados pelos próprios clientes, de negócios reais que já trabalhamos.' },
-  aerial: { kicker: 'Por trás das câmeras', title: 'Seu negócio, visto de cima.', note: 'Imagens de drone que fazem qualquer lugar se destacar — litoral, estabelecimentos, imóveis, empreendimentos.',
+  results: { kicker: 'Resultados reais', title: 'Clientes reais, números reais.', note: 'Números informados pelos próprios clientes, de negócios reais que já trabalhamos.' },
+  aerial: { kicker: 'Por trás das câmeras', title: 'Imagens de drone que dão vontade de estar lá.', note: 'Imagens de drone que fazem qualquer lugar se destacar — litoral, estabelecimentos, imóveis, empreendimentos.',
     a1t: 'Charters de Luxo e Iates', a1: 'Eleve a Experiência: Vistas Aéreas Cinematográficas do Luxo na Água.',
     a2t: 'Destinos Tropicais', a2: 'Cinematografia Tropical Imersiva que Transforma Locais em Destinos.',
     a3t: 'Imóveis Litorâneos', a3: 'Além do Horizonte: Ativos Visuais Feitos para Converter.',
@@ -351,7 +351,7 @@ pt: {
     demoAlert: 'Esta é uma prévia da área do cliente. Seu acesso real chega quando você entra.'
   },
   close: {
-    kicker: 'Vamos começar', title: 'Vamos fazer seu negócio crescer.', sub: 'Conte sobre o seu negócio e te enviamos um plano simples — sem termos técnicos, só o que faríamos e quanto custa.',
+    kicker: 'Vamos começar', title: 'Vamos trazer clientes para o seu negócio.', sub: 'Conte sobre o seu negócio e mandamos um plano simples: o que vamos fazer, o resultado que buscamos e quanto custa.',
     name: 'Nome', contact: 'E-mail ou WhatsApp', type: 'Tipo de negócio', typePh: 'Restaurante, hotel, imobiliária, concessionária…',
     location: 'Localização', locationPh: 'Cidade, país', cta: 'Enviar pelo WhatsApp'
   },
