@@ -2,12 +2,12 @@
 LH.html({
   'g.h1': { pt: 'Sua loja de jogos que <span class="g1">vende sozinha</span>', en: 'Your game store that <span class="g1">sells on its own</span>', es: 'Tu tienda de juegos que <span class="g1">vende sola</span>' },
   'g.lead': {
-    pt: 'O cliente escolhe, paga no Pix e a loja confirma na hora. Entrega, chat do pedido e painel da equipe funcionando, mais bots de Discord e ShotCaller. Veja <b id="tot">{n}</b> estilos funcionando ao vivo e a gente monta o seu com a sua marca.',
-    en: 'The customer picks, pays by Pix and the store confirms instantly. Delivery, order chat and a team dashboard all working, plus Discord bots and ShotCaller. See <b id="tot">{n}</b> styles running live and we build yours with your brand.',
-    es: 'El cliente elige, paga con Pix y la tienda confirma al instante. Entrega, chat del pedido y panel del equipo funcionando, más bots de Discord y ShotCaller. Mira <b id="tot">{n}</b> estilos funcionando en vivo y armamos el tuyo con tu marca.' },
+    pt: 'Mais vendas sem ninguém conferir comprovante: o cliente paga no Pix, a loja confirma e entrega sozinha, de dia e de noite. Veja <b id="tot">{n}</b> estilos funcionando ao vivo e a gente monta o seu com a sua marca, com bots de Discord e ShotCaller se quiser.',
+    en: 'More sales, with no one checking receipts: customers pay by Pix, the store confirms and delivers on its own, day and night. See <b id="tot">{n}</b> styles running live and we build yours with your brand, plus Discord bots and ShotCaller if you want them.',
+    es: 'Más ventas, sin nadie revisando comprobantes: el cliente paga con Pix, la tienda confirma y entrega sola, de día y de noche. Mira <b id="tot">{n}</b> estilos funcionando en vivo y armamos el tuyo con tu marca, con bots de Discord y ShotCaller si quieres.' },
   'g.fluxo': { pt: 'O cliente compra. O Pix cai. <em>A loja entrega.</em>', en: 'The customer buys. The Pix lands. <em>The store delivers.</em>', es: 'El cliente compra. El Pix cae. <em>La tienda entrega.</em>' },
-  'g.bots': { pt: 'Bots em <span>ação</span>', en: 'Bots in <span>action</span>', es: 'Bots en <span>acción</span>' },
-  'g.como': { pt: 'Do estilo ao ar em <span>4 passos</span>', en: 'From style to live in <span>4 steps</span>', es: 'Del estilo al aire en <span>4 pasos</span>' }
+  'g.bots': { pt: 'Seu Discord <span>vendendo sozinho</span>', en: 'Your Discord <span>selling on its own</span>', es: 'Tu Discord <span>vendiendo solo</span>' },
+  'g.como': { pt: 'Sua loja vendendo em <span>4 passos</span>', en: 'Your store selling in <span>4 steps</span>', es: 'Tu tienda vendiendo en <span>4 pasos</span>' }
 });
 LH.add([
   ['Acesso', 'Access', 'Acceso'],
@@ -41,7 +41,7 @@ LH.add([
   ['Chat do pedido', 'Order chat', 'Chat del pedido'], ['Pagamento confirmado! Já estamos preparando a sua entrega.', 'Payment confirmed! We are already preparing your delivery.', '¡Pago confirmado! Ya estamos preparando tu entrega.'],
   ['Valeu! Pode mandar 👍', 'Thanks! Go ahead 👍', '¡Gracias! Puedes enviarlo 👍'], ['Entregue ✓ Confere aí se chegou tudo certo.', 'Delivered ✓ Please check that everything arrived.', 'Entregado ✓ Revisa que haya llegado todo bien.'],
   ['Pedido entregue', 'Order delivered', 'Pedido entregado'], ['Avalie com um toque, sem sair do chat.', 'Rate with one tap, without leaving the chat.', 'Califica con un toque, sin salir del chat.'], ['Comprar de novo', 'Buy again', 'Comprar de nuevo'],
-  ['O que a sua equipe vê', 'What your team sees', 'Lo que ve tu equipo'], ['👀 Cliente no catálogo', '👀 Customer in the catalog', '👀 Cliente en el catálogo'],
+  ['Menos trabalho para a sua equipe', 'Less work for your team', 'Menos trabajo para tu equipo'], ['👀 Cliente no catálogo', '👀 Customer in the catalog', '👀 Cliente en el catálogo'],
   ['Você vê o que está sendo olhado e o que mais vende, sem montar relatório.', 'You see what is being viewed and what sells most, without building a report.', 'Ves lo que se está mirando y lo que más vende, sin armar un informe.'],
   ['Mais vendido da semana:', 'Best seller this week:', 'Más vendido de la semana:'], ['💸 Pix recebido', '💸 Pix received', '💸 Pix recibido'],
   ['O banco avisa e o pedido muda para pago sozinho. Ninguém confere comprovante.', 'The bank notifies us and the order turns paid by itself. Nobody checks a receipt.', 'El banco avisa y el pedido pasa a pagado solo. Nadie revisa comprobantes.'],
@@ -67,10 +67,10 @@ LH.add([
   ['Leilão', 'Auction', 'Subasta'], ['Chamada por voz', 'Voice roll call', 'Pase de lista por voz'],
   /* pilares */
   ['Lojas de itens e moedas', 'Item and currency stores', 'Tiendas de ítems y monedas'],
-  ['Catálogo por jogo, Pix com confirmação automática, entrega com chat e painel da equipe.', 'Catalog per game, Pix with automatic confirmation, delivery with chat and a staff panel.', 'Catálogo por juego, Pix con confirmación automática, entrega con chat y panel del equipo.'],
+  ['Venda 24 horas sem conferir comprovante: catálogo por jogo, Pix confirmado sozinho, entrega pelo chat e painel da equipe.', 'Sell 24/7 without checking receipts: catalog per game, Pix confirmed automatically, delivery in the chat and a team dashboard.', 'Vende 24 horas sin revisar comprobantes: catálogo por juego, Pix confirmado solo, entrega por chat y panel del equipo.'],
   ['Bots de Discord', 'Discord bots', 'Bots de Discord'],
-  ['Vendem, atendem, fazem chamada por voz, leilão e avisos. Tudo editável por painel.', 'They sell, give support, run voice roll calls, auctions and alerts. Everything editable from a panel.', 'Venden, atienden, hacen pase de lista por voz, subastas y avisos. Todo editable desde un panel.'],
-  ['O caller fala uma vez e as 12 PTs ouvem. Painel de controle pelo site.', 'The caller speaks once and all 12 parties hear it. Control panel on the site.', 'El caller habla una vez y los 12 grupos escuchan. Panel de control en el sitio.'],
+  ['Seu Discord vendendo e atendendo sozinho: vendas, chamada por voz, leilão e avisos, tudo editável por painel.', 'Your Discord selling and answering on its own: sales, voice roll calls, auctions and alerts, all editable from a panel.', 'Tu Discord vendiendo y atendiendo solo: ventas, pase de lista por voz, subastas y avisos, todo editable desde un panel.'],
+  ['Guilda organizada na guerra: o caller fala uma vez e as 12 PTs ouvem. Controle pelo site.', 'An organized guild in battle: the caller speaks once and all 12 parties hear it. Controlled from the site.', 'Gremio organizado en la guerra: el caller habla una vez y los 12 grupos escuchan. Control desde el sitio.'],
   /* bots em ação */
   ['Exemplos do que o bot faz no seu Discord. É o mesmo tipo de bot que roda hoje numa guilda com 170 jogadores.', 'Examples of what the bot does on your Discord. It is the same kind of bot running today in a guild with 170 players.', 'Ejemplos de lo que hace el bot en tu Discord. Es el mismo tipo de bot que hoy funciona en un gremio con 170 jugadores.'],
   ['# vitrine · Loja Bot', '# storefront · Shop Bot', '# vitrina · Bot de la Tienda'],
@@ -148,14 +148,14 @@ LH.add([
   ['Você escolhe', 'You choose', 'Tú eliges'], ['O estilo que combina com seu público e seus jogos.', 'The style that fits your audience and your games.', 'El estilo que combina con tu público y tus juegos.'],
   ['Montamos', 'We build', 'Armamos'], ['Nome, logo, cores e catálogo trocados para o seu negócio.', 'Name, logo, colors and catalog swapped for your business.', 'Nombre, logo, colores y catálogo cambiados por los de tu negocio.'],
   ['Ligamos tudo', 'We connect it all', 'Conectamos todo'], ['Pix, entrega, painel da equipe e bot do Discord.', 'Pix, delivery, staff panel and Discord bot.', 'Pix, entrega, panel del equipo y bot de Discord.'],
-  ['Você opera', 'You run it', 'Tú operas'], ['Treinamento da equipe e acompanhamento nos primeiros dias.', 'Team training and follow-up during the first days.', 'Capacitación del equipo y acompañamiento los primeros días.'],
-  ['Vem em qualquer estilo', 'Included in every style', 'Viene en cualquier estilo'],
+  ['Você vende', 'You sell', 'Tú vendes'], ['A gente treina a sua equipe e acompanha os primeiros dias.', 'We train your team and stay with you through the first days.', 'Capacitamos a tu equipo y te acompañamos los primeros días.'],
+  ['Tudo para vender, em qualquer estilo', 'Everything you need to sell, in any style', 'Todo para vender, en cualquier estilo'],
   ['Visual 100% adaptado ao celular', '100% mobile-friendly design', 'Diseño 100% adaptado al celular'], ['Painel para a equipe, com níveis de acesso', 'Team panel with access levels', 'Panel para el equipo, con niveles de acceso'],
   ['Pix com confirmação automática', 'Pix with automatic confirmation', 'Pix con confirmación automática'], ['Chat de entrega dentro do pedido', 'Delivery chat inside the order', 'Chat de entrega dentro del pedido'],
   ['Bot do Discord ligado ao mesmo banco', 'Discord bot tied to the same database', 'Bot de Discord conectado a la misma base'], ['SEO e prévia de link para WhatsApp', 'SEO and link preview for WhatsApp', 'SEO y vista previa de enlace para WhatsApp'],
   ['Instalação em servidor próprio ou hospedagem', 'Installation on your own server or hosting', 'Instalación en servidor propio o hosting'], ['Treinamento da equipe e suporte inicial', 'Team training and initial support', 'Capacitación del equipo y soporte inicial'],
   ['Os dados ficam com você, com backup diário', 'The data stays with you, with daily backup', 'Los datos quedan contigo, con respaldo diario'],
-  ['Qual estilo é a cara do seu projeto?', 'Which style fits your project?', '¿Qué estilo es la cara de tu proyecto?'],
+  ['Vamos colocar a sua loja para vender?', 'Ready to get your store selling?', '¿Ponemos tu tienda a vender?'],
   ['Mande o número do estilo e o jogo que você vende. A gente responde com prazo e valor.', 'Send the style number and the game you sell. We reply with a deadline and a price.', 'Envía el número del estilo y el juego que vendes. Respondemos con plazo y valor.'],
   ['Chamar no WhatsApp', 'Chat on WhatsApp', 'Hablar por WhatsApp'], ['Falar no WhatsApp', 'Talk on WhatsApp', 'Hablar por WhatsApp'],
   ['© Lhart Design — prévias ilustrativas, nomes e produtos de exemplo.', '© Lhart Design — illustrative previews, sample names and products.', '© Lhart Design — vistas previas ilustrativas, nombres y productos de ejemplo.'],
@@ -163,7 +163,10 @@ LH.add([
   ['Computador', 'Desktop', 'Computadora'], ['Celular', 'Phone', 'Celular'], ['Quero este estilo', 'I want this style', 'Quiero este estilo'], ['Abrir em aba', 'Open in new tab', 'Abrir en pestaña'], ['Fechar', 'Close', 'Cerrar'],
   /* WhatsApp */
   ['Oi! Quero o estilo {n} - {name} (Game Commerce)', 'Hi! I want style {n} - {name} (Game Commerce)', '¡Hola! Quiero el estilo {n} - {name} (Game Commerce)'],
-  ['Oi! Vi o Game Commerce e quero uma loja ou bot para o meu projeto.', 'Hi! I saw Game Commerce and I want a store or bot for my project.', '¡Hola! Vi la pestaña Sitios para Juegos y quiero un sitio para mi proyecto.']
+  ['Oi! Vi o Game Commerce e quero uma loja ou bot para o meu projeto.', 'Hi! I saw Game Commerce and I want a store or bot for my project.', '¡Hola! Vi la pestaña Sitios para Juegos y quiero un sitio para mi proyecto.'],
+  ['Mais vendas', 'More sales', 'Más ventas'],
+  ['Menos trabalho', 'Less work', 'Menos trabajo'],
+  ['Pix na hora', 'Instant Pix', 'Pix al instante']
 ]);
 LH.meta({
   title: { pt: 'Game Commerce — Lhart Design', en: 'Game Commerce — Lhart Design', es: 'Game Commerce — Lhart Design' },
