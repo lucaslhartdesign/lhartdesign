@@ -1,9 +1,9 @@
 /* Dicionário da seção "O cliente monta o prato" (página Delivery). Cada linha: ["português", "inglês", "espanhol"] */
 LH.html({
   'd.monte': {
-    pt: 'O cliente <em>monta o prato</em> e vê o preço na hora',
-    en: 'Customers <em>build their dish</em> and see the price instantly',
-    es: 'El cliente <em>arma su plato</em> y ve el precio al instante'
+    pt: 'O cliente <em>monta o prato</em> e pede mais',
+    en: 'Customers <em>build their dish</em> and order more',
+    es: 'El cliente <em>arma su plato</em> y pide más'
   }
 });
 LH.add([
