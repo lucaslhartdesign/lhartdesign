@@ -89,7 +89,7 @@ h2 em{font-style:normal;color:var(--ac)}
 .cop b{font:400 26px/1 'Bebas Neue',sans-serif;letter-spacing:.03em}
 .cop .pv{color:var(--mu);font-size:13px;margin-left:6px}
 .cop .n{display:block;margin:10px 0 2px;font:800 clamp(34px,6vw,44px)/1 Inter;color:var(--gr);letter-spacing:-.02em}
-.cop .n small{font-size:15px;font-weight:600;color:#d6d8e3;letter-spacing:0;margin-left:6px}
+.cop .n small{display:block;margin-top:6px;font-size:15px;font-weight:600;color:#d6d8e3;letter-spacing:0}
 .cop .dia{color:var(--mu);font-size:14px;margin:0 0 12px}
 .barra{height:10px;border-radius:99px;background:#ffffff12;overflow:hidden;margin:0 0 12px}
 .barra i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#4be39a,#b5abfc);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
@@ -194,13 +194,16 @@ h2 em{font-style:normal;color:var(--ac)}
 
   // O "por que vale a pena": só o que é verdade. Sem resultado inventado; a
   // conta da calculadora é de faturamento, com o gasto médio que o dono ajusta.
+  // 27/11/2026 — '2', '1,2', '2,5': quantas vezes UM cliente paga o plano.
+  function fmtX(x) { var r = Math.floor(x * 10) / 10; return (r % 1 ? r.toFixed(1) : String(r)).replace('.', lang === 'en' ? '.' : ','); }
   var V = {
     pt: { tit: 'Por que <em>vale a pena</em>', sub: 'Antes dos valores, o que eles cobrem e quando se pagam.',
       c: [['🎬', 'Uma equipe inteira por mês', 'Foto, vídeo, drone, edição e anúncios, feitos por quem faz isso todo dia. Vocês não precisam contratar nem treinar ninguém.'],
           ['📲', 'Cliente direto com vocês', 'Quem chega pelo anúncio fala direto com vocês, no WhatsApp ou no Instagram, sem intermediário ficando com parte da venda.'],
           ['📊', 'Vocês veem o resultado', 'Todo mês um relatório simples: quantas pessoas viram, quantas chamaram, o que funcionou melhor.']],
       calc: 'Em quanto tempo <em>se paga</em>', calcS: 'Coloque quanto um cliente gasta, em média, numa visita, reserva ou passeio. A conta mostra quantos clientes novos por mês pagam cada plano.',
-      tk: 'Um cliente gasta, em média:', cli: 'clientes novos no mês', dia: function (n) { var d = n / 30; return d >= 1 ? 'cerca de ' + Math.round(d) + ' por dia' : 'menos de 1 por dia (1 a cada ' + Math.max(1, Math.round(30 / n)) + ' dias)'; },
+      tk: 'Um cliente gasta, em média:', cli: 'clientes novos no mês', cli1: 'cliente novo no mês',
+      dia: function (n, x) { if (n === 1 && x >= 1) return x >= 1.95 ? 'Um cliente só já paga o plano ' + fmtX(x) + ' vezes' : 'Um cliente só já paga o plano inteiro'; var d = n / 30; if (d >= 3) return 'cerca de ' + Math.round(d) + ' por dia'; var s = Math.round(n * 7 / 30); return n >= 9 ? 'cerca de ' + s + ' por semana' : '1 a cada ' + Math.round(30 / n) + ' dias'; },
       nota: 'É uma conta de faturamento, não uma promessa: mostra quantos clientes novos cobrem o plano. Daí para frente, cada cliente novo é ganho.',
       trab: 'Quer ver o que já fizemos? Fotos, vídeos e anúncios de trabalhos reais.', trabB: 'Ver nossos trabalhos' },
     en: { tit: 'Why it <em>pays off</em>', sub: 'Before the prices: what they cover and when they pay for themselves.',
@@ -208,7 +211,8 @@ h2 em{font-style:normal;color:var(--ac)}
           ['📲', 'Customers come straight to you', 'People who come from the ads talk to you directly, on WhatsApp or Instagram, with no middleman taking a cut.'],
           ['📊', 'You see the results', 'A simple report every month: how many people saw it, how many reached out, what worked best.']],
       calc: 'How fast it <em>pays for itself</em>', calcS: 'Enter how much one customer spends on average per visit, booking or trip. The math shows how many new customers a month cover each plan.',
-      tk: 'One customer spends, on average:', cli: 'new customers a month', dia: function (n) { var d = n / 30; return d >= 1 ? 'about ' + Math.round(d) + ' a day' : 'less than 1 a day (1 every ' + Math.max(1, Math.round(30 / n)) + ' days)'; },
+      tk: 'One customer spends, on average:', cli: 'new customers a month', cli1: 'new customer a month',
+      dia: function (n, x) { if (n === 1 && x >= 1) return x >= 1.95 ? 'A single customer pays for the plan ' + fmtX(x) + ' times over' : 'A single customer covers the whole plan'; var d = n / 30; if (d >= 3) return 'about ' + Math.round(d) + ' a day'; var s = Math.round(n * 7 / 30); return n >= 9 ? 'about ' + s + ' a week' : '1 every ' + Math.round(30 / n) + ' days'; },
       nota: "This is revenue math, not a promise: it shows how many new customers cover the plan. Every new customer after that is a gain.",
       trab: 'Want to see what we have done? Photos, videos and ads from real projects.', trabB: 'See our work' },
     es: { tit: 'Por qué <em>vale la pena</em>', sub: 'Antes de los valores: qué cubren y cuándo se pagan.',
@@ -216,7 +220,8 @@ h2 em{font-style:normal;color:var(--ac)}
           ['📲', 'El cliente llega directo a ustedes', 'Quien llega por el anuncio habla directo con ustedes, por WhatsApp o Instagram, sin intermediario quedándose con parte.'],
           ['📊', 'Ustedes ven el resultado', 'Cada mes un informe simple: cuántas personas lo vieron, cuántas escribieron, qué funcionó mejor.']],
       calc: 'En cuánto tiempo <em>se paga</em>', calcS: 'Ponga cuánto gasta un cliente, en promedio, por visita, reserva o paseo. La cuenta muestra cuántos clientes nuevos al mes pagan cada plan.',
-      tk: 'Un cliente gasta, en promedio:', cli: 'clientes nuevos al mes', dia: function (n) { var d = n / 30; return d >= 1 ? 'cerca de ' + Math.round(d) + ' por día' : 'menos de 1 por día (1 cada ' + Math.max(1, Math.round(30 / n)) + ' días)'; },
+      tk: 'Un cliente gasta, en promedio:', cli: 'clientes nuevos al mes', cli1: 'cliente nuevo al mes',
+      dia: function (n, x) { if (n === 1 && x >= 1) return x >= 1.95 ? 'Un solo cliente paga el plan ' + fmtX(x) + ' veces' : 'Un solo cliente ya cubre el plan'; var d = n / 30; if (d >= 3) return 'cerca de ' + Math.round(d) + ' por día'; var s = Math.round(n * 7 / 30); return n >= 9 ? 'cerca de ' + s + ' por semana' : '1 cada ' + Math.round(30 / n) + ' días'; },
       nota: 'Es una cuenta de facturación, no una promesa: muestra cuántos clientes nuevos cubren el plan. De ahí en adelante, cada cliente nuevo es ganancia.',
       trab: '¿Quiere ver lo que ya hicimos? Fotos, videos y anuncios de trabajos reales.', trabB: 'Ver nuestros trabajos' }
   };
@@ -331,7 +336,9 @@ h2 em{font-style:normal;color:var(--ac)}
     var maior = Math.max.apply(null, ns.concat([1]));
     cops.forEach(function (el, k) {
       var n = ns[k], q = el.querySelector('.q');
-      el.querySelector('.dia').textContent = n ? VV.dia(n) : '';
+      var vk = +el.dataset.v;
+      el.querySelector('.dia').textContent = n ? VV.dia(n, t / vk) : '';
+      el.querySelector('.n small').textContent = n === 1 ? (VV.cli1 || VV.cli) : VV.cli;
       el.querySelector('.barra i').style.width = (animar === false ? 0 : Math.max(6, n / maior * 100)) + '%';
       var g = el.querySelector('.gente'), mostrar = Math.min(n, 40);
       g.innerHTML = new Array(mostrar + 1).join('<span></span>') + (n > 40 ? '<em>+' + (n - 40) + '</em>' : '');
