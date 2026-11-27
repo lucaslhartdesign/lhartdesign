@@ -72,7 +72,7 @@ button.b:disabled{opacity:.5}
 .toast{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));background:var(--txt);color:var(--bg);padding:13px 16px;border-radius:14px;font-weight:700;text-align:center;transform:translateY(150%);transition:transform .25s;z-index:9}
 .toast.v{transform:none}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
-.log{max-height:340px;overflow:auto;font:12px/1.45 ui-monospace,Consolas,monospace;color:var(--fraco)}.log .linha{padding:3px 0;border-bottom:1px solid var(--linha)}</style>
+.log{max-height:340px;overflow:auto;font:12px/1.45 ui-monospace,Consolas,monospace;color:var(--fraco)}.log .linha{padding:3px 0;border-bottom:1px solid var(--linha)}.nums{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:6px 0}.num{background:var(--card2);border-radius:10px;padding:8px 10px}.num b{display:block;font-size:20px}.num span{color:var(--fraco);font-size:12px}</style>
 </head>
 <body>
 <header>
@@ -116,7 +116,7 @@ function caixaEstado(ultimo){
   if(r.ok){
     var extra='';
     if(ultimo.acao==='pagina'&&r.texto)extra='<a class="link" href="'+esc(r.texto)+'" target="_blank" rel="noopener">'+esc(r.texto)+'</a><div class="botoes"><button class="b" data-acao="copiar" data-v="'+esc(r.texto)+'">📋 Copiar o link</button><button class="b" data-acao="compartilhar" data-v="'+esc(r.texto)+'">↗️ Compartilhar</button></div>';
-    else if(r.texto&&(ultimo.acao==='buscar'||ultimo.acao==='recusar'||ultimo.acao==='email'||ultimo.acao==='controle'))extra='<div class="nota">'+esc(r.texto)+'</div>';
+    else if(r.texto&&(ultimo.acao==='buscar'||ultimo.acao==='recusar'||ultimo.acao==='email'||ultimo.acao==='controle'||ultimo.acao==='procurar'||ultimo.acao==='busca_livre'||ultimo.acao==='proposta'))extra='<div class="nota">'+esc(r.texto)+'</div>';
     return'<div class="estado ok">✅ '+nome+' '+(FEITO[ultimo.acao]||'feito')+' às '+esc(r.em)+'.'+extra+'</div>'}
   return'<div class="estado erro">⚠️ Não deu: '+esc(r.erro||'erro')+'</div>';
 }
@@ -125,7 +125,7 @@ function estadoDe(phone){return caixaEstado(ultimoDe(function(m){return m.phone=
 function card(i){
   var est=estado();
   var h='<div class="card'+(i.esperando?' espera':'')+'" data-p="'+esc(i.phone)+'">';
-  h+='<div class="cab"><div><div class="nome">'+esc(i.nome)+'</div><div class="meta">'+canal(i.canal)+(i.pais?'<span class="tag">'+esc(i.pais)+'</span>':'')+esc(i.cidade||'')+'</div></div>'+(i.esperando?horas(i.horas):'')+'</div>';
+  h+='<div class="cab"><div><div class="nome">'+(i.achado?'🔎 ':'')+esc(i.nome)+'</div><div class="meta">'+canal(i.canal)+(i.pais?'<span class="tag">'+esc(i.pais)+'</span>':'')+(i.status?'<span class="tag">'+esc(i.status)+'</span>':'')+esc(i.cidade||'')+'</div></div>'+(i.esperando?horas(i.horas):'')+'</div>';
   if(i.ultima){h+='<div class="disse">'+esc(i.ultima)+(i.ultima_pt?'<div class="pt">🇧🇷 '+esc(i.ultima_pt)+'</div>':'')+'</div>'}
   if(i.conversa&&i.conversa.length>1){
     h+='<button class="ver" data-acao="conv">'+(abertas[i.phone]?'Esconder a conversa':'Ver a conversa ('+i.conversa.length+')')+'</button><div class="conv'+(abertas[i.phone]?' aberta':'')+'">';
@@ -138,6 +138,7 @@ function card(i){
   }else{
     h+='<div class="botoes"><button class="b prim" data-acao="rascunhar">🤖 Escrever a resposta com a IA</button></div>';
   }
+  h+='<div class="botoes"><button class="b" data-acao="proposta">📄 Mandar a proposta (com oferta de ligação)</button></div>';
   if(i.materiais&&i.materiais.length){
     h+='<div class="rot">Gerar com o app e enviar</div><div class="botoes">';
     i.materiais.forEach(function(m){h+='<button class="b mat" data-acao="material" data-tipo="'+esc(m.tipo)+'">⚡ '+esc(m.rotulo)+'</button>'});
@@ -162,6 +163,8 @@ function card(i){
   return h;
 }
 
+var proc='';var bl={ramo:'',cidade:'',pais:'br'};
+function num(v,rot){return'<div class="num"><b>'+(v==null?'—':esc(String(v)))+'</b><span>'+esc(rot)+'</span></div>'}
 function doPainel(acoes){return caixaEstado(ultimoDe(function(m){return!m.phone&&acoes.indexOf(m.acao)>=0}))}
 function painel(){
   var est=estado();var at=est.atividade||{};
@@ -170,6 +173,19 @@ function painel(){
   if(at.proximos&&at.proximos.length){h+='<div class="rot">Depois</div>';at.proximos.forEach(function(p){h+='<div class="linha"><b>'+esc(p[0])+'</b> · '+esc(p[1])+'</div>'})}
   if(at.historico&&at.historico.length){h+='<div class="rot">Últimas ações</div>';at.historico.forEach(function(p){h+='<div class="linha"><b>'+esc(p[0])+'</b> · '+esc(p[1])+'</div>'})}
   h+='</div>';
+  var nu=est.numeros||{};var se=nu.semana||{};
+  h+='<div class="card"><div class="nome">📊 Hoje</div><div class="nums">'+
+    num(nu.esperando,'esperando você')+num(nu.interesse,'em Interesse')+num(nu.cobrar,'para cobrar')+num(nu.novos,'novos na base')+
+    num(nu.wa_hoje,'WhatsApp hoje')+num(nu.ig_hoje,'DMs hoje')+num(nu.respostas_hoje,'respostas lidas')+
+    num(nu.cabem_ig,'DMs ainda cabem')+'</div>'+
+    '<div class="rot">Semana</div><div class="nums">'+num(se.sims,'disseram sim')+num(se.propostas,'propostas')+num(se.abertas,'propostas abertas')+num(se.ligacoes,'toparam ligação')+num(se.contratos,'clientes')+'</div></div>';
+  h+='<div class="card" data-p=""><div class="nome">🔎 Procurar cliente</div><div class="nota">Qualquer cliente da base, pelo nome. Ele aparece no topo da lista "Todas", com todos os botões.</div>'+
+    '<input data-campo="proc_nome" autocomplete="off" placeholder="Ex.: Angie, Marriott, Hadar" value="'+esc(proc)+'"><div class="botoes"><button class="b prim" data-acao="procurar">Procurar</button></div>'+doPainel(['procurar'])+'</div>';
+  h+='<div class="card" data-p=""><div class="nome">🗺️ Busca livre</div><div class="nota">Você escolhe o ramo e a cidade: 30 empresas até 30 km, e a 1ª mensagem sai sozinha.</div>'+
+    '<div class="rot">Ramo</div><input data-campo="bl_ramo" autocomplete="off" placeholder="Ex.: pizzaria, hotel, barbearia" value="'+esc(bl.ramo)+'">'+
+    '<div class="rot">Cidade</div><input data-campo="bl_cidade" autocomplete="off" placeholder="Ex.: Campinas, SP · Doral, FL" value="'+esc(bl.cidade)+'">'+
+    '<div class="rot">País</div><select data-campo="bl_pais"><option value="br"'+(bl.pais==='br'?' selected':'')+'>Brasil</option><option value="us"'+(bl.pais==='us'?' selected':'')+'>EUA (Miami)</option><option value="sx"'+(bl.pais==='sx'?' selected':'')+'>Saint Martin</option></select>'+
+    '<div class="botoes"><button class="b prim" data-acao="busca_livre">Buscar e mandar</button></div>'+doPainel(['busca_livre'])+'</div>';
   h+='<div class="card" data-p=""><div class="nome">🎛️ Controle</div><div class="nota">'+(est.pausado?'<b style="color:var(--amarelo)">Pausado.</b> Nada novo começa até retomar.':'Rodando.')+'</div><div class="botoes">'+(est.pausado?'<button class="b prim" data-acao="controle" data-tipo="retomar">▶️ Retomar</button>':'<button class="b perigo" data-acao="controle" data-tipo="pausar">⏸ Pausar tudo</button>')+'<button class="b" data-acao="controle" data-tipo="ler">👂 Ler as conversas agora</button><button class="b" data-acao="controle" data-tipo="cobrar">🔁 Cobrar quem não respondeu</button><button class="b" data-acao="controle" data-tipo="disparar">🚀 1ª mensagem para os novos</button></div>'+doPainel(['controle'])+'</div>';
   if(est.log&&est.log.length){h+='<div class="card"><div class="nome">📜 O que está acontecendo (log)</div><div class="log">';est.log.slice().reverse().forEach(function(l){h+='<div class="linha">'+esc(l)+'</div>'});h+='</div></div>'}
   h+='<div class="card" data-p=""><div class="nome">🔁 Piloto automático</div><div class="nota">'+(est.piloto?'<b style="color:var(--verde)">Ligado.</b> ':'Desligado. ')+'A cada volta: responde quem falou (até quem disse não), cobra quem não respondeu, manda a 1ª mensagem para a base que nunca recebeu e devolve à fila quem ficou em silêncio. Robôs ficam de fora.</div>'+doPainel(['piloto']);
@@ -228,6 +244,10 @@ function mandar(item,acao,extra){
 function painelClique(b,acao){
   var tipo=b.getAttribute('data-tipo');
   if(acao==='pag_tipo'){pag.tipo=tipo;if(tipo==='app'&&pag.idioma==='es')pag.idioma='pt';desenhar();return}
+  if(acao==='procurar'){var pn=((document.querySelector('input[data-campo="proc_nome"]')||{}).value||'').trim();if(pn.length<2){toast('Digite pelo menos 2 letras');return}proc=pn;filtro='todas';mandar(null,'procurar',{nome:pn});return}
+  if(acao==='busca_livre'){var r1=((document.querySelector('input[data-campo="bl_ramo"]')||{}).value||'').trim(),c1=((document.querySelector('input[data-campo="bl_cidade"]')||{}).value||'').trim(),p1=(document.querySelector('select[data-campo="bl_pais"]')||{}).value||'br';
+    if(r1.length<3||c1.length<2){toast('Preencha o ramo e a cidade');return}bl={ramo:r1,cidade:c1,pais:p1};
+    if(!confirm('Buscar "'+r1+'" em '+c1+' e mandar a 1ª mensagem para quem a busca pegar?'))return;mandar(null,'busca_livre',{nome:r1,texto:c1,tipo:p1});return}
   if(acao==='controle'){var q={pausar:'Pausar tudo? O que está no meio termina e nada novo começa.',retomar:'Retomar o programa?',ler:'Ler as conversas agora?',cobrar:'Cobrar agora quem não respondeu?',disparar:'Mandar a 1ª mensagem para os leads novos selecionados?'}[tipo];if(!confirm(q))return;mandar(null,'controle',{tipo:tipo});return}
   if(acao==='piloto'){if(!confirm(tipo==='ligar'?'Ligar o piloto automático? Ele responde, cobra e manda a 1ª mensagem sozinho.':'Desligar o piloto automático?'))return;mandar(null,'piloto',{tipo:tipo});return}
   if(acao==='atendente'){var t={desligado:'Desligar o atendente?',sombra:'Atendente escreve e espera você aprovar?',ligado:'Atendente responde sozinho o que é seguro?'}[tipo];if(!confirm(t))return;mandar(null,'atendente',{tipo:tipo});return}
@@ -249,6 +269,7 @@ document.addEventListener('click',function(ev){
   var phone=c.getAttribute('data-p');
   var item=((dados&&dados.dados&&dados.dados.itens)||[]).filter(function(i){return i.phone===phone})[0];if(!item)return;
   if(acao==='conv'){abertas[phone]=!abertas[phone];desenhar();return}
+  if(acao==='proposta'){if(!confirm('Mandar a proposta com os planos (e a oferta de ligação) para '+item.nome+'?'))return;mandar(item,'proposta',{});return}
   if(acao==='passar'){if(item.passagem&&item.passagem.texto){window.open('https://wa.me/?text='+encodeURIComponent(item.passagem.texto),'_blank')}return}
   if(acao==='abrir_escrever'){escrevendo[phone]=true;desenhar();var t=document.querySelector('.card[data-p="'+CSS.escape(phone)+'"] textarea[data-campo="minha"]');if(t)t.focus();return}
   if(acao==='enviar'){var tx=(c.querySelector('textarea[data-campo="pronta"]')||{}).value||'';tx=tx.trim();
