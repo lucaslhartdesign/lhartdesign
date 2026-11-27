@@ -78,5 +78,10 @@ LH.add([
   ['VER SACOLA', 'VIEW BAG', 'VER BOLSA'], ['PEDIDO ENVIADO', 'ORDER SENT', 'PEDIDO ENVIADO'], ['A cozinha já recebeu', 'The kitchen already has it', 'La cocina ya lo recibió'],
   ['Cozinha', 'Kitchen', 'Cocina'], ['ao vivo', 'live', 'en vivo'], ['Preparando', 'Preparing', 'Preparando'], ['Pronto', 'Ready', 'Listo'], ['Servido', 'Served', 'Servido'],
   ['PORÇÕES', 'SIDES', 'PORCIONES'], ['BATATA RÚSTICA', 'RUSTIC FRIES', 'PAPAS RÚSTICAS'], ['ANÉIS DE CEBOLA', 'ONION RINGS', 'AROS DE CEBOLLA'], ['REFRIGERANTE', 'SODA', 'GASEOSA'], ['FINALIZAR', 'CHECKOUT', 'FINALIZAR'],
-  ['Servido na mesa', 'Served at the table', 'Servido en la mesa']
+  ['Servido na mesa', 'Served at the table', 'Servido en la mesa'],
+  ['Mais pedidos e menos espera: cada mesa tem um QR Code, o cliente pede pelo celular e a cozinha recebe direto, com o número da mesa. Sem fila para o garçom, sem erro de anotação e sem baixar aplicativo.', 'More orders, less waiting: every table has a QR code, customers order on their phone and the kitchen gets it directly, with the table number. No waiting for a waiter, no wrong notes, no app to download.', 'Más pedidos y menos espera: cada mesa tiene un código QR, el cliente pide desde el celular y la cocina lo recibe directo, con el número de mesa. Sin esperar al mesero, sin errores de anotación y sin descargar apps.'],
+  ['Mais pedidos por mesa, menos trabalho para a equipe e nenhum erro de anotação, com o mesmo cardápio online que você já usa.', 'More orders per table, less work for your team and no order-taking mistakes, with the same online menu you already use.', 'Más pedidos por mesa, menos trabajo para el equipo y ningún error de anotación, con el mismo menú online que ya usas.'],
+  ['Turista pede sozinho', 'Tourists order on their own', 'El turista pide solo'],
+  ['O cardápio abre em português, inglês e espanhol, e o turista pede sem precisar de ajuda.', 'The menu opens in Portuguese, English and Spanish, so tourists order without needing help.', 'El menú abre en portugués, inglés y español, y el turista pide sin necesitar ayuda.'],
+  ['Quer vender mais em cada mesa?', 'Want to sell more at every table?', '¿Quieres vender más en cada mesa?']
 ]);
