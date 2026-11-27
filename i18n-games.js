@@ -7,6 +7,7 @@ LH.html({
     es: 'Más ventas, sin nadie revisando comprobantes: el cliente paga con Pix, la tienda confirma y entrega sola, de día y de noche. Mira <b id="tot">{n}</b> estilos funcionando en vivo y armamos el tuyo con tu marca, con bots de Discord y ShotCaller si quieres.' },
   'g.fluxo': { pt: 'O cliente compra. O Pix cai. <em>A loja entrega.</em>', en: 'The customer buys. The Pix lands. <em>The store delivers.</em>', es: 'El cliente compra. El Pix cae. <em>La tienda entrega.</em>' },
   'g.bots': { pt: 'Seu Discord <span>vendendo sozinho</span>', en: 'Your Discord <span>selling on its own</span>', es: 'Tu Discord <span>vendiendo solo</span>' },
+  'g.casos': { pt: 'Loja que já <span>vende</span>', en: 'A store that already <span>sells</span>', es: 'Una tienda que ya <span>vende</span>' },
   'g.como': { pt: 'Sua loja vendendo em <span>4 passos</span>', en: 'Your store selling in <span>4 steps</span>', es: 'Tu tienda vendiendo en <span>4 pasos</span>' }
 });
 LH.add([
@@ -166,7 +167,18 @@ LH.add([
   ['Oi! Vi o Game Commerce e quero uma loja ou bot para o meu projeto.', 'Hi! I saw Game Commerce and I want a store or bot for my project.', '¡Hola! Vi la pestaña Sitios para Juegos y quiero un sitio para mi proyecto.'],
   ['Mais vendas', 'More sales', 'Más ventas'],
   ['Menos trabalho', 'Less work', 'Menos trabajo'],
-  ['Pix na hora', 'Instant Pix', 'Pix al instante']
+  ['Pix na hora', 'Instant Pix', 'Pix al instante'],
+  ['Um projeto nosso em produção hoje: site, Pix automático e bot de Discord ligados ao mesmo banco.', 'One of our projects, live today: website, automatic Pix and Discord bot all running on the same database.', 'Un proyecto nuestro en producción hoy: sitio, Pix automático y bot de Discord conectados a la misma base de datos.'],
+  ['pedidos concluídos', 'orders completed', 'pedidos completados'],
+  ['Entregues pela própria loja, com chat dentro do pedido.', 'Delivered by the store itself, with chat inside each order.', 'Entregados por la propia tienda, con chat dentro del pedido.'],
+  ['jogos no catálogo', 'games in the catalog', 'juegos en el catálogo'],
+  ['Moedas, itens e serviços, cada jogo com a sua vitrine.', 'Currency, items and services, each game with its own storefront.', 'Monedas, ítems y servicios, cada juego con su propia vitrina.'],
+  ['5,0', '5.0', '5,0'],
+  ['nota média', 'average rating', 'nota promedio'],
+  ['13 avaliações de clientes no site.', '13 customer reviews on the site.', '13 reseñas de clientes en el sitio.'],
+  ['formas de pagar', 'ways to pay', 'formas de pago'],
+  ['Pix, cartões, Mercado Pago, Binance e Wise.', 'Pix, cards, Mercado Pago, Binance and Wise.', 'Pix, tarjetas, Mercado Pago, Binance y Wise.'],
+  ['Loja de moedas e itens para jogos online, feita e mantida pela Lhart Design. Mostramos o site ao vivo a quem pedir.', 'An online game currency and item store, built and run by Lhart Design. We show the live site to anyone who asks.', 'Tienda de monedas e ítems para juegos online, hecha y mantenida por Lhart Design. Mostramos el sitio en vivo a quien lo pida.']
 ]);
 LH.meta({
   title: { pt: 'Game Commerce — Lhart Design', en: 'Game Commerce — Lhart Design', es: 'Game Commerce — Lhart Design' },
